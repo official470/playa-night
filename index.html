@@ -405,7 +405,7 @@ body.itaewon #np{display:none!important}
       <p id="npState"></p>
       <ol id="trackList"></ol>
       <button id="audBtn" class="upload fm">🎧 장르 음악 바로 틀기</button>
-      <button id="scBtn" class="upload fm">☁️ 사운드클라우드로 틀기</button>
+      <button id="mcBtn" class="upload fm">🎛️ 유명 DJ 세트 틀기 (Mixcloud)</button>
       <button id="jukeBtn" class="upload fm">바로 재생되는 전체 곡 목록</button>
       <label class="upload">내 음악 파일 추가<input type="file" id="fileIn" accept="audio/*"></label>
       <p class="hint">추가한 파일은 이 부스에서 반복 재생돼요. 아이폰은 무음 모드를 끄면 소리가 나요.</p>
@@ -423,7 +423,7 @@ body.itaewon #np{display:none!important}
     <p class="hint" id="gearTxt"></p>
   </section>
   <button id="actBtn" hidden></button>
-  <div id="clubNow" class="card" hidden><span class="cnd" id="cnDot"></span><div><b id="cnName"></b><small id="cnTrack"></small></div><button id="cnNext">다음 곡</button><button id="cnAud">🎧 장르</button><button id="cnSC">SC</button></div>
+  <div id="clubNow" class="card" hidden><span class="cnd" id="cnDot"></span><div><b id="cnName"></b><small id="cnTrack"></small></div><button id="cnNext">다음 곡</button><button id="cnAud">🎧 장르</button><button id="cnMC">🎛️ DJ</button></div>
   <button id="soundFix" hidden>소리가 안 들리면 여기를 눌러 주세요</button>
   <section id="dancePanel" class="card" hidden aria-label="춤 고르기">
     <div class="dphead"><b>춤 고르기</b><span><button id="danceOnBtn" aria-pressed="false">제자리 춤 켜기</button> <button id="danceClose">닫기</button></span></div>
@@ -2822,13 +2822,13 @@ function buildItaewon(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sc
   const it2=SNPC.slice(-(IT.npcs.length+6+IT.walkers.length)); it2.forEach(S=>{ ALLP.push(S.P); if(S.talk) TALKP.push(S.P); });
   applyCut(-1); updaters.push(itTick); }
 function setClubTrack(f,i){ const Z=f===3?IT.zS:IT.zP, list=IT_TR[f]; IT_TI[f]=(i+list.length)%list.length; Z.tracks[0]=list[IT_TI[f]]; Z.running=false; if(Z.delay) Z.delay.delayTime.value=60/Z.tracks[0].bpm*.75; }
-$('#cnNext').addEventListener('click',()=>{ if(AUD.target&&AUD.target.key==='club'+IT.floor){ audNext(); return; } if(SCW.target&&SCW.target.key==='club'+IT.floor){ scNext(); return; } if(IT.floor===3||IT.floor===4){ setClubTrack(IT.floor,IT_TI[IT.floor]+1); toast(`다음 곡: ${IT_TR[IT.floor][IT_TI[IT.floor]].name}`); } });
+$('#cnNext').addEventListener('click',()=>{ if(AUD.target&&AUD.target.key==='club'+IT.floor){ audNext(); return; } if(MC.target&&MC.target.key==='club'+IT.floor){ mcNext(); return; } if(IT.floor===3||IT.floor===4){ setClubTrack(IT.floor,IT_TI[IT.floor]+1); toast(`다음 곡: ${IT_TR[IT.floor][IT_TI[IT.floor]].name}`); } });
 function itTick(t,dt){ const was=MAP; MAP=pState.x>1500?'itaewon':'playa'; document.body.classList.toggle('itaewon',MAP==='itaewon');
   if(was!==MAP){ if(MAP==='playa'){ IT.floor=0; applyCut(-1); applyTime(); } renderBoothList(); }
   if(dust) dust.visible=MAP!=='itaewon';
   for(const Z of [IT.zS,IT.zP]){ let v=0; if(MAP==='itaewon'&&inGame){ if(IT.floor===Z.floor) v=.85; else if(IT.floor===0){ const d=Math.hypot(pState.x-(OX+15),pState.z); if(d<45) v=(Z.floor===4?.05+.1*IT.roofOpen:.06)*(1-d/45); } } Z.target=v; if(Z.out&&ac) Z.out.gain.setTargetAtTime(v,ac.currentTime,.2); }
   const cn=$('#clubNow'), inClub=MAP==='itaewon'&&inGame&&(IT.floor===3||IT.floor===4); cn.hidden=!inClub;
-  if(inClub){ const nm=IT.floor===3?'4F 쉘터':'5F 페이퍼', tr=(AUD.target&&AUD.target.key==='club'+IT.floor&&AUD.cur)?'🎧 '+audTitle():(SCW.target&&SCW.target.key==='club'+IT.floor&&SCW.title)?'☁️ '+SCW.title:IT_TR[IT.floor][IT_TI[IT.floor]].name+' · '+(IT.floor===3?'딥테크노':'하우스'); if($('#cnName').textContent!==nm) $('#cnName').textContent=nm; if($('#cnTrack').textContent!==tr) $('#cnTrack').textContent=tr; $('#cnDot').style.background=IT.floor===3?'#ff2a2a':'#ffcf8a'; }
+  if(inClub){ const nm=IT.floor===3?'4F 쉘터':'5F 페이퍼', tr=(AUD.target&&AUD.target.key==='club'+IT.floor&&AUD.cur)?'🎧 '+audTitle():(MC.target&&MC.target.key==='club'+IT.floor&&MC.cur)?'🎛️ '+mcTitle():IT_TR[IT.floor][IT_TI[IT.floor]].name+' · '+(IT.floor===3?'딥테크노':'하우스'); if($('#cnName').textContent!==nm) $('#cnName').textContent=nm; if($('#cnTrack').textContent!==tr) $('#cnTrack').textContent=tr; $('#cnDot').style.background=IT.floor===3?'#ff2a2a':'#ffcf8a'; }
   if(MAP!=='itaewon') return;
   stormNext=Math.max(stormNext,30); if(stormOn){ stormOn=false; stormLeft=0; }
   const u=sky.material.uniforms; if(night){ u.top.value.set(0x07081a); u.hor.value.set(0x4a2c3a); u.bot.value.set(0x15131a); scene.fog.color.set(0x1e1a24); } else { u.top.value.set(0x5a8ac8); u.hor.value.set(0xd8dce6); u.bot.value.set(0xb8bcc6); scene.fog.color.set(0xc8ccd4); }
@@ -3062,61 +3062,68 @@ updaters.push((t,dt)=>{ if($('#shop').hidden||!ipItem||!ipR) return;
 /* ================= AUTO EFFECT LOOP ================= */
 let ipRest=.25;
 
-/* ================= SOUNDCLOUD (Widget API) ================= */
-const SCW={state:'idle',iframe:null,widget:null,target:null,title:'',vol:-1};
-let scUrls={}; try{ scUrls=JSON.parse(localStorage.getItem('playa-sc')||'{}')||{}; }catch(e){ scUrls={}; }
-function scLoadApi(){ return new Promise((res,rej)=>{ if(window.SC&&window.SC.Widget) return res(); if(SCW.state==='blocked') return rej();
-  const s=document.createElement('script'); s.src='https://w.soundcloud.com/player/api.js'; s.async=true; s.onload=()=>{ (window.SC&&window.SC.Widget)?res():rej(); }; s.onerror=()=>{ SCW.state='blocked'; rej(); }; document.head.appendChild(s);
-  setTimeout(()=>{ if(!(window.SC&&window.SC.Widget)){ SCW.state='blocked'; rej(); } },8000); }); }
-function scTargetNow(){ if(MAP==='itaewon'&&(IT.floor===3||IT.floor===4)) return {kind:'zone',Z:IT.floor===3?IT.zS:IT.zP,name:IT.floor===3?'4F 쉘터':'5F 페이퍼',key:'club'+IT.floor};
+/* ================= MIXCLOUD (licensed DJ sets, no key or login) ================= */
+function musicTarget(){ if(MAP==='itaewon'&&(IT.floor===3||IT.floor===4)) return {kind:'zone',Z:IT.floor===3?IT.zS:IT.zP,name:IT.floor===3?'4F 쉘터':'5F 페이퍼',key:'club'+IT.floor};
   const b=npBooth||nearest().b; return {kind:'booth',b,name:b.name+' 부스',key:'booth:'+b.id}; }
-function scValidOld(u){ return /^https:\/\/(www\.|m\.|on\.)?soundcloud\.com\//i.test(String(u).trim()); }
-function setScStatus(t){ const el=document.getElementById('scStatus'); if(el) el.textContent=t; }
-function scKill(){ const w=SCW.widget; if(w&&window.SC){ try{ w.pause(); Object.values(SC.Widget.Events).forEach(e=>w.unbind(e)); }catch(e){} } if(SCW.iframe) SCW.iframe.remove(); }
-function scStop(){ scKill(); SCW.iframe=null; SCW.widget=null; SCW.target=null; SCW.title=''; if(SCW.state!=='blocked') SCW.state='idle'; setScStatus(''); }
-function scBlocked(){ scKill(); SCW.iframe=null; SCW.widget=null; SCW.target=null; SCW.state='blocked'; openScPanel(); }
-// genre sources: SoundCloud's own editorial playlists where one exists, otherwise the genre's flagship label account (checked to load in the widget)
-const SC_G={techno:['테크노','https://soundcloud.com/drumcode'],house:['하우스','https://soundcloud.com/toolroomrecords'],afro:['아프로 하우스','https://soundcloud.com/keinemusik'],
-  melodic:['멜로딕 테크노','https://soundcloud.com/innervisions'],trance:['트랜스','https://soundcloud.com/anjunabeats'],deephouse:['딥하우스','https://soundcloud.com/anjunadeep'],
-  basshouse:['베이스 하우스','https://soundcloud.com/soundcloud-the-peak/sets/basslines-bass-house'],dnb:['드럼앤베이스','https://soundcloud.com/soundcloud-the-peak/sets/sub-bass-essential-drum-bass'],
-  dubstep:['덥스텝','https://soundcloud.com/soundcloud-the-peak/sets/bass-flex-new-dubstep-heat'],hardstyle:['하드스타일','https://soundcloud.com/soundcloud-the-peak/sets/hard-dance-and-hardstyle']};
-function scGenreDefault(T){ const s=scUrls['g:'+T.key]; if(s&&SC_G[s]) return s; return T.kind==='zone'?(T.key==='club3'?'techno':'deephouse'):(SC_G[T.b.id]?T.b.id:'techno'); }
-function scShow(on){ if(!SCW.iframe) return; SCW.iframe.style.cssText=on?'position:fixed;left:10px;right:10px;bottom:calc(10px + var(--sab));width:calc(100% - 20px);max-width:420px;height:120px;border:0;border-radius:12px;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.4)':'position:fixed;left:-9999px;top:0;width:300px;height:120px;border:0'; }
-async function scPlay(url,T,opt){ url=String(url||'').trim(); opt=opt||{}; if(!scValid(url)){ toast('soundcloud.com 주소를 넣어 주세요'); return; }
-  initAudio(); audStop(); SCW.genre=opt.genre||''; setScStatus('사운드클라우드 플레이어를 불러오는 중이에요');
-  try{ await scLoadApi(); }catch(e){ scBlocked(); return; }
-  scKill();
-  const f=document.createElement('iframe'); f.allow='autoplay'; f.title='SoundCloud player'; f.style.cssText='position:fixed;left:-9999px;top:0;width:300px;height:120px;border:0';
-  f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(url)+'&auto_play=true&hide_related=true&show_comments=false&visual=false';
-  document.body.appendChild(f); SCW.iframe=f; SCW.target=T; SCW.state='loading'; SCW.vol=-1;
-  const w=SC.Widget(f), E=SC.Widget.Events; SCW.widget=w; const lt=setTimeout(()=>{ if(SCW.state==='loading') scBlocked(); },12000);
-  const info=()=>w.getCurrentSound(s=>{ if(s){ SCW.title=`${s.title}${s.user&&s.user.username?' ('+s.user.username+')':''}`; setScStatus('재생 중: '+SCW.title); } });
-  w.bind(E.READY,()=>{ clearTimeout(lt); SCW.state='ready';
-    if(opt.shuffle) setTimeout(()=>SCW.widget===w&&w.getSounds(s=>{ if(s&&s.length>1) w.skip(Math.floor(Math.random()*s.length)); else w.play(); }),1500); else w.play();
-    info(); setTimeout(()=>{ if(SCW.title) toast(`${T.name}에서 사운드클라우드 재생: ${SCW.title}`); },600);
-    // mobile Safari can block autoplay inside the iframe; show the real player so a tap on its play button starts it
-    setTimeout(()=>{ if(SCW.widget===w&&SCW.state==='ready'){ scShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } },4500); });
-  w.bind(E.PLAY,()=>{ SCW.state='playing'; scShow(false); info(); });
-  w.bind(E.FINISH,()=>setTimeout(info,1500)); SCW.info=info;
-  w.bind(E.ERROR,()=>{ toast('이 주소는 재생할 수 없어요. 공개 트랙인지, 퍼가기(embed)가 허용됐는지 확인해 주세요'); scStop(); });
-  if(opt.genre) scUrls['g:'+T.key]=opt.genre; else scUrls[T.key]=url; try{ localStorage.setItem('playa-sc',JSON.stringify(scUrls)); }catch(e){} }
-function scNext(){ if(!SCW.widget) return; SCW.widget.getSounds(s=>{ SCW.widget.getCurrentSoundIndex(i=>{ if(s&&i>=s.length-1) SCW.widget.skip(0); else SCW.widget.next(); setTimeout(()=>{ if(SCW.info){ SCW.info(); setTimeout(()=>{ if(SCW.title) toast('다음 곡: '+SCW.title); },300); } },1200); }); }); }
-function openScPanel(){ const T=scTargetNow(), saved=scUrls[T.key]||'';
-  if(SCW.state==='blocked'){ openSp('사운드클라우드 연결','이 페이지에서는 불러올 수 없어요',`<p class='quote'>Claude가 호스팅하는 이 페이지는 보안 정책상 사운드클라우드 플레이어를 불러올 수 없어요.</p><p>게임 HTML 파일을 내려받아 내 웹사이트나 GitHub Pages에 올리면 같은 버튼으로 사운드클라우드가 연결돼요.</p><div class='acts'><button data-act='close' class='hot'>확인</button></div>`,()=>closeSp()); return; }
-  const on=SCW.target&&SCW.target.key===T.key, g=on&&SCW.genre?SCW.genre:scGenreDefault(T);
-  const chips=Object.keys(SC_G).map(k=>`<button data-act='g:${k}' aria-pressed='${on&&SCW.genre===k}'>${SC_G[k][0]}</button>`).join('');
-  openSp('사운드클라우드',`${T.name}에서 틀기`,`<p>장르를 누르면 사운드클라우드 공식 플레이어로 그 장르 곡을 바로 틀어요. 곡이 끝나면 다음 곡으로 넘어가고, 가까이 갈수록 크게 들려요.</p><div class='gchips'>${chips}</div><p id='scStatus' style='font-size:12px;color:var(--muted)'>${esc(SCW.title?'재생 중: '+SCW.title:'')}</p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='g:${g}' class='hot'>${esc(SC_G[g][0])} 틀기</button><button data-act='next'>다음 곡</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button></div><details style='margin-top:8px'><summary style='font-size:13px'>주소로 직접 틀기</summary><input id='scUrl' type='url' inputmode='url' autocomplete='off' placeholder='https://soundcloud.com/아티스트/트랙' value='${esc(saved)}' style='width:100%;margin-top:6px;font:inherit;font-size:16px;padding:10px;border-radius:10px;border:0;background:var(--chip);color:var(--text)'><div class='acts' style='grid-template-columns:1fr'><button data-act='play'>이 주소 틀기</button></div></details>`,a=>{
-    if(a.startsWith('g:')){ const k=a.slice(2); document.querySelectorAll('#spBody .gchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.act===a))); const hb=document.querySelector('#spBody .acts .hot'); if(hb){ hb.dataset.act=a; hb.textContent=`${SC_G[k][0]} 다른 곡`; } scPlay(SC_G[k][1],scTargetNow(),{genre:k,shuffle:true}); }
-    else if(a==='play') scPlay(document.getElementById('scUrl').value,scTargetNow());
-    else if(a==='next') scNext();
-    else if(a==='toggle'){ if(SCW.widget) SCW.widget.toggle(); } else if(a==='stop'){ scStop(); toast('게임 음악으로 돌아왔어요'); } }); }
-function scTick(){ const T=SCW.target; if(!T||!SCW.widget) return; let v;
+// each genre pulls recent shows from official DJ / label channels
+const MC_G={techno:['테크노',['residentadvisor','CarlCox']],house:['하우스',['Defectedrecords']],afro:['아프로 하우스',['keinemusik']],
+  melodic:['멜로딕 테크노',['afterlife','johndigweed']],trance:['트랜스',['ArminvanBuuren']],deephouse:['딥하우스',['anjunadeep']],
+  dnb:['드럼앤베이스',['hospitalrecords']],dubstep:['덥스텝',['ukfmusic']],eclectic:['언더그라운드',['FACTMixArchive']]};
+const MC_ORIGIN='https://player-widget.mixcloud.com';
+const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
+let mcPick={}; try{ mcPick=JSON.parse(localStorage.getItem('playa-mc')||'{}')||{}; }catch(e){ mcPick={}; }
+function mcDefault(T){ return mcPick[T.key]||(T.kind==='zone'?(T.key==='club3'?'techno':'house'):(MC_G[T.b.id]?T.b.id:'techno')); }
+// the widget speaks a small postMessage protocol; talking to it directly avoids loading Mixcloud's helper script
+function mcCall(name,...args){ if(!MC.iframe||!MC.iframe.contentWindow) return; MC.iframe.contentWindow.postMessage(JSON.stringify({type:'method',data:{methodId:++MC.mid,methodName:name,args}}),MC_ORIGIN); }
+addEventListener('message',e=>{ if(e.origin!==MC_ORIGIN||!MC.iframe||e.source!==MC.iframe.contentWindow) return; let m; try{ m=JSON.parse(e.data); }catch(x){ return; }
+  if(m.type==='ready') MC.iframe.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN);
+  if(m.type!=='event') return; const ev=m.data&&m.data.eventName;
+  if(ev==='progress'||ev==='play'){ MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
+  else if(ev==='pause'){ MC.paused=true; mcUi(); }
+  else if(ev==='ended') mcNext();
+  else if(ev==='error'){ if(++MC.fails<4) mcNext(); else { toast('Mixcloud 세트를 불러오지 못했어요'); mcStop(); } } });
+function mcShow(on){ if(!MC.iframe) return; MC.iframe.style.cssText=on?'position:fixed;left:10px;right:10px;bottom:calc(10px + var(--sab));width:calc(100% - 20px);max-width:420px;height:60px;border:0;border-radius:10px;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.4)':'position:fixed;left:-9999px;top:0;width:300px;height:60px;border:0'; }
+async function mcFetch(g){ if(MC.cache[g]&&MC.cache[g].length) return MC.cache[g];
+  const lists=await Promise.all(MC_G[g][1].map(u=>fetch(`https://api.mixcloud.com/${encodeURIComponent(u)}/cloudcasts/?limit=30`).then(r=>r.ok?r.json():{data:[]}).then(d=>d.data||[]).catch(()=>[])));
+  const L=lists.flat().filter(c=>c&&c.key&&c.audio_length>600);
+  for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } MC.cache[g]=L; return L; }
+async function mcPlay(g,T){ initAudio(); audStop(); MC.target=T; MC.genre=g; mcPick[T.key]=g; try{ localStorage.setItem('playa-mc',JSON.stringify(mcPick)); }catch(e){}
+  mcStatus(`${MC_G[g][0]} DJ 세트를 찾는 중이에요`);
+  MC.list=await mcFetch(g); if(MC.target!==T||MC.genre!==g) return;
+  if(!MC.list.length){ mcStatus(''); toast('Mixcloud에 연결하지 못했어요. 인터넷 연결을 확인해 주세요'); mcStop(); return; }
+  MC.idx=-1; MC.fails=0; mcNext(); }
+function mcNext(){ if(!MC.target||!MC.list.length) return; MC.idx=(MC.idx+1)%MC.list.length; const c=MC.list[MC.idx]; MC.cur=c;
+  // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
+  if(MC.iframe&&MC.live){ MC.paused=false; mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${c.name} — ${c.user&&c.user.name||''}`); return; }
+  if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1;
+  const f=document.createElement('iframe'); f.allow='autoplay'; f.title='Mixcloud player';
+  f.src=`${MC_ORIGIN}/widget/iframe/?feed=${encodeURIComponent(c.key)}&hide_cover=1&mini=1&autoplay=1`; MC.iframe=f; mcShow(false); document.body.appendChild(f);
+  f.addEventListener('load',()=>{ if(MC.iframe===f) f.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN); });
+  // mobile browsers can block autoplay inside the iframe; show the real player so one tap on its play button starts it
+  MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } },6000);
+  mcUi(); toast(`${MC.target.name} · ${c.name} — ${c.user&&c.user.name||''}`); }
+function mcStop(){ if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
+function mcStatus(s){ const el=document.getElementById('mcStatus'); if(el) el.textContent=s; }
+function mcTitle(){ const c=MC.cur; return c?`${c.name} — ${c.user&&c.user.name||''}`:''; }
+function mcUi(){ const box=document.getElementById('mcNow'); if(!box) return; const c=MC.cur;
+  if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small);
+  box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')} · ${Math.round(c.audio_length/60)}분${MC.paused?' · 일시정지':''}</small><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud에서 보기</a></div>`;
+  mcStatus(`${MC.target.name}에서 재생 중`); }
+function openMcPanel(){ const T=musicTarget(), on=MC.target&&MC.target.key===T.key, g=on?MC.genre:mcDefault(T);
+  const chips=Object.keys(MC_G).map(k=>`<button data-act='g:${k}' aria-pressed='${on&&MC.genre===k}'>${MC_G[k][0]}</button>`).join('');
+  openSp('유명 DJ 세트',`${T.name} · Mixcloud`,`<p>장르를 누르면 공식 DJ·레이블 채널의 최신 믹스셋을 Mixcloud 플레이어로 바로 틀어요. 로그인이나 앱 키는 필요 없어요. 세트가 끝나면 다음 세트로 넘어가고, 가까이 갈수록 크게 들려요.</p><div class='gchips'>${chips}</div><div id='mcNow' class='audnow'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='g:${g}' class='hot'>${esc(MC_G[g][0])} 틀기</button><button data-act='next'>다음 세트</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button></div>`,a=>{
+    if(a.startsWith('g:')){ const k=a.slice(2); document.querySelectorAll('#spBody .gchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.act===a)));
+      const hb=document.querySelector('#spBody .acts .hot'); if(hb){ hb.dataset.act=a; hb.textContent=`${MC_G[k][0]} 다른 세트`; } mcPlay(k,musicTarget()); }
+    else if(a==='next'){ if(MC.target) mcNext(); else mcPlay(g,musicTarget()); }
+    else if(a==='toggle'){ if(MC.iframe) mcCall('togglePlay'); }
+    else if(a==='stop'){ mcStop(); toast('게임 음악으로 돌아왔어요'); } });
+  mcUi(); }
+function mcTick(){ const T=MC.target; if(!T||!MC.iframe) return; let v;
   if(T.kind==='booth'){ v=T.b.target; if(T.b.out&&ac) T.b.out.gain.setTargetAtTime(0,ac.currentTime,.05); }
   else { v=(T.Z.target||0)/.85; if(T.Z.out&&ac) T.Z.out.gain.setTargetAtTime(0,ac.currentTime,.05); }
-  const vol=Math.round(clamp(v,0,1)*100*(muted?0:1)); if(Math.abs(vol-SCW.vol)>=3||(vol===0&&SCW.vol!==0)){ SCW.vol=vol; try{ SCW.widget.setVolume(vol); }catch(e){} } }
-$('#scBtn').addEventListener('click',openScPanel); $('#cnSC').addEventListener('click',openScPanel);
-
-function scValid(u){ try{ const p=new URL(String(u).trim()); const h=p.hostname.toLowerCase(); return p.protocol==='https:'&&(h==='soundcloud.com'||h.endsWith('.soundcloud.com')); }catch(e){ return false; } }
+  if(!MC.playing) return; v=Math.round(clamp(v||0,0,1)*(muted?0:1)*100)/100;
+  if(Math.abs(v-MC.vol)>=.03||(v===0&&MC.vol!==0)){ MC.vol=v; mcCall('setVolume',v); } }
+$('#mcBtn').addEventListener('click',openMcPanel); $('#cnMC').addEventListener('click',openMcPanel);
 
 /* ================= AUDIUS (genre streaming, no key or login) ================= */
 const AUD_API='https://api.audius.co/v1', AUD_APP='PLAYA_NIGHT';
@@ -3139,7 +3146,7 @@ async function audFetch(g){ if(AUD.cache[g]&&AUD.cache[g].length) return AUD.cac
   const r=await fetch(url); if(!r.ok) throw new Error(r.status); const d=(await r.json()).data||[];
   const L=d.filter(t=>t&&t.is_streamable!==false&&!t.is_stream_gated&&!t.is_delete&&t.duration>=120);
   for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } AUD.cache[g]=L; return L; }
-async function audPlay(g,T){ audUnlock(); scStop(); AUD.target=T; AUD.genre=g; AUD.vol=-1; audPick[T.key]=g; try{ localStorage.setItem('playa-aud',JSON.stringify(audPick)); }catch(e){}
+async function audPlay(g,T){ audUnlock(); mcStop(); AUD.target=T; AUD.genre=g; AUD.vol=-1; audPick[T.key]=g; try{ localStorage.setItem('playa-aud',JSON.stringify(audPick)); }catch(e){}
   audStatus(`${AUD_G[g][0]} 곡을 찾는 중이에요`);
   try{ AUD.list=await audFetch(g); }catch(e){ AUD.list=[]; }
   if(AUD.target!==T||AUD.genre!==g) return;
@@ -3155,12 +3162,12 @@ function audUi(){ const box=document.getElementById('audNow'); if(!box) return; 
   if(!t||!AUD.target){ box.innerHTML=''; return; } const art=t.artwork&&(t.artwork['150x150']||t.artwork['480x480']);
   box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(t.title)}</b><small>${esc(t.user&&t.user.name||'')} · ${esc(AUD_G[AUD.genre][0])}${AUD.el&&AUD.el.paused?' · 일시정지':''}</small>${t.permalink?`<a href='https://audius.co${esc(t.permalink)}' target='_blank' rel='noopener noreferrer'>Audius에서 보기</a>`:''}</div>`;
   audStatus(`${AUD.target.name}에서 재생 중`); }
-function openAudPanel(){ const T=scTargetNow(), on=AUD.target&&AUD.target.key===T.key, g=on?AUD.genre:audDefault(T);
+function openAudPanel(){ const T=musicTarget(), on=AUD.target&&AUD.target.key===T.key, g=on?AUD.genre:audDefault(T);
   const chips=Object.keys(AUD_G).map(k=>`<button data-act='g:${k}' aria-pressed='${k===g}'>${AUD_G[k][0]}</button>`).join('');
   openSp('장르 음악 바로 틀기',`${T.name} · Audius 무료 스트리밍`,`<p>장르를 누르면 Audius에서 그 장르의 인기 곡을 골라 바로 틀어요. 로그인이나 앱 키는 필요 없어요. 가까이 갈수록 크게 들리고, 곡이 끝나면 다음 곡으로 넘어가요.</p><div class='gchips'>${chips}</div><div id='audNow' class='audnow'></div><p id='audStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='play' class='hot'>${on?'다른 곡 섞기':'이 장르 틀기'}</button><button data-act='next'>다음 곡</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button></div>`,a=>{
-    if(a.startsWith('g:')){ const k=a.slice(2); document.querySelectorAll('#spBody .gchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.act===a))); audPlay(k,scTargetNow()); }
-    else if(a==='play'){ const k=(document.querySelector("#spBody .gchips [aria-pressed='true']")||{}).dataset; delete AUD.cache[k?k.act.slice(2):g]; audPlay(k?k.act.slice(2):g,scTargetNow()); }
-    else if(a==='next'){ audUnlock(); if(AUD.target) audNext(); else audPlay(g,scTargetNow()); }
+    if(a.startsWith('g:')){ const k=a.slice(2); document.querySelectorAll('#spBody .gchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.act===a))); audPlay(k,musicTarget()); }
+    else if(a==='play'){ const k=(document.querySelector("#spBody .gchips [aria-pressed='true']")||{}).dataset; delete AUD.cache[k?k.act.slice(2):g]; audPlay(k?k.act.slice(2):g,musicTarget()); }
+    else if(a==='next'){ audUnlock(); if(AUD.target) audNext(); else audPlay(g,musicTarget()); }
     else if(a==='toggle'){ if(!AUD.el||!AUD.target) return; if(AUD.el.paused){ const p=AUD.el.play(); if(p&&p.catch) p.catch(()=>{}); } else AUD.el.pause(); }
     else if(a==='stop'){ audStop(); toast('게임 음악으로 돌아왔어요'); } });
   audUi(); }
@@ -3194,7 +3201,7 @@ updaters.push(()=>{ if(!ac||!master||ac.state!=='running') return; if(!audioUp) 
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null]),new Promise(r=>setTimeout(r,2500))]);
 fontsReady.then(()=>{
-  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(scTick); updaters.push(audTick); applyTime(); rebuildPlayer(); renderOpts();
+  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); updaters.push(audTick); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   $('#loading').hidden=true; $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }
