@@ -470,6 +470,34 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #bmHud i{display:block;width:90px;height:6px;border-radius:3px;background:var(--chip);overflow:hidden}
 #bmHud i b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff7a2f,#ffcf3a)}
 #bmHud small{font-weight:500;opacity:.75;font-size:11px}
+.mcMini{position:fixed;right:12px;top:calc(var(--sat) + 118px);width:300px;height:60px;border:0;border-radius:10px;z-index:7;box-shadow:0 6px 20px rgba(0,0,0,.35);background:#fff}
+@media (max-width:760px),(pointer:coarse){ .mcMini{width:230px;right:8px;top:calc(var(--sat) + 112px)} }
+/* unified drop-down menu on every screen (no overlapping with the coin board) */
+.tools{position:fixed!important;right:12px!important;left:auto!important;top:calc(12px + var(--sat))!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:0!important;max-width:none!important;flex-wrap:nowrap!important;z-index:20!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;width:auto!important}
+.tools #menuBtn{display:block!important;align-self:flex-end}
+.tools button:not(#menuBtn){display:none!important}
+.tools.open{padding:6px!important;background:var(--panel)!important;border:1px solid var(--panel-line)!important;border-radius:14px!important;box-shadow:0 12px 40px rgba(0,0,0,.45)!important;width:220px!important;max-height:calc(100vh - 40px)!important;max-height:calc(100dvh - 40px)!important;overflow-y:auto!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.tools.open #menuBtn{margin-bottom:4px}
+.tools.open button:not(#menuBtn){display:block!important;width:100%!important;min-width:0!important;text-align:left!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;min-height:34px!important;padding:7px 10px!important;font-size:13px!important;font-weight:500!important;border-radius:8px!important;white-space:nowrap}
+.tools.open button:not(#menuBtn):hover,.tools.open button:not(#menuBtn):active{background:var(--chip)!important}
+.tools.open .l{display:inline!important}
+.tools.open .s{display:none!important}
+.tools.open button .l::before,.tools.open button::before{content:none!important}
+@media (min-width:761px) and (pointer:fine){ .mapc{max-width:calc(50vw - 200px)!important} }
+/* cute emoji icons in the drop-down */
+.tools.open #dressBtn .l::before{content:'👗  '!important}
+.tools.open #mapBtn .l::before{content:'🧭  '!important}
+.tools.open #mapListBtn .l::before{content:'🗺️  '!important}
+.tools.open #musicBtn .l::before{content:'🎵  '!important}
+.tools.open #danceBtn .l::before{content:'💃  '!important}
+.tools.open #rndMenuBtn .l::before{content:'🎲  '!important}
+.tools.open #bagBtn .l::before{content:'🎒  '!important}
+.tools.open #skyBtn .l::before{content:'🌌  '!important}
+.tools.open #timeBtn .l::before{content:'🌗  '!important}
+.tools.open #muteBtn .l::before{content:'🔈  '!important}
+.tools.open #gfxBtn .l::before{content:'✨  '!important}
+.tools.open #helpBtn .l::before{content:'❔  '!important}
+.mapsel small.loc,#sp small.loc{font-size:11px;opacity:.75;font-weight:500;margin-left:4px}
 #sp .audnow{display:flex;gap:10px;align-items:center;margin-top:8px}
 #sp .audnow:empty{display:none}
 #sp .audnow img{width:56px;height:56px;border-radius:8px;object-fit:cover;flex:none}
@@ -497,7 +525,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
   <label class="name">이름 <input id="pname" maxlength="12" value="Dusty"></label>
   <div id="optNav" role="tablist" aria-label="스타일 항목 바로가기"></div>
   <div id="opts"></div>
-  <div class="mapsel"><span>맵</span><button data-map="playa" aria-pressed="true">🏜 버닝맨 플라야</button><button data-map="itaewon" aria-pressed="false">🇰🇷 한국 이태원</button><button data-map="nami" aria-pressed="false">🌲 에어하우스 -코리아</button><button data-map="sphere" aria-pressed="false">🔮 라스베가스 스피어</button></div>
+  <div class="mapsel"><span>맵</span><button data-map="playa" aria-pressed="true">🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-map="itaewon" aria-pressed="false">🇰🇷 한국 이태원</button><button data-map="nami" aria-pressed="false">🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-map="sphere" aria-pressed="false">🔮 지구본점 <small class='loc'>미국 라스베가스</small></button></div>
   <div class="actions">
     <button id="randBtn" class="ghost">랜덤 룩</button>
     <button id="enterBtn" class="primary">플라야 입장</button>
@@ -2098,7 +2126,7 @@ function npcGift(P){ P.pname=P.pname||pick(NAMES); say(P,'선물이에요!'); co
 function socialPose(P,t){ const s=P.social, f=s.partner?s.partner.root.position:s.face; if(f) P.root.rotation.y=Math.atan2(f.x-P.root.position.x,f.z-P.root.position.z); if(s.kind==='pair') poseChar(P,'dance',t,P.booth?boothBeat(P.booth,t):t*2); else poseChar(P,s.kind,t,0); }
 function socialMenuOld(P){ return `<p class='quote' id='spQuote'>${esc(P.lastLine||'')}</p><div class='acts'><button data-act='high5'>하이파이브</button><button data-act='hug'>허그 청하기</button><button data-act='talk'>대화하기</button><button data-act='dance'>같이 춤추기</button><button data-act='gift' class='hot'>선물 주기</button><button data-act='praise'>칭찬하기</button></div>`; }
 function openSocial(P,silent){ if(!P) return; P.pname=P.pname||pick(NAMES); if(!silent){ P.lastLine=pick(GREET); say(P,P.lastLine); P.social={kind:'talk',face:{x:pState.x,z:pState.z},t:3}; }
-  openSp(P.pname,'선물 경제로 지내는 버너',socialMenu(P),a=>socialAct(P,a)); $('#sp').classList.add('float'); spFloat=P; }
+  openSp(P.pname,'선물 경제로 지내는 레이버',socialMenu(P),a=>socialAct(P,a)); $('#sp').classList.add('float'); spFloat=P; }
 function socialActBase(P,a){ const face={x:pState.x,z:pState.z};
   if(a==='high5'){ pState.emote={kind:'high5',t:1.3}; P.social={kind:'high5',face,t:1.3}; clap(.35); say(P,pick(['짝!','나이스!','예에!'])); setQuote('짝! 손바닥이 얼얼해요'); if(cdP(P,'h5',15)) ST.energy=Math.min(100,ST.energy+2); }
   else if(a==='hug'){ pState.emote={kind:'hug',t:2.6}; P.social={kind:'hug',face,t:2.6}; for(let i=0;i<6;i++) spawnFx('heart',i*.1); say(P,'물어봐 줘서 고마워요. 좋아요!'); const ok=cdP(P,'hug',25); if(ok) ST.energy=Math.min(100,ST.energy+6); setQuote(ok?'포근한 허그. 체력 +6':'포근한 허그'); }
@@ -2265,7 +2293,7 @@ function buildSpaces(){
   buildAlley(); buildJazz(); buildRink(); buildPotties(); buildScope(); buildPaint(); buildAdult(); buildDeep();
   scene.children.forEach(o=>{ if(!o.isMesh||!o.visible||!o.geometry) return; if(!(o.geometry.type==='IcosahedronGeometry'||o.geometry===G.half)) return; for(const p of SITES){ if(Math.hypot(o.position.x-p.x,o.position.z-p.z)<26){ o.visible=false; break; } } });
   ALLP=npcs.concat(SNPC.map(s=>s.P)); TALKP=npcs.concat(SNPC.filter(s=>s.talk).map(s=>s.P));
-  INTER.push({pos:()=>nearNPC?nearNPC.root.position:FARV,r:2.6,label:'버너와 교류하기',act:()=>openSocial(nearNPC)});
+  INTER.push({pos:()=>nearNPC?nearNPC.root.position:FARV,r:2.6,label:'레이버와 교류하기',act:()=>openSocial(nearNPC)});
   updaters.push(updateSpaces); }
 function updateSpaces(t,dt){
   if(ac&&master) for(const Z of ZONES) zoneAudio(Z);
@@ -2339,7 +2367,7 @@ let wallMsgs=[]; try{ wallMsgs=JSON.parse(localStorage.getItem('playa-wall')||'[
 const SKY_LINES=['여보세요? 네, 저 우주예요. 오늘 물은 충분히 마셨나요?','당신이 찾는 답은 이미 가방 안에 있어요. 아마 생수일 거예요.','지금 옆에 있는 사람에게 웃어 주세요. 오늘의 미션이에요.','먼지는 언젠가 가라앉아요. 마음도 그래요.','당신은 이 도시를 만드는 한 조각이에요. 고마워요.','해가 뜨는 시간에 템플에 가 보세요. 이유는 가 보면 알아요.','잘하고 있어요. 진짜로요.','오늘 받은 친절을 내일 누군가에게 돌려주세요.'];
 function bong(f,dur,peak){ sfx(tt=>{ [1,2.76,5.4,8.9].forEach((m,i)=>tone(master,tt,'sine',f*m,(peak||.3)/(i+1.5),dur/(1+i*.6))); }); }
 function startArt(kind){ if(pState.veh||pState.ride) return; clearUse(); pState.emote=null; danceOn=false; pState.art={kind,t:0};
-  toast({seesaw:'시소에 앉았어요. 건너편 버너와 오르락내리락!',carousel:'회전목마에 올라탔어요. 점점 빨라져요',slide:'사다리를 올라가요!'}[kind]); }
+  toast({seesaw:'시소에 앉았어요. 건너편 레이버와 오르락내리락!',carousel:'회전목마에 올라탔어요. 점점 빨라져요',slide:'사다리를 올라가요!'}[kind]); }
 function exitArt(){ const A=pState.art; if(!A) return; pState.art=null; let w;
   if(A.kind==='seesaw') w=ART.seesaw.g.localToWorld(_av.set(-4.8,0,1.2)); else if(A.kind==='carousel') w=ART.carousel.g.localToWorld(_av.set(0,0,6.8)); else w=ART.slide.g.localToWorld(_av.set(1.6,0,9.8));
   pState.x=w.x; pState.z=w.z; pState.y=0; pState.vy=0; if(player) player.root.rotation.set(0,pState.face,0); }
@@ -2359,7 +2387,7 @@ function buildSeesaw(){ const {g,W,ry}=site(36,40);
   const cw=W(0,0,0); colliders.push({x:cw.x,z:cw.z,r:1});
   const partner=addNPC({extra:'none'},W(3.6,0,0),ry-Math.PI/2,'sit',{});
   ART.seesaw={g,pv,partner:partner.P,ry,lastV:0};
-  const lp=W(0,4.5,0); floatLabel('거대 시소','건너편 버너와 함께 오르락내리락','#ffcf3a',lp.x,lp.y,lp.z);
+  const lp=W(0,4.5,0); floatLabel('거대 시소','건너편 레이버와 함께 오르락내리락','#ffcf3a',lp.x,lp.y,lp.z);
   const c=W(-4.6,0,0); INTER.push({pos:()=>c,r:2.2,label:'시소 타기',act:()=>startArt('seesaw')});
   updaters.push((t,dt)=>{ const S=ART.seesaw, riding=pState.art&&pState.art.kind==='seesaw', target=riding?Math.sin(t*1.7)*.3:-.3;
     S.pv.rotation.z+=(target-S.pv.rotation.z)*Math.min(1,dt*(riding?8:2));
@@ -2743,8 +2771,8 @@ function doSelfie(P){ const face={x:pState.x,z:pState.z}; pState.emote={kind:'se
   setTimeout(()=>{ let url=''; try{ renderer.render(scene,camera); url=canvas.toDataURL('image/jpeg',.82); }catch(e){}
     const f=$('#flash'); f.style.transition='none'; f.style.opacity='.85'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ f.style.transition='opacity .6s'; f.style.opacity='0'; }));
     sfx(tt=>noiseHit(master,tt,'highpass',3000,.7,.25,.06));
-    if(!$('#sp').hidden) $('#spBody').innerHTML=(url?`<img class='photo' src='${url}' alt='버너와 찍은 셀카'>`:'')+`<p>찰칵! ${esc(P.pname)} 님과 셀카를 찍었어요.${url?' 사진을 길게 누르거나 우클릭해서 저장해 보세요.':''}</p><div class='acts'><button data-act='back'>돌아가기</button></div>`; },900); }
-function startConga(P){ if(!P.isGeneric){ say(P,'지금은 자리를 못 비워요!'); setQuote('이 버너는 자리를 지켜야 한대요'); return; }
+    if(!$('#sp').hidden) $('#spBody').innerHTML=(url?`<img class='photo' src='${url}' alt='레이버와 찍은 셀카'>`:'')+`<p>찰칵! ${esc(P.pname)} 님과 셀카를 찍었어요.${url?' 사진을 길게 누르거나 우클릭해서 저장해 보세요.':''}</p><div class='acts'><button data-act='back'>돌아가기</button></div>`; },900); }
+function startConga(P){ if(!P.isGeneric){ say(P,'지금은 자리를 못 비워요!'); setQuote('이 레이버는 자리를 지켜야 한대요'); return; }
   conga=[P]; for(const Q of npcs){ if(conga.length>=6) break; if(Q===P||Q===companion) continue; const dx=Q.root.position.x-pState.x, dz=Q.root.position.z-pState.z; if(dx*dx+dz*dz<196) conga.push(Q); }
   conga.forEach(Q=>{ Q.social=null; Q.fan=true; Q.burnWatch=false; }); congaT=40; closeSp(); say(P,'칙칙폭폭!');
   toast(`기차놀이 시작! ${conga.length}명이 뒤를 따라와요. 40초 동안 걸어 다녀 보세요`); }
@@ -2864,7 +2892,7 @@ function winTex(){ const c=document.createElement('canvas'); c.width=c.height=12
 function goMapBase(m){ if(pState.veh){ if(pState.veh.alt>.4){ toast('비행 중에는 맵을 바꿀 수 없어요'); return; } exitVehicle(); } if(pState.ride) endRide(); if(pState.art) exitArt(); if(pState.use) clearUse(); closeSp();
   IT.floor=0; pState.y=0; pState.vy=0;
   if(m==='itaewon'){ pState.x=OX-1.5; pState.z=-58; pState.face=0; if(!night){ night=true; applyTime(); } toast('이태원에 도착했어요. 길 왼쪽, 경호원이 서 있는 건물이 클럽이에요'); }
-  else { pState.x=0; pState.z=136; pState.face=Math.PI; toast('버닝맨 플라야로 돌아왔어요'); }
+  else { pState.x=0; pState.z=136; pState.face=Math.PI; toast('사막점으로 돌아왔어요'); }
   yaw=pState.face+Math.PI; pitch=.32; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z); }
 function goFloor(f){ closeSp(); const fd=$('#fade'); fd.style.opacity='1'; sfx(tt=>{ tone(master,tt,'sine',880,.08,.5); tone(master,tt+.18,'sine',660,.08,.6); });
   setTimeout(()=>{ if(f<0){ IT.floor=0; pState.x=OX+5.4; pState.z=0; pState.face=-Math.PI/2; camDist=LOW?8.5:7.5; pitch=.32; }
@@ -3000,13 +3028,13 @@ function itTick(t,dt){ const was=MAP; MAP=pState.z>1500?'sphere':(pState.x>1500?
   if(IT.floor===3&&Math.random()<dt*4) part({x:OX+rand(9.5,18),y:10.9,z:rand(-7,7),vx:rand(-.2,.2),vy:rand(.05,.2),vz:rand(-.2,.2),col:'#8fd8a4',op:.22,size:1.6,grow:.3,life:7});
   IT.lightP.intensity=.8+pP*.7; IT.ball.rotation.y=t*.6;
   IT.laserMP.opacity=(night?.25:.12)+pP*.45; IT.lasersP.forEach((L,k)=>{ L.rotation.y=-Math.PI/2+Math.sin(t*.55+k*1.3)*.65; L.rotation.x=.1+Math.sin(t*.45+k)*.08; }); }
-function openMapSelOld(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 버닝맨 플라야</button><button data-act='itaewon' class='hot' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원</button></div><p>이태원 맵에는 걸어서 들어갈 수 있는 클럽 건물이 있어요. 4F 쉘터(딥테크노), 5F 페이퍼(하우스 루프탑).</p>`,a=>goMap(a)); }
+function openMapSelOld(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-act='itaewon' class='hot' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원</button></div><p>이태원 맵에는 걸어서 들어갈 수 있는 클럽 건물이 있어요. 4F 쉘터(딥테크노), 5F 페이퍼(하우스 루프탑).</p>`,a=>goMap(a)); }
 $('#mapBtn').addEventListener('click',openMapSel);
 document.querySelectorAll('.mapsel [data-map]').forEach(b=>b.addEventListener('click',()=>{ selMap=b.dataset.map; document.querySelectorAll('.mapsel [data-map]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); }));
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='itaewon'&&MAP!=='itaewon') setTimeout(()=>goMap('itaewon'),50); });
-const IT_SPOTS=[{n:'이태원 거리 입구',x:OX-1.5,z:-58},{n:'횡단보도 앞',x:OX-1,z:-35},{n:'클럽 건물 앞 (경호원)',x:OX+5,z:-4},{n:'4F 쉘터 (딥테크노)',fl:3},{n:'5F 페이퍼 (하우스 루프탑)',fl:4},{n:'버닝맨 플라야로 돌아가기',back:1}];
+const IT_SPOTS=[{n:'이태원 거리 입구',x:OX-1.5,z:-58},{n:'횡단보도 앞',x:OX-1,z:-35},{n:'클럽 건물 앞 (경호원)',x:OX+5,z:-4},{n:'4F 쉘터 (딥테크노)',fl:3},{n:'5F 페이퍼 (하우스 루프탑)',fl:4},{n:'사막점으로 돌아가기',back:1}];
 function renderBoothListIT(){ if(MAP!=='itaewon') return renderBoothListPlaya(); const ul=$('#boothList'); if(ul.hidden) return;
-  ul.innerHTML=`<li class='cat'><button disabled>🇰🇷 이태원<small>${IT_SPOTS.length}곳</small></button></li>`+IT_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.fl===3?'#ff2a2a':s.fl===4?'#ffcf8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-it='${i}'>가기</button></li>`).join(''); }
+  ul.innerHTML=`<li class='cat'><button disabled>🇰🇷 이태원 · 한국 서울<small>${IT_SPOTS.length}곳</small></button></li>`+IT_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.fl===3?'#ff2a2a':s.fl===4?'#ffcf8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-it='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-it]'); if(!b) return; const s=IT_SPOTS[+b.dataset.it];
   if(s.back){ goMap('playa'); return; }
   if(s.fl){ if(!IT.stamped){ toast('먼저 경호원에게 신분증을 보여 주고 도장을 받아야 해요'); IT.floor=0; pState.x=OX+5; pState.z=-4; pState.y=0; return; } goFloor(s.fl); return; }
@@ -3263,46 +3291,48 @@ function mcCall(name,...args){ if(!MC.iframe||!MC.iframe.contentWindow) return; 
 addEventListener('message',e=>{ if(e.origin!==MC_ORIGIN||!MC.iframe||e.source!==MC.iframe.contentWindow) return; let m; try{ m=JSON.parse(e.data); }catch(x){ return; }
   if(m.type==='ready') MC.iframe.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN);
   if(m.type!=='event') return; const ev=m.data&&m.data.eventName;
-  if(ev==='progress'||ev==='play'){ MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
+  if(ev==='progress'||ev==='play'){ const a=m.data.args; if(ev==='progress'&&a&&Number.isFinite(+a[0])){ MC.pos=+a[0]; MC.posAt=performance.now(); } MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
   else if(ev==='pause'){ MC.paused=true; mcUi(); }
   else if(ev==='ended') mcNext();
   else if(ev==='error'){ if(++MC.fails<4) mcNext(); else { toast('Mixcloud 세트를 불러오지 못했어요'); mcStop(); } } });
 function mcShow(on){ if(!MC.iframe) return; MC.iframe.style.cssText=on?'position:fixed;left:10px;right:10px;bottom:calc(10px + var(--sab));width:calc(100% - 20px);max-width:420px;height:60px;border:0;border-radius:10px;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.4)':'position:fixed;left:-9999px;top:0;width:300px;height:60px;border:0'; }
 async function mcFetch(g){ if(MC.cache[g]&&MC.cache[g].length) return MC.cache[g];
   const lists=await Promise.all(MC_G[g][1].map(u=>fetch(`https://api.mixcloud.com/${encodeURIComponent(u)}/cloudcasts/?limit=30`).then(r=>r.ok?r.json():{data:[]}).then(d=>d.data||[]).catch(()=>[])));
-  const L=lists.flat().filter(c=>c&&c.key&&c.audio_length>600);
+  const L=lists.flat().filter(c=>c&&c.key&&c.audio_length>600&&!c.is_exclusive);
   for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } MC.cache[g]=L; return L; }
 async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g; mcPick[T.key]=g; try{ localStorage.setItem('playa-mc-genre',JSON.stringify(mcPick)); }catch(e){}
   mcStatus(`${MC_G[g][0]} DJ 세트를 찾는 중이에요`);
   MC.list=await mcFetch(g); if(MC.target!==T||MC.genre!==g) return;
   if(!MC.list.length){ mcStatus(''); toast('Mixcloud에 연결하지 못했어요. 인터넷 연결을 확인해 주세요'); mcStop(); return; }
   MC.idx=-1; MC.fails=0; mcNext(); }
-function mcNext(){ if(!MC.target||!MC.list.length) return; MC.idx=(MC.idx+1)%MC.list.length; const c=MC.list[MC.idx]; MC.cur=c;
+function mcNext(){ if(!MC.target||!MC.list.length) return; MC.idx=(MC.idx+1)%MC.list.length; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
-  if(MC.iframe&&MC.live){ MC.paused=false; mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${c.name} — ${c.user&&c.user.name||''}`); return; }
+  if(MC.iframe&&MC.live){ MC.paused=false; mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
   if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1;
   const f=document.createElement('iframe'); f.allow='autoplay'; f.title='Mixcloud player';
   f.src=`${MC_ORIGIN}/widget/iframe/?feed=${encodeURIComponent(c.key)}&hide_cover=1&mini=1&autoplay=1`; MC.iframe=f; mcShow(false); document.body.appendChild(f);
   f.addEventListener('load',()=>{ if(MC.iframe===f) f.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN); });
   // mobile browsers can block autoplay inside the iframe; show the real player so one tap on its play button starts it
   MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } },6000);
-  mcUi(); toast(`${MC.target.name} · ${c.name} — ${c.user&&c.user.name||''}`); }
-function mcStop(){ $('#clubNow').classList.remove('mc'); if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
+  mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); }
+function mcStop(){ MC.schId=null; $('#clubNow').classList.remove('mc'); if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
 function mcStatus(s){ const el=document.getElementById('mcStatus'); if(el) el.textContent=s; }
-function mcTitle(){ const c=MC.cur; return c?`${c.name} — ${c.user&&c.user.name||''}`:''; }
+function mcTitle(){ const c=MC.cur; return c?`${c.name}${c.user&&c.user.name?' — '+c.user.name:''}`:''; }
 function mcUi(){ const box=document.getElementById('mcNow'); if(!box) return; const c=MC.cur;
   if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small);
-  box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')} · ${Math.round(c.audio_length/60)}분${MC.paused?' · 일시정지':''}</small><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud에서 보기</a></div>`;
+  box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud에서 보기</a></div>`;
   mcStatus(`${MC.target.name}에서 재생 중`); }
-function openMcPanel(){ const T=musicTarget(), on=MC.target&&MC.target.key===T.key, g=on?MC.genre:mcDefault(T);
+function openMcPanel(){ if(SCH.url) return openSchPanel(); const T=musicTarget(), on=MC.target&&MC.target.key===T.key, g=on?MC.genre:mcDefault(T);
   const chips=Object.keys(MC_G).map(k=>`<button data-act='g:${k}' aria-pressed='${on&&MC.genre===k}'>${MC_G[k][0]}</button>`).join('');
-  openSp('유명 DJ 세트',`${T.name} · Mixcloud`,`<p>장르를 누르면 공식 DJ·레이블 채널의 최신 믹스셋을 Mixcloud 플레이어로 바로 틀어요. 로그인이나 앱 키는 필요 없어요. 세트가 끝나면 다음 세트로 넘어가고, 가까이 갈수록 크게 들려요.</p><div class='gchips'>${chips}</div><div id='mcNow' class='audnow'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='g:${g}' class='hot'>${esc(MC_G[g][0])} 틀기</button><button data-act='next'>다음 세트</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button></div>`,a=>{
+  openSp('유명 DJ 세트',`${T.name} · Mixcloud`,`<p>장르를 누르면 공식 DJ·레이블 채널의 최신 믹스셋을 Mixcloud 플레이어로 바로 틀어요. 로그인이나 앱 키는 필요 없어요. 세트가 끝나면 다음 세트로 넘어가고, 가까이 갈수록 크게 들려요. 자동 재생이 켜져 있으면 스테이지에 가까이 가기만 해도 그 장르 세트가 나와요.</p><div class='gchips'>${chips}</div><div id='mcNow' class='audnow'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='g:${g}' class='hot'>${esc(MC_G[g][0])} 틀기</button><button data-act='next'>다음 세트</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button><button data-act='auto' style='grid-column:1/-1'>${mcaLabel()}</button></div>`,a=>{
     if(a.startsWith('g:')){ const k=a.slice(2); document.querySelectorAll('#spBody .gchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.act===a)));
       const hb=document.querySelector('#spBody .acts .hot'); if(hb){ hb.dataset.act=a; hb.textContent=`${MC_G[k][0]} 다른 세트`; } mcPlay(k,musicTarget()); }
     else if(a==='next'){ if(MC.target) mcNext(); else mcPlay(g,musicTarget()); }
     else if(a==='toggle'){ if(MC.iframe) mcCall('togglePlay'); }
-    else if(a==='stop'){ mcStop(); toast('게임 음악으로 돌아왔어요'); } });
+    else if(a==='auto'){ MCA.on=!MCA.on; mcaSave(); const b=document.querySelector("#spBody [data-act='auto']"); if(b) b.textContent=mcaLabel(); toast(MCA.on?'Mixcloud 자동 재생을 켰어요':'Mixcloud 자동 재생을 껐어요'); }
+    else if(a==='stop'){ MCA.skip=MC.target?MC.target.key:musicTarget().key; mcStop(); toast('게임 음악으로 돌아왔어요'); } });
   mcUi(); }
+function mcaLabel(){ return MCA.on?'✅ 자동 재생 켜짐: 스테이지에 가면 장르 세트가 바로 나와요':'자동 재생 꺼짐 (누르면 켜져요)'; }
 function mcTick(){ const T=MC.target; if(!T||!MC.iframe) return; let v;
   if(T.kind==='booth'){ v=T.b.target; if(T.b.out&&ac) T.b.out.gain.setTargetAtTime(0,ac.currentTime,.05); }
   else { v=(T.Z.target||0)/(T.Z.vol||.85); if(T.Z.out&&ac) T.Z.out.gain.setTargetAtTime(0,ac.currentTime,.05); }
@@ -3369,19 +3399,19 @@ function nmPet(A){ if(!A) return; const P={x:A.root.position.x,y:A.root.position
   const R={crane:['끼룩!','학이 우아하게 날개를 펼쳐요'],ostrich:['뿌우?','타조가 고개를 갸웃하더니 후다닥 달려요'],cat:['야옹~','고양이가 다리에 몸을 비비어요. 체력 +3'],squirrel:['찍찍!','다람쥐가 도토리를 물고 달아나요'],rabbit:['깡총!','토끼가 코를 씽룩이며 다가와요'],peacock:['꼴에엑!','공작이 꼬리 깃털을 활짝 펼쳐요'],duck:['꽥꽥!','오리가 물살을 가르며 헤엄쳐요']}[A.kind]||['!',''];
   say(A,R[0],2); for(let i=0;i<5;i++) spawnFx('heart',i*.1,P); toast(R[1]); chime(A.kind==='cat'?84:A.kind==='crane'?72:79,'sine',.06,.4);
   if(A.kind==='cat') ST.energy=Math.min(100,ST.energy+3); if(A.kind==='ostrich'){ A.run=true; A.wait=0; A.tgt=null; } if(A.kind==='squirrel'&&Math.random()<.3){ addCoins(5); setTimeout(()=>toast('다람쥐가 숨겨 둔 코인을 발견했어요! +5'),1200); } }
-function startFerry(dir){ closeSp(); NM.boat={dir,t:0,dur:20}; NM.side='boat'; sfx(tt=>{ tone(master,tt,'sawtooth',110,.08,.9); tone(master,tt+1,'sawtooth',110,.08,1.2); }); toast(dir?'배가 남이섬으로 출발해요. 강바람이 시원해요':'육지로 돌아가는 배를 탔어요'); }
+function startFerry(dir){ closeSp(); NM.boat={dir,t:0,dur:20}; NM.side='boat'; sfx(tt=>{ tone(master,tt,'sawtooth',110,.08,.9); tone(master,tt+1,'sawtooth',110,.08,1.2); }); toast(dir?'배가 동물원점으로 출발해요. 강바람이 시원해요':'육지로 돌아가는 배를 탔어요'); }
 function ferryArrive(dir){ NM.boat=null; if(dir){ NM.side='island'; NM.boatSide='island'; pState.x=NX; pState.z=-160; pState.face=0; } else { NM.side='main'; NM.boatSide='main'; pState.x=NX-117; pState.z=-128; pState.face=-Math.PI/2; }
-  pState.y=0; pState.vy=0; yaw=pState.face+Math.PI; toast(dir?'남이섬 도착! 앞의 게이트에서 팔찌를 보여 주고 입장해요':'선착장에 도착했어요'); }
+  pState.y=0; pState.vy=0; yaw=pState.face+Math.PI; toast(dir?'동물원점 도착! 앞의 게이트에서 팔찌를 보여 주고 입장해요':'선착장에 도착했어요'); }
 function nmBooth(){ if(NM.boat) return; if(NM.paid){ startFerry(1); return; }
-  if(!ageOk){ openSp('남이섬 매표소','성인 페스티벌이에요',`<p>디 에어 하우스는 만 19세 이상만 입장할 수 있어요.</p><div class='acts'><button data-act='no'>아니요</button><button data-act='yes' class='hot'>19세 이상이에요</button></div>`,a=>{ if(a==='yes'){ ageOk=true; nmBooth(); } else closeSp(); }); return; }
+  if(!ageOk){ openSp('동물원점 매표소','성인 페스티벌이에요',`<p>동물원점은 만 19세 이상만 입장할 수 있어요.</p><div class='acts'><button data-act='no'>아니요</button><button data-act='yes' class='hot'>19세 이상이에요</button></div>`,a=>{ if(a==='yes'){ ageOk=true; nmBooth(); } else closeSp(); }); return; }
   const name=(($('#pname').value||'버너').trim()||'버너').slice(0,12), yr=1990+Math.floor(Math.random()*12);
-  openSp('남이섬 매표소','“신분증과 티켓을 보여 주세요.”',`<div class='idcard'><div class='idph'>${esc(name.slice(0,1))}</div><div><b>신분증</b><span>${esc(name)}</span><small>${yr}.0${1+Math.floor(Math.random()*9)}.1${Math.floor(Math.random()*9)}</small><small>THE AIR HOUSE 티켓 1매</small></div></div><p>티켓 확인과 입장 코인 30. 결제하면 페스티벌 팔찌를 채워 주고 배에 탈 수 있어요.</p><div class='acts'><button data-act='pay' class='hot'>신분증, 티켓 내고 30코인 내기</button><button data-act='no'>다음에 올게요</button></div>`,a=>{
+  openSp('동물원점 매표소','“신분증과 티켓을 보여 주세요.”',`<div class='idcard'><div class='idph'>${esc(name.slice(0,1))}</div><div><b>신분증</b><span>${esc(name)}</span><small>${yr}.0${1+Math.floor(Math.random()*9)}.1${Math.floor(Math.random()*9)}</small><small>동물원점 티켓 1매</small></div></div><p>티켓 확인과 입장 코인 30. 결제하면 페스티벌 팔찌를 채워 주고 배에 탈 수 있어요.</p><div class='acts'><button data-act='pay' class='hot'>신분증, 티켓 내고 30코인 내기</button><button data-act='no'>다음에 올게요</button></div>`,a=>{
     if(a==='no'){ closeSp(); return; }
     if(a==='pay'){ if(coins<30){ toast('입장 코인 30이 필요해요. 선착장 주변에 떨어진 코인을 주워 보세요'); return; } addCoins(-30); NM.paid=true; chime(76,'sine',.08,.5);
-      $('#spBody').innerHTML=`<p class='quote'>신분증과 티켓 확인 완료! 손목에 페스티벌 팔찌를 채워 줬어요.</p><div class='stampwrap'><div class='hand'>✋</div><div class='stamp on' style='color:#c8862a;border-color:#c8862a'>THE AIR<br>HOUSE</div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='board' class='hot'>배에 타기</button></div>`; }
+      $('#spBody').innerHTML=`<p class='quote'>신분증과 티켓 확인 완료! 손목에 페스티벌 팔찌를 채워 줬어요.</p><div class='stampwrap'><div class='hand'>✋</div><div class='stamp on' style='color:#c8862a;border-color:#c8862a'>동물원점</div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='board' class='hot'>배에 타기</button></div>`; }
     if(a==='board') startFerry(1); }); }
 function nmGate(){ if(NM.admit){ toast('이미 입장했어요. 즐거운 시간 보내요!'); return; } if(!NM.paid){ toast('매표소에서 티켓을 사야 해요'); return; }
-  NM.admit=true; say(NM.gateStaff,'팔찌 확인! 웰컴 투 디 에어 하우스'); for(let i=0;i<6;i++) spawnFx('heart',i*.1); chime(79,'sine',.08,.6); toast('입장 완료! 카핑 숲, 요가와 명상, 네 개의 스테이지가 기다려요'); }
+  NM.admit=true; say(NM.gateStaff,'팔찌 확인! 웰컴 투 동물원점'); for(let i=0;i<6;i++) spawnFx('heart',i*.1); chime(79,'sine',.08,.6); toast('입장 완료! 카핑 숲, 요가와 명상, 네 개의 스테이지가 기다려요'); }
 function nmFireAct(){ openSp('모닥불','캠핑 의자에 둘러앉아요',`<p>타닥타닥 장작 타는 소리가 들려요.</p><div class='acts'><button data-act='bul' class='hot'>불멍하기</button><button data-act='mallow'>마시멜로 굽기</button><button data-act='sleep'>모닥불 옆에서 자기</button></div>`,a=>{
   if(a==='bul'){ closeSp(); pState.emote={kind:'meditate',t:25,regen:1.5,bell:99}; toast('모닥불을 바라보며 불멍 중이에요. 움직이지 않으면 체력이 차요'); }
   else if(a==='mallow'){ ST.food=Math.min(100,ST.food+10); ST.energy=Math.min(100,ST.energy+4); for(let i=0;i<4;i++) spawnFx('heart',i*.1); chime(79,'sine',.06,.4); toast('노릇하게 구운 마시멜로! 배부름 +10'); }
@@ -3397,13 +3427,13 @@ function buildNami(){ const IG=new THREE.Group(); IG.position.set(NX,0,0); scene
   // mainland wharf
   B(56,.1,44,wood,-150,.05,-128,IG); B(13,.2,3,wood,-116,.1,-128,IG); B(5,3,3.2,M('#f4f4f0'),-165,1.5,-118,IG); B(5.4,.3,3.6,M('#2f6ab0'),-165,3.15,-118,IG); B(.05,1,1.6,M('#9fd8ff',{op:.6}),-162.47,1.6,-118,IG);
   const bs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('매표소  TICKET','#2f6ab0'),transparent:true})); bs.scale.set(3,.75,1); bs.position.set(-162.4,2.7,-118); bs.rotation.y=Math.PI/2; IG.add(bs);
-  floatLabel('남이섬 선착장','신분증, 티켓 확인 후 배를 타요','#46d6ff',NX-155,6,-118);
+  floatLabel('동물원점 선착장','신분증, 티켓 확인 후 배를 타요','#46d6ff',NX-155,6,-118);
   [-170,-140,-130].forEach(z=>{ B(.08,4,.08,M('#c0c4cc'),-130,2,z/1+0,IG); }); for(let i=0;i<6;i++) B(.6,.4,.02,M(pick(['#ff4fa8','#46d6ff','#ffcf3a','#c6ff3d'])),-130.3,3.6-i*.1,-170+i*.4,IG);
   addNPC({top:'tee',topColor:'#2f6ab0',outer:'none',extra:'none'},W(-163,-118),Math.PI/2,'talk',{talk:true}); for(let i=0;i<4;i++) addNPC(hippieLook(),W(-158+i*.9,-114),-Math.PI/2-.3,'talk',{talk:true});
   // island dock & gate
-  B(3,.2,18,wood,0,.1,-157,IG); floatLabel('DOCK','남이섬 선착장','#f4efe6',NX,4,-152); addNPC({top:'tee',topColor:'#2f6ab0',outer:'none',extra:'none'},W(2,-150),0,'talk',{talk:true});
+  B(3,.2,18,wood,0,.1,-157,IG); floatLabel('DOCK','동물원점 선착장','#f4efe6',NX,4,-152); addNPC({top:'tee',topColor:'#2f6ab0',outer:'none',extra:'none'},W(2,-150),0,'talk',{talk:true});
   const gw=wNami(-100); for(let x=-gw+.6;x<gw-.5;x+=2.5){ if(Math.abs(x)<3.2) continue; B(.12,1.2,.12,wood,x,.6,-100,IG); } B(gw*2,.05,.05,M('#e8d4a0'),0,1,-100,IG);
-  [-3,3].forEach(x=>B(.35,5,.35,M('#5a3a22'),x,2.5,-100,IG)); B(7,.5,.4,M('#5a3a22'),0,5,-100,IG); const gs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('THE AIR HOUSE','#f4efe6'),transparent:true,side:THREE.DoubleSide})); gs.scale.set(5,1.25,1); gs.position.set(0,5.9,-100); IG.add(gs);
+  [-3,3].forEach(x=>B(.35,5,.35,M('#5a3a22'),x,2.5,-100,IG)); B(7,.5,.4,M('#5a3a22'),0,5,-100,IG); const gs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('동물원점','#f4efe6'),transparent:true,side:THREE.DoubleSide})); gs.scale.set(5,1.25,1); gs.position.set(0,5.9,-100); IG.add(gs);
   NM.gateStaff=addNPC({top:'tee',topColor:'#141414',outer:'none',extra:'none',face:'shades'},W(4,-101),Math.PI,'talk',{talk:true}).P;
   // ferry
   const fer=new THREE.Group(); IG.add(fer); NM.ferry=fer; B(4,1,10,M('#f4f4f0'),0,-.2,0,fer); B(4.05,.2,10.05,M('#2f6ab0'),0,.15,0,fer); B(3.8,.05,9.6,M('#8a6a4a'),0,.32,0,fer); B(3.2,2,3,M('#f4f4f0'),0,1.35,-3,fer); B(3.25,.5,3.05,M('#9fd8ff',{op:.7}),0,1.7,-3,fer); B(3.6,.15,3.4,M('#2f6ab0'),0,2.4,-3,fer); mesh(G.cone,M('#f4f4f0'),0,-.2,5.4,2,1.6,1,fer).rotation.x=Math.PI/2;
@@ -3512,12 +3542,12 @@ $('#cnNext').addEventListener('click',()=>{ if(MAP!=='nami'||!NM.curZ) return; c
 function goMapNami(m){ if(m!=='nami') return goMapBase(m); if(pState.veh){ if(pState.veh.alt>.4){ toast('비행 중에는 맵을 바꿀 수 없어요'); return; } exitVehicle(); } if(pState.ride) endRide(); if(pState.art) exitArt(); if(pState.use) clearUse(); closeSp();
   IT.floor=0; pState.y=0; pState.vy=0; NM.boat=null; if(NM.admit){ NM.side='island'; pState.x=NX; pState.z=-92; pState.face=0; } else { NM.side='main'; pState.x=NX-150; pState.z=-114; pState.face=Math.PI/2; }
   yaw=pState.face+Math.PI; pitch=.32; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
-  toast(NM.admit?'에어하우스 -코리아로 돌아왔어요':'남이섬 선착장이에요. 매표소에서 신분증과 티켓을 확인하고 배를 타요'); }
-function openMapSel(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 버닝맨 플라야</button><button data-act='itaewon' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원 (쉘터, 페이퍼)</button><button data-act='nami' class='hot' ${MAP==='nami'?'disabled':''}>🌲 에어하우스 -코리아</button><button data-act='sphere' ${MAP==='sphere'?'disabled':''}>🔮 라스베가스 스피어</button></div>`,a=>goMap(a)); }
+  toast(NM.admit?'동물원점으로 돌아왔어요':'동물원점 선착장이에요. 매표소에서 신분증과 티켓을 확인하고 배를 타요'); }
+function openMapSel(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-act='itaewon' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원 (쉘터, 페이퍼)</button><button data-act='nami' class='hot' ${MAP==='nami'?'disabled':''}>🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-act='sphere' ${MAP==='sphere'?'disabled':''}>🔮 지구본점 <small class='loc'>미국 라스베가스</small></button></div>`,a=>goMap(a)); }
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='nami'&&MAP!=='nami') setTimeout(()=>goMap('nami'),60); });
-const NM_SPOTS=[{n:'남이섬 선착장 (매표소)',x:-150,z:-114,s:'main'},{n:'남이섬 DOCK',x:0,z:-158,s:'isl'},{n:'입장 게이트',x:0,z:-106,s:'isl'},{n:'캠핑 숲 & 모닥불',x:0,z:-60,s:'in'},{n:'요가 & 명상 잔디밭',x:-6,z:-30,s:'in'},{n:'JANDI 스테이지 (하우스)',x:-12,z:4,s:'in'},{n:'HANOK 스테이지 (아프로테크)',x:16,z:42,s:'in'},{n:'SOOP 스테이지 (테크노)',x:-8,z:82,s:'in'},{n:'익스페리멘탈 사운드 존',x:2,z:116,s:'in'},{n:'히피 마켓 & 푸드 트럭',x:24,z:28,s:'in'},{n:'버닝맨 플라야로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
+const NM_SPOTS=[{n:'동물원점 선착장 (매표소)',x:-150,z:-114,s:'main'},{n:'동물원점 DOCK',x:0,z:-158,s:'isl'},{n:'입장 게이트',x:0,z:-106,s:'isl'},{n:'캠핑 숲 & 모닥불',x:0,z:-60,s:'in'},{n:'요가 & 명상 잔디밭',x:-6,z:-30,s:'in'},{n:'JANDI 스테이지 (하우스)',x:-12,z:4,s:'in'},{n:'HANOK 스테이지 (아프로테크)',x:16,z:42,s:'in'},{n:'SOOP 스테이지 (테크노)',x:-8,z:82,s:'in'},{n:'익스페리멘탈 사운드 존',x:2,z:116,s:'in'},{n:'히피 마켓 & 푸드 트럭',x:24,z:28,s:'in'},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
 function renderBoothListNM(){ if(MAP!=='nami') return renderBoothListIT(); const ul=$('#boothList'); if(ul.hidden) return;
-  ul.innerHTML=`<li class='cat'><button disabled>🌲 에어하우스 -코리아<small>${NM_SPOTS.length}곳</small></button></li>`+NM_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.go?'#9b6bff':s.s==='in'?'#3dff8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(NX+s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-nm='${i}'>가기</button></li>`).join(''); }
+  ul.innerHTML=`<li class='cat'><button disabled>🌲 동물원점 · 한국 남이섬<small>${NM_SPOTS.length}곳</small></button></li>`+NM_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.go?'#9b6bff':s.s==='in'?'#3dff8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(NX+s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-nm='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-nm]'); if(!b) return; const s=NM_SPOTS[+b.dataset.nm]; if(s.go){ goMap(s.go); return; } if(NM.boat) return;
   if(s.s==='main'){ NM.side='main'; } else if(s.s==='isl'){ if(!NM.paid){ toast('먼저 매표소에서 티켓을 사고 배를 타야 해요'); return; } NM.side='island'; } else { if(!NM.admit){ toast(NM.paid?'게이트에서 팔찌를 확인받아야 들어갈 수 있어요':'먼저 매표소에서 티켓을 사고 배를 타야 해요'); return; } NM.side='island'; }
   pState.x=NX+s.x; pState.z=s.z; pState.y=0; pState.face=0; yaw=Math.PI; });
@@ -3551,7 +3581,7 @@ function nmFerryTick(t,dt){ const fer=NM.ferry; if(!fer) return; const inN=MAP==
   if(riding){ if(!NFX.on){ NFX.on=true; nmBoatAudio(true); NFX.prevDist=camDist; camDist=Math.max(camDist,10.5); NFX.cheer=3; NFX.cheered=true; NFX.pass.forEach(p=>{ p.P.dance='raise'; }); NFX.talkT=3.5; }
     camera.fov=60+k*10; camera.updateProjectionMatrix();
     if(NFX.aud){ const tt=ac.currentTime; NFX.aud.g.gain.setTargetAtTime(.05+k*.07,tt,.2); NFX.aud.o.frequency.setTargetAtTime(44+k*30,tt,.3); NFX.aud.wg.gain.setTargetAtTime(k*.12,tt,.3); NFX.aud.bp.frequency.setTargetAtTime(500+k*900,tt,.3); }
-    NFX.talkT-=dt; if(NFX.talkT<=0){ NFX.talkT=rand(1.8,3.2); say(pick(NFX.pass).P,pick(['와 바람 시원하다!','남이섬 보인다!','에어하우스 가즈아!','물살 봐 봐!','배 진짜 빠르다','오늘 밤새 춤출 거야','강 냄새 좋다','저기 학 날아간다!']),2.2); }
+    NFX.talkT-=dt; if(NFX.talkT<=0){ NFX.talkT=rand(1.8,3.2); say(pick(NFX.pass).P,pick(['와 바람 시원하다!','동물원점 보인다!','동물원점 가즈아!','물살 봐 봐!','배 진짜 빠르다','오늘 밤새 춤출 거야','강 냄새 좋다','저기 학 날아간다!']),2.2); }
     yaw+=Math.sin(t*23)*k*.0015; pitch+=Math.sin(t*17)*k*.001; }
   else if(NFX.on){ NFX.on=false; nmBoatAudio(false); if(NFX.prevDist) camDist=NFX.prevDist; camera.fov=60; camera.updateProjectionMatrix(); NFX.cheer=2.5; NFX.cheered=true; NFX.pass.forEach(p=>{ p.P.dance='raise'; }); } }
 const NC={list:[],mesh:[],base:null,parts:[],frame:0};
@@ -3637,8 +3667,8 @@ function mkAnimalX(kind){ if(!['rabbit','peacock','duck'].includes(kind)) return
     const fan=new THREE.Group(); fan.position.set(0,.55,-.28); g.add(fan); mk(new THREE.CircleGeometry(1.15,24,0,Math.PI),M('#2f8a5a',{side:1}),0,0,0,fan); for(let i=0;i<14;i++){ const a=.15+i/13*(Math.PI-.3), r=rand(.75,1.05); mesh(G.sph,M(i%2?'#1f4fb8':'#e8b05a',{glow:.2}),Math.cos(a)*r,Math.sin(a)*r,.01,.08,.1,.01,fan); } fan.rotation.x=-1.4; fan.scale.setScalar(.3); A.fan=fan; A.fo=0; }
   else { A.swim=true; const col=pick(['#8a6a4a','#f4f4f0']); mesh(G.sph,M(col),0,0,0,.13,.09,.2,g); mesh(G.sph,M(col==='#f4f4f0'?'#f4f4f0':'#2f6a3a'),0,.13,.15,.07,.07,.07,g); mesh(G.cone,M('#e8963a'),0,.12,.24,.025,.08,.02,g).rotation.x=Math.PI/2; }
   return A; }
-const DR_LINES=['헤헤 한 잔 더!','딘꾹!','여기 어디야~','음악 최고다~','사랑해 에어하우스!','물… 물 좀…','같이 춤춰요!','나 하나도 안 취했어','짠! 짠! 짠!','노래 한 곡 할게요~'];
-const CHAT=[['어제 SOOP 스테이지 봤어?','완전 미쳤었지!','난 HANOK이 더 좋던데'],['배 타고 오는데 바람 진짜 좋더라','맞아, 강 위에서 해 지는 거 봤어?'],['오늘 밤 헤드라이너 누구야?','JANDI에서 새벽까지 한대'],['그 목도리 어디서 샀어?','히피 마켓! 손뜨개래','나도 사러 가야지'],['아까 타조가 나 쫓아왔어','ㅋㅋㅋ 걔 원래 그래'],['캠핑 의자 하나 남아?','모닥불 쪽에 자리 있어'],['요가 클래스 몇 시야?','아침 열 시래. 같이 가자'],['에어로빅 해 봤어?','점핑잭에서 죽는 줄','코인 15개 받았잖아 ㅋㅋ'],['물 마셨어?','아 맞다… 물부터 마시자'],['여기 진짜 버닝맨 같다','남이섬 버전 버닝맨이지'],['해먹에서 낮잠 잤는데 천국이었어','나도 자리 나면 누워야지'],['다람쥐 봤어? 도토리 들고 뛰더라','귀여워 죽는 줄'],['공작 꼬리 펼친 거 봤어?','아니! 어디서?','마켓 옆 잔디밭에서']];
+const DR_LINES=['헤헤 한 잔 더!','딘꾹!','여기 어디야~','음악 최고다~','사랑해 동물원점!','물… 물 좀…','같이 춤춰요!','나 하나도 안 취했어','짠! 짠! 짠!','노래 한 곡 할게요~'];
+const CHAT=[['어제 SOOP 스테이지 봤어?','완전 미쳤었지!','난 HANOK이 더 좋던데'],['배 타고 오는데 바람 진짜 좋더라','맞아, 강 위에서 해 지는 거 봤어?'],['오늘 밤 헤드라이너 누구야?','JANDI에서 새벽까지 한대'],['그 목도리 어디서 샀어?','히피 마켓! 손뜨개래','나도 사러 가야지'],['아까 타조가 나 쫓아왔어','ㅋㅋㅋ 걔 원래 그래'],['캠핑 의자 하나 남아?','모닥불 쪽에 자리 있어'],['요가 클래스 몇 시야?','아침 열 시래. 같이 가자'],['에어로빅 해 봤어?','점핑잭에서 죽는 줄','코인 15개 받았잖아 ㅋㅋ'],['물 마셨어?','아 맞다… 물부터 마시자'],['여기 진짜 버닝맨 같다','동물원점 버전 버닝맨이지'],['해먹에서 낮잠 잤는데 천국이었어','나도 자리 나면 누워야지'],['다람쥐 봤어? 도토리 들고 뛰더라','귀여워 죽는 줄'],['공작 꼬리 펼친 거 봤어?','아니! 어디서?','마켓 옆 잔디밭에서']];
 function nmLifeBuild(){ NM.animals.forEach(A=>{ if(A.kind==='squirrel') A.hop=true; });
   const sp=(kind,n,zr)=>{ for(let i=0;i<n;i++){ const A=mkAnimalX(kind), z=rand(zr[0],zr[1]), w=wNami(z)-3;
     if(kind==='bird'){ A.cx=rand(-20,20); A.cz=rand(-120,130); A.r=rand(8,28); A.h=rand(7,18); A.ang=Math.random()*6.28; }
@@ -3892,10 +3922,10 @@ function buildSphere(){ const EG=new THREE.Group(); EG.position.set(SPX,0,SPZ); 
   mk(new THREE.CylinderGeometry(38.6,39.4,.6,48),M('#121218'),0,.3,40,EG);
   B(18,.6,7,M('#141420'),0,5.4,0,EG); B(18.2,.08,7.2,M('#46d6ff',{glow:1.6}),0,5.05,0,EG); B(11,4.4,.3,M('#08080e'),0,2.2,2.8,EG); [-5.6,5.6].forEach(x=>B(.18,4.6,.34,M('#ff4fd8',{glow:1.6}),x,2.3,2.8,EG)); B(11.4,.18,.34,M('#ff4fd8',{glow:1.6}),0,4.5,2.8,EG);
   for(let i=0;i<7;i++){ B(.12,1,.12,M('#c0c4cc'),-6+i*2,.5,-6,EG); B(1.4,.08,.08,M('#c0c4cc'),-5+i*2,.95,-6,EG); }
-  floatLabel('라스베가스 스피어','A급 공연장, 지금 한시 무료 입장!','#46d6ff',SPX,11,SPZ-2);
+  floatLabel('지구본점','A급 공연장, 지금 한시 무료 입장!','#46d6ff',SPX,11,SPZ-2);
   B(8,3.6,4,M('#16121e'),-24,1.8,-40,EG); B(8.2,.3,4.2,M('#ffcf3a',{glow:1.4}),-24,3.75,-40,EG); B(5,1.4,.05,M('#9fd8ff',{op:.5}),-24,1.9,-37.98,EG);
   const bo=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('BOX OFFICE  매표소','#ffcf3a'),transparent:true,side:THREE.DoubleSide})); bo.scale.set(5,1.25,1); bo.position.set(-24,4.7,-37.9); EG.add(bo);
-  floatLabel('스피어 박스오피스','입장권 사는 곳','#ffcf3a',SPX-24,7.5,SPZ-40);
+  floatLabel('지구본점 박스오피스','입장권 사는 곳','#ffcf3a',SPX-24,7.5,SPZ-40);
   addNPC({top:'tee',topColor:'#141414',outer:'none',extra:'none'},W(-24,-40.6),0,'talk',{talk:true}); SPH.staff=addNPC({top:'tee',topColor:'#141414',outer:'vest',outerColor:'#1f2a44',extra:'none',face:'shades'},W(4,-7),Math.PI,'talk',{talk:true}).P;
   for(let i=0;i<(LOW?5:8);i++) addNPC(Object.assign(randomConfig(),{}),W(-18.5+i*1.15,-36.6+rand(-.3,.3)),-Math.PI/2,'talk',{talk:true});
   for(let i=0;i<(LOW?5:8);i++) addNPC(randomConfig(),W(rand(-5,5),-12-i*1.2),0,'talk',{talk:true});
@@ -3911,7 +3941,7 @@ function buildSphere(){ const EG=new THREE.Group(); EG.position.set(SPX,0,SPZ); 
   const cg=new THREE.CylinderGeometry(.42,.42,.09,14), cm=M('#ffcf3a',{glow:.9}); SPH.coins=[]; for(let i=0;i<(LOW?8:12);i++){ const m=new THREE.Mesh(cg,cm); m.rotation.set(0,0,Math.PI/2); scene.add(m); const c={m,wait:0,ph:Math.random()*6}; SPH.coins.push(c); sphCoin(c); }
   // ---- interior ----
   const IG=new THREE.Group(); IG.position.set(SPX,0,IZ); scene.add(IG); SPH.IG=IG;
-  const im=new THREE.ShaderMaterial({uniforms:{uT:{value:0},uB:{value:0}},vertexShader:GL_VERT,fragmentShader:GL_INT,side:THREE.BackSide}); const dome=new THREE.Mesh(new THREE.SphereGeometry(95,LOW?56:84,LOW?36:56),im); dome.position.set(0,10,25); IG.add(dome); SPH.int=im;
+  const im=new THREE.ShaderMaterial({uniforms:{uT:{value:0},uB:{value:0}},vertexShader:GL_VERT,fragmentShader:GL_INT,side:THREE.BackSide}); const dome=new THREE.Mesh(new THREE.SphereGeometry(95,LOW?56:84,LOW?36:56),im); dome.position.set(0,10,25); SPH.dome=dome; IG.add(dome); SPH.int=im;
   mk(new THREE.CircleGeometry(94.5,96),M('#0a0812'),0,.01,25,IG).rotation.x=-Math.PI/2;
   const C=SG.C, S2=SG.SPAN; const tread=M('#1a1426'), riser=M('#120e1c'), ledA=M('#46d6ff',{glow:1.6}), ledB=M('#ff4fd8',{glow:1.6});
   for(let r=0;r<SG.ROWS;r++){ const d=SG.rd(r), y=SG.ry(r); if(r>0&&r%SG.LV===0) sphWalkway(IG,r);
@@ -3966,17 +3996,17 @@ function buildSphere(){ const EG=new THREE.Group(); EG.position.set(SPX,0,SPZ); 
   SNPC.forEach(S=>{ if(S.P.root.position.z>1500&&!ALLP.includes(S.P)){ ALLP.push(S.P); if(S.talk) TALKP.push(S.P); } });
   updaters.push(sphTick); }
 function sphCoin(c){ c.m.position.set(SPX+rand(-100,100),1.1,SPZ+rand(-118,-20)); c.m.visible=true; c.wait=0; }
-function sphBox(){ if(SPH.ticket){ toast('이미 입장권이 있어요. 스피어 앞 입장 게이트로 가요'); return; }
+function sphBox(){ if(SPH.ticket){ toast('이미 입장권이 있어요. 지구본점 앞 입장 게이트로 가요'); return; }
   const short=coins<500;
-  openSp('스피어 박스오피스','A급 공연 입장권',`<p>오늘 밤 공연: <b>ANIMA, 사이버델릭 라이브</b><br>입장권 500코인, 지금 ${coins}코인 있어요.</p>${short?`<p class='quote'>500코인 이상 있어야 살 수 있어요. ${500-coins}코인 더 모아 와요.</p>`:''}<div class='acts'><button data-act='buy' class='hot' ${short?'disabled':''}>500코인으로 입장권 사기</button><button data-act='no'>다음에</button></div>`,a=>{
+  openSp('지구본점 박스오피스','A급 공연 입장권',`<p>오늘 밤 공연: <b>ANIMA, 사이버델릭 라이브</b><br>입장권 500코인, 지금 ${coins}코인 있어요.</p>${short?`<p class='quote'>500코인 이상 있어야 살 수 있어요. ${500-coins}코인 더 모아 와요.</p>`:''}<div class='acts'><button data-act='buy' class='hot' ${short?'disabled':''}>500코인으로 입장권 사기</button><button data-act='no'>다음에</button></div>`,a=>{
     if(a==='no'||a==='ok'){ closeSp(); return; }
     if(a==='buy'){ if(coins<500){ toast('코인이 모자라요'); return; } addCoins(-500); SPH.ticket=true; chime(79,'sine',.08,.6); for(let i=0;i<6;i++) spawnFx('heart',i*.08);
-      $('#spBody').innerHTML=`<div class='idcard'><div class='idph'>🎟</div><div><b>ANIMA 라이브</b><span>라스베가스 스피어</span><small>일반 입장권 1매, 500코인</small><small>좌석은 안에서 좌석 맵으로 골라요</small></div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>입장 게이트로 갈게요</button></div>`; } }); }
+      $('#spBody').innerHTML=`<div class='idcard'><div class='idph'>🎟</div><div><b>ANIMA 라이브</b><span>지구본점</span><small>일반 입장권 1매, 500코인</small><small>좌석은 안에서 좌석 맵으로 골라요</small></div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>입장 게이트로 갈게요</button></div>`; } }); }
 function sphGate(){ if(!SPH.ticket){ toast('입장권이 없어요. 왼쪽 박스오피스에서 사 와요'); say(SPH.staff,'티켓 보여 주세요!'); return; }
   if(SPH.entering) return; SPH.entering=true; closeSp(); say(SPH.staff,'티켓 확인! 즐거운 공연 되세요'); const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.entering=false; },1500);
   setTimeout(()=>{ SPH.atrium=false; SPH.ga=false; SPH.floor=SG.concY; SPH.inside=true; const d=SG.dLast+4; pState.x=SPX+SG.C.x; pState.z=IZ+SG.C.z-d; pState.y=SG.concY; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=.12; camDist=LOW?6.5:5.5; if(player) player.root.position.set(pState.x,pState.y,pState.z);
     fd.style.opacity='0'; const em=SPH.seats.filter(s=>!s.occ); if(em.length) sphSit(pick(em)); },600); }
-function sphExit(){ sphStand(true); const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.inside=false; SPH.ga=false; SPH.atrium=false; pState.x=SPX; pState.z=SPZ-12; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.22; camDist=LOW?8.5:7.5; fd.style.opacity='0'; toast('스피어 밖으로 나왔어요. 티켓이 있으면 언제든 다시 들어갈 수 있어요'); },600); }
+function sphExit(){ sphStand(true); const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.inside=false; SPH.ga=false; SPH.atrium=false; pState.x=SPX; pState.z=SPZ-12; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.22; camDist=LOW?8.5:7.5; fd.style.opacity='0'; toast('지구본점 밖으로 나왔어요. 티켓이 있으면 언제든 다시 들어갈 수 있어요'); },600); }
 function sphSit(s){ if(!s||s.occ) return; SPH.ga=false; SPH.floor=SG.concY; if(!SPH.hapticTold){ SPH.hapticTold=true; setTimeout(()=>toast('💺 햄틱 좌석: 드롭에서 좌석이 비트에 맞춰 진동해요'),2600); } if(SPH.seat){ SPH.seat.occ=false; } s.occ='me'; SPH.seat=s; if(!SPH.prevCam) SPH.prevCam={camDist,pitch}; pState.emote=null; sleepS={kind:'seat',seat:s,t:1e9,dur:1e9};
   camDist=LOW?2.4:2.0; pitch=.06; yaw=s.ry+Math.PI; $('#seatLbl').textContent='🎟 '+sphLabel(s); $('#seatUI').hidden=false; document.body.classList.add('seated'); toast(`${sphLabel(s)} 착석! 좌석마다 보이는 뷰가 달라요. 화면을 끌어 둘러봐요`); }
 function sphStand(quiet){ const s=SPH.seat; if(!s) return; SPH.ga=false; SPH.floor=SG.concY; s.occ=false; SPH.seat=null; if(sleepS&&sleepS.kind==='seat') sleepS=null; pState.x=SPX+s.x; pState.z=IZ+s.z; pState.y=s.y; pState.vy=0; pState.face=s.ry;
@@ -4005,12 +4035,12 @@ function goMapSph(m){ if(SPH.seat) sphStand(true); if(m!=='sphere'){ SPH.inside=
   if(pState.veh){ if(pState.veh.alt>.4){ toast('비행 중에는 맵을 바꿀 수 없어요'); return; } exitVehicle(); } if(pState.ride) endRide(); if(pState.art) exitArt(); if(pState.use) clearUse(); closeSp();
   IT.floor=0; NM.boat=null; SPH.inside=false; SPH.atrium=false; SPH.ga=false; pState.x=SPX; pState.z=SPZ-112; pState.y=0; pState.vy=0; pState.face=0; if(!night){ night=true; applyTime(); }
   yaw=Math.PI; pitch=.22; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
-  toast('라스베가스 스트립 도착! 앞의 거대한 구가 스피어예요. 왼쪽 박스오피스에서 한시 무료 입장권을 받아요'); }
+  toast('지구본점 도착! 앞의 거대한 구가 공연장이에요. 왼쪽 박스오피스에서 한시 무료 입장권을 받아요'); }
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='sphere'&&MAP!=='sphere') setTimeout(()=>goMap('sphere'),70); });
-NM_SPOTS.splice(NM_SPOTS.length-2,0,{n:'라스베가스 스피어로',go:'sphere'});
-const SP_SPOTS=[{n:'스피어 광장',x:0,z:-60},{n:'박스오피스 (입장권)',x:-24,z:-34},{n:'입장 게이트',x:0,z:-12},{n:'좌석 맵 (공연장 안)',seat:1},{n:'버닝맨 플라야로',go:'playa'},{n:'이태원으로',go:'itaewon'},{n:'에어하우스 -코리아로',go:'nami'}];
+NM_SPOTS.splice(NM_SPOTS.length-2,0,{n:'지구본점으로',go:'sphere'});
+const SP_SPOTS=[{n:'지구본점 광장',x:0,z:-60},{n:'박스오피스 (입장권)',x:-24,z:-34},{n:'입장 게이트',x:0,z:-12},{n:'좌석 맵 (공연장 안)',seat:1},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'},{n:'동물원점으로',go:'nami'}];
 function renderBoothList(){ if(MAP!=='sphere') return renderBoothListNM(); const ul=$('#boothList'); if(ul.hidden) return;
-  ul.innerHTML=`<li class='cat'><button disabled>🔮 라스베가스 스피어<small>${SP_SPOTS.length}곳</small></button></li>`+SP_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.go?'#9b6bff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&!SPH.inside?`<small>${Math.round(Math.hypot(SPX+s.x-pState.x,SPZ+s.z-pState.z))}m</small>`:''}</span><button data-sp='${i}'>가기</button></li>`).join(''); }
+  ul.innerHTML=`<li class='cat'><button disabled>🔮 지구본점 · 미국 라스베가스<small>${SP_SPOTS.length}곳</small></button></li>`+SP_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.go?'#9b6bff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&!SPH.inside?`<small>${Math.round(Math.hypot(SPX+s.x-pState.x,SPZ+s.z-pState.z))}m</small>`:''}</span><button data-sp='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-sp]'); if(!b) return; const s=SP_SPOTS[+b.dataset.sp]; if(s.go){ goMap(s.go); return; }
   if(s.seat){ if(!SPH.inside){ toast(SPH.ticket?'입장 게이트를 지나야 들어갈 수 있어요':'먼저 박스오피스에서 입장권을 사요'); return; } sphMapOpen(); return; }
   if(SPH.inside){ toast('공연장 안에 있어요. 뒤쪽 EXIT로 나가요'); return; } pState.x=SPX+s.x; pState.z=SPZ+s.z; pState.y=0; pState.face=0; yaw=Math.PI; });
@@ -4026,7 +4056,7 @@ function sphTick(t,dt){ const inS=MAP==='sphere'; document.body.classList.toggle
     for(let k=0;k<flips;k++){ const i=Math.floor(Math.random()*PP.length), p=PP[i], up=Math.random()<pr; if(up!==p.up){ p.up=up; const o=up?80:48; A[3].set(p.m.subarray(o,o+16),i*16); A[4].set(p.m.subarray(o+16,o+32),i*16); } }
     for(let i=0;i<PP.length;i++){ const p=PP[i], b=Math.abs(Math.sin((beat+p.ph)*Math.PI))*p.amp*(drop?1.6:1), o=p.up?80:48; A[0][i*16+13]=p.m[13]+b; A[1][i*16+13]=p.m[29]+b; A[2][i*16+13]=p.m[45]+b; A[3][i*16+13]=p.m[o+13]+b; A[4][i*16+13]=p.m[o+29]+b; }
     SPH.AM.forEach(m=>{ m.instanceMatrix.needsUpdate=true; });
-    const cn=$('#clubNow'); cn.hidden=!inGame; if(inGame){ if($('#cnName').textContent!=='SPHERE 라이브, ANIMA') $('#cnName').textContent='SPHERE 라이브, ANIMA'; const tn=SPH_TR[SPH.i].name; if($('#cnTrack').textContent!==tn) $('#cnTrack').textContent=tn; $('#cnDot').style.background='#ff4fd8'; } }
+    const cn=$('#clubNow'); cn.hidden=!inGame; if(inGame){ if($('#cnName').textContent!=='지구본점 라이브, ANIMA') $('#cnName').textContent='지구본점 라이브, ANIMA'; const tn=SPH_TR[SPH.i].name; if($('#cnTrack').textContent!==tn) $('#cnTrack').textContent=tn; $('#cnDot').style.background='#ff4fd8'; } }
   else { if(SPH.lastIn){ SPH.lastIn=false; applyTime(); } if(night){ u.top.value.set(0x0a0420); u.hor.value.set(0x3a1a4a); u.bot.value.set(0x1a1024); scene.fog.color.set(0x1a1024); } else { u.top.value.set(0x3a7ad8); u.hor.value.set(0xf0d8b0); u.bot.value.set(0xc8a880); scene.fog.color.set(0xe8d0b0); }
     scene.fog.near=80; scene.fog.far=LOW?380:480; renderer.setClearColor(scene.fog.color); $('#clubNow').hidden=true;
     { const dd=Math.hypot(pState.x-SPX,pState.z-(SPZ+.5)); if(dd<2.6&&inGame&&!sleepS){ if(SPH.ticket) sphGate(); else if(!SPH.warnT||t-SPH.warnT>4){ SPH.warnT=t; say(SPH.staff,'티켓 보여 주세요!'); toast('입장권이 있어야 들어갈 수 있어요. 왼쪽 박스오피스에서 무료 입장권을 받아요'); } } }
@@ -4197,13 +4227,13 @@ function buildSphereExtras(){ const IG=SPH.IG;
   B(8,3.2,.3,M('#ff4fd8',{glow:1}),0,10.6,23.2,g); floatLabel('관람석 입구','에스커레이터로 올라가요','#ff4fd8',SPX,13.2,AZ+21);
   [-2.2,2.2].forEach(a=>{ const bx=Math.sin(a)*19, bz=Math.cos(a)*19; const bg=new THREE.Group(); bg.position.set(bx,0,bz); bg.rotation.y=a+Math.PI; g.add(bg); B(6,1.1,1.2,M('#1a1426'),0,.55,0,bg); B(6.1,.06,1.3,M('#46d6ff',{glow:1.6}),0,1.12,0,bg); B(6,2.4,.3,M('#120e1c'),0,2.2,-2,bg); for(let k=0;k<10;k++) mesh(G.cyl,M(pick(['#ff4fd8','#46d6ff','#ffcf3a','#c6ff3d']),{glow:.8}),-2.6+k*.58,2.6,-1.8,.07,.4,.07,bg); addNPC(randomConfig(),{x:SPX+Math.sin(a)*20.2,z:AZ+Math.cos(a)*20.2},a+Math.PI,'talk',{talk:true}); });
   SPH.robots=[mkRobot(g,-6,-6,.6),mkRobot(g,6,-6,-.6),mkRobot(g,0,9,Math.PI)];
-  B(6,4.2,.3,M('#08060e'),0,2.1,-23.6,g); B(6.4,.2,.34,M('#46d6ff',{glow:1.6}),0,4.3,-23.6,g); floatLabel('EXIT','스피어 밖으로','#46d6ff',SPX,6.6,AZ-22.6);
-  floatLabel('스피어 아트리움','로비, 바, 로봇 호스트','#c6ff3d',SPX,9,AZ);
+  B(6,4.2,.3,M('#08060e'),0,2.1,-23.6,g); B(6.4,.2,.34,M('#46d6ff',{glow:1.6}),0,4.3,-23.6,g); floatLabel('EXIT','지구본점 밖으로','#46d6ff',SPX,6.6,AZ-22.6);
+  floatLabel('지구본점 아트리움','로비, 바, 로봇 호스트','#c6ff3d',SPX,9,AZ);
   for(let i=0;i<(LOW?8:16);i++){ const a=rand(0,6.28), r=rand(6,20); addNPC(randomConfig(),{x:SPX+Math.sin(a)*r,z:AZ+Math.cos(a)*r},rand(0,6.28),Math.random()<.7?'talk':'dance',{dance:'sway',talk:true}); }
   SNPC.forEach(S=>{ if(S.P.root.position.z>1500&&!ALLP.includes(S.P)){ ALLP.push(S.P); if(S.talk) TALKP.push(S.P); } });
   const okA=()=>MAP==='sphere'&&inGame&&SPH.atrium;
   SPH.esc.forEach(e=>INTER.push({pos:()=>okA()?e:FARV,r:3.2,prio:4,label:'에스커레이터 타고 관람석으로',act:bowlEnter}));
-  INTER.push({pos:()=>okA()?{x:SPX,z:AZ-21.5}:FARV,r:3.5,prio:4,label:'스피어 밖으로 나가기',act:atriumExit});
+  INTER.push({pos:()=>okA()?{x:SPX,z:AZ-21.5}:FARV,r:3.5,prio:4,label:'지구본점 밖으로 나가기',act:atriumExit});
   SPH.robots.forEach(R=>INTER.push({pos:()=>okA()?{x:SPX+R.r.position.x,z:AZ+R.r.position.z}:FARV,r:2.6,label:'로봇 호스트와 대화',act:()=>{ R.talk=2.5; say(R,pick(['환영합니다! 오늘 공연은 ANIMA예요','관람석은 에스커레이터로 올라가세요','햄틱 좌석에 앉으면 비트가 몸으로 느껴져요','스크린이 머리 위까지 감싸요. 위를 보세요!']),2.6); chime(88,'sine',.05,.3); }}));
   INTER.push({pos:()=>MAP==='sphere'&&inGame&&SPH.inside&&SPH.ga&&!SPH.seat?{x:SPX,z:IZ+30-12}:FARV,r:3,prio:2,label:'콘코스로 올라가기',act:gaLeave});
   updaters.push(sphExtraTick); }
@@ -4218,9 +4248,9 @@ function buildGA(IG){ const N=LOW?140:320, gs=[new THREE.BoxGeometry(.36,.48,.22
     [0,16,32,48,64,80].forEach((off,k)=>SPH.GM[k].instanceMatrix.array.set(p.m.subarray(off,off+16),i*16)); SPH.gaP.push(p); }
   SPH.GM.forEach(m=>{ if(m.instanceColor) m.instanceColor.needsUpdate=true; m.instanceMatrix.needsUpdate=true; }); }
 function atriumEnter(fromBowl){ SPH.atrium=true; SPH.inside=false; SPH.ga=false; pState.x=SPX; pState.z=AZ+(fromBowl?9:-19); pState.y=0; pState.vy=0; pState.face=fromBowl?Math.PI:0; yaw=pState.face+Math.PI; pitch=.22; camDist=LOW?7:6.5; if(player) player.root.position.set(pState.x,0,pState.z);
-  toast(fromBowl?'아트리움으로 내려왔어요. 남쪽 EXIT로 나가면 광장이에요':'스피어 아트리움이에요! 에스커레이터를 타고 관람석으로 올라가요'); }
+  toast(fromBowl?'아트리움으로 내려왔어요. 남쪽 EXIT로 나가면 광장이에요':'지구본점 아트리움이에요! 에스커레이터를 타고 관람석으로 올라가요'); }
 function atriumClamp(){ const dx=pState.x-SPX, dz=pState.z-AZ, d=Math.hypot(dx,dz); if(d>22.5){ pState.x=SPX+dx/d*22.5; pState.z=AZ+dz/d*22.5; } else if(d<3.2){ const k=3.2/(d||1); pState.x=SPX+dx*k; pState.z=AZ+(d?dz*k:3.2); } }
-function atriumExit(){ const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.atrium=false; pState.x=SPX; pState.z=SPZ-12; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.22; camDist=LOW?8.5:7.5; fd.style.opacity='0'; applyTime(); toast('스피어 광장으로 나왔어요'); },500); }
+function atriumExit(){ const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.atrium=false; pState.x=SPX; pState.z=SPZ-12; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.22; camDist=LOW?8.5:7.5; fd.style.opacity='0'; applyTime(); toast('지구본점 광장으로 나왔어요'); },500); }
 function bowlEnter(){ const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.atrium=false; SPH.inside=true; SPH.ga=false; SPH.floor=SG.concY; const d=SG.dLast+4; pState.x=SPX+SG.C.x; pState.z=IZ+SG.C.z-d; pState.y=SG.concY; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=.12; camDist=LOW?6.5:5.5; if(player) player.root.position.set(pState.x,pState.y,pState.z);
     fd.style.opacity='0'; toast('관람석 콘코스예요! 좌석 맵에서 빈자리를 고르거나 GA 스탠딩으로 내려가요'); setTimeout(sphMapOpen,500); },500); }
 function gaEnter(){ if(SPH.seat) sphStand(true); SPH.ga=true; SPH.floor=0; pState.x=SPX+rand(-3,3); pState.z=IZ+30-9.5; pState.y=0; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=.1; camDist=LOW?6:5.5; toast('GA 스탠딩 구역! 무대 바로 앞에서 춤춰요. 스테이지 댄스 보너스도 쌓여요'); }
@@ -4239,12 +4269,12 @@ function sphExtraTick(t,dt){ if(MAP!=='sphere') return; const Z=SPH.zone, tr=Z.t
 
 /* ================= SPHERE TICKET PROMO: TEMPORARILY FREE ================= */
 const SPH_PRICE=0, SPH_PRICE_ORIG=500; // 한시 무료. 다시 유료로 돌리려면 SPH_PRICE를 500으로 바꿔요
-function sphBox(){ if(SPH.ticket){ toast('이미 입장권이 있어요. 스피어 앞 입장 게이트로 가요'); return; }
+function sphBox(){ if(SPH.ticket){ toast('이미 입장권이 있어요. 지구본점 앞 입장 게이트로 가요'); return; }
   const P=SPH_PRICE, free=P===0, short=coins<P;
-  openSp('스피어 박스오피스',free?'🎉 한시 무료 입장 이벤트':'A급 공연 입장권',`<p>오늘 밤 공연: <b>ANIMA, 사이버델릭 라이브</b><br>${free?`입장권 <s>${SPH_PRICE_ORIG}코인</s> <b>0코인</b>, 지금만 무료예요!`:`입장권 ${P}코인, 지금 ${coins}코인 있어요.`}</p>${short?`<p class='quote'>${P}코인 이상 있어야 살 수 있어요. ${P-coins}코인 더 모아 와요.</p>`:''}<div class='acts'><button data-act='buy' class='hot' ${short?'disabled':''}>${free?'무료 입장권 받기':`${P}코인으로 입장권 사기`}</button><button data-act='no'>다음에</button></div>`,a=>{
+  openSp('지구본점 박스오피스',free?'🎉 한시 무료 입장 이벤트':'A급 공연 입장권',`<p>오늘 밤 공연: <b>ANIMA, 사이버델릭 라이브</b><br>${free?`입장권 <s>${SPH_PRICE_ORIG}코인</s> <b>0코인</b>, 지금만 무료예요!`:`입장권 ${P}코인, 지금 ${coins}코인 있어요.`}</p>${short?`<p class='quote'>${P}코인 이상 있어야 살 수 있어요. ${P-coins}코인 더 모아 와요.</p>`:''}<div class='acts'><button data-act='buy' class='hot' ${short?'disabled':''}>${free?'무료 입장권 받기':`${P}코인으로 입장권 사기`}</button><button data-act='no'>다음에</button></div>`,a=>{
     if(a==='no'||a==='ok'){ closeSp(); return; }
     if(a==='buy'){ if(coins<P){ toast('코인이 모자라요'); return; } if(P) addCoins(-P); SPH.ticket=true; chime(79,'sine',.08,.6); for(let i=0;i<6;i++) spawnFx('heart',i*.08);
-      $('#spBody').innerHTML=`<div class='idcard'><div class='idph'>🎟</div><div><b>ANIMA 라이브</b><span>라스베가스 스피어</span><small>일반 입장권 1매, ${free?'한시 무료':P+'코인'}</small><small>좌석은 안에서 좌석 맵으로 골라요</small></div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>입장 게이트로 갈게요</button></div>`; } }); }
+      $('#spBody').innerHTML=`<div class='idcard'><div class='idph'>🎟</div><div><b>ANIMA 라이브</b><span>지구본점</span><small>일반 입장권 1매, ${free?'한시 무료':P+'코인'}</small><small>좌석은 안에서 좌석 맵으로 골라요</small></div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>입장 게이트로 갈게요</button></div>`; } }); }
 
 /* ================= SPHERE CAMERA: NEVER BELOW THE SEATING ================= */
 function sphCamFloor(x,z){ const d=Math.hypot(x-SPX-SG.C.x,z-IZ-SG.C.z), a=Math.atan2(x-SPX-SG.C.x,-(z-IZ-SG.C.z)); let y=0;
@@ -4424,11 +4454,11 @@ function bmBuild(){ if(BM.built) return; BM.built=true; const G0=new THREE.Group
   INTER.push({pos:()=>okG()?BM.bell:FARV,r:3,prio:5,label:'종 울리기 (첫 방문 기념)',act:()=>{ BM.ring=1.2; sfx(tt=>{ tone(master,tt,'sine',523,.12,2.2); tone(master,tt,'sine',1046,.05,1.6); tone(master,tt,'triangle',784,.04,1.8); }); toast('뎅~! 첫 버너는 게이트에서 종을 울리는 전통이 있어요'); BM.greet.forEach(P=>say(P,'웰컴 홈!',1.8)); }});
   updaters.push(bmTick); }
 function bmChoose(){ const L=[['air','🚚 실버 에어트레일러','픽업트럭이 끌고 가는 반짝이는 은빛 트레일러'],['hippie','🌼 히피 플라워 버스','파스텔 투톤에 꽃 그림, 지붕 짐칸'],['rv','🚌 대형 RV 모터홈','크고 넓어서 친구들과 함께'],['offroad','⛰ 오프로드 캠퍼 트럭','리프트업 트럭 + 루프탑 텐트']];
-  openSp('캠핑카 고르기','블랙록 사막을 달려 버닝맨으로 가요',`<p>수많은 아트카와 함께 사막을 달려요. 지붕 위에서 춤추며 가요!</p><div class='acts' style='grid-template-columns:1fr'>${L.map(([k,n,d])=>`<button data-act='${k}'>${n}<br><small style='font-weight:500;opacity:.75'>${d}</small></button>`).join('')}<button data-act='skip' class='ghost'>달리기 건너뛰고 게이트로</button></div>`,a=>{ closeSp(); if(a==='skip') bmArrive(true); else if(BM.campers[a]) bmDriveStart(a); }); }
+  openSp('캠핑카 고르기','블랙록 사막을 달려 사막점으로 가요',`<p>수많은 아트카와 함께 사막을 달려요. 지붕 위에서 춤추며 가요!</p><div class='acts' style='grid-template-columns:1fr'>${L.map(([k,n,d])=>`<button data-act='${k}'>${n}<br><small style='font-weight:500;opacity:.75'>${d}</small></button>`).join('')}<button data-act='skip' class='ghost'>달리기 건너뛰고 게이트로</button></div>`,a=>{ closeSp(); if(a==='skip') bmArrive(true); else if(BM.campers[a]) bmDriveStart(a); }); }
 function bmStart(){ bmBuild(); if(SPH.seat) sphStand(true); SPH.inside=false; BM.mode='choose'; BM.kind=null; Object.values(BM.campers).forEach(c=>c.g.visible=false); pState.x=0; pState.z=BM.RZ0-6; pState.y=0; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=.25; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
-  BM.zones.forEach(z=>{ z.Z.vol=.85; }); BM.cars.forEach(c=>{ c.g.position.z=BM.RZ0+c.dz; c.g.position.x=c.x0; c.parked=false; c.g.rotation.y=0; }); toast('블랙록 사막 입구예요! 캠핑카를 골라 버닝맨까지 달려가요'); setTimeout(bmChoose,400); }
+  BM.zones.forEach(z=>{ z.Z.vol=.85; }); BM.cars.forEach(c=>{ c.g.position.z=BM.RZ0+c.dz; c.g.position.x=c.x0; c.parked=false; c.g.rotation.y=0; }); toast('블랙록 사막 입구예요! 캠핑카를 골라 사막점까지 달려가요'); setTimeout(bmChoose,400); }
 function bmDriveStart(k){ BM.kind=k; const C=BM.campers[k]; Object.values(BM.campers).forEach(c=>c.g.visible=false); C.g.visible=true; BM.cx=0; BM.cz=BM.RZ0; BM.v=4; C.g.position.set(0,0,BM.cz); C.g.rotation.set(0,0,0); BM.mode='drive'; sleepS={kind:'drive',t:1e9,dur:1e9}; BM.prevCam=camDist; camDist=LOW?14:13; pitch=.28; yaw=Math.PI; $('#bmHud').hidden=false; danceOn=true;
-  $('#bmHint').textContent=isTouch?'조이스틱 위아래 속도, 좌우 방향':'W/S 속도, A/D 방향'; toast('출발! 아트카들과 함께 버닝맨으로 달려요'); sfx(tt=>{ tone(master,tt,'sawtooth',98,.06,.5); tone(master,tt+.2,'sawtooth',131,.06,.6); }); }
+  $('#bmHint').textContent=isTouch?'조이스틱 위아래 속도, 좌우 방향':'W/S 속도, A/D 방향'; toast('출발! 아트카들과 함께 사막점으로 달려요'); sfx(tt=>{ tone(master,tt,'sawtooth',98,.06,.5); tone(master,tt+.2,'sawtooth',131,.06,.6); }); }
 function bmDrive(dt,t){ const C=BM.campers[BM.kind]; if(!C){ sleepS=null; return; } const ix=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+jv.x, iy=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)+jv.y;
   const off=Math.abs(BM.cx)>8, tv=clamp(19+iy*10,7,30)*(off?.75:1); BM.v+=(tv-BM.v)*Math.min(1,dt*.9); BM.cx=clamp(BM.cx+clamp(ix,-1,1)*Math.min(BM.v,20)*.38*dt,-45,45); BM.cz+=BM.v*dt;
   const bump=off?Math.sin(t*14)*.06:Math.sin(t*9)*.02; C.g.position.set(BM.cx,bump,BM.cz); C.g.rotation.y=clamp(ix,-1,1)*.14; C.g.rotation.z=-clamp(ix,-1,1)*.03+bump*.2;
@@ -4443,12 +4473,12 @@ function bmArrive(skipped){ if(sleepS&&sleepS.kind==='drive') sleepS=null; BM.mo
   toast(skipped?'블랙록 시티 게이트예요. 바로 앞 매표소에서 입장권을 받으면 바로 입장해요':'도착! 바로 앞 매표소에서 입장권을 받으면 팔찌를 채워 주고 바로 입장해요 (한시 무료)'); }
 function bmClamp(){ if(BM.mode==='choose'){ pState.x=clamp(pState.x,-12,12); pState.z=clamp(pState.z,BM.RZ0-20,BM.RZ0+4); } else if(BM.mode==='gate'){ pState.x=clamp(pState.x,-45,45); pState.z=clamp(pState.z,BM.RZ1+4,BM.RZ1+78); } }
 function bmBox(){ if(BM.ticket){ bmGate(); return; }
-  openSp('블랙록 시티 매표소','🎉 한시 무료 입장 이벤트',`<p>버닝맨 입장권 <s>300코인</s> <b>0코인</b>, 지금만 무료예요!</p><div class='acts'><button data-act='buy' class='hot'>무료 입장권 받기</button><button data-act='no'>다음에</button></div>`,a=>{
+  openSp('블랙록 시티 매표소','🎉 한시 무료 입장 이벤트',`<p>사막점 입장권 <s>300코인</s> <b>0코인</b>, 지금만 무료예요!</p><div class='acts'><button data-act='buy' class='hot'>무료 입장권 받기</button><button data-act='no'>다음에</button></div>`,a=>{
     if(a==='no'||a==='ok'){ closeSp(); return; }
     if(a==='enter'){ closeSp(); bmGate(); return; }
-    if(a==='buy'){ BM.ticket=true; chime(79,'sine',.08,.6); for(let i=0;i<6;i++) spawnFx('heart',i*.08); $('#spBody').innerHTML=`<p class='quote'>입장권 확인 완료! 손목에 버닝맨 팔찌를 채워 줬어요.</p><div class='stampwrap'><div class='hand'>✋</div><div class='stamp on' style='color:#ff7a2f;border-color:#ff7a2f'>BLACK ROCK<br>CITY</div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='enter' class='hot'>바로 입장하기</button></div>`; } }); }
+    if(a==='buy'){ BM.ticket=true; chime(79,'sine',.08,.6); for(let i=0;i<6;i++) spawnFx('heart',i*.08); $('#spBody').innerHTML=`<p class='quote'>입장권 확인 완료! 손목에 사막점 팔찌를 채워 줬어요.</p><div class='stampwrap'><div class='hand'>✋</div><div class='stamp on' style='color:#ff7a2f;border-color:#ff7a2f'>BLACK ROCK<br>CITY</div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='enter' class='hot'>바로 입장하기</button></div>`; } }); }
 function bmGate(){ if(!BM.ticket){ toast('왼쪽 매표소에서 입장권을 받고 팔찌를 차야 해요'); BM.greet.forEach(P=>say(P,'팔찌 보여 주세요!',1.6)); return; }
-  BM.greet.forEach(P=>say(P,'웰컴 홈!',1.8)); const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ BM.mode=null; BM.admit=true; BM.zones.forEach(z=>{ z.Z.vol=0; }); pState.x=0; pState.z=136; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.32; camDist=LOW?8.5:7.5; if(player) player.root.position.set(0,0,136); fd.style.opacity='0'; toast('웰컴 홈! 팔찌를 차고 버닝맨 플라야에 들어왔어요'); for(let i=0;i<8;i++) spawnFx('heart',i*.08); },600); }
+  BM.greet.forEach(P=>say(P,'웰컴 홈!',1.8)); const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ BM.mode=null; BM.admit=true; BM.zones.forEach(z=>{ z.Z.vol=0; }); pState.x=0; pState.z=136; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.32; camDist=LOW?8.5:7.5; if(player) player.root.position.set(0,0,136); fd.style.opacity='0'; toast('웰컴 홈! 팔찌를 차고 사막점에 들어왔어요'); for(let i=0;i<8;i++) spawnFx('heart',i*.08); },600); }
 function WIN_HI(){ return 210; }
 function bmAbort(){ if(sleepS&&sleepS.kind==='drive') sleepS=null; BM.mode=null; const h=$('#bmHud'); if(h) h.hidden=true; BM.zones.forEach(z=>{ z.Z.vol=0; }); }
 function bmTick(t,dt){ if(!BM.mode) return; const pz=BM.mode==='drive'?BM.cz:pState.z;
@@ -4571,6 +4601,86 @@ function streetFoodModel(it){ const n=it.n; const g=new THREE.Group(), gl=M('#df
     mk(new THREE.CylinderGeometry(.16,.13,.3,16,1,true),gl,.3,-.4,0,g); mk(new THREE.CylinderGeometry(.15,.12,.2,16),M('#eaf6ff',{op:.5}),.3,-.44,0,g); return g; }
   if(n.includes('캔맥주')){ mesh(G.cyl,M('#d8dce4'),0,0,0,.33,1.2,.33,g); mesh(G.cyl,M('#e8b05a'),0,0,0,.335,.6,.335,g); mesh(G.cyl,M('#a8acb4'),0,.62,0,.28,.05,.28,g); B(.1,.02,.2,M('#c0c4cc'),0,.66,.06,g); for(let i=0;i<6;i++) mesh(G.sph,M('#ffffff',{op:.5}),Math.cos(i)*.34,rand(-.4,.4),Math.sin(i)*.34,.03,.04,.03,g); return g; }
   return null; }
+
+/* ================= SPHERE: USER VIDEOS ON THE WHOLE DOME (4K playlist, lazy loading) ================= */
+const SV_HQ=!LOW&&GFX!=='perf';
+function V2(k4,hd){ return SV_HQ?k4.concat(hd):hd; }
+const SV_LIST=[
+  {srcs:V2(['/_blob/c4af69836615fafba1bf4e830a159078','media/sphere-video2-4k.mp4'],['/_blob/3f30433e1604f141660d3f76404fb99a','media/sphere-video2.mp4']),rx:-6,ox:2,loops:2},
+  {srcs:V2(['/_blob/5dca9a17b841b33fe06b8a0fd32b33b3','media/sv03-4k.mp4'],['/_blob/0687039af4742f52f0d833fdfb67fe93','media/sv03.mp4']),rx:-5,ox:1.75,loops:1},
+  {srcs:V2(['/_blob/88aa2b017b2e0948243082918eb43f2f','media/sv04-4k.mp4'],['/_blob/1b8d81381b4a639b98b83d8fc7751560','media/sv04.mp4']),rx:-5,ox:1.75,loops:1},
+  {srcs:V2(['/_blob/1c8a011dd4ce52636a5032b44a9859a2','media/sv05-4k.mp4'],['/_blob/390f7806dfe7e8b44b1b31b40818cf2f','media/sv05.mp4']),rx:-5,ox:1.75,loops:1},
+  {srcs:V2(['/_blob/49546082591a0127550e95944b7ae308','media/sv06-4k.mp4'],['/_blob/956bc57cb72910ab2e2eb68c2c80085d','media/sv06.mp4']),rx:-5,ox:1.75,loops:2},
+  {srcs:V2(['/_blob/835b66538f54475028f532770900bfe2','media/sv07-4k.mp4'],['/_blob/8fac25891a456c6e664d1b815804be75','media/sv07.mp4']),rx:-5,ox:1.75,loops:1},
+  {srcs:V2(['/_blob/919156ebd13a891c7510357996a66a1d','media/sv08-4k.mp4'],['/_blob/2f6601940eacf7a043b5382788e7bf9f','media/sv08.mp4']),rx:-5,ox:1.75,loops:1},
+  {srcs:V2(['/_blob/568a8d4d7e670c0391efc1b5750f0716','media/sv09-4k.mp4'],['/_blob/59e61aa5a4bf79820b42562a3fd5bc28','media/sv09.mp4']),rx:-5,ox:1.75,loops:1},
+  {srcs:V2(['/_blob/b543f7a7051ade09b17c9be1dd6b74f3','media/sv10-4k.mp4'],['/_blob/151c9f0e4a457f939c4726770d3a36d8','media/sv10.mp4']),rx:-5,ox:1.75,loops:1},
+  {srcs:V2(['/_blob/7791331bd7de5179766d855227873332','media/sv11-4k.mp4'],['/_blob/bee6827040617161a1b69c976ad57825','media/sv11.mp4']),rx:-5,ox:1.75,loops:1}];
+const SVID={on:true,cur:0,count:0,tryT:-9,btn:null};
+function svidCurV(){ return SV_LIST[SVID.cur]; }
+function svidNextIdx(from){ let n=from; for(let k=0;k<SV_LIST.length;k++){ n=(n+1)%SV_LIST.length; if(!SV_LIST[n].fail) return n; } return from; }
+function svidMake(V){ if(V.el||V.fail) return; const v=document.createElement('video'); v.muted=true; v.loop=false; v.playsInline=true; v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline',''); v.preload='auto'; V.i=V.i||0;
+  v.addEventListener('error',()=>{ if(V.el!==v) return; V.i++; if(V.i<V.srcs.length){ v.src=V.srcs[V.i]; v.load(); if(V===svidCurV()) svidPlay(); } else { V.fail=true; if(V===svidCurV()) svidNext(); } });
+  v.addEventListener('playing',()=>{ if(V.el!==v) return; V.ok=true; svidApply(); });
+  v.addEventListener('ended',()=>{ if(V.el===v&&V===svidCurV()) svidNext(); });
+  v.src=V.srcs[V.i]; V.el=v;
+  const t=new THREE.VideoTexture(v); t.minFilter=THREE.LinearFilter; t.magFilter=THREE.LinearFilter; t.generateMipmaps=false; t.wrapS=THREE.MirroredRepeatWrapping; t.wrapT=THREE.ClampToEdgeWrapping; t.repeat.set(V.rx,1.876); t.offset.set(V.ox,-.876);
+  try{ t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy()); }catch(e){} V.tex=t; V.mat=new THREE.MeshBasicMaterial({map:t,side:THREE.BackSide,fog:false}); }
+function svidRelease(V){ if(!V.el) return; try{ V.el.pause(); V.el.removeAttribute('src'); V.el.load(); }catch(e){} if(V.tex) V.tex.dispose(); if(V.mat) V.mat.dispose(); V.el=null; V.tex=null; V.mat=null; V.ok=false; }
+function svidEnsure(){ const c=SVID.cur, n=svidNextIdx(c); SV_LIST.forEach((V,i)=>{ if(i===c||i===n) svidMake(V); else svidRelease(V); }); }
+function svidPlay(){ const V=svidCurV(); if(!V||!V.el||V.fail) return; try{ const p=V.el.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} }
+function svidNext(){ const V=svidCurV(); SVID.count++; if(!V.fail&&SVID.count<V.loops&&V.el){ try{ V.el.currentTime=0; }catch(e){} svidPlay(); return; }
+  SVID.count=0; if(V.el&&!V.el.paused) V.el.pause(); SVID.cur=svidNextIdx(SVID.cur); svidEnsure(); const N=svidCurV(); if(N.el){ try{ N.el.currentTime=0; }catch(e){} } svidPlay(); svidApply(); }
+function svidApply(){ if(!SPH.dome) return; const V=svidCurV(); SPH.dome.material=(SVID.on&&V&&V.ok&&V.mat)?V.mat:SPH.int; if(SVID.btn) SVID.btn.textContent=SVID.on?'🎞 영상':'🎞 그래픽'; }
+updaters.push((t,dt)=>{ const inB=MAP==='sphere'&&SPH.inside;
+  if(!SVID.btn){ const su=document.getElementById('seatUI'), up=document.getElementById('seatUp'); if(su&&up){ const b=document.createElement('button'); b.id='seatScr'; b.textContent='🎞 영상'; b.addEventListener('click',()=>{ SVID.on=!SVID.on; if(SVID.on) svidPlay(); else SV_LIST.forEach(V=>{ if(V.el&&!V.el.paused) V.el.pause(); }); svidApply(); toast(SVID.on?'돔 스크린에 영상을 틀었어요':'돔 스크린을 그래픽 비주얼로 바꿨어요'); }); su.insertBefore(b,up); SVID.btn=b; } }
+  if(inB){ svidEnsure(); const V=svidCurV(); if(SVID.on&&V&&!V.fail&&V.el&&V.el.paused&&t-SVID.tryT>2){ SVID.tryT=t; svidPlay(); } if(V&&V.mat){ const k=.82+(SPH.int.uniforms.uB.value||0)*.22; V.mat.color.setRGB(k,k,k); } }
+  else SV_LIST.forEach(V=>{ if(V.el) svidRelease(V); }); });
+document.addEventListener('pointerdown',()=>{ const V=svidCurV(); if(MAP==='sphere'&&SPH.inside&&V&&V.el&&V.el.paused&&SVID.on&&!V.fail) svidPlay(); },true);
+
+/* ================= MENU: CLOSE OTHER PANELS WHEN IT OPENS ================= */
+$('#menuBtn').addEventListener('click',()=>{ if(!$('.tools').classList.contains('open')) return; try{ closeMapList(); }catch(e){} const bp=$('#bagPanel'); if(bp) bp.hidden=true; const dp=$('#dancePanel'); if(dp&&!dp.hidden){ dp.hidden=true; $('#danceMain').setAttribute('aria-expanded','false'); } const np=$('#np'); if(np&&!np.classList.contains('collapsed')&&compact()){ np.classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); } });
+$('#mapToggle').addEventListener('click',()=>{ if($('.tools').classList.contains('open')) closeMenu(); });
+
+/* ================= MIXCLOUD AUTO PLAY + BROADCAST SCHEDULE (same no-login player) ================= */
+// walking up to a stage starts that stage's genre on its own; the first set on a phone still needs one tap on the player
+const MCA={on:true,lastTry:-99,skip:'',onClaude:/(^|\.)claude\.ai$|claudeusercontent|anthropic/.test(location.hostname)};
+try{ const v=localStorage.getItem('playa-mc-auto'); if(v!==null) MCA.on=v==='1'; }catch(e){}
+function mcaSave(){ try{ localStorage.setItem('playa-mc-auto',MCA.on?'1':'0'); }catch(e){} }
+function mcLevel(T){ return T.kind==='booth'?(T.b.target||0):(T.Z.target||0)/(T.Z.vol||.85); }
+function mcKey(u){ try{ const p=new URL(String(u).trim()), h=p.hostname.toLowerCase(); if(p.protocol!=='https:'||!(h==='mixcloud.com'||h.endsWith('.mixcloud.com'))) return null; const path=p.pathname.endsWith('/')?p.pathname:p.pathname+'/'; return path.split('/').filter(Boolean).length>=2?path:null; }catch(e){ return null; } }
+// play one specific mix (used by the broadcast schedule)
+function mcPlayKey(key,T,title){ initAudio(); MC.target=T; MC.genre=''; MC.list=[{key,name:title||decodeURIComponent(key.split('/').filter(Boolean).pop()||'').split('-').join(' '),user:{name:''}}]; MC.idx=-1; MC.fails=0; mcNext(); }
+updaters.push(t=>{ if(!MCA.on||MCA.onClaude||SCH.url||!inGame||(typeof BM!=='undefined'&&BM.mode)||t-MCA.lastTry<5) return;
+  let T; try{ T=musicTarget(); }catch(e){ return; } if(!T) return;
+  if(MCA.skip&&MCA.skip!==T.key) MCA.skip=''; // stopping at one stage only silences that stage
+  if(mcLevel(T)<.35||MCA.skip===T.key||(MC.target&&MC.target.key===T.key)) return;
+  MCA.lastTry=t; mcPlay(mcDefault(T),T); });
+
+// 편성 서버 주소를 넣으면 모든 유저가 편성표대로 같은 믹스의 같은 부분을 들어요. 예: 'https://playa-schedule.myname.workers.dev'
+const SCHEDULE_URL='';
+const SCH={url:'',sched:null,skew:0,lastFetch:-99,lastSync:-99,synced:false,fail:0};
+try{ SCH.url=(SCHEDULE_URL||localStorage.getItem('playa-sched-url')||'').trim().replace(/\/+$/,''); }catch(e){ SCH.url=SCHEDULE_URL; }
+function schNow(){ return Date.now()+SCH.skew; }
+async function schFetch(){ try{ const t0=Date.now(); const r=await fetch(SCH.url+'/time',{cache:'no-store'}); const j=await r.json(); const t1=Date.now(); if(Number.isFinite(j.now)) SCH.skew=j.now-(t0+t1)/2;
+    const r2=await fetch(SCH.url+'/schedule',{cache:'no-store'}); const d=await r2.json(); if(d&&d.booths) SCH.sched=d; SCH.fail=0; }catch(e){ SCH.fail++; } }
+function schSlot(key){ const L=(SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]; const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } } if(!s) return null; const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); return t<end?Object.assign({id:key+'@'+s.start},s):null; }
+// the admin page names the two clubs club3 / club4
+function schKey(T){ return T.key==='zone:shelter'?'club3':T.key==='zone:paper'?'club4':T.key; }
+updaters.push(t=>{ if(!SCH.url||MCA.onClaude||!inGame) return;
+  if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
+  let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||mcLevel(T)<.35) return;
+  const slot=schSlot(schKey(T)), mine=MC.target&&MC.target.key===T.key;
+  if(!slot){ if(mine&&MC.schId){ mcStop(); toast(`${T.name} 편성이 끝났어요. 기본 게임 음악이 나와요`); } return; }
+  if(!mine||MC.schId!==slot.id){ const key=mcKey(slot.url); if(!key) return; mcPlayKey(key,T,slot.title); MC.schId=slot.id; SCH.synced=false; SCH.lastSync=t;
+    toast(`📻 편성 방송: ${T.name}에서 ${slot.title||'편성된 믹스'}를 모두 같이 듣고 있어요`); return; }
+  // jump to where everyone else is: right after it starts, then a drift check every 20 s
+  if(MC.playing&&MC.pos!=null&&t-SCH.lastSync>(SCH.synced?20:1.5)){ SCH.lastSync=t; SCH.synced=true;
+    const exp=(schNow()-slot.start)/1000, p=MC.pos+(MC.paused?0:(performance.now()-MC.posAt)/1000);
+    if(Math.abs(p-exp)>4) mcCall('seek',Math.max(0,exp)); } });
+function openSchPanel(){ const items=[['booth:techno','사막점 테크노'],['booth:house','사막점 하우스'],['booth:afro','사막점 아프로테크'],['booth:melodic','사막점 멜로딕'],['booth:trance','사막점 트랜스'],['booth:dnb','사막점 드럼앤베이스'],['booth:psy','사막점 사이키델릭'],['booth:dubstep','사막점 덥스텝'],['booth:hardstyle','사막점 하드스타일'],['club3','이태원 4F 쉘터'],['club4','이태원 5F 페이퍼']];
+  const rows=items.map(([k,n])=>{ const s=schSlot(k); return `<p style='margin:4px 0;font-size:13px'>${s?'🔴':'⚪'} <b>${esc(n)}</b> ${s?esc(s.title||'편성된 믹스'):'기본 게임 음악'}</p>`; }).join('');
+  openSp('📻 편성 방송 중',SCH.sched?'운영자가 정한 시간표대로 모두 같은 음악을 들어요':'편성표를 불러오는 중이에요',rows+`<div id='mcNow' class='audnow'></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>알겠어요</button></div>`,()=>closeSp()); mcUi(); }
 
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null]),new Promise(r=>setTimeout(r,2500))]);

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>플라야 나이트 편성표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#241c38;--panel:#33284f;--line:#4a3d6b;--text:#f6efe4;--muted:#b9aed0;--on:#ff3b5c;--cyan:#46d6ff;--pink:#ff4fa8;--ok:#7dffb0;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:15px;line-height:1.55}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input{font:inherit;color:inherit}
+header{padding:22px 24px 14px;display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-end;border-bottom:1px solid var(--line)}
+h1{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:34px;line-height:1;margin:0;letter-spacing:-.01em}
+.clock{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-size:44px;line-height:1;color:var(--cyan);font-variant-numeric:tabular-nums}
+.clock small{display:block;font-family:"Noto Sans KR",sans-serif;font-size:12px;color:var(--muted);margin-top:4px}
+.conn{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto}
+.conn input{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0}
+.conn input[type=url]{width:min(340px,80vw)}
+.conn input[type=password]{width:150px}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer}
+.btn.main{background:var(--pink);border-color:var(--pink);color:#1d0f1c}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+#status{flex-basis:100%;font-size:13px;color:var(--muted);min-height:20px}
+#status.err{color:#ffb4b4}#status.ok{color:var(--ok)}
+main{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 160px)}
+nav{border-right:1px solid var(--line);padding:14px 10px}
+nav button{display:flex;width:100%;align-items:center;gap:10px;text-align:left;background:none;border:0;border-radius:10px;padding:10px 12px;cursor:pointer}
+nav button[aria-current=true]{background:var(--panel)}
+nav button span{flex:1}
+nav .area{font-size:12px;color:var(--muted);padding:12px 12px 4px}
+.air{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
+.air.on{background:var(--on);box-shadow:0 0 0 4px rgba(255,59,92,.18)}
+section{padding:20px 24px 40px;max-width:980px}
+section h2{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:28px;margin:0 0 4px}
+.now{margin:0 0 18px;color:var(--muted)}
+.now b{color:var(--on)}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th{font-size:12px;color:var(--muted);font-weight:500;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 9px}
+td input.bad{border-color:#ff7b7b}
+tr.live td:first-child{box-shadow:inset 3px 0 var(--on)}
+.del{background:none;border:0;color:var(--muted);cursor:pointer;padding:8px;border-radius:8px}
+.del:hover{color:#ffb4b4}
+.row-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.hint{font-size:13px;color:var(--muted);max-width:70ch}
+@media (max-width:760px){ main{grid-template-columns:1fr} nav{border-right:0;border-bottom:1px solid var(--line);display:flex;overflow-x:auto;gap:4px} nav .area{display:none} nav button{width:auto;white-space:nowrap} .conn{margin-left:0} header{padding:16px} section{padding:16px} .clock{font-size:34px} }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>편성표</h1><p class="hint" style="margin:6px 0 0">부스마다 시간과 Mixcloud 믹스를 정하면, 그 시간에 게임에 있는 모두가 같은 믹스의 같은 부분을 들어요.</p></div>
+  <div class="clock" aria-live="off"><span id="clock">--:--:--</span><small id="clockNote">서버 시각을 확인하는 중이에요</small></div>
+  <div class="conn">
+    <input id="srv" type="url" placeholder="편성 서버 주소 (https://...workers.dev)" aria-label="편성 서버 주소">
+    <input id="pw" type="password" placeholder="관리자 비밀번호" aria-label="관리자 비밀번호" autocomplete="current-password">
+    <button class="btn" id="load">불러오기</button>
+    <button class="btn main" id="save">편성표 저장</button>
+  </div>
+  <div id="status" role="status"></div>
+</header>
+<main>
+  <nav id="booths" aria-label="부스"></nav>
+  <section>
+    <h2 id="bname">부스</h2>
+    <p class="now" id="bnow">편성된 믹스가 없어요</p>
+    <div class="wrap"><table>
+      <thead><tr><th style="width:190px">시작 (한국 시간)</th><th>Mixcloud 믹스 주소</th><th style="width:170px">제목 (게임에 보여요)</th><th style="width:90px">길이(분)</th><th style="width:44px"></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="row-actions"><button class="btn" id="add">시간대 추가</button><button class="btn" id="addNow">지금부터 시작하는 시간대 추가</button></div>
+    <p class="hint">길이를 비워 두면 다음 시간대가 시작할 때까지 이어져요. 믹스가 시간대보다 짧으면 끝난 뒤에는 그 부스의 기본 게임 음악이 나와요. 저장하면 1분 안에 모든 유저 게임에 반영돼요.</p>
+  </section>
+</main>
+<script>
+const BOOTHS=[
+  {area:'사막점 (미국 네바다주)',items:[['booth:techno','테크노'],['booth:house','하우스'],['booth:afro','아프로테크'],['booth:melodic','멜로딕'],['booth:trance','트랜스'],['booth:dnb','드럼앤베이스'],['booth:psy','사이키델릭 트랜스'],['booth:dubstep','덥스텝'],['booth:hardstyle','하드스타일']]},
+  {area:'이태원 (한국 서울)',items:[['club3','4F 쉘터'],['club4','5F 페이퍼']]}];
+const NAMES={}; BOOTHS.forEach(g=>g.items.forEach(([k,n])=>NAMES[k]=g.area.split(' ')[0]+' '+n));
+const $=s=>document.querySelector(s);
+let data={booths:{}}, cur='booth:techno', skew=0;
+const MIX_RE=/^https:\/\/(www\.|m\.)?mixcloud\.com\/[^\s?#]+\/[^\s?#]+\/?$/i;
+try{ $('#srv').value=localStorage.getItem('playa-sched-admin-url')||''; $('#pw').value=sessionStorage.getItem('playa-sched-pw')||''; }catch(e){}
+const base=()=>$('#srv').value.trim().replace(/\/+$/,'');
+const now=()=>Date.now()+skew;
+function status(t,cls){ const s=$('#status'); s.textContent=t; s.className=cls||''; }
+// KST helpers: datetime-local value <-> epoch ms
+function toKstInput(ms){ const d=new Date(ms+9*3600e3); return d.toISOString().slice(0,16); }
+function fromKstInput(v){ const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(v||''); if(!m) return NaN; return Date.UTC(+m[1],m[2]-1,+m[3],m[4]-9,+m[5]); }
+function slotNow(list){ const t=now(); let s=null, i=-1; list.forEach((x,j)=>{ if(x.start<=t){ s=x; i=j; } }); if(!s) return null; const end=s.dur?s.start+s.dur*60000:(list[i+1]?list[i+1].start:Infinity); return t<end?s:null; }
+function renderNav(){ const nav=$('#booths'); nav.innerHTML=''; BOOTHS.forEach(g=>{ const a=document.createElement('div'); a.className='area'; a.textContent=g.area; nav.appendChild(a);
+  g.items.forEach(([k,n])=>{ const b=document.createElement('button'); b.setAttribute('aria-current',String(k===cur)); const live=slotNow(data.booths[k]||[]); b.innerHTML=`<i class="air ${live?'on':''}" aria-hidden="true"></i><span></span>`; b.querySelector('span').textContent=n; if(live) b.title='지금 방송 중'; b.onclick=()=>{ readRows(); cur=k; render(); }; nav.appendChild(b); }); }); }
+function renderRows(){ const tb=$('#rows'); tb.innerHTML=''; const list=data.booths[cur]||[]; const live=slotNow(list);
+  list.forEach((s,i)=>{ const tr=document.createElement('tr'); if(s===live) tr.className='live';
+    tr.innerHTML=`<td><input type="datetime-local" class="st"></td><td><input type="url" class="u" placeholder="https://www.mixcloud.com/아이디/믹스-이름/"></td><td><input class="ti" maxlength="120"></td><td><input type="number" class="du" min="1" max="1440" inputmode="numeric"></td><td><button class="del" aria-label="이 시간대 지우기">✕</button></td>`;
+    tr.querySelector('.st').value=Number.isFinite(s.start)?toKstInput(s.start):''; tr.querySelector('.u').value=s.url||''; tr.querySelector('.ti').value=s.title||''; tr.querySelector('.du').value=s.dur||'';
+    tr.querySelector('.del').onclick=()=>{ readRows(); data.booths[cur].splice(i,1); render(); }; tb.appendChild(tr); });
+  if(!list.length){ const tr=document.createElement('tr'); tr.innerHTML='<td colspan="5" class="hint">아직 시간대가 없어요. 시간대 추가를 눌러 첫 믹스를 넣어 보세요.</td>'; tb.appendChild(tr); } }
+function render(){ $('#bname').textContent=NAMES[cur]; const live=slotNow(data.booths[cur]||[]); $('#bnow').innerHTML=live?`<b>방송 중</b> · ${escapeHtml(live.title||live.url)}`:'지금 이 부스에는 편성된 믹스가 없어요. 기본 게임 음악이 나와요.'; renderNav(); renderRows(); }
+function escapeHtml(t){ const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+function readRows(){ const rows=[...document.querySelectorAll('#rows tr')].filter(tr=>tr.querySelector('.st')); data.booths[cur]=rows.map(tr=>({ start:fromKstInput(tr.querySelector('.st').value), url:tr.querySelector('.u').value.trim(), title:tr.querySelector('.ti').value.trim(), dur:+tr.querySelector('.du').value||null })); }
+function addRow(start){ readRows(); const list=data.booths[cur]||(data.booths[cur]=[]); const last=list[list.length-1]; list.push({start:start??(last&&Number.isFinite(last.start)?last.start+3600e3:Math.ceil(now()/3600e3)*3600e3),url:'',title:'',dur:null}); renderRows(); const ins=document.querySelectorAll('#rows .u'); if(ins.length) ins[ins.length-1].focus(); }
+$('#add').onclick=()=>addRow();
+$('#addNow').onclick=()=>addRow(Math.floor(now()/60000)*60000);
+async function syncTime(){ if(!base()) return; try{ const t0=Date.now(); const r=await fetch(base()+'/time',{cache:'no-store'}); const j=await r.json(); const t1=Date.now(); skew=j.now-(t0+t1)/2; $('#clockNote').textContent='서버 시각 (한국 시간)'; }catch(e){ $('#clockNote').textContent='서버 시각을 못 불러와서 이 기기 시각을 쓰고 있어요'; } }
+async function load(){ if(!base()){ status('편성 서버 주소를 먼저 넣어 주세요','err'); return; } try{ localStorage.setItem('playa-sched-admin-url',base()); }catch(e){} status('불러오는 중이에요');
+  try{ await syncTime(); const r=await fetch(base()+'/schedule',{cache:'no-store'}); if(!r.ok) throw new Error(r.status); data=await r.json(); data.booths=data.booths||{}; render(); status(data.updated?`불러왔어요. 마지막 저장: ${new Date(data.updated).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})}`:'아직 저장된 편성표가 없어요. 시간대를 추가하고 저장해 주세요','ok'); }
+  catch(e){ status('편성표를 불러오지 못했어요. 서버 주소와 Worker 배포 상태를 확인해 주세요','err'); } }
+$('#load').onclick=load;
+$('#save').onclick=async()=>{ readRows(); let bad=0; document.querySelectorAll('#rows tr').forEach(tr=>{ const u=tr.querySelector('.u'), st=tr.querySelector('.st'); if(!u) return; const okU=MIX_RE.test(u.value.trim()), okS=Number.isFinite(fromKstInput(st.value)); u.classList.toggle('bad',!okU); st.classList.toggle('bad',!okS); if(!okU||!okS) bad++; });
+  let badOther=0; Object.entries(data.booths).forEach(([k,l])=>{ if(k!==cur) l.forEach(s=>{ if(!MIX_RE.test(s.url)||!Number.isFinite(s.start)) badOther++; }); });
+  if(bad||badOther){ status(`고쳐야 할 칸이 ${bad+badOther}개 있어요. 시작 시각과 mixcloud.com 믹스 주소(아이디/믹스 이름 형식)를 확인해 주세요`,'err'); return; }
+  const pw=$('#pw').value; if(!pw){ status('관리자 비밀번호를 넣어 주세요','err'); return; } try{ sessionStorage.setItem('playa-sched-pw',pw); }catch(e){}
+  Object.values(data.booths).forEach(l=>l.sort((a,b)=>a.start-b.start));
+  status('저장하는 중이에요'); try{ const r=await fetch(base()+'/schedule',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+pw},body:JSON.stringify({booths:data.booths})}); const j=await r.json().catch(()=>({}));
+    if(r.status===401){ status('비밀번호가 맞지 않아요','err'); return; } if(!r.ok){ status('저장하지 못했어요: '+(j.error||r.status),'err'); return; } data.updated=j.updated; render(); status('편성표를 저장했어요. 1분 안에 모든 유저 게임에 반영돼요','ok'); }
+  catch(e){ status('서버에 연결하지 못했어요. 주소를 확인해 주세요','err'); } };
+setInterval(()=>{ $('#clock').textContent=new Date(now()).toLocaleTimeString('ko-KR',{timeZone:'Asia/Seoul',hour12:false}); },500);
+setInterval(()=>{ if(document.activeElement&&document.activeElement.closest('#rows')) return; renderNav(); },15000);
+render(); if(base()) load();
+</script>
+</body>
+</html>
