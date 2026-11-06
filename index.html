@@ -4696,13 +4696,13 @@ $('#mapToggle').addEventListener('click',()=>{ if($('.tools').classList.contains
 /* ================= MIXCLOUD AUTO PLAY + BROADCAST SCHEDULE (same no-login player) ================= */
 // walking up to a stage starts that stage's genre on its own; the first set on a phone still needs one tap on the player
 const MCA={on:true,lastTry:-99,skip:'',onClaude:/(^|\.)claude\.ai$|claudeusercontent|anthropic/.test(location.hostname)};
-try{ const v=localStorage.getItem('playa-mc-auto'); if(v!==null) MCA.on=v==='1'; }catch(e){}
-function mcaSave(){ try{ localStorage.setItem('playa-mc-auto',MCA.on?'1':'0'); }catch(e){} }
+try{ const v=localStorage.getItem('playa-mc-auto2'); if(v!==null) MCA.on=v==='1'; }catch(e){}
+function mcaSave(){ try{ localStorage.setItem('playa-mc-auto2',MCA.on?'1':'0'); }catch(e){} }
 function mcLevel(T){ return T.kind==='booth'?(T.b.target||0):(T.Z.target||0)/(T.Z.vol||.85); }
 function mcKey(u){ try{ const p=new URL(String(u).trim()), h=p.hostname.toLowerCase(); if(p.protocol!=='https:'||!(h==='mixcloud.com'||h.endsWith('.mixcloud.com'))) return null; const path=p.pathname.endsWith('/')?p.pathname:p.pathname+'/'; return path.split('/').filter(Boolean).length>=2?path:null; }catch(e){ return null; } }
 // play one specific mix (used by the broadcast schedule)
 function mcPlayKey(key,T,title){ initAudio(); MC.target=T; MC.genre=''; MC.list=[{key,name:title||decodeURIComponent(key.split('/').filter(Boolean).pop()||'').split('-').join(' '),user:{name:''}}]; MC.idx=-1; MC.fails=0; mcNext(); }
-updaters.push(t=>{ if(!MCA.on||MCA.onClaude||SCH.url||!inGame||(typeof BM!=='undefined'&&BM.mode)||t-MCA.lastTry<5) return;
+updaters.push(t=>{ if(!MCA.on||MCA.onClaude||SCH.url||!inGame||(typeof BM!=='undefined'&&BM.mode)||t-MCA.lastTry<1.5) return;
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T) return;
   if(MCA.skip&&MCA.skip!==T.key) MCA.skip=''; // stopping at one stage only silences that stage
   if(mcLevel(T)<.35||MCA.skip===T.key||(MC.target&&MC.target.key===T.key)) return;
@@ -4745,11 +4745,11 @@ function npRender(){ if(!inGame||SCH.url) return; const np=$('#np'); if(!np) ret
   np.style.setProperty('--gc',col); np.classList.toggle('playing',!!c&&!MC.paused);
   const art=$('#npArt'); art.style.backgroundImage=npPic(c); art.innerHTML=c?'':'🎛️';
   $('#npName').textContent=c?c.name:T.name;
-  $('#npCamp').textContent=c?`${c.user&&c.user.name||''} · ${T.name}`:(near?`${gn} · ▶ 누르면 DJ 세트가 나와요`:`${gn} · 가까이 가면 DJ 세트가 나와요`);
+  $('#npCamp').textContent=c?`${c.user&&c.user.name||''} · ${T.name}`:(near?(MCA.on?`${gn} · 곧 DJ 세트가 자동으로 나와요`:`${gn} · ▶ 누르면 DJ 세트가 나와요`):`${gn} · 가까이 가면 DJ 세트가 나와요`);
   const pb=$('#npPlay'); pb.textContent=c&&!MC.paused?'❚❚':'▶'; pb.setAttribute('aria-label',c&&!MC.paused?'일시정지':'재생');
   if(!open) return;
   $('#npHero').innerHTML=c?`<div class='heroart' style='background-image:${npPic(c,1)}'>${npEq}</div><div class='herometa'><span class='gtag'>${esc(gn)} · ${esc(T.name)}</span><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><div class='heroacts'><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud ↗</a></div></div>`
-    :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?'▶ 눌러서 DJ 세트 틀기':'부스 가까이 가면 들을 수 있어요'}</b><small>${esc(gn)} 공식 DJ·레이블 채널의 믹스셋 중 하나를 랜덤으로 틀어요.</small></div>`;
+    :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?(MCA.on?'곧 자동으로 DJ 세트가 나와요':'▶ 눌러서 DJ 세트 틀기'):'부스 가까이 가면 자동으로 나와요'}</b><small>${esc(gn)} 공식 DJ·레이블 채널의 믹스셋 중 하나를 랜덤으로 틀어요.</small></div>`;
 }
 function npFar(T,gn){ toast(`${T.name} 가까이 가야 ${gn} 세트를 틀 수 있어요`); }
 function npPlayBtn(next){ initAudio(); const {T,g,gn,near,mine}=npNow();
