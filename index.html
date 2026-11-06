@@ -505,6 +505,12 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #sp .audnow b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #sp .audnow small{display:block;font-size:12px;color:var(--muted)}
 #sp .audnow a{font-size:12px;color:var(--cyan)}
+#sp .mcstory h4{margin:12px 0 4px;font-size:13px}
+#sp .mcstory p{margin:0 0 4px;font-size:13px;line-height:1.55}
+#sp .mcstory .orig{opacity:.85;max-height:10.5em;overflow:auto;overflow-wrap:anywhere}
+#sp .mcstory .hint{font-size:11px;color:var(--muted)}
+#sp .mtags{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+#sp .mtags span{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--chip)}
 #cnMix{display:none}
 #clubNow.mc #cnTrack{display:none}
 #clubNow.mc #cnMix{display:block}
@@ -3318,13 +3324,30 @@ function mcNext(){ if(!MC.target||!MC.list.length) return; MC.idx=(MC.idx+1)%MC.
 function mcStop(){ MC.schId=null; $('#clubNow').classList.remove('mc'); if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
 function mcStatus(s){ const el=document.getElementById('mcStatus'); if(el) el.textContent=s; }
 function mcTitle(){ const c=MC.cur; return c?`${c.name}${c.user&&c.user.name?' — '+c.user.name:''}`:''; }
+// what is playing now: the set's own notes and the uploading DJ / channel's bio, straight from Mixcloud
+const MC_INFO={};
+function mcInfo(path){ if(!MC_INFO[path]) MC_INFO[path]=fetch('https://api.mixcloud.com'+path).then(r=>r.ok?r.json():{}).catch(()=>({})); return MC_INFO[path]; }
+function mcText(s,n){ s=String(s||'').replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim(); if(s.length>n) s=s.slice(0,n).replace(/\s+\S*$/,'')+'…'; return esc(s).replace(/\n/g,'<br>'); }
+function mcDate(t){ const d=new Date(t); return isNaN(d)?'':`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`; }
+function mcStoryUi(){ const el=document.getElementById('mcStory'); if(!el) return; const c=MC.cur;
+  if(!c||!MC.target){ if(el.dataset.key!=='-'){ el.dataset.key='-'; el.innerHTML=`<p class='hint'>장르를 고르면 지금 나오는 세트와 DJ 이야기가 여기에 나와요.</p>`; } return; }
+  if(el.dataset.key===c.key) return; el.dataset.key=c.key;
+  const tags=(c.tags||[]).map(t=>t.name).filter(Boolean).slice(0,5), who=c.user&&c.user.name||'';
+  const sum=`${who?esc(who)+' 채널이 ':''}${c.created_time?mcDate(c.created_time)+'에 올린 ':''}${c.audio_length?Math.round(c.audio_length/60)+'분짜리 ':''}세트예요.`;
+  el.innerHTML=`<h4>🎧 지금 나오는 세트</h4><p>${sum}</p>${tags.length?`<div class='mtags'>${tags.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`:''}<h4>📖 세트 이야기</h4><p class='orig' id='mcSetTxt'>불러오는 중이에요</p><h4>🎛️ DJ·채널 이야기</h4><p class='orig' id='mcDjTxt'>불러오는 중이에요</p><p class='hint'>설명은 Mixcloud에 올라온 원문 그대로예요.</p>`;
+  const live=()=>el.isConnected&&el.dataset.key===c.key;
+  mcInfo(c.key).then(d=>{ const p=document.getElementById('mcSetTxt'); if(p&&live()) p.innerHTML=d.description?mcText(d.description,700):'이 세트에는 따로 적힌 설명이 없어요.';
+    const uk=(c.user&&c.user.key)||(d.user&&d.user.key); const q=document.getElementById('mcDjTxt');
+    if(!uk){ if(q&&live()) q.textContent='채널 정보가 없어요.'; return; }
+    return mcInfo(uk).then(u=>{ const q=document.getElementById('mcDjTxt'); if(!q||!live()) return; const where=[u.city,u.country].filter(Boolean).join(', ');
+      q.innerHTML=`<b>${esc(u.name||who)}</b>${where?' · '+esc(where):''}<br>${u.biog?mcText(u.biog,500):'채널 소개가 없어요.'}`; }); }); }
 function mcUi(){ const box=document.getElementById('mcNow'); if(!box) return; const c=MC.cur;
-  if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small);
+  mcStoryUi(); if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small);
   box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud에서 보기</a></div>`;
   mcStatus(`${MC.target.name}에서 재생 중`); }
 function openMcPanel(){ if(SCH.url) return openSchPanel(); const T=musicTarget(), on=MC.target&&MC.target.key===T.key, g=on?MC.genre:mcDefault(T);
   const chips=Object.keys(MC_G).map(k=>`<button data-act='g:${k}' aria-pressed='${on&&MC.genre===k}'>${MC_G[k][0]}</button>`).join('');
-  openSp('유명 DJ 세트',`${T.name} · Mixcloud`,`<p>장르를 누르면 공식 DJ·레이블 채널의 최신 믹스셋을 Mixcloud 플레이어로 바로 틀어요. 로그인이나 앱 키는 필요 없어요. 세트가 끝나면 다음 세트로 넘어가고, 가까이 갈수록 크게 들려요. 자동 재생이 켜져 있으면 스테이지에 가까이 가기만 해도 그 장르 세트가 나와요.</p><div class='gchips'>${chips}</div><div id='mcNow' class='audnow'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='g:${g}' class='hot'>${esc(MC_G[g][0])} 틀기</button><button data-act='next'>다음 세트</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button><button data-act='auto' style='grid-column:1/-1'>${mcaLabel()}</button></div>`,a=>{
+  openSp('유명 DJ 세트',`${T.name} · Mixcloud`,`<div class='gchips'>${chips}</div><div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='g:${g}' class='hot'>${esc(MC_G[g][0])} 틀기</button><button data-act='next'>다음 세트</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button><button data-act='auto' style='grid-column:1/-1'>${mcaLabel()}</button></div>`,a=>{
     if(a.startsWith('g:')){ const k=a.slice(2); document.querySelectorAll('#spBody .gchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.act===a)));
       const hb=document.querySelector('#spBody .acts .hot'); if(hb){ hb.dataset.act=a; hb.textContent=`${MC_G[k][0]} 다른 세트`; } mcPlay(k,musicTarget()); }
     else if(a==='next'){ if(MC.target) mcNext(); else mcPlay(g,musicTarget()); }
@@ -4680,7 +4703,7 @@ updaters.push(t=>{ if(!SCH.url||MCA.onClaude||!inGame) return;
     if(Math.abs(p-exp)>4) mcCall('seek',Math.max(0,exp)); } });
 function openSchPanel(){ const items=[['booth:techno','사막점 테크노'],['booth:house','사막점 하우스'],['booth:afro','사막점 아프로테크'],['booth:melodic','사막점 멜로딕'],['booth:trance','사막점 트랜스'],['booth:dnb','사막점 드럼앤베이스'],['booth:psy','사막점 사이키델릭'],['booth:dubstep','사막점 덥스텝'],['booth:hardstyle','사막점 하드스타일'],['club3','이태원 4F 쉘터'],['club4','이태원 5F 페이퍼']];
   const rows=items.map(([k,n])=>{ const s=schSlot(k); return `<p style='margin:4px 0;font-size:13px'>${s?'🔴':'⚪'} <b>${esc(n)}</b> ${s?esc(s.title||'편성된 믹스'):'기본 게임 음악'}</p>`; }).join('');
-  openSp('📻 편성 방송 중',SCH.sched?'운영자가 정한 시간표대로 모두 같은 음악을 들어요':'편성표를 불러오는 중이에요',rows+`<div id='mcNow' class='audnow'></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>알겠어요</button></div>`,()=>closeSp()); mcUi(); }
+  openSp('📻 편성 방송 중',SCH.sched?'운영자가 정한 시간표대로 모두 같은 음악을 들어요':'편성표를 불러오는 중이에요',rows+`<div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>알겠어요</button></div>`,()=>closeSp()); mcUi(); }
 
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null]),new Promise(r=>setTimeout(r,2500))]);
