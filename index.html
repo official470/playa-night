@@ -3579,8 +3579,10 @@ function mcTick(){ const T=MC.target; if(!T||!MC.iframe) return; let v;
   // leaving the stage (or the map) pauses the set; coming back resumes it at the shared position.
   // Volume alone is not enough: iPhone ignores the player's volume, so the music would keep playing everywhere.
   const lv=clamp(v||0,0,1);
-  if(MC.live){ if(lv<.03&&!MC.autoPaused&&!MC.paused){ MC.autoPaused=true; mcCall('pause'); }
-    else if(lv>.08&&MC.autoPaused){ MC.autoPaused=false; mcCall('play'); SCH.synced=false; SCH.lastSync=-99; } }
+  // phones that ignore the player's volume (iPhone / iPad) cut the set once you step away from the stage front; elsewhere it fades out first
+  const NOVOL=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1), off=NOVOL?.4:.05, on=NOVOL?.5:.1;
+  if(MC.live){ if(lv<off&&!MC.autoPaused&&!MC.paused){ MC.autoPaused=true; mcCall('pause'); }
+    else if(lv>on&&MC.autoPaused){ MC.autoPaused=false; mcCall('play'); SCH.synced=false; SCH.lastSync=-99; } }
   if(!MC.playing) return; v=Math.round(lv*(muted?0:1)*100)/100;
   if(Math.abs(v-MC.vol)>=.03||(v===0&&MC.vol!==0)){ MC.vol=v; mcCall('setVolume',v); }
   mcBar(); }
@@ -5083,6 +5085,37 @@ updaters.push(t=>{ const c=MC.cur; if(!inGame||!c||!c.sched||!MC.playing||MC.pau
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||T.key!==MC.target.key||mcLevel(T)<.35||t<DJT.t) return;
   if(DJT.key!==c.key){ DJT.key=c.key; DJT.f=djFactsFor(c); DJT.t=t+3; return; }
   DJT.t=t+rand(5,9); if(!DJT.f||!DJT.f.S.length) return; const P=djSpeaker(t); if(!P) return; P._djT=t; say(P,djLine(P),3.6); });
+
+/* ================= SKY LASER LOGO: REAL HOUSE CLUB over every entrance ================= */
+// before you get in (desert road and gate, Nami pier, outside the Sphere) ground lasers sweep up and draw the neon logo in the sky
+const SKYL={g:null,mat:null,spr:null,beams:[],on:0};
+function skyLogoBuild(){ if(SKYL.g) return; const g=new THREE.Group(); g.visible=false; scene.add(g); SKYL.g=g;
+  // white cut-out so the cycling colour tints it (the red original would multiply to black)
+  const tex=new THREE.TextureLoader().load('assets/logo-white.png'); tex.minFilter=THREE.LinearFilter;
+  const mat=new THREE.SpriteMaterial({map:tex,color:0xff3030,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,fog:false,opacity:0});
+  const spr=new THREE.Sprite(mat); spr.renderOrder=5; g.add(spr); SKYL.mat=mat; SKYL.spr=spr;
+  // a soft halo behind the logo so it reads as projected light
+  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,color:0xff3030,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,fog:false,opacity:0})); halo.renderOrder=4; g.add(halo); SKYL.halo=halo;
+  const geo=new THREE.CylinderGeometry(.18,.6,1,6,1,true); geo.translate(0,.5,0);
+  for(let i=0;i<8;i++){ const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:0xff3030,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,fog:false})); m.renderOrder=3; g.add(m); SKYL.beams.push({m,ph:i*.78+Math.random(),src:new THREE.Vector3()}); } }
+// where the logo hangs right now (null when you are already inside)
+function skyLogoSpot(){ if(!inGame) return null;
+  if(MAP==='playa'&&typeof BM!=='undefined'&&BM.mode&&BM.built) return {x:0,y:95,z:BM.RZ1+190,w:260,src:BM.mode==='drive'?BM.cz:pState.z};
+  if(MAP==='nami'&&typeof NM!=='undefined'&&!NM.admit) return {x:NX-20,y:58,z:-110,w:110,src:null};
+  if(MAP==='sphere'&&typeof SPH!=='undefined'&&!SPH.inside&&!SPH.atrium) return {x:SPX,y:150,z:SPZ+10,w:130,src:null};
+  return null; }
+const _sl=new THREE.Vector3(), _su=new THREE.Vector3(0,1,0);
+updaters.push((t,dt)=>{ const P=skyLogoSpot(); SKYL.on+=((P?1:0)-SKYL.on)*Math.min(1,dt*2); if(SKYL.on<.01){ if(SKYL.g) SKYL.g.visible=false; return; }
+  skyLogoBuild(); const g=SKYL.g; g.visible=true; const Q=P||SKYL.last; if(!Q) return; SKYL.last=Q;
+  const w=Q.w*(1+.03*Math.sin(t*2.1)), h=w*.69; SKYL.spr.position.set(Q.x,Q.y,Q.z); SKYL.spr.scale.set(w,h,1); SKYL.halo.position.set(Q.x,Q.y,Q.z); SKYL.halo.scale.set(w*1.18,h*1.18,1);
+  // neon: the colour keeps cycling, with a little flicker
+  const hue=(t*.06)%1, fl=Math.random()<.02?.55:1; SKYL.mat.color.setHSL(hue,1,.55); SKYL.halo.material.color.setHSL(hue,1,.5);
+  SKYL.mat.opacity=SKYL.on*fl; SKYL.halo.material.opacity=SKYL.on*.28*fl;
+  // lasers: fixed emitters on the ground, each sweeping its tip across the logo
+  SKYL.beams.forEach((B,i)=>{ const a=i/SKYL.beams.length*Math.PI*2, r=Q.w*.55; B.src.set(Q.x+Math.sin(a)*r,0,(Q.src!=null?Math.min(Q.src+40,Q.z-30):Q.z-60)+Math.cos(a)*r*.35);
+    const tx=Q.x+Math.sin(t*1.3+B.ph)*w*.42, ty=Q.y+Math.cos(t*1.7+B.ph*1.3)*h*.32, tz=Q.z;
+    _sl.set(tx-B.src.x,ty-B.src.y,tz-B.src.z); const L=_sl.length(); B.m.position.copy(B.src); B.m.scale.set(1,L,1); B.m.quaternion.setFromUnitVectors(_su,_sl.normalize());
+    B.m.material.color.setHSL((hue+i*.04)%1,1,.6); B.m.material.opacity=SKYL.on*(.35+.25*Math.sin(t*9+B.ph))*fl; }); });
 
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
