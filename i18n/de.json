@@ -1674,6 +1674,11 @@
 "🎲 막춤 룰렛: {0}!": "🎲 Freestyle-Roulette: {0}!",
 "📻 편성 방송: {0}에서 {1}을(를) 모두 같이 듣고 있어요": "📻 Geplantes Set: In {0} hören alle gemeinsam {1}",
 "🚀 {0}초 부스트": "🚀 {0} s Boost",
-"🚐 블랙록 시티까지 {0}m, {1}km/h": "🚐 Noch {0} m bis Black Rock City, {1} km/h"
+"🚐 블랙록 시티까지 {0}m, {1}km/h": "🚐 Noch {0} m bis Black Rock City, {1} km/h",
+"박스오피스 (입장권 {0}코인)": "Kasse (Ticket {0} Münzen)",
+"신분증, 티켓 내고 {0}코인 내기": "Ausweis und Ticket zeigen, {0} Münzen zahlen",
+"입장 코인 {0}이 필요해요. 선착장 주변에 떨어진 코인을 주워 보세요": "Du brauchst {0} Münzen für den Eintritt. Sammle Münzen rund um den Anleger",
+"티켓 확인과 입장 코인 {0}. 결제하면 페스티벌 팔찌를 채워 주고 배에 탈 수 있어요.": "Ticketkontrolle und {0} Münzen Eintritt. Nach dem Bezahlen bekommst du dein Festivalarmband und darfst aufs Boot.",
+"{0}코인 이상 있어야 입장할 수 있어요. {1}코인 더 모아 와요.": "Du brauchst mindestens {0} Münzen für den Eintritt. Sammle noch {1}."
 }
 }

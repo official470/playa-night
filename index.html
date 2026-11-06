@@ -3508,17 +3508,17 @@ async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g;
   if(!MC.list.length){ mcStatus(''); toast('Mixcloud에 연결하지 못했어요. 인터넷 연결을 확인해 주세요'); mcStop(); return; }
   MC.idx=-1; MC.fails=0; mcNext(); }
 // every play and every skip lands on a random set (never the same one twice in a row)
-function mcNext(){ if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null;
+function mcNext(){ if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null; MC.autoPaused=false;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
   const kind=c.sc?'sc':'mc';
   if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:true,visual:false,show_comments:false,hide_related:true,callback:()=>scInfo(w,c)}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
   if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1; MC.kind=kind; MC.w=null;
-  if(kind==='sc'){ scCreate(c); const f=MC.iframe; MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } },6000); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
+  if(kind==='sc'){ scCreate(c); const f=MC.iframe; MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ if(MC.target&&mcLevel(MC.target)>=.35){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } else MC.needTap=true; } },6000); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
   const f=document.createElement('iframe'); f.allow='autoplay'; f.title='Mixcloud player';
   f.src=`${MC_ORIGIN}/widget/iframe/?feed=${encodeURIComponent(c.key)}&hide_cover=1&mini=1&autoplay=1`; MC.iframe=f; mcShow(false); document.body.appendChild(f);
   f.addEventListener('load',()=>{ if(MC.iframe===f) f.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN); });
   // mobile browsers can block autoplay inside the iframe; show the real player so one tap on its play button starts it
-  MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } },6000);
+  MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ if(MC.target&&mcLevel(MC.target)>=.35){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } else MC.needTap=true; } },6000);
   mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); }
 function mcStop(){ MC.schId=null; $('#clubNow').classList.remove('mc'); if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } MC.w=null; clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
 function mcStatus(s){ const el=document.getElementById('mcStatus'); if(el) el.textContent=s; }
@@ -3576,7 +3576,12 @@ function mcaLabel(){ return MCA.on?'✅ 자동 재생 켜짐: 스테이지에 �
 function mcTick(){ const T=MC.target; if(!T||!MC.iframe) return; let v;
   if(T.kind==='booth'){ v=T.b.target; if(T.b.out&&ac) T.b.out.gain.setTargetAtTime(0,ac.currentTime,.05); }
   else { v=(T.Z.target||0)/(T.Z.vol||.85); if(T.Z.out&&ac) T.Z.out.gain.setTargetAtTime(0,ac.currentTime,.05); }
-  if(!MC.playing) return; v=Math.round(clamp(v||0,0,1)*(muted?0:1)*100)/100;
+  // leaving the stage (or the map) pauses the set; coming back resumes it at the shared position.
+  // Volume alone is not enough: iPhone ignores the player's volume, so the music would keep playing everywhere.
+  const lv=clamp(v||0,0,1);
+  if(MC.live){ if(lv<.03&&!MC.autoPaused&&!MC.paused){ MC.autoPaused=true; mcCall('pause'); }
+    else if(lv>.08&&MC.autoPaused){ MC.autoPaused=false; mcCall('play'); SCH.synced=false; SCH.lastSync=-99; } }
+  if(!MC.playing) return; v=Math.round(lv*(muted?0:1)*100)/100;
   if(Math.abs(v-MC.vol)>=.03||(v===0&&MC.vol!==0)){ MC.vol=v; mcCall('setVolume',v); }
   mcBar(); }
 // the stage bar (clubs, Nami stages, Sphere) shows the Mixcloud set instead of the built-in track while one plays there
@@ -3642,12 +3647,14 @@ function nmPet(A){ if(!A) return; const P={x:A.root.position.x,y:A.root.position
 function startFerry(dir){ closeSp(); NM.boat={dir,t:0,dur:20}; NM.side='boat'; sfx(tt=>{ tone(master,tt,'sawtooth',110,.08,.9); tone(master,tt+1,'sawtooth',110,.08,1.2); }); toast(dir?'배가 동물원점으로 출발해요. 강바람이 시원해요':'육지로 돌아가는 배를 탔어요'); }
 function ferryArrive(dir){ NM.boat=null; if(dir){ NM.side='island'; NM.boatSide='island'; pState.x=NX; pState.z=-160; pState.face=0; } else { NM.side='main'; NM.boatSide='main'; pState.x=NX-117; pState.z=-128; pState.face=-Math.PI/2; }
   pState.y=0; pState.vy=0; yaw=pState.face+Math.PI; toast(dir?'동물원점 도착! 앞의 게이트에서 팔찌를 보여 주고 입장해요':'선착장에 도착했어요'); }
+// 남이섬(동물원점) 입장료
+const NM_PRICE=50;
 function nmBooth(){ if(NM.boat) return; if(NM.paid){ startFerry(1); return; }
   if(!ageOk){ openSp('동물원점 매표소','성인 페스티벌이에요',`<p>동물원점은 만 19세 이상만 입장할 수 있어요.</p><div class='acts'><button data-act='no'>아니요</button><button data-act='yes' class='hot'>19세 이상이에요</button></div>`,a=>{ if(a==='yes'){ ageOk=true; nmBooth(); } else closeSp(); }); return; }
   const name=(($('#pname').value||'버너').trim()||'버너').slice(0,12), yr=1990+Math.floor(Math.random()*12);
-  openSp('동물원점 매표소','“신분증과 티켓을 보여 주세요.”',`<div class='idcard'><div class='idph'>${esc(name.slice(0,1))}</div><div><b>신분증</b><span>${esc(name)}</span><small>${yr}.0${1+Math.floor(Math.random()*9)}.1${Math.floor(Math.random()*9)}</small><small>동물원점 티켓 1매</small></div></div><p>티켓 확인과 입장 코인 30. 결제하면 페스티벌 팔찌를 채워 주고 배에 탈 수 있어요.</p><div class='acts'><button data-act='pay' class='hot'>신분증, 티켓 내고 30코인 내기</button><button data-act='no'>다음에 올게요</button></div>`,a=>{
+  openSp('동물원점 매표소','“신분증과 티켓을 보여 주세요.”',`<div class='idcard'><div class='idph'>${esc(name.slice(0,1))}</div><div><b>신분증</b><span>${esc(name)}</span><small>${yr}.0${1+Math.floor(Math.random()*9)}.1${Math.floor(Math.random()*9)}</small><small>동물원점 티켓 1매</small></div></div><p>티켓 확인과 입장 코인 ${NM_PRICE}. 결제하면 페스티벌 팔찌를 채워 주고 배에 탈 수 있어요.</p><div class='acts'><button data-act='pay' class='hot' ${coins<NM_PRICE?'disabled':''}>신분증, 티켓 내고 ${NM_PRICE}코인 내기</button>${coins<NM_PRICE?`<p class='quote'>${NM_PRICE}코인 이상 있어야 입장할 수 있어요. ${NM_PRICE-coins}코인 더 모아 와요.</p>`:''}<button data-act='no'>다음에 올게요</button></div>`,a=>{
     if(a==='no'){ closeSp(); return; }
-    if(a==='pay'){ if(coins<30){ toast('입장 코인 30이 필요해요. 선착장 주변에 떨어진 코인을 주워 보세요'); return; } addCoins(-30); NM.paid=true; chime(76,'sine',.08,.5);
+    if(a==='pay'){ if(coins<NM_PRICE){ toast(`입장 코인 ${NM_PRICE}이 필요해요. 선착장 주변에 떨어진 코인을 주워 보세요`); return; } addCoins(-NM_PRICE); NM.paid=true; chime(76,'sine',.08,.5);
       $('#spBody').innerHTML=`<p class='quote'>신분증과 티켓 확인 완료! 손목에 페스티벌 팔찌를 채워 줬어요.</p><div class='stampwrap'><div class='hand'>✋</div><div class='stamp on' style='color:#c8862a;border-color:#c8862a'>동물원점</div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='board' class='hot'>배에 타기</button></div>`; }
     if(a==='board') startFerry(1); }); }
 function nmGate(){ if(NM.admit){ toast('이미 입장했어요. 즐거운 시간 보내요!'); return; } if(!NM.paid){ toast('매표소에서 티켓을 사야 해요'); return; }
@@ -4232,7 +4239,7 @@ function buildSphere(){ const EG=new THREE.Group(); EG.position.set(SPX,0,SPZ); 
   $('#seatMapB').addEventListener('click',sphMapOpen); $('#seatUp').addEventListener('click',()=>sphStand()); $('#seatCheer').addEventListener('click',()=>{ SPH.cheerT=3; chime(84,'sine',.06,.3); for(let i=0;i<5;i++) spawnFx('heart',i*.08); });
   // interactions
   const ok=()=>MAP==='sphere'&&inGame;
-  INTER.push({pos:()=>ok()&&!SPH.inside?{x:SPX-24,z:SPZ-37}:FARV,r:4.5,prio:5,get label(){ return SPH.ticket?'박스오피스 (티켓 보유 중)':'박스오피스 (입장권 한시 무료)'; },act:sphBox});
+  INTER.push({pos:()=>ok()&&!SPH.inside?{x:SPX-24,z:SPZ-37}:FARV,r:4.5,prio:5,get label(){ return SPH.ticket?'박스오피스 (티켓 보유 중)':`박스오피스 (입장권 ${SPH_PRICE}코인)`; },act:sphBox});
   INTER.push({pos:()=>ok()&&!SPH.inside?{x:SPX,z:SPZ-4}:FARV,r:5,prio:5,label:'입장 게이트 (티켓 확인)',act:sphGate});
   INTER.push({pos:()=>ok()&&SPH.inside&&!SPH.seat?{x:SPX,z:IZ+ez-1.4}:FARV,r:3,label:'공연장 나가기',act:sphExit});
   INTER.push({pos:()=>ok()&&SPH.inside&&!SPH.seat?SPH.kiosk:FARV,r:3,label:'좌석 맵 보기',act:sphMapOpen});
@@ -4522,7 +4529,7 @@ function sphExtraTick(t,dt){ if(MAP!=='sphere') return; const Z=SPH.zone, tr=Z.t
   if(SPH.seat){ const bi=Math.floor(beat); if(bi!==SPH.hb){ SPH.hb=bi; if(drop){ SPH.shake=.18; if(isTouch&&navigator.vibrate) try{ navigator.vibrate(18); }catch(e){} } } if(SPH.shake>0){ SPH.shake-=dt; yaw+=(Math.random()-.5)*.006; pitch+=(Math.random()-.5)*.004; } } }
 
 /* ================= SPHERE TICKET PROMO: TEMPORARILY FREE ================= */
-const SPH_PRICE=0, SPH_PRICE_ORIG=500; // 한시 무료. 다시 유료로 돌리려면 SPH_PRICE를 500으로 바꿔요
+const SPH_PRICE=200, SPH_PRICE_ORIG=500; // 라스베가스(지구본점) 입장권 200코인. 0으로 바꾸면 한시 무료 이벤트로 바뀌어요
 function sphBox(){ if(SPH.ticket){ toast('이미 입장권이 있어요. 지구본점 앞 입장 게이트로 가요'); return; }
   const P=SPH_PRICE, free=P===0, short=coins<P;
   openSp('지구본점 박스오피스',free?'🎉 한시 무료 입장 이벤트':'A급 공연 입장권',`<p>오늘 밤 공연: <b>ANIMA, 사이버델릭 라이브</b><br>${free?`입장권 <s>${SPH_PRICE_ORIG}코인</s> <b>0코인</b>, 지금만 무료예요!`:`입장권 ${P}코인, 지금 ${coins}코인 있어요.`}</p>${short?`<p class='quote'>${P}코인 이상 있어야 살 수 있어요. ${P-coins}코인 더 모아 와요.</p>`:''}<div class='acts'><button data-act='buy' class='hot' ${short?'disabled':''}>${free?'무료 입장권 받기':`${P}코인으로 입장권 사기`}</button><button data-act='no'>다음에</button></div>`,a=>{
@@ -4927,15 +4934,26 @@ function schItem(sl){ const base={name:sl.title||'',titled:!!sl.title,user:{name
 function schKey(T){ return T.key==='zone:shelter'?'club3':T.key==='zone:paper'?'club4':T.key; }
 updaters.push(t=>{ if(MCA.onClaude) return;
   if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!inGame) return; if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
+  // warm the player before you get there: the nearest live scheduled stage loads silently, so moving to any booth only swaps the set inside a ready player
+  if(!MC.iframe&&t-(SCH.warmT||-99)>8){ SCH.warmT=t; const w=schWarm(); if(w){ mcPlayItem(w.it,w.T); MC.schId=w.slot.id; SCH.synced=false; SCH.lastSync=t; } }
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||mcLevel(T)<.35) return;
   const slot=schSlot(schKey(T)), mine=MC.target&&MC.target.key===T.key;
+  if(mine&&MC.needTap&&MC.iframe&&!MC.playing){ MC.needTap=false; mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); }
   if(!slot){ if(mine&&MC.schId){ mcStop(); toast(`${T.name} 편성이 끝났어요`); } return; }
   if(!mine||MC.schId!==slot.id){ const it=schItem(slot); if(!it) return; mcPlayItem(it,T); MC.schId=slot.id; SCH.synced=false; SCH.lastSync=t;
     toast(`📻 편성 방송: ${T.name}에서 ${it.name}을(를) 모두 같이 듣고 있어요`); return; }
   // jump to where everyone else is: right after it starts, then a drift check every 20 s
-  if(MC.playing&&MC.pos!=null&&t-SCH.lastSync>(SCH.synced?20:1.5)){ SCH.lastSync=t; SCH.synced=true;
+  if(MC.playing&&MC.pos!=null&&t-SCH.lastSync>(SCH.synced?20:0)){ SCH.lastSync=t; SCH.synced=true;
     const exp=(schNow()-slot.start)/1000, p=MC.pos+(MC.paused?0:(performance.now()-MC.posAt)/1000);
     if(Math.abs(p-exp)>4) mcCall('seek',Math.max(0,exp)); } });
+
+// nearest stage on this map that has a scheduled set on right now
+function schWarm(){ const C=[];
+  for(const b of BOOTHS){ const T={kind:'booth',b,name:b.name+' 부스',key:'booth:'+b.id}; C.push([T,Math.hypot(b.front.x-pState.x,b.front.z-pState.z)]); }
+  for(const Z of ZONES){ if(!(Z.vol>0)) continue; const nz=(typeof NM!=='undefined'&&NM.zones||[]).find(z=>z.Z===Z); const T={kind:'zone',Z,name:nz?nz.name:(MC_ZN[Z.id]||Z.id),key:'zone:'+Z.id}; C.push([T,Math.hypot(Z.x-pState.x,Z.z-pState.z)]); }
+  C.sort((a,b)=>a[1]-b[1]);
+  for(const [T,d] of C){ if(d>400) break; const slot=schSlot(schKey(T)); if(!slot) continue; const it=schItem(slot); if(it) return {T,slot,it}; }
+  return null; }
 
 /* ================= DJ SET PLAYLIST CARD (album art up front, every map) ================= */
 const NPC={sig:'',t:0};
