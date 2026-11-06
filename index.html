@@ -1345,18 +1345,112 @@ function buildWorld(){
   const dg=new THREE.BufferGeometry(); dg.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));
   dust=new THREE.Points(dg,new THREE.PointsMaterial({color:0xffe2c0,size:.12,transparent:true,opacity:.5,depthWrite:false})); scene.add(dust);
 }
+/* ================= BOOTH THEMES: every desert stage is its own art car or structure ================= */
+// audience is +z, the DJ stands at the origin on a 1.2 m deck. Themes with bed:true bring their own deck (an art car's flatbed).
+const BOOTH_THEME={techno:{bed:1,noSpk:1},dnb:{bed:1},afro:{led:0}};
+function themeMat(c,glow){ return new THREE.MeshLambertMaterial({color:new THREE.Color(c),emissive:new THREE.Color(c),emissiveIntensity:glow}); }
+function themeWheel(g,x,y,z,r,w,tire,hub){ const t=mesh(G.cyl,tire,x,y,z,r,w,r,g); t.rotation.z=Math.PI/2; const h=mesh(G.cyl,hub,x+(x>0?w*.52:-w*.52),y,z,r*.45,.06,r*.45,g); h.rotation.z=Math.PI/2; return t; }
+function themeFlame(g,b,x,y,z,s,col){ const m=new THREE.MeshBasicMaterial({color:new THREE.Color(col||'#ff8a1a'),transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false});
+  const f=mesh(G.cone,m,x,y,z,s,s*2.4,s,g), c=mesh(G.cone,new THREE.MeshBasicMaterial({color:0xfff2a0,transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false}),x,y-s*.3,z,s*.5,s*1.4,s*.5,g);
+  b.deco.push((t,p)=>{ const k=.55+(p||0)*1.2+Math.sin(t*23+x)*.12; f.scale.set(s*(.8+k*.2),s*2.4*k,s*(.8+k*.2)); f.position.y=y+s*1.2*k; c.scale.set(s*.5,s*1.4*k,s*.5); c.position.y=y+s*.6*k; }); }
+function palmTree(g,x,z,h){ const tr=M('#7a5a36'); for(let k=0;k<5;k++) mesh(G.cyl,tr,x+Math.sin(k*.5)*.3*k/4,h*(k+.5)/5,z,.32-k*.03,h/5+.05,.32-k*.03,g);
+  const lf=M('#2f8a3a'); for(let k=0;k<7;k++){ const a=k/7*Math.PI*2, L=new THREE.Group(); L.position.set(x+.6,h,z); L.rotation.y=a; g.add(L); const leaf=mesh(G.box,lf,0,0,2,.9,.08,4,L); leaf.rotation.x=.45; } }
+function boothTheme(b,g){ const id=b.id, col=b.col, dark=M('#16131a'), tire=M('#141416'), deco=b.deco;
+  if(id==='techno'){ // a desert war rig parked side-on: the DJ plays on the flatbed, the spiked cab and fire-breathing stacks on the right
+    const rust=M('#8a4022'), rust2=M('#5a2e1a'), steel=M('#6d6a66'), hub=themeMat(col,1.2), glass=M('#ffb070',{glow:.5,op:.6});
+    B(16,.6,7,dark,-1,.55,-1,g); B(16.6,.45,8,rust,-1,1,-1,g); B(16.6,.12,.15,M(col,{glow:1.4}),-1,1.25,3.05,g);
+    [-7.4,-4.6,3.8].forEach(x=>[-1,1].forEach(s=>{ const w=mesh(G.cyl,tire,x,1.15,-1+s*3.4,1.15,.9,1.15,g); w.rotation.x=Math.PI/2; const h=mesh(G.cyl,hub,x,1.15,-1+s*3.92,.5,.06,.5,g); h.rotation.x=Math.PI/2; }));
+    // the cab: hood, cabin, windows, a skull on the grille and a cow-catcher of spikes
+    B(5,3,6.4,rust2,9.8,2.6,-1,g); B(3.6,1.8,6,rust,13.6,1.9,-1,g); B(4.4,2.2,6.2,rust,9.6,5.1,-1,g); B(.1,1.3,5,glass,11.85,5.2,-1,g); B(3.6,1.2,.1,glass,9.6,5.3,2.15,g);
+    [7,9.3,11.6].forEach(x=>mesh(G.cyl,tire,x+2.2,1.3,2.5,1.3,1,1.3,g).rotation.x=Math.PI/2); [11.5].forEach(x=>{ const w=mesh(G.cyl,tire,x,1.3,-4.5,1.3,1,1.3,g); w.rotation.x=Math.PI/2; });
+    B(.3,1.6,5.6,M('#2a2a2a'),15.5,1.7,-1,g); for(let z=-3.4;z<=1.4;z+=.6) B(.35,1.4,.12,steel,15.7,1.7,z,g);
+    for(let z=-3.5;z<=1.5;z+=1){ const sp=mesh(G.cone,steel,16.6,.9,z,.2,1.4,.2,g); sp.rotation.z=-Math.PI/2; }
+    const sk=new THREE.Group(); sk.position.set(15.9,3.5,-1); sk.rotation.y=Math.PI/2; g.add(sk); mesh(G.sph,M('#e8dccb'),0,0,0,.7,.8,.6,sk); B(.55,.3,.4,M('#e8dccb'),0,-.6,.15,sk);
+    const eye=themeMat('#ff2a1a',2); [-1,1].forEach(s=>mesh(G.sph,eye,s*.26,.08,.5,.15,.17,.08,sk));
+    [-1,1].forEach(s=>mesh(G.sph,M('#fff6c8',{glow:2}),15.8,2.4,-1+s*2.4,.35,.35,.35,g));
+    // twin exhaust stacks behind the cabin, blasting flame on every kick
+    [-1,1].forEach(s=>{ mesh(G.cyl,steel,7.1,5.2,-1+s*2.7,.35,8.4,.35,g); themeFlame(g,b,7.1,9.5,-1+s*2.7,.55); });
+    // speakers bolted to the bed, a cargo wall behind the decks and spikes along the flatbed
+    if(!GRILLE) GRILLE=new THREE.MeshLambertMaterial({map:grilleTex()});
+    [-7.6,4.4].forEach(x=>{ for(let k=0;k<2;k++){ B(2.2,1.7,2,dark,x,2.1+k*1.75,0,g); mesh(G.plane,GRILLE,x,2.1+k*1.75,1.01,2,1.5,1,g); } });
+    B(15,5.6,.4,rust2,-1.5,4,-4.8,g); for(let x=-8.5;x<=5.5;x+=2) B(.2,5.8,.5,steel,x,4,-4.6,g);
+    for(let x=-8.6;x<=6.4;x+=1.25){ const sp=mesh(G.cone,steel,x,1.25,3.3,.16,.9,.16,g); sp.rotation.x=Math.PI/2; }
+    mesh(G.cyl,M('#8a8478'),-3,2.2,-6,1,10,1,g).rotation.z=Math.PI/2; // fuel tank slung behind the wall
+    return {led:{x:-1.5,y:4.2,z:-4.55,w:12,h:4.6}}; }
+  if(id==='dnb'){ // a jungle crawler: tank tracks, camo deck, a turret that is one giant bass horn, vines and palms
+    const camo=[M('#4c6a32',{glow:.3}),M('#7a7a3a',{glow:.3}),M('#34502a',{glow:.3})], hub=themeMat(col,1.2);
+    B(17,.6,12.5,camo[0],0,.9,-1,g); for(let k=0;k<14;k++) B(rand(1.5,3.5),.06,rand(1,2.5),camo[k%3],rand(-7,7),1.23,rand(-6,4.5),g);
+    [-1,1].forEach(s=>{ B(2.4,2.4,14,tire,s*9.6,1.2,-1,g); B(2.5,.15,14.1,M(col,{glow:1.4}),s*9.6,2.3,-1,g); for(let z=-7.5;z<=5.5;z+=1) B(2.5,.25,.35,M('#2c2c2c'),s*9.6,2.45,z,g);
+      [-6,-2.5,1,4.5].forEach(z=>themeWheel(g,s*9.6,1.1,z,.95,2.5,M('#202020'),hub)); });
+    mesh(G.cyl,camo[2],0,2.4,-8.5,4,2.4,4,g); const tur=new THREE.Group(); tur.position.set(0,4.4,-8.5); g.add(tur);
+    mesh(G.cyl,camo[1],0,0,0,3,1.6,3,tur); const horn=mesh(new THREE.CylinderGeometry(2.6,.6,6,16,1,true),new THREE.MeshLambertMaterial({color:0x2a2a2a,side:THREE.DoubleSide}),0,1.8,2.4,1,1,1,tur); horn.rotation.x=-1.05;
+    const ring=mesh(new THREE.TorusGeometry(2.6,.18,6,24),M(col,{glow:1.6}),0,3.3,5,1,1,1,tur); ring.rotation.x=-1.05+Math.PI/2;
+    deco.push((t,p)=>{ tur.rotation.y=Math.sin(t*.4)*.35; ring.scale.setScalar(1+(p||0)*.12); });
+    [[-14,-4,9],[14,-5,10],[-12,-11,8],[12,-11,7.5]].forEach(([x,z,h])=>palmTree(g,x,z,h));
+    for(let k=0;k<10;k++){ const v=mesh(G.cyl,M('#2f7a34'),-8+k*1.8,rand(3,5.5),-6.4,.08,rand(2,4),.08,g); v.rotation.z=rand(-.3,.3); }
+    return {led:{x:0,y:4.6,z:-6.3,w:12,h:3.6}}; }
+  if(id==='dubstep'){ // a bass bus: an old coach parked behind the stage, a wall of subwoofers on the roof and a skull whose eyes flash on every drop
+    const body=M('#8a2a7a',{glow:.35}), hub=themeMat(col,1);
+    B(19,5,5,body,0,3.3,-9.2,g); B(19.2,.25,5.2,M(col,{glow:1.2}),0,1.1,-9.2,g); B(19.2,.25,5.2,M(col,{glow:1.2}),0,5.9,-9.2,g);
+    [-7,6].forEach(x=>[-1,1].forEach(s=>{ const w=themeWheel(g,x,.95,-9.2+s*2.6,.95,.6,tire,hub); w.rotation.z=0; w.rotation.x=Math.PI/2; }));
+    if(!GRILLE) GRILLE=new THREE.MeshLambertMaterial({map:grilleTex()});
+    for(let r=0;r<2;r++) for(let c=-3;c<=3;c++){ const y=7.1+r*2.1, x=c*2.5; B(2.4,2,2.4,dark,x,y,-9,g); mesh(G.plane,GRILLE,x,y,-7.79,2.2,1.8,1,g); }
+    const skull=new THREE.Group(); skull.position.set(0,12.6,-8.5); g.add(skull); mesh(G.sph,M('#efe6da',{glow:.45}),0,0,0,2,2.2,1.8,skull); B(2.2,1,1.4,M('#efe6da',{glow:.45}),0,-1.8,.3,skull);
+    for(let k=-2;k<=2;k++) B(.28,.5,.1,M('#1a1a1a'),k*.42,-1.9,1.02,skull);
+    const eyeM=themeMat(col,2); [-1,1].forEach(s=>mesh(G.sph,eyeM,s*.75,.15,1.45,.5,.55,.3,skull)); mesh(G.cone,M('#1a1a1a'),0,-.7,1.6,.25,.4,.15,skull);
+    deco.push((t,p)=>{ eyeM.emissiveIntensity=.6+(p||0)*3; skull.rotation.z=Math.sin(t*1.7)*.06; });
+    return {led:{x:0,y:3.5,z:-6.65,w:16,h:2.6}}; }
+  if(id==='hardstyle'){ // a fight-cage dome: a steel geodesic shell over the stage and fire cannons along the front that blast on the beat
+    const dome=mesh(new THREE.SphereGeometry(14,16,8,0,Math.PI*2,0,Math.PI/2),new THREE.MeshBasicMaterial({color:0x8a7f72,wireframe:true}),0,0,-1,1,1,1,g);
+    const dome2=mesh(new THREE.SphereGeometry(14.1,16,8,0,Math.PI*2,0,Math.PI/2),new THREE.MeshBasicMaterial({color:new THREE.Color(col),wireframe:true,transparent:true,opacity:.35}),0,0,-1,1,1,1,g);
+    deco.push((t,p)=>{ dome2.material.opacity=.15+(p||0)*.6; });
+    [-9,-4.5,4.5,9].forEach(x=>{ mesh(G.cyl,M('#3a3a3e'),x,.9,5.4,.55,1.8,.55,g); themeFlame(g,b,x,1.9,5.4,.75,'#ff5a1a'); });
+    for(let k=0;k<10;k++){ const a=k/10*Math.PI*2; B(.6,.4,.6,M('#c0b8a8'),Math.sin(a)*14,.2,-1+Math.cos(a)*14,g); }
+    return {}; }
+  if(id==='house'){ // a golden geodesic disco dome under the palms
+    mesh(new THREE.IcosahedronGeometry(13,1),new THREE.MeshBasicMaterial({color:0xe8b860,wireframe:true}),0,-2.5,-2,1,1,1,g);
+    const skin=mesh(new THREE.IcosahedronGeometry(12.9,1),new THREE.MeshBasicMaterial({color:new THREE.Color(col),transparent:true,opacity:.08,side:THREE.DoubleSide,depthWrite:false}),0,-2.5,-2,1,1,1,g);
+    deco.push((t,p)=>{ skin.material.opacity=.05+(p||0)*.1; });
+    [[-15,3,8],[15,3,8.5],[-13,-9,9.5],[13,-9,9]].forEach(([x,z,h])=>palmTree(g,x,z,h));
+    return {}; }
+  if(id==='afro'){ // a giant wooden sun with carved spokes, turning slowly behind the drummers
+    const sun=new THREE.Group(); sun.position.set(0,8.4,-6.5); g.add(sun); const wood=M('#8a5a2e');
+    mesh(new THREE.TorusGeometry(7,.55,8,40),wood,0,0,0,1,1,1,sun); mesh(new THREE.TorusGeometry(4,.35,8,32),wood,0,0,0,1,1,1,sun);
+    const core=mesh(new THREE.CircleGeometry(2.6,32),themeMat(col,1.2),0,0,.1,1,1,1,sun);
+    for(let k=0;k<16;k++){ const a=k/16*Math.PI*2, r=B(.4,k%2?3:4.6,.3,k%2?wood:M('#c07a3a'),0,0,0,sun); r.position.set(Math.sin(a)*(k%2?8.6:9.4),Math.cos(a)*(k%2?8.6:9.4),0); r.rotation.z=-a; }
+    deco.push((t,p)=>{ sun.rotation.z=t*.08; core.material.emissiveIntensity=.7+(p||0)*1.2; });
+    B(.8,7.6,.8,wood,-2,3.8,-7,g); B(.8,7.6,.8,wood,2,3.8,-7,g);
+    return {}; }
+  if(id==='melodic'){ // a steel lotus whose petals breathe open with the music
+    const P=[]; for(let k=0;k<9;k++){ const a=(k/8-.5)*2.3, pv=new THREE.Group(); pv.position.set(0,1.2,-6.5); pv.rotation.z=a; g.add(pv);
+      const pm=themeMat(k%2?'#4a3a6a':col,k%2?.15:.5); mesh(G.sph,pm,0,6,0,1.5,6.2,.25,pv); mesh(G.sph,M(col,{glow:1.4}),0,6,.2,.18,5.8,.06,pv); P.push([pv,a]); }
+    deco.push((t,p)=>{ const o=1+Math.sin(t*.35)*.12+(p||0)*.03; P.forEach(([pv,a])=>pv.rotation.z=a*o); });
+    return {led:{x:0,y:4.6,z:-5.4,w:12,h:5}}; }
+  if(id==='trance'){ // a glowing pyramid frame the rings spin inside
+    const pm=M(col,{glow:1.5}), ap=new THREE.Vector3(0,18,-3), up=new THREE.Vector3(0,1,0);
+    [[-11,8],[11,8],[11,-14],[-11,-14]].forEach(([x,z],i,A)=>{ const c=new THREE.Vector3(x,0,z), n=A[(i+1)%4], d=ap.clone().sub(c), L=d.length();
+      const e=mesh(G.cyl,pm,0,0,0,.22,L,.22,g); e.position.copy(c).addScaledVector(d,.5); e.quaternion.setFromUnitVectors(up,d.normalize()); B(i%2?.3:22,.3,i%2?22:.3,pm,(x+n[0])/2,.15,(z+n[1])/2,g); });
+    const cap=mesh(G.sph,M('#ffffff',{glow:2}),0,18.1,-3,.6,.6,.6,g); deco.push((t,p)=>cap.scale.setScalar(.5+(p||0)*.5));
+    return {}; }
+  if(id==='psy'){ // a grove of giant glowing mushrooms around a portal
+    const caps=[]; [[-13,-6,9,5],[13,-6,8,4.6],[-7,-10,12,6],[7,-10,11,5.4],[0,-13,15,7],[-17,1,5,3],[17,1,5.5,3.2]].forEach(([x,z,h,r],i)=>{
+      mesh(G.cyl,M('#e8e0d0'),x,h/2,z,r*.22,h,r*.22,g); const cm=themeMat(['#b06bff','#ff4fd8','#46d6ff','#6bff9a'][i%4],.5);
+      const cp=mesh(G.half,cm,x,h-.2,z,r,r*.55,r,g); caps.push(cm); for(let k=0;k<5;k++){ const a=k*1.3+i; mesh(G.sph,M('#ffffff',{glow:.6}),x+Math.sin(a)*r*.6,h+r*.25,z+Math.cos(a)*r*.6,r*.1,r*.06,r*.1,g); } });
+    const portal=mesh(new THREE.TorusGeometry(5,.3,8,40),M(col,{glow:1.6}),0,6.5,-7,1,1,1,g);
+    deco.push((t,p)=>{ caps.forEach((m,i)=>m.emissiveIntensity=.3+(p||0)*.9*((i%2)?1:.6)); portal.rotation.z=t*.5; });
+    return {}; }
+  return {}; }
 function buildBooth(b,a){
   const R=b.R||98, col=new THREE.Color(b.col);
   const g=new THREE.Group(); g.position.set(Math.sin(a)*R,0,Math.cos(a)*R); g.rotation.y=a+Math.PI; scene.add(g);
   b.group=g; b.pos=g.position.clone(); b.sel=0; b.target=0; b.running=false; b.lightBase=2.4; b.laserBase=.55;
-  const dark=M('#1a1220'), metal=M('#6f6a74'), glowC=M(b.col,{glow:1.4});
-  B(20,1.2,11,dark,0,.6,-1,g); B(20,.15,.15,glowC,0,1.25,4.5,g);
-  [[-9,-5.5],[9,-5.5],[-9,3.5],[9,3.5]].forEach(([x,z])=>B(.35,10,.35,metal,x,5,z,g));
-  B(18.4,.35,.35,metal,0,10,3.5,g); B(18.4,.35,.35,metal,0,10,-5.5,g); B(.35,.35,9,metal,-9,10,-1,g); B(.35,.35,9,metal,9,10,-1,g);
-  const lt=ledTex(b.id,b.col); const ledMat=new THREE.MeshBasicMaterial({map:lt}); const led=new THREE.Mesh(G.plane,ledMat); led.scale.set(16,6.5,1); led.position.set(0,5.4,-5.4); g.add(led);
+  const dark=M('#1a1220'), metal=M('#6f6a74'), glowC=M(b.col,{glow:1.4}), TH=BOOTH_THEME[b.id]||{};
+  b.deco=b.deco||[]; const look=boothTheme(b,g);
+  if(!TH.bed){ B(20,1.2,11,dark,0,.6,-1,g); B(20,.15,.15,glowC,0,1.25,4.5,g); }
+  const lt=ledTex(b.id,b.col); const ledMat=new THREE.MeshBasicMaterial({map:lt}); const led=new THREE.Mesh(G.plane,ledMat); const LP=look.led||{x:0,y:5.4,z:-5.4,w:16,h:6.5}; led.scale.set(LP.w,LP.h,1); led.position.set(LP.x,LP.y,LP.z); led.visible=TH.led!==0; g.add(led);
   B(4.6,1.1,1.4,dark,0,1.75,1.2,g); B(4.6,.08,1.42,glowC,0,2.3,1.2,g);
   djGear(g,b);
-  speakerStacks(g);
+  if(!TH.noSpk) speakerStacks(g);
   const sign=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:signTex(b.name,b.camp,b.col),transparent:true,side:THREE.DoubleSide,fog:false}));
   sign.scale.set(13,3.25,1); sign.position.set(0,12.3,3.5); g.add(sign);
   const dj=buildCharacter(randomConfig()); dj.root.position.set(0,1.2,-.2); g.add(dj.root); b.dj=dj; djPhones(dj);
@@ -1364,9 +1458,7 @@ function buildBooth(b,a){
   const lg=new THREE.BoxGeometry(.07,.07,46); lg.translate(0,0,23);
   const lm=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.5,blending:THREE.AdditiveBlending,depthWrite:false});
   b.lasers=[]; for(let k=0;k<Q.lasers;k++){ const L=new THREE.Mesh(lg,lm); L.position.set(-7+k*(14/Math.max(1,Q.lasers-1)),9.6,3.3); g.add(L); b.lasers.push(L); } b.laserMat=lm;
-  b.deco=b.deco||[];
-  if(b.id==='techno'){ for(let x=-8;x<=8;x+=LOW?4:2) B(.12,9,.12,metal,x,5,-6.2,g); for(let y=1;y<10;y+=LOW?4:2) B(17,.12,.12,metal,0,y,-6.2,g);
-    b.strobe=B(16,.4,.3,new THREE.MeshBasicMaterial({color:0xffffff}),0,9.4,3.6,g); }
+  if(b.id==='techno') b.strobe=B(14,.3,.3,new THREE.MeshBasicMaterial({color:0xffffff}),-1.5,7,-4.5,g);
   if(b.id==='house'){ const ball=new THREE.Mesh(new THREE.IcosahedronGeometry(1.4,1),new THREE.MeshPhongMaterial({color:0xdddddd,flatShading:true,shininess:120,emissive:0x332211}));
     ball.position.set(0,8.6,2); g.add(ball); b.deco.push(t=>{ball.rotation.y=t*.8;}); }
   if(b.id==='afro'){ [-7,-3.5,3.5,7].forEach(x=>{ B(.3,4,.3,M('#5a3a22'),x,3.2,4.2,g); const fl=mesh(G.cone,M('#ffb030',{glow:1.6}),x,5.6,4.2,.35,.9,.35,g); b.deco.push(t=>{fl.scale.y=.8+Math.sin(t*13+x)*.25;}); });
@@ -1762,7 +1854,7 @@ function loop(){
     b.lasers.forEach((L,k)=>{ L.rotation.y=Math.sin(t*.7+k*1.3+beat*.15)*.75; L.rotation.x=.22+Math.sin(t*.5+k)*.14; });
     b.ledTex.offset.x=(t*.15)%1; b.ledMat.color.setScalar(.45+pulse*.55);
     if(b.strobe) b.strobe.visible=night && (Math.floor(beat*2)%8===0) && frac<.2;
-    b.deco.forEach(f=>f(t));
+    b.deco.forEach(f=>f(t,pulse));
     if(d<90) poseChar(b.dj,'dj',t,beat);
   }
   updaters.forEach(f=>f(t,dt));
