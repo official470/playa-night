@@ -24,6 +24,7 @@ h1 small{display:block;font-family:"Noto Sans KR",sans-serif;font-size:12px;colo
 .btn{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;min-height:40px}
 .btn:hover{border-color:var(--muted)}
 .btn.main{background:var(--pink);border-color:var(--pink);color:#1d0f1c}
+a.btn{display:inline-flex;align-items:center;text-decoration:none;color:var(--text)}
 .btn.main:disabled{opacity:.45;cursor:default}
 .btn.sm{padding:5px 10px;min-height:32px;font-size:13px}
 .btn.danger{color:#ffb4b4}
@@ -115,6 +116,7 @@ details.setup li{margin:4px 0}
   <div class="clock" id="clock" aria-label="현재 시각"></div>
   <span class="grow"></span>
   <span class="chip" id="conn">연결 확인 중</span>
+  <a class="btn" id="playGame" href="./" target="_blank" rel="noopener">🎮 게임 들어가기</a>
   <button class="btn main" id="publish" disabled>게임에 게시하기</button>
   <p id="status" role="status" aria-live="polite"></p>
 </header>
@@ -347,6 +349,7 @@ $('#form').addEventListener('submit',e=>{ e.preventDefault(); const s=formSlot()
   const S=slotsOf(cur); if(editIdx>=0) S[editIdx]=s; else S.push(s); dirty=true;
   status(`${fmt(s.start)} 편성을 ${editIdx>=0?'고쳤어요':'추가했어요'}. 위의 ‘게임에 게시하기’를 눌러야 반영돼요`,'ok'); resetForm(); render(); });
 $('#publish').addEventListener('click',publish);
+$('#playGame').addEventListener('click',()=>{ $('#playGame').href='./?v='+Date.now(); });
 $('#saveTok').addEventListener('click',async()=>{ token=$('#token').value.trim(); try{ localStorage.setItem('playa-admin-token',token); }catch(e){} $('#token').value=''; await checkConn(); await load(); });
 $('#clearTok').addEventListener('click',()=>{ token=''; try{ localStorage.removeItem('playa-admin-token'); }catch(e){} checkConn(); render(); status('토큰을 지웠어요'); });
 addEventListener('beforeunload',e=>{ if(dirty){ e.preventDefault(); e.returnValue=''; } });
