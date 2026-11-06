@@ -17,7 +17,9 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
 button,input,textarea,select{font:inherit;color:inherit}
 a{color:var(--cyan)}
 header{position:sticky;top:0;z-index:5;background:rgba(36,28,56,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:calc(14px + env(safe-area-inset-top,0px)) 20px 12px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;border-bottom:1px solid var(--line)}
-header .hlogo{height:44px;width:auto;filter:drop-shadow(0 0 10px rgba(255,40,40,.35))}
+header .hlogo{height:44px;width:auto;animation:neonHue 7s linear infinite}
+@keyframes neonHue{0%{filter:drop-shadow(0 0 5px #ff2a2a) drop-shadow(0 0 14px #ff2a2a) saturate(1.6) brightness(1.25) hue-rotate(0deg)}100%{filter:drop-shadow(0 0 5px #ff2a2a) drop-shadow(0 0 14px #ff2a2a) saturate(1.6) brightness(1.25) hue-rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){ header .hlogo{animation:none} }
 @media (max-width:760px){ header .hlogo{height:30px} }
 h1{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:26px;line-height:1.1;margin:0}
 h1 small{display:block;font-family:"Noto Sans KR",sans-serif;font-size:12px;color:var(--muted);margin-top:4px}

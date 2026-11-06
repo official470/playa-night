@@ -78,13 +78,18 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 
 /* splash: REAL HOUSE CLUB logo on black */
 #loading .ld{display:flex;flex-direction:column;align-items:center;gap:18px}
-#loading .ldlogo{width:min(72vw,460px);height:auto;filter:drop-shadow(0 0 28px rgba(255,30,30,.45));animation:ldGlow 2.4s ease-in-out infinite}
+#loading .ldlogo{width:min(72vw,460px);height:auto}
 #loading .ldtx{font-family:"Noto Sans KR",sans-serif;font-size:14px;font-weight:700;letter-spacing:.2em;color:rgba(255,120,120,.75)}
 #loading{transition:opacity .5s ease}
 #loading.out{opacity:0;pointer-events:none}
-@keyframes ldGlow{50%{filter:drop-shadow(0 0 44px rgba(255,40,40,.7));transform:scale(1.02)}}
-@media (prefers-reduced-motion: reduce){ #loading .ldlogo{animation:none} }
-.brandlogo{display:block;height:46px;width:auto;margin:0 0 8px -4px;filter:drop-shadow(0 0 10px rgba(255,40,40,.35))}
+/* neon logo: layered glow that keeps cycling through the colours (the glow is hue-rotated with the logo) */
+.neon{animation:neonHue 7s linear infinite,neonFlick 3.2s ease-in-out infinite;will-change:filter}
+@keyframes neonHue{
+  0%{filter:drop-shadow(0 0 3px rgba(255,60,60,.9)) drop-shadow(0 0 12px rgba(255,42,42,.55)) drop-shadow(0 0 26px rgba(255,42,42,.35)) saturate(1.5) brightness(1.1) hue-rotate(0deg)}
+  100%{filter:drop-shadow(0 0 3px rgba(255,60,60,.9)) drop-shadow(0 0 12px rgba(255,42,42,.55)) drop-shadow(0 0 26px rgba(255,42,42,.35)) saturate(1.5) brightness(1.1) hue-rotate(360deg)}}
+@keyframes neonFlick{0%,100%{opacity:1}46%{opacity:1}48%{opacity:.82}50%{opacity:1}52%{opacity:.9}54%{opacity:1}}
+@media (prefers-reduced-motion: reduce){ .neon{animation:none;filter:drop-shadow(0 0 10px #ff2a2a) saturate(1.5) brightness(1.2)} }
+.brandlogo{display:block;height:46px;width:auto;margin:0 0 8px -4px}
 @media (max-width:760px){ .brandlogo{height:32px;margin-bottom:4px} }
 .lu-head .lulogo{height:40px;width:auto;margin-right:10px;vertical-align:middle}
 .lu-head>div{display:flex;align-items:center;flex-wrap:wrap}
@@ -650,14 +655,14 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
 </style>
 </head>
 <body>
-<section id="lineup" hidden aria-label="DJ 편성표" role="dialog" aria-modal="true"><div class="lu-in"><div class="lu-head"><div><img class="lulogo" src="assets/logo.png" alt="REAL HOUSE CLUB"><b>DJ 편성표</b><small id="luToday">LINEUP · 지점별 클럽·부스 DJ 타임테이블</small></div><button id="luClose">닫기</button></div><div class="lu-tabs" id="luTabs" role="tablist"></div><div id="luBody"></div></div></section>
+<section id="lineup" hidden aria-label="DJ 편성표" role="dialog" aria-modal="true"><div class="lu-in"><div class="lu-head"><div><img class="lulogo neon" src="assets/logo.png" alt="REAL HOUSE CLUB"><b>DJ 편성표</b><small id="luToday">LINEUP · 지점별 클럽·부스 DJ 타임테이블</small></div><button id="luClose">닫기</button></div><div class="lu-tabs" id="luTabs" role="tablist"></div><div id="luBody"></div></div></section>
 <canvas id="c" aria-label="버닝맨 3D 월드"></canvas>
-<div id="loading"><div class="ld"><img src="assets/logo.png" alt="REAL HOUSE CLUB" class="ldlogo"><span class="ldtx">플라야로 가는 중</span></div></div>
+<div id="loading"><div class="ld"><img src="assets/logo.png" alt="REAL HOUSE CLUB" class="ldlogo neon"><span class="ldtx">플라야로 가는 중</span></div></div>
 
 <section id="creator" class="creator" hidden aria-label="캐릭터 만들기">
   <header>
     <div>
-      <img class="brandlogo" src="assets/logo.png" alt="REAL HOUSE CLUB">
+      <img class="brandlogo neon" src="assets/logo.png" alt="REAL HOUSE CLUB">
       <h1>플라야 아이디</h1>
       <p>이름과 맵만 고르고 바로 입장해요. 옷과 아이템은 입장한 뒤 메뉴의 스타일 꾸미기에서 골라요.</p>
     </div>
