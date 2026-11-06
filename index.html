@@ -576,7 +576,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
     <div class="npbody">
       <p id="npState"></p>
       <ol id="trackList"></ol>
-      <button id="mcBtn" class="upload fm">🎛️ 유명 DJ 세트 틀기 (Mixcloud)</button>
+      <button id="mcBtn" class="upload fm">🎛️ DJ 세트 틀기 (Mixcloud)</button>
       <button id="jukeBtn" class="upload fm">바로 재생되는 전체 곡 목록</button>
       <label class="upload">내 음악 파일 추가<input type="file" id="fileIn" accept="audio/*"></label>
       <p class="hint">추가한 파일은 이 부스에서 반복 재생돼요. 아이폰은 무음 모드를 끄면 소리가 나요.</p>
@@ -3287,13 +3287,13 @@ const MC_ZN={shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'�
 // each genre pulls recent shows from official DJ / label channels
 const MC_G={techno:['테크노',['residentadvisor','CarlCox']],house:['하우스',['Defectedrecords']],afro:['아프로 하우스',['keinemusik']],
   melodic:['멜로딕 테크노',['afterlife','johndigweed']],trance:['트랜스',['ArminvanBuuren']],deephouse:['딥하우스',['anjunadeep']],
-  dnb:['드럼앤베이스',['hospitalrecords']],dubstep:['덥스텝',['ukfmusic']],eclectic:['언더그라운드',['FACTMixArchive']]};
+  dnb:['드럼앤베이스',['hospitalrecords']],psy:['사이키델릭 트랜스',['faeriepiraterainbowsparkle']],hardstyle:['하드스타일',['Q-dance']],dubstep:['덥스텝',['ukfmusic']],eclectic:['언더그라운드',['FACTMixArchive']]};
 const MC_ORIGIN='https://player-widget.mixcloud.com';
 const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
-let mcPick={}; try{ mcPick=JSON.parse(localStorage.getItem('playa-mc-genre')||'{}')||{}; }catch(e){ mcPick={}; }
-const MC_DEF={techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'trance',dubstep:'dubstep',hardstyle:'techno',
+const MC_DEF={techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
   shelter:'techno',paper:'house',sphere:'melodic',jazz:'eclectic',disco:'house',potty:'house','nm-jandi':'house','nm-hanok':'afro','nm-soop':'techno','nm-exp':'eclectic','nm-hut':'deephouse','nm-aero':'house','bm-war':'techno','bm-bus':'house'};
-function mcDefault(T){ const p=mcPick[T.key]; if(MC_G[p]) return p; return MC_DEF[T.kind==='booth'?T.b.id:T.Z.id]||'deephouse'; }
+// every stage plays only its own genre
+function mcDefault(T){ return MC_DEF[T.kind==='booth'?T.b.id:T.Z.id]||'deephouse'; }
 // the widget speaks a small postMessage protocol; talking to it directly avoids loading Mixcloud's helper script
 function mcCall(name,...args){ if(!MC.iframe||!MC.iframe.contentWindow) return; MC.iframe.contentWindow.postMessage(JSON.stringify({type:'method',data:{methodId:++MC.mid,methodName:name,args}}),MC_ORIGIN); }
 addEventListener('message',e=>{ if(e.origin!==MC_ORIGIN||!MC.iframe||e.source!==MC.iframe.contentWindow) return; let m; try{ m=JSON.parse(e.data); }catch(x){ return; }
@@ -3308,7 +3308,7 @@ async function mcFetch(g){ if(MC.cache[g]&&MC.cache[g].length) return MC.cache[g
   const lists=await Promise.all(MC_G[g][1].map(u=>fetch(`https://api.mixcloud.com/${encodeURIComponent(u)}/cloudcasts/?limit=30`).then(r=>r.ok?r.json():{data:[]}).then(d=>d.data||[]).catch(()=>[])));
   const L=lists.flat().filter(c=>c&&c.key&&c.audio_length>600&&!c.is_exclusive);
   for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } MC.cache[g]=L; return L; }
-async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g; mcPick[T.key]=g; try{ localStorage.setItem('playa-mc-genre',JSON.stringify(mcPick)); }catch(e){}
+async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g; 
   mcStatus(`${MC_G[g][0]} DJ 세트를 찾는 중이에요`);
   MC.list=await mcFetch(g); if(MC.target!==T||MC.genre!==g) return;
   if(!MC.list.length){ mcStatus(''); toast('Mixcloud에 연결하지 못했어요. 인터넷 연결을 확인해 주세요'); mcStop(); return; }
@@ -3352,7 +3352,7 @@ async function mcKoUi(p,key,raw,live){ const src=mcTrunc(raw,700), html=x=>esc(x
   catch(e){ if(live()) p.innerHTML=`<span class='hint'>지금은 번역할 수 없어서 원문으로 보여 드려요.</span><br>`+html(src); } }
 function mcDate(t){ const d=new Date(t); return isNaN(d)?'':`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`; }
 function mcStoryUi(){ const el=document.getElementById('mcStory'); if(!el) return; const c=MC.cur;
-  if(!c||!MC.target){ if(el.dataset.key!=='-'){ el.dataset.key='-'; el.innerHTML=`<p class='hint'>장르를 고르면 지금 나오는 세트와 DJ 이야기가 여기에 나와요.</p>`; } return; }
+  if(!c||!MC.target){ if(el.dataset.key!=='-'){ el.dataset.key='-'; el.innerHTML=`<p class='hint'>부스 가까이에서 세트를 틀면 지금 나오는 세트와 DJ 이야기가 여기에 나와요.</p>`; } return; }
   if(el.dataset.key===c.key) return; el.dataset.key=c.key;
   const tags=(c.tags||[]).map(t=>t.name).filter(Boolean).slice(0,5), who=c.user&&c.user.name||'';
   const sum=`${who?esc(who)+' 채널이 ':''}${c.created_time?mcDate(c.created_time)+'에 올린 ':''}${c.audio_length?Math.round(c.audio_length/60)+'분짜리 ':''}세트예요.`;
@@ -3367,12 +3367,12 @@ function mcUi(){ const box=document.getElementById('mcNow'); if(!box) return; co
   mcStoryUi(); if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small);
   box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud에서 보기</a></div>`;
   mcStatus(`${MC.target.name}에서 재생 중`); }
-function openMcPanel(){ if(SCH.url) return openSchPanel(); const T=musicTarget(), on=MC.target&&MC.target.key===T.key, g=on?MC.genre:mcDefault(T);
-  const chips=Object.keys(MC_G).map(k=>`<button data-act='g:${k}' aria-pressed='${on&&MC.genre===k}'>${MC_G[k][0]}</button>`).join('');
-  openSp('유명 DJ 세트',`${T.name} · Mixcloud`,`<div class='gchips'>${chips}</div><div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='g:${g}' class='hot'>${esc(MC_G[g][0])} 틀기</button><button data-act='next'>다음 세트</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button><button data-act='auto' style='grid-column:1/-1'>${mcaLabel()}</button></div>`,a=>{
-    if(a.startsWith('g:')){ const k=a.slice(2); document.querySelectorAll('#spBody .gchips button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.act===a)));
-      const hb=document.querySelector('#spBody .acts .hot'); if(hb){ hb.dataset.act=a; hb.textContent=`${MC_G[k][0]} 다른 세트`; } mcPlay(k,musicTarget()); }
-    else if(a==='next'){ if(MC.target) mcNext(); else mcPlay(g,musicTarget()); }
+function mcNear(T){ return mcLevel(T)>=.35; }
+function openMcPanel(){ if(SCH.url) return openSchPanel(); const T=musicTarget(), g=mcDefault(T), gn=MC_G[g][0], on=MC.target&&MC.target.key===T.key;
+  openSp('DJ 세트',`${T.name} · ${gn} · Mixcloud`,`${mcNear(T)?'':`<p class='quote'>${esc(T.name)} 가까이 가야 ${esc(gn)} 세트를 틀 수 있어요. 부스마다 그 부스 장르만 나와요.</p>`}<div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='play' class='hot' style='grid-column:1/-1'>${esc(gn)} ${on?'다른 세트':'세트 틀기'}</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button><button data-act='auto' style='grid-column:1/-1'>${mcaLabel()}</button></div>`,a=>{
+    if(a==='play'){ const N=musicTarget(), k=mcDefault(N); if(!mcNear(N)){ toast(`${N.name} 가까이 가야 ${MC_G[k][0]} 세트를 틀 수 있어요`); return; }
+      if(MC.target&&MC.target.key===N.key&&MC.list.length) mcNext(); else mcPlay(k,N);
+      const hb=document.querySelector("#spBody [data-act='play']"); if(hb) hb.textContent=`${MC_G[k][0]} 다른 세트`; }
     else if(a==='toggle'){ if(MC.iframe) mcCall('togglePlay'); }
     else if(a==='auto'){ MCA.on=!MCA.on; mcaSave(); const b=document.querySelector("#spBody [data-act='auto']"); if(b) b.textContent=mcaLabel(); toast(MCA.on?'Mixcloud 자동 재생을 켰어요':'Mixcloud 자동 재생을 껐어요'); }
     else if(a==='stop'){ MCA.skip=MC.target?MC.target.key:musicTarget().key; mcStop(); toast('게임 음악으로 돌아왔어요'); } });
