@@ -4834,9 +4834,7 @@ function svidNext(){ const V=svidCurV(); SVID.count++; if(!V.fail&&SVID.count<V.
   SVID.count=0; if(V.el&&!V.el.paused) V.el.pause(); SVID.cur=svidNextIdx(SVID.cur); svidEnsure(); const N=svidCurV(); if(N.el){ try{ N.el.currentTime=0; }catch(e){} } svidPlay(); svidApply(); }
 function svidApply(){ if(!SPH.dome) return; const V=svidCurV(); SPH.dome.material=(SVID.on&&V&&V.ok&&V.mat)?V.mat:SPH.int; if(SVID.btn) SVID.btn.textContent=SVID.on?'🎞 영상':'🎞 그래픽'; }
 updaters.push((t,dt)=>{ const inB=MAP==='sphere'&&SPH.inside;
-  if(!SVID.btn){ const su=document.getElementById('seatUI'), up=document.getElementById('seatUp'); if(su&&up){ const b=document.createElement('button'); b.id='seatScr'; b.textContent='🎞 영상'; b.addEventListener('click',()=>{ SVID.on=!SVID.on; if(SVID.on) svidPlay(); else SV_LIST.forEach(V=>{ if(V.el&&!V.el.paused) V.el.pause(); }); svidApply(); toast(SVID.on?'돔 스크린에 영상을 틀었어요':'돔 스크린을 그래픽 비주얼로 바꿨어요'); }); su.insertBefore(b,up); SVID.btn=b;
-    const v=document.createElement('button'); v.id='seatView'; const vl=()=>{ v.textContent=SPH.headCam===false?'🎥 뒤에서':'👤 머리 위'; }; vl();
-    v.addEventListener('click',()=>{ SPH.headCam=SPH.headCam===false; pitch=SPH.headCam?-.15:.06; vl(); toast(SPH.headCam?'내 머리 위 시점으로 공연을 봐요':'내 뒤에서 보는 시점으로 바꿨어요'); }); su.insertBefore(v,up); } }
+  // the dome always shows the videos and the show is always watched from above your head (no seat-bar toggles)
   if(inB){ svidEnsure(); const V=svidCurV(); if(SVID.on&&V&&!V.fail&&V.el&&V.el.paused&&t-SVID.tryT>2){ SVID.tryT=t; svidPlay(); } if(V&&V.mat){ const k=.82+(SPH.int.uniforms.uB.value||0)*.22; V.mat.color.setRGB(k,k,k); } }
   else SV_LIST.forEach(V=>{ if(V.el) svidRelease(V); }); });
 document.addEventListener('pointerdown',()=>{ const V=svidCurV(); if(MAP==='sphere'&&SPH.inside&&V&&V.el&&V.el.paused&&SVID.on&&!V.fail) svidPlay(); },true);
