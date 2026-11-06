@@ -4161,9 +4161,10 @@ function hyUndress(m){ if(m.dead||m.st==='out'||m.shirtless) return; const old=m
   const sh=new THREE.Mesh(G.box,M(old)); sh.scale.set(.42,.46,.06); sh.position.set(pos.x,pos.y+1.9,pos.z); scene.add(sh); HY.shirts.push({m:sh,v:new THREE.Vector3(rand(-1.5,1.5),rand(4.5,6.5),rand(-1.5,1.5)),w:new THREE.Vector3(rand(-8,8),rand(-8,8),rand(-8,8)),life:2}); }
 function hyCheerSound(l){ if(!ac||!master) return; const tt=ac.currentTime; if(!HY.nb){ const b=ac.createBuffer(1,Math.floor(ac.sampleRate*1.2),ac.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; HY.nb=b; }
   const s=ac.createBufferSource(); s.buffer=HY.nb; const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000+Math.random()*300; bp.Q.value=.55; const g=ac.createGain(); g.gain.setValueAtTime(0.0001,tt); g.gain.linearRampToValueAtTime(.04+.025*Math.min(l,5),tt+.12); g.gain.exponentialRampToValueAtTime(.0005,tt+.95); s.connect(bp); bp.connect(g); g.connect(master); s.start(tt); s.stop(tt+1.1); }
-function hyLevel(k){ if(k===2){ for(let i=0;i<(LOW?6:10);i++) HY.queue.push({sp:1}); toast('🔥 2분 돌파! 사람들이 몰려와 리듬에 맞춰 함성을 질러요'); }
-  else if(k===3){ for(let i=0;i<(LOW?8:18);i++) HY.queue.push({sp:1}); toast('🔥🔥 3분! 주변이 사람들로 가득 차기 시작해요'); }
-  else if(k===4){ for(let i=0;i<(LOW?3:6);i++) HY.queue.push({sp:1}); toast('🔥🔥🔥 4분! 분위기가 최고조예요'); }
+// milestones only: nobody gathers around or follows the player any more
+function hyLevel(k){ if(k===2){ toast('🔥 2분 돌파! 분위기가 달아올라요'); }
+  else if(k===3){ toast('🔥🔥 3분! 계속 달려요'); }
+  else if(k===4){ toast('🔥🔥🔥 4분! 분위기가 최고조예요'); }
   else if(k===5&&!HY.bonus){ HY.bonus=true; addCoins(50); coinBurst(50); toast('🏆 5분 연속 스테이지 댄스! 보너스 +50코인'); } }
 updaters.push((t,dt)=>{
   if(STG.on) HY.total+=dt; else if(STG.t===0&&HY.total>0){ HY.total=0; HY.lvl=0; HY.bonus=false; HY.queue=[]; HY.mem.forEach(m=>{ m.st='out'; }); }
@@ -4180,10 +4181,6 @@ updaters.push((t,dt)=>{
       else { m.st='dance'; const fs=m.faceDJ&&stg; m.P.root.rotation.y=fs?Math.atan2(stg.x-p.x,stg.z-p.z):Math.atan2(pState.x-p.x,pState.z-p.z); poseChar(m.P,'dance',t+m.ph,beat); if(armsUp) m.P.sh.forEach((sh,i)=>{ sh.rotation.x=-2.8+Math.sin(t*10+m.ph+i)*.15; }); } }
     HY.mem=HY.mem.filter(m=>!m.dead); }
   if(HY.shirts.length) HY.shirts=HY.shirts.filter(s=>{ s.life-=dt; if(s.life<=0){ scene.remove(s.m); return false; } s.v.y-=9.8*dt; s.m.position.addScaledVector(s.v,dt); s.m.rotation.x+=s.w.x*dt; s.m.rotation.y+=s.w.y*dt; s.m.rotation.z+=s.w.z*dt; return true; }); });
-
-// dancing near a stage: the player turns to face the DJ (walking still steers freely)
-updaters.push((t,dt)=>{ if(!inGame||pAct!=='dance'||pState.veh||sleepS||(MAP==='sphere'&&SPH.seat)) return; const st=hyStage(hyBest()); if(!st) return;
-  const want=Math.atan2(st.x-pState.x,st.z-pState.z), d=Math.atan2(Math.sin(want-pState.face),Math.cos(want-pState.face)); if(Math.abs(d)>.02) pState.face+=d*Math.min(1,dt*3); });
 
 /* ================= DESERT OASIS (playa) ================= */
 const OA={fillT:0,aud:null};
