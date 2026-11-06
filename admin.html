@@ -168,7 +168,7 @@ details.setup li{margin:4px 0}
       </label>
       <div class="full pv" id="pv"></div>
       <label>시작 시각 <small>이 기기 시간대 기준</small><input id="start" type="datetime-local" required></label>
-      <label>길이 (분) <small>세트 길이를 불러오면 자동으로 채워져요</small><input id="dur" type="number" min="5" max="720" step="5" value="60" required></label>
+      <label>길이 (분) <small>세트 길이 그대로 자동으로 채워져요 · <span id="endAt"></span></small><input id="dur" type="number" min="1" max="720" step="1" value="60" required></label>
       <div class="full row small"><button type="button" class="btn sm" id="nowBtn">지금 바로 시작</button><button type="button" class="btn sm" id="afterBtn">마지막 편성 바로 뒤에</button><span class="warn" id="overlap"></span></div>
       <label>제목<input id="title" placeholder="게임에 보일 세트 제목"></label>
       <label>DJ 이름<input id="dj" placeholder="예: Carl Cox"></label>
@@ -248,12 +248,18 @@ function render(){ renderNav(); $('#publish').disabled=!dirty||!token; $('#publi
 
 function formSlot(){ const url=$('#url').value.trim(), st=new Date($('#start').value).getTime(), dur=Math.round(+$('#dur').value);
   return {start:st,dur,url,title:$('#title').value.trim(),dj:$('#dj').value.trim(),art:meta&&meta.art||'',djIntro:$('#djIntro').value.trim(),musicIntro:$('#musicIntro').value.trim()}; }
-function checkOverlap(){ const el=$('#overlap'); const v=$('#start').value; if(!v){ el.textContent=''; return null; } const a=new Date(v).getTime(), b=a+(+$('#dur').value||0)*60000;
+function checkOverlap(){ const el=$('#overlap'); const v=$('#start').value; if(!v){ el.textContent=''; $('#endAt').textContent=''; return null; } const a=new Date(v).getTime(), b=a+(+$('#dur').value||0)*60000; $('#endAt').textContent=`${hm(a)} 시작 → ${hm(b)} 끝`;
   const hit=slotsOf(cur).find((s,i)=>i!==editIdx&&a<endOf(s)&&b>s.start); el.textContent=hit?`⚠ ${fmt(hit.start)} 편성(${hit.title||'제목 없음'})과 시간이 겹쳐요`:''; return hit; }
 function resetForm(){ editIdx=-1; meta=null; $('#form').reset(); $('#dur').value=60; $('#pv').innerHTML=''; $('#embed').innerHTML=''; $('#formTitle').textContent='편성 추가'; $('#addBtn').textContent='편성표에 추가'; $('#cancelEdit').hidden=true;
   const d=new Date(); d.setMinutes(0,0,0); d.setHours(d.getHours()+1); $('#start').value=toLocalInput(d.getTime()); checkOverlap(); }
 function fillForm(s){ $('#url').value=s.url; $('#start').value=toLocalInput(s.start); $('#dur').value=s.dur; $('#title').value=s.title||''; $('#dj').value=s.dj||''; $('#djIntro').value=s.djIntro||''; $('#musicIntro').value=s.musicIntro||''; meta={art:s.art||''}; showPv({title:s.title,dj:s.dj,art:s.art}); embed(s.url); checkOverlap(); }
 function showPv(m){ $('#pv').innerHTML=m&&(m.title||m.art)?`${m.art?`<img src="${esc(m.art)}" alt="">`:''}<div><b>${esc(m.title||'')}</b><br><span class="muted small">${esc(m.dj||'')}${m.min?' · '+m.min+'분':''}</span></div>`:''; }
+let scApiP=null;
+function scApi(){ if(window.SC&&SC.Widget) return Promise.resolve(); if(!scApiP) scApiP=new Promise((res,rej)=>{ const sc=document.createElement('script'); sc.src='https://w.soundcloud.com/player/api.js'; sc.onload=()=>window.SC&&SC.Widget?res():rej(); sc.onerror=()=>{ scApiP=null; rej(); }; document.head.appendChild(sc); }); return scApiP; }
+// read the real title, artist, artwork and length from the SoundCloud player once it is ready
+function scDetails(iframe,u){ return scApi().then(()=>new Promise(res=>{ const w=SC.Widget(iframe); let done=false; const t=setTimeout(()=>{ if(!done){ done=true; res(null); } },12000);
+  w.bind(SC.Widget.Events.READY,()=>w.getCurrentSound(snd=>{ if(done) return; done=true; clearTimeout(t); if(!snd) return res(null);
+    const art=(snd.artwork_url||(snd.user&&snd.user.avatar_url)||'').replace('-large','-t500x500'); res({title:snd.title,dj:snd.user&&snd.user.username,art,sec:Math.round((snd.full_duration||snd.duration||0)/1000)}); })); })).catch(()=>null); }
 function embed(u){ const k=srcOf(u), el=$('#embed'); if(!k){ el.innerHTML=''; return; }
   if(k==='mc'){ const path=new URL(u).pathname; el.innerHTML=`<iframe height="60" title="Mixcloud 미리듣기" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${encodeURIComponent(path)}" allow="autoplay"></iframe>`; }
   else el.innerHTML=`<iframe height="120" title="SoundCloud 미리듣기" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(u)}&visual=false&show_comments=false&hide_related=true" allow="autoplay"></iframe>`; }
@@ -263,11 +269,13 @@ async function fetchMeta(){ const u=$('#url').value.trim(), k=srcOf(u); if(!k){ 
   try{ let m;
     if(k==='mc'){ let path=new URL(u).pathname; if(!path.endsWith('/')) path+='/'; const r=await fetch('https://api.mixcloud.com'+path); const j=await r.json(); if(!j.key) throw new Error('찾을 수 없는 세트예요');
       if(j.is_exclusive) status('⚠ Mixcloud Select 구독자 전용 세트라 게임에서 재생되지 않아요. 다른 세트를 골라 주세요','err');
-      m={title:j.name,dj:j.user&&j.user.name,art:j.pictures&&(j.pictures['320wx320h']||j.pictures.large||j.pictures.medium),min:Math.round((j.audio_length||0)/60)}; }
+      m={title:j.name,dj:j.user&&j.user.name,art:j.pictures&&(j.pictures['320wx320h']||j.pictures.large||j.pictures.medium),min:Math.ceil((j.audio_length||0)/60),sec:j.audio_length||0}; }
     else { const r=await fetch('https://soundcloud.com/oembed?format=json&url='+encodeURIComponent(u)); if(!r.ok) throw new Error('찾을 수 없거나 퍼가기가 막힌 트랙이에요'); const j=await r.json();
       const by=(j.title||'').lastIndexOf(' by '); m={title:by>0?j.title.slice(0,by):j.title,dj:j.author_name,art:j.thumbnail_url,min:0}; }
-    meta=m; if(!$('#title').value) $('#title').value=m.title||''; if(!$('#dj').value) $('#dj').value=m.dj||''; if(m.min) $('#dur').value=Math.max(5,Math.ceil(m.min/5)*5);
-    showPv(m); embed(u); checkOverlap(); if(!/구독자 전용/.test($('#status').textContent)) status('불러왔어요. 시작 시각을 정하고 추가해 주세요','ok'); }
+    if(k==='sc'){ embed(u); const d=await scDetails($('#embed iframe'),u); if(d){ m.title=d.title||m.title; m.dj=d.dj||m.dj; if(d.art) m.art=d.art; m.min=Math.ceil(d.sec/60); m.sec=d.sec; } }
+    // a new address replaces the title, DJ and length with the set's own
+    meta=m; $('#title').value=m.title||''; $('#dj').value=m.dj||''; if(m.sec) $('#dur').value=Math.max(1,Math.ceil(m.sec/60));
+    showPv(m); if(k==='mc') embed(u); checkOverlap(); if(!/구독자 전용/.test($('#status').textContent)) status('불러왔어요. 시작 시각을 정하고 추가해 주세요','ok'); }
   catch(e){ status('정보를 불러오지 못했어요: '+e.message+'. 제목과 길이는 직접 넣어도 돼요','err'); embed(u); } }
 
 $('#booths').addEventListener('click',e=>{ const b=e.target.closest('[data-k]'); if(!b) return; cur=b.dataset.k; resetForm(); render(); setTag(BOOTH_TAG[cur]||'techno'); });
@@ -326,7 +334,7 @@ $('#afterBtn').addEventListener('click',()=>{ const S=slotsOf(cur); const last=S
 $('#form').addEventListener('submit',e=>{ e.preventDefault(); const s=formSlot();
   if(!srcOf(s.url)){ status('mixcloud.com 또는 soundcloud.com 주소를 넣어 주세요','err'); $('#url').focus(); return; }
   if(!Number.isFinite(s.start)){ status('시작 시각을 정해 주세요','err'); return; }
-  if(!(s.dur>=5)){ status('길이는 5분 이상이어야 해요','err'); return; }
+  if(!(s.dur>=1)){ status('길이를 넣어 주세요','err'); return; }
   if(checkOverlap()){ status('다른 편성과 시간이 겹쳐요. 시간을 바꿔 주세요','err'); return; }
   const S=slotsOf(cur); if(editIdx>=0) S[editIdx]=s; else S.push(s); dirty=true;
   status(`${fmt(s.start)} 편성을 ${editIdx>=0?'고쳤어요':'추가했어요'}. 위의 ‘게임에 게시하기’를 눌러야 반영돼요`,'ok'); resetForm(); render(); });

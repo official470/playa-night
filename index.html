@@ -3311,7 +3311,7 @@ addEventListener('message',e=>{ if(e.origin!==MC_ORIGIN||!MC.iframe||e.source!==
 function mcEv(ev,pos){
   if(ev==='progress'||ev==='play'){ if(ev==='progress'&&Number.isFinite(pos)){ MC.pos=pos; MC.posAt=performance.now(); } MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
   else if(ev==='pause'){ MC.paused=true; mcUi(); }
-  else if(ev==='ended') mcNext();
+  else if(ev==='ended'){ if(MC.schId){ MC.paused=true; mcUi(); return; } mcNext(); } // a scheduled set plays once, start to end, then the slot is over
   else if(ev==='error'){ if(++MC.fails<4) mcNext(); else { toast('DJ 세트를 불러오지 못했어요'); mcStop(); } } }
 // SoundCloud: the official embed widget driven through its api.js (no key or login), used for sets an admin schedules
 let scApiP=null;
