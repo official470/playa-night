@@ -538,6 +538,65 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #np .npstory .origd summary{cursor:pointer;color:var(--muted)}
 .np.collapsed .npbody{display:none}
 .np .nphead{cursor:pointer}
+
+/* DJ lineup board */
+#lineup{position:fixed;inset:0;z-index:70;background:rgba(8,5,16,.74);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:calc(12px + var(--sat)) 12px calc(12px + var(--sab))}
+#lineup[hidden]{display:none}
+.lu-in{width:min(1000px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;background:linear-gradient(160deg,#2c1f45,#170f24 60%);border:1px solid var(--panel-line);border-radius:22px;padding:18px 18px 22px;box-shadow:0 30px 80px rgba(0,0,0,.6);color:var(--text)}
+.lu-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:-18px;margin:-18px -18px 0;padding:18px 18px 10px;background:linear-gradient(#2c1f45 70%,rgba(44,31,69,0));z-index:2}
+.lu-head b{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:30px;line-height:1;display:block;letter-spacing:.01em}
+.lu-head small{display:block;color:var(--muted);font-size:12px;margin-top:6px;letter-spacing:.06em}
+.lu-head button,.lu-back{border:0;border-radius:999px;padding:9px 16px;background:var(--chip);color:var(--text);font:inherit;font-weight:700;cursor:pointer;flex:none}
+.lu-tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.lu-tabs button{border:1px solid var(--panel-line);background:transparent;color:var(--text);border-radius:999px;padding:7px 13px;font:inherit;font-size:13px;font-weight:700;white-space:nowrap;cursor:pointer}
+.lu-tabs button[aria-selected=true]{background:var(--text);color:#1a1024}
+.lu-tabs small{opacity:.7}
+#lineupBtn{position:fixed;left:12px;top:calc(64px + var(--sat));z-index:5;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:14px;border:1px solid var(--panel-line);color:var(--text);font:inherit;cursor:pointer;white-space:nowrap}
+#lineupBtn .lud{font-size:13px;font-weight:700}
+#lineupBtn b{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:15px;color:#ff7a2f}
+#lineupBtn em{font-style:normal;font-size:11px;font-weight:700;background:#ff3b5c;color:#fff;border-radius:999px;padding:1px 7px}
+#lineupBtn em[hidden]{display:none}
+@media (max-width:760px),(pointer:coarse){ #lineupBtn{left:10px;padding:7px 10px} #lineupBtn .lud{font-size:12px} #lineupBtn b{font-size:13px} }
+.lu-area{margin:14px 0 8px;font-weight:700;font-size:14px;color:var(--muted)}
+.mapc .lubtn .lud{font-family:"Noto Sans KR",sans-serif;font-weight:700;font-size:13px;color:var(--text)}
+.mapc .lubtn em{font-style:normal;margin-left:auto;font-family:"Noto Sans KR",sans-serif;font-size:11px;font-weight:700;background:#ff3b5c;color:#fff;border-radius:999px;padding:1px 7px}
+.lu-h{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:20px;margin:18px 0 10px;letter-spacing:.04em}
+.lu-h small{font-family:"Noto Sans KR",sans-serif;font-size:12px;color:var(--muted);letter-spacing:0;margin-left:6px}
+.lu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px 14px}
+.lu-grid.big{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.cd{display:flex;flex-direction:column;gap:3px;text-align:left;border:0;background:none;color:var(--text);font:inherit;padding:0;cursor:pointer;min-width:0}
+.cd b{font-size:15px;line-height:1.25;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1em}
+.cd .when{font-size:11px;font-weight:700;color:#ffcf3a}
+.cd.live .when{color:#ff3b5c}
+.cdw{position:relative;display:block;width:80%;aspect-ratio:1}
+.cdw .sleeve{position:absolute;inset:0;z-index:1;border-radius:6px;background:linear-gradient(135deg,#ff4fa8,#5b2bd6 55%,#1a1024);background-size:cover;background-position:center;box-shadow:0 10px 24px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.08);display:grid;place-items:center;overflow:hidden}
+.cdw .sleeve::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.18),transparent 35%)}
+.cdw .sleeve i{font-style:normal;font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-size:20px;line-height:1.1;text-align:center;padding:10px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.cdw .sleeve em{position:absolute;left:8px;top:8px;z-index:2;font-style:normal;font-size:11px;font-weight:700;background:#ff3b5c;color:#fff;border-radius:5px;padding:2px 7px;animation:luBlink 1.2s ease-in-out infinite}
+.cdw .disc{position:absolute;top:4%;left:8%;width:92%;aspect-ratio:1;border-radius:50%;z-index:0;transition:left .45s cubic-bezier(.2,.8,.2,1);background:radial-gradient(circle,#140c1c 0 8%,#e8e8f0 8.5% 10.5%,rgba(0,0,0,0) 11%),repeating-radial-gradient(circle,rgba(255,255,255,.07) 0 1px,rgba(0,0,0,0) 1px 3px),conic-gradient(from 20deg,#cfd6ff,#ffd3ef,#d2fff2,#fff2c2,#e0d0ff,#cfd6ff);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.cd:hover .disc,.cd:focus-visible .disc,.cd.live .disc,.lu-detail .disc,.lu-empty .disc{left:30%}
+.cd.live .disc,.lu-detail .disc{animation:luSpin 3.2s linear infinite}
+@keyframes luSpin{to{transform:rotate(360deg)}}
+@keyframes luBlink{50%{opacity:.55}}
+.lu-tts{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.lu-tt{background:rgba(255,255,255,.04);border:1px solid var(--panel-line);border-radius:14px;padding:12px}
+.lu-tt>b{display:block;font-size:15px;margin-bottom:6px} .lu-tt>b small{font-size:11px;color:var(--muted);font-weight:500}
+.lu-tt .row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:0;border-top:1px dashed var(--panel-line);background:none;color:var(--text);font:inherit;padding:8px 2px;cursor:pointer}
+.lu-tt .row .tm{font-size:11px;font-weight:700;color:var(--muted);min-width:78px;font-variant-numeric:tabular-nums;line-height:1.35}
+.lu-tt .row.live .tm{color:#ff3b5c}
+.lu-tt .row .who{min-width:0} .lu-tt .row b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .lu-tt .row small{font-size:12px;color:var(--muted)}
+.lu-detail{display:grid;grid-template-columns:minmax(180px,300px) 1fr;gap:26px;align-items:start;margin-top:12px}
+.lu-detail .cdw{width:78%}
+.lu-detail .gtag{font-size:12px;font-weight:700;color:#ffcf3a}
+.lu-detail h3{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:32px;margin:4px 0 2px;line-height:1.1}
+.lu-detail .t{margin:0;color:var(--muted)} .lu-detail .w{font-weight:700;margin:10px 0}
+.lu-detail h4{margin:14px 0 4px;font-size:14px} .lu-detail p{line-height:1.6;font-size:14px}
+.lu-acts button.hot{border:0;border-radius:12px;padding:12px 18px;background:var(--ember,#ff7a2f);color:#1a0f08;font:inherit;font-weight:700;cursor:pointer;margin-top:10px}
+.lu-empty{text-align:center;padding:30px 10px} .lu-empty .cdw{width:150px;margin:0 auto 18px} .lu-empty b{font-size:17px} .lu-empty p{color:var(--muted);font-size:13px}
+@media (max-width:760px){ .lu-in{padding:14px 14px 18px;border-radius:18px} .lu-head{top:-14px;margin:-14px -14px 0;padding:14px 14px 8px} .lu-head b{font-size:24px}
+  .lu-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .lu-grid.big{grid-template-columns:1fr 1fr} .lu-detail{grid-template-columns:1fr} .lu-detail .cdw{width:62%} .lu-detail h3{font-size:26px} }
+@media (prefers-reduced-motion: reduce){ .cd.live .disc,.lu-detail .disc,.cdw .sleeve em{animation:none} .cdw .disc{transition:none} }
 #clubNow{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
 #cnMix{display:none}
@@ -546,6 +605,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
 </style>
 </head>
 <body>
+<section id="lineup" hidden aria-label="DJ 편성표" role="dialog" aria-modal="true"><div class="lu-in"><div class="lu-head"><div><b>DJ 편성표</b><small id="luToday">LINEUP · 지점별 클럽·부스 DJ 타임테이블</small></div><button id="luClose">닫기</button></div><div class="lu-tabs" id="luTabs" role="tablist"></div><div id="luBody"></div></div></section>
 <canvas id="c" aria-label="버닝맨 3D 월드"></canvas>
 <div id="loading">플라야로 가는 중</div>
 
@@ -579,6 +639,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <button class="mapclose" id="mapClose" hidden>✕ 지도 닫기</button>
     <ul id="boothList"></ul>
   </nav>
+  <button class="card" id="lineupBtn" aria-label="오늘의 DJ 편성표"><span class="lud" id="luDate"></span><b>DJ 라인업</b><em id="luCnt" hidden></em></button>
   <div class="tools">
     <button id="menuBtn" aria-expanded="false">메뉴</button>
     <button id="mapBtn"><span class="l">맵 이동</span><span class="s">맵</span></button>
@@ -597,7 +658,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
   <section class="np card" id="np" aria-label="DJ 세트">
     <div class="nprow">
       <button class="nphead" id="npToggle" aria-expanded="true"><span class="npart" id="npArt"></span><span class="nt"><b id="npName"></b><small id="npCamp"></small></span></button>
-      <button class="npbtn" id="npPlay" aria-label="재생">▶</button><button class="npbtn" id="npNext" aria-label="다음 세트">⏭</button><span class="chev" id="npChev" hidden></span>
+      <button class="npbtn" id="npPlay" aria-label="재생">▶</button><span class="chev" id="npChev" hidden></span>
     </div>
     <div class="npbody"><div id="npHero" class="nphero"></div><div id="npStory" class="mcstory npstory"></div></div>
   </section>
@@ -614,6 +675,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <p class="hint" id="gearTxt"></p>
   </section>
   <button id="actBtn" hidden></button>
+  
   <div id="clubNow" class="card" hidden><span class="cnd" id="cnDot"></span><div><b id="cnName"></b><small id="cnTrack"></small><small id="cnMix"></small></div><button id="cnNext">다음 곡</button><button id="cnMC">🎛️ DJ</button></div>
   <button id="soundFix" hidden>소리가 안 들리면 여기를 눌러 주세요</button>
   <section id="dancePanel" class="card" hidden aria-label="춤 고르기">
@@ -3402,15 +3464,7 @@ function mcUi(){ const box=document.getElementById('mcNow'); if(!box) return; co
   box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><a href='${esc(c.sc?c.key:'https://www.mixcloud.com'+c.key)}' target='_blank' rel='noopener noreferrer'>${c.sc?'SoundCloud':'Mixcloud'}에서 보기</a></div>`;
   mcStatus(`${MC.target.name}에서 재생 중`); }
 function mcNear(T){ return mcLevel(T)>=.35; }
-function openMcPanel(){ const T=musicTarget(), g=mcDefault(T), gn=MC_G[g][0], on=MC.target&&MC.target.key===T.key;
-  openSp('DJ 세트',`${T.name} · ${gn} · Mixcloud`,`${mcNear(T)?'':`<p class='quote'>${esc(T.name)} 가까이 가야 ${esc(gn)} 세트를 틀 수 있어요. 부스마다 그 부스 장르만 나와요.</p>`}<div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='play' class='hot' style='grid-column:1/-1'>${esc(gn)} ${on?'다른 세트':'세트 틀기'}</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button><button data-act='auto' style='grid-column:1/-1'>${mcaLabel()}</button></div>`,a=>{
-    if(a==='play'){ const N=musicTarget(), k=mcDefault(N); if(MC.schId&&MC.target&&MC.target.key===N.key){ toast('📻 편성 방송 중이라 다른 세트로 넘길 수 없어요'); return; } if(!mcNear(N)){ toast(`${N.name} 가까이 가야 ${MC_G[k][0]} 세트를 틀 수 있어요`); return; }
-      if(MC.target&&MC.target.key===N.key&&MC.list.length) mcNext(); else mcPlay(k,N);
-      const hb=document.querySelector("#spBody [data-act='play']"); if(hb) hb.textContent=`${MC_G[k][0]} 다른 세트`; }
-    else if(a==='toggle'){ if(MC.iframe) mcCall('togglePlay'); }
-    else if(a==='auto'){ MCA.on=!MCA.on; mcaSave(); const b=document.querySelector("#spBody [data-act='auto']"); if(b) b.textContent=mcaLabel(); toast(MCA.on?'Mixcloud 자동 재생을 켰어요':'Mixcloud 자동 재생을 껐어요'); }
-    else if(a==='stop'){ MCA.skip=MC.target?MC.target.key:musicTarget().key; mcStop(); toast('게임 음악으로 돌아왔어요'); } });
-  mcUi(); }
+function openMcPanel(){ openLineup(schKey(musicTarget())); }
 function mcaLabel(){ return MCA.on?'✅ 자동 재생 켜짐: 스테이지에 가면 장르 세트가 바로 나와요':'자동 재생 꺼짐 (누르면 켜져요)'; }
 function mcTick(){ const T=MC.target; if(!T||!MC.iframe) return; let v;
   if(T.kind==='booth'){ v=T.b.target; if(T.b.out&&ac) T.b.out.gain.setTargetAtTime(0,ac.currentTime,.05); }
@@ -4744,11 +4798,7 @@ function mcLevel(T){ return T.kind==='booth'?(T.b.target||0):(T.Z.target||0)/(T.
 function mcKey(u){ try{ const p=new URL(String(u).trim()), h=p.hostname.toLowerCase(); if(p.protocol!=='https:'||!(h==='mixcloud.com'||h.endsWith('.mixcloud.com'))) return null; const path=p.pathname.endsWith('/')?p.pathname:p.pathname+'/'; return path.split('/').filter(Boolean).length>=2?path:null; }catch(e){ return null; } }
 // play one scheduled set (Mixcloud or SoundCloud) on its own
 function mcPlayItem(it,T){ initAudio(); MC.target=T; MC.genre=''; MC.list=[it]; MC.idx=-1; MC.fails=0; mcNext(); }
-updaters.push(t=>{ if(!MCA.on||MCA.onClaude||!inGame||(typeof BM!=='undefined'&&BM.mode)||t-MCA.lastTry<1.5) return;
-  let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||(SCH.sched&&schSlot(schKey(T)))) return;
-  if(MCA.skip&&MCA.skip!==T.key) MCA.skip=''; // stopping at one stage only silences that stage
-  if(mcLevel(T)<.35||MCA.skip===T.key||(MC.target&&MC.target.key===T.key)) return;
-  MCA.lastTry=t; mcPlay(mcDefault(T),T); });
+
 
 // 편성표: admin.html이 GitHub 저장소의 schedule.json에 저장하고, 게임은 1분마다 읽어요. 부스마다 시간대별 Mixcloud / SoundCloud 세트
 const SCHEDULE_URL='schedule.json';
@@ -4767,11 +4817,11 @@ function schItem(sl){ const base={name:sl.title||'',titled:!!sl.title,user:{name
   return it; }
 // the admin page names the two clubs club3 / club4
 function schKey(T){ return T.key==='zone:shelter'?'club3':T.key==='zone:paper'?'club4':T.key; }
-updaters.push(t=>{ if(MCA.onClaude||!inGame) return;
-  if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
+updaters.push(t=>{ if(MCA.onClaude) return;
+  if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!inGame) return; if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||mcLevel(T)<.35) return;
   const slot=schSlot(schKey(T)), mine=MC.target&&MC.target.key===T.key;
-  if(!slot){ if(mine&&MC.schId){ mcStop(); MCA.lastTry=-99; toast(`${T.name} 편성이 끝났어요. 다시 인기 DJ 세트가 나와요`); } return; }
+  if(!slot){ if(mine&&MC.schId){ mcStop(); toast(`${T.name} 편성이 끝났어요`); } return; }
   if(!mine||MC.schId!==slot.id){ const it=schItem(slot); if(!it) return; mcPlayItem(it,T); MC.schId=slot.id; SCH.synced=false; SCH.lastSync=t;
     toast(`📻 편성 방송: ${T.name}에서 ${it.name}을(를) 모두 같이 듣고 있어요`); return; }
   // jump to where everyone else is: right after it starts, then a drift check every 20 s
@@ -4787,27 +4837,124 @@ function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][
 function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff'}[T.Z&&T.Z.id]||'#b06bff'); }
 function npRender(){ if(!inGame) return; const np=$('#np'); if(!np) return;
   const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null, open=!np.classList.contains('collapsed'), col=npColor(T);
-  const sig=[T.key,near,c&&c.key,MC.paused,MC.playing,open].join('|'); if(sig===NPC.sig) return; NPC.sig=sig;
+  const sk=schKey(T), sl=SCH.sched&&schSlot(sk), nx=sl?null:luNext(sk), sig=[T.key,near,c&&c.key,MC.paused,MC.playing,open,sl&&sl.id,nx&&nx.start].join('|'); if(sig===NPC.sig) return; NPC.sig=sig;
   np.style.setProperty('--gc',col); np.classList.toggle('playing',!!c&&!MC.paused);
   const art=$('#npArt'); art.style.backgroundImage=npPic(c); art.innerHTML=c?'':'🎛️';
   $('#npName').textContent=c?c.name:T.name;
-  $('#npCamp').textContent=c?`${c.sched?'📻 편성 · ':''}${c.user&&c.user.name||''} · ${T.name}`:(near?(MCA.on?`${gn} · 곧 DJ 세트가 자동으로 나와요`:`${gn} · ▶ 누르면 DJ 세트가 나와요`):`${gn} · 가까이 가면 DJ 세트가 나와요`);
+  $('#npCamp').textContent=c?`${c.sched?'📻 편성 · ':''}${c.user&&c.user.name||''} · ${T.name}`:(sl?(near?'📻 곧 편성된 세트가 나와요':'📻 지금 편성 방송 중 · 가까이 가면 들려요'):nx?`다음 편성 ${luWhen(nx)}`:'지금은 편성이 없어요');
   const pb=$('#npPlay'); pb.textContent=c&&!MC.paused?'❚❚':'▶'; pb.setAttribute('aria-label',c&&!MC.paused?'일시정지':'재생');
   if(!open) return;
   $('#npHero').innerHTML=c?`<div class='heroart' style='background-image:${npPic(c,1)}'>${npEq}</div><div class='herometa'><span class='gtag'>${esc(gn)} · ${esc(T.name)}</span><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><div class='heroacts'><a href='${esc(c.sc?c.key:'https://www.mixcloud.com'+c.key)}' target='_blank' rel='noopener noreferrer'>${c.sc?'SoundCloud':'Mixcloud'} ↗</a></div></div>`
-    :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?(MCA.on?'곧 자동으로 DJ 세트가 나와요':'▶ 눌러서 DJ 세트 틀기'):'부스 가까이 가면 자동으로 나와요'}</b><small>${esc(gn)} 인기 DJ 세트 중 하나를 랜덤으로 틀어요. 라디오 쇼는 빼고 음악만 나와요.</small></div>`;
+    :`<div class='heroart empty'${nx&&nx.art?` style='background-image:url("${esc(nx.art)}");opacity:.75'`:''}><span>${sl?'ON AIR':'OFF AIR'}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${sl?esc(sl.title||'편성된 세트'):nx?`다음 편성 ${luWhen(nx)}`:'지금은 편성이 없어요'}</b><small>${sl?(near?'곧 재생돼요':'부스 가까이 가면 들려요'):nx?esc([nx.dj,nx.title].filter(Boolean).join(' · ')):'운영자가 편성한 DJ 세트만 나와요. 다른 부스 공연은 편성표에서 찾아보세요.'}</small><div class='heroacts'><button data-np='lineup'>📅 DJ 편성표</button></div></div>`;
 }
 function npFar(T,gn){ toast(`${T.name} 가까이 가야 ${gn} 세트를 틀 수 있어요`); }
-function npPlayBtn(next){ initAudio(); const {T,g,gn,near,mine}=npNow();
-  if(mine&&MC.iframe){ if(next){ if(MC.schId){ toast('📻 편성 방송 중이라 다른 세트로 넘길 수 없어요'); return; } mcNext(); return; } if(!MC.live){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); return; } mcCall('togglePlay'); return; }
-  if(!near){ npFar(T,gn); return; } MCA.skip=''; mcPlay(g,T); }
-$('#npPlay').addEventListener('click',()=>npPlayBtn(false)); $('#npNext').addEventListener('click',()=>npPlayBtn(true));
+// the play button only plays / pauses the scheduled set; there is no skipping and no random fill-in
+function npPlayBtn(){ initAudio(); const {T,near,mine}=npNow();
+  if(mine&&MC.iframe){ if(!MC.live){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); return; } mcCall('togglePlay'); return; }
+  const sl=SCH.sched&&schSlot(schKey(T)), nx=luNext(schKey(T));
+  if(!sl){ toast(nx?`${T.name} 다음 편성: ${luWhen(nx)} ${nx.dj||nx.title||''}`:`${T.name}에는 지금 편성된 DJ 세트가 없어요. 📅 DJ 편성표를 확인해 보세요`); return; }
+  if(!near) toast(`${T.name} 가까이 가면 편성된 세트가 나와요`); }
+$('#npPlay').addEventListener('click',npPlayBtn);
 $('#np').addEventListener('click',e=>{ const b=e.target.closest('[data-np]'); if(!b) return; const a=b.dataset.np;
-  if(a==='story') openMcPanel(); });
+  if(a==='story') openMcPanel(); else if(a==='lineup') openLineup(schKey(musicTarget())); });
 // the card's DJ / music introduction follows whatever is playing at this stage
 updaters.push(t=>{ const el=document.getElementById('npStory'); if(!el||$('#np').classList.contains('collapsed')) return; const {mine}=npNow(); mcStoryInto(el,mine?MC.cur:null,''); });
 $('#npToggle').addEventListener('click',()=>{ NPC.sig=''; });
 updaters.push((t)=>{ if(t-NPC.t<.35) return; NPC.t=t; npRender(); });
+
+/* ================= DJ LINEUP BOARD (schedule.json → by map, booth, CD posters) ================= */
+const LU_AREAS=[['playa','🏜 사막점',[['booth:techno','테크노 부스'],['booth:house','하우스 부스'],['booth:afro','아프로테크 부스'],['booth:melodic','멜로딕 테크노 부스'],['booth:trance','트랜스 부스'],['booth:dnb','드럼앤베이스 부스'],['booth:psy','사이키델릭 트랜스 부스'],['booth:dubstep','덥스텝 부스'],['booth:hardstyle','하드스타일 부스'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
+  ['itaewon','🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼']]],
+  ['nami','🌲 남이섬',[['zone:nm-jandi','JANDI 스테이지'],['zone:nm-hanok','HANOK 스테이지'],['zone:nm-soop','SOOP 스테이지'],['zone:nm-exp','익스페리멘탈 사운드 존'],['zone:nm-hut','명상 오두막'],['zone:nm-aero','에어로빅 코너']]],
+  ['sphere','🔮 라스베가스',[['zone:sphere','스피어']]]];
+const LU_INFO={}; LU_AREAS.forEach(([m,a,L])=>L.forEach(([k,n])=>LU_INFO[k]={map:m,area:a,name:n}));
+const LU={tab:'',sel:null,auto:false};
+const luPad=n=>String(n).padStart(2,'0');
+function luHM(ms){ const d=new Date(ms); return `${luPad(d.getHours())}:${luPad(d.getMinutes())}`; }
+function luDay(ms){ const d=new Date(ms), n=new Date(schNow()), a=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime(), diff=Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime()-a)/864e5);
+  return diff===0?'오늘':diff===1?'내일':`${d.getMonth()+1}/${d.getDate()} (${'일월화수목금토'[d.getDay()]})`; }
+function luWhen(s){ return `${luDay(s.start)} ${luHM(s.start)}`; }
+// every slot that is on now or still to come, tagged with its stage
+function luAll(){ const B=SCH.sched&&SCH.sched.booths||{}, now=schNow(), out=[];
+  for(const k in B) for(const s of B[k]){ const end=s.start+(s.dur||60)*60000; if(end>now&&LU_INFO[k]) out.push(Object.assign({key:k,end,live:s.start<=now},s,LU_INFO[k])); }
+  return out.sort((a,b)=>a.start-b.start); }
+function luNext(key){ const now=schNow(); return luAll().find(s=>s.key===key&&s.start>now)||null; }
+function luArt(s){ return s.art?`style="background-image:url('${esc(String(s.art).replace(/['"()\\\s]/g,''))}')"`:''; }
+function luPoster(s,i,big){ return `<button class="cd ${s.live?'live':''} ${big?'big':''}" data-lu="${i}"><span class="cdw"><span class="disc" aria-hidden="true"></span><span class="sleeve" ${luArt(s)}>${s.art?'':`<i>${esc((s.dj||s.title||'DJ').slice(0,14))}</i>`}${s.live?'<em>LIVE</em>':''}</span></span>
+  <b>${esc(s.dj||s.title||'DJ')}</b><small>${esc(s.dj?s.title||'':'')}</small><span class="when">${s.live?'● 지금 방송 중':luWhen(s)} · ${esc(s.name)}</span></button>`; }
+function luRender(){ const body=$('#luBody'); if(!body) return; { const d=new Date(schNow()); $('#luToday').textContent=`TODAY ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} (${'일월화수목금토'[d.getDay()]}) · 지점별 플레이리스트와 DJ 포스터`; } const all=luAll(), tab=LU.tab, L=tab?all.filter(s=>s.map===tab):all;
+  $('#luTabs').innerHTML=[['','전체'],...LU_AREAS.map(([m,a])=>[m,a])].map(([m,a])=>{ const n=all.filter(s=>!m||s.map===m).length; return `<button role="tab" data-tab="${m}" aria-selected="${m===tab}">${a}${n?` <small>${n}</small>`:''}</button>`; }).join('');
+  if(LU.sel){ const s=LU.sel, go=luCanGo(s.key);
+    body.innerHTML=`<button class="lu-back" data-back="1">← 편성표로</button><div class="lu-detail"><div class="cdw big"><span class="disc" aria-hidden="true"></span><span class="sleeve" ${luArt(s)}>${s.art?'':`<i>${esc(s.dj||'DJ')}</i>`}${s.live?'<em>LIVE</em>':''}</span></div>
+      <div><span class="gtag">${esc(s.area)} · ${esc(s.name)}</span><h3>${esc(s.dj||s.title||'DJ')}</h3><p class="t">${esc(s.dj?s.title||'':'')}</p><p class="w">${s.live?'● 지금 방송 중 · ':''}${luWhen(s)} – ${luHM(s.end)} (${s.dur}분)</p>
+      ${s.djIntro?`<h4>🎛️ DJ 소개</h4><p>${esc(s.djIntro).replace(/\n/g,'<br>')}</p>`:''}${s.musicIntro?`<h4>🎧 음악 소개</h4><p>${esc(s.musicIntro).replace(/\n/g,'<br>')}</p>`:''}
+      <div class="lu-acts">${go?`<button class="hot" data-go="${esc(s.key)}">📍 ${esc(s.name)}로 가기</button>`:`<p class="hint">${inGame?`${esc(s.area)}에서 열려요. 메뉴의 맵 이동으로 가면 ${esc(s.name)} 근처에서 들을 수 있어요.`:'게임에 입장한 뒤 그 부스 근처로 가면 들을 수 있어요.'}</p>`}</div></div></div>`; return; }
+  if(!L.length){ body.innerHTML=`<div class="lu-empty"><div class="cdw"><span class="disc"></span><span class="sleeve"><i>COMING<br>SOON</i></span></div><b>${tab?'이 지점에는 ':''}아직 편성된 DJ 공연이 없어요</b><p>운영자가 편성하면 여기에 라인업과 타임테이블이 올라와요.</p></div>`; return; }
+  const live=L.filter(s=>s.live), up=L.filter(s=>!s.live), idx=s=>all.indexOf(s);
+  let h='';
+  if(live.length) h+=`<h3 class="lu-h">🔴 ON AIR <small>지금 방송 중</small></h3><div class="lu-grid big">${live.map(s=>luPoster(s,idx(s),1)).join('')}</div>`;
+  if(up.length){ h+=`<h3 class="lu-h">💿 LINEUP <small>지점별 플레이리스트</small></h3>`; for(const [m,a] of LU_AREAS){ if(tab&&m!==tab) continue; const U=up.filter(s=>s.map===m); if(!U.length) continue; h+=`<p class="lu-area">${a}</p><div class="lu-grid">${U.slice(0,24).map(s=>luPoster(s,idx(s))).join('')}</div>`; } }
+  // timetable: one block per stage, in the board's map order
+  const tt=LU_AREAS.filter(([m])=>!tab||m===tab).map(([m,a,BL])=>BL.map(([k,n])=>{ const S=L.filter(s=>s.key===k); if(!S.length) return ''; return `<div class="lu-tt"><b>${esc(n)} <small>${esc(a)}</small></b>${S.map(s=>`<button class="row ${s.live?'live':''}" data-lu="${idx(s)}"><span class="tm">${s.live?'LIVE':luDay(s.start)}<br>${luHM(s.start)}–${luHM(s.end)}</span><span class="who"><b>${esc(s.dj||s.title||'DJ')}</b><small>${esc(s.dj?s.title||'':'')}</small></span></button>`).join('')}</div>`; }).join('')).join('');
+  h+=`<h3 class="lu-h">🗓 TIMETABLE <small>부스별 타임테이블</small></h3><div class="lu-tts">${tt}</div><p class="hint">편성된 시간에 그 부스 가까이 가면, 그 자리에 있는 모두가 같은 부분을 같이 들어요.</p>`;
+  body.innerHTML=h; }
+function luCanGo(key){ if(!inGame||(typeof BM!=='undefined'&&BM.mode)||MAP!=='playa') return false; return LU_INFO[key]&&LU_INFO[key].map==='playa'; }
+function luGo(key){ if(!luCanGo(key)) return; if(pState.veh){ if(pState.veh.alt>.4){ toast('비행 중에는 이동할 수 없어요'); return; } exitVehicle(); } if(pState.ride) endRide(); if(pState.art) exitArt();
+  let x,z,fx,fz; if(key.startsWith('booth:')){ const b=BOOTHS.find(b=>'booth:'+b.id===key); if(!b) return; const s=b.spot(); x=s.x; z=s.z; fx=b.pos.x; fz=b.pos.z; }
+  else { const Z=ZONES.find(Z=>'zone:'+Z.id===key); if(!Z) return; x=Z.x+3; z=Z.z+3; fx=Z.x; fz=Z.z; }
+  pState.x=x; pState.z=z; pState.y=0; pState.face=Math.atan2(fx-x,fz-z); yaw=pState.face+Math.PI; closeLineup(); toast(`${LU_INFO[key].name}에 왔어요`); }
+function openLineup(focusKey){ const el=$('#lineup'); if(!el) return; LU.sel=null; const f=focusKey&&LU_INFO[focusKey]; LU.tab=f?f.map:(inGame&&LU_AREAS.some(a=>a[0]===MAP)?MAP:'');
+  if(LU.tab&&!luAll().some(s=>s.map===LU.tab)) LU.tab=''; luRender(); el.hidden=false; if(!SCH.sched) schFetch().then(()=>{ if(!el.hidden) luRender(); }); }
+function closeLineup(){ const el=$('#lineup'); if(el) el.hidden=true; }
+$('#lineupBtn').addEventListener('click',e=>{ e.stopPropagation(); openLineup(); });
+$('#luClose').addEventListener('click',closeLineup);
+$('#lineup').addEventListener('click',e=>{ if(e.target.id==='lineup'){ closeLineup(); return; } const t=e.target.closest('button'); if(!t) return; const all=luAll();
+  if(t.dataset.tab!==undefined){ LU.tab=t.dataset.tab; LU.sel=null; luRender(); }
+  else if(t.dataset.lu!==undefined){ LU.sel=all[+t.dataset.lu]||null; luRender(); $('#luBody').scrollTop=0; $('#lineup .lu-in').scrollTop=0; }
+  else if(t.dataset.back) { LU.sel=null; luRender(); }
+  else if(t.dataset.go) luGo(t.dataset.go); });
+addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('#lineup').hidden) closeLineup(); });
+// the board pops up on the first screen once per visit when anything is on or coming up
+schFetch().then(()=>{ let seen=false; try{ seen=sessionStorage.getItem('playa-lu-seen')==='1'; }catch(e){} if(seen||!luAll().length) return;
+  try{ sessionStorage.setItem('playa-lu-seen','1'); }catch(e){} setTimeout(()=>openLineup(),700); });
+function luPlace(){ const b=$('#lineupBtn'), m=$('.mapc'); if(!b||!m) return; const r=m.getBoundingClientRect(), top=Math.round(r.bottom+6); if(b._top!==top){ b._top=top; b.style.top=top+'px'; } const hide=!inGame||top>innerHeight*.62||document.body.classList.contains('dressing'); if(b.hidden!==hide) b.hidden=hide; }
+function luBtn(){ const d=new Date(schNow()), td=`📅 ${d.getMonth()+1}.${d.getDate()} (${'일월화수목금토'[d.getDay()]})`, e=$('#luDate'); if(e&&e.textContent!==td) e.textContent=td;
+  const end=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime(), n=luAll().filter(s=>s.start<end).length, c=$('#luCnt'); if(c){ c.hidden=!n; c.textContent=n; } }
+luBtn(); schFetch().then(luBtn);
+updaters.push(t=>{ luPlace(); if(t-(LU.bt||0)>30){ LU.bt=t; luBtn(); } if(!$('#lineup').hidden&&t-(LU.rt||0)>20){ LU.rt=t; if(!LU.sel) luRender(); } });
+
+/* ================= DANCERS TALK ABOUT THE DJ (each in their own voice) ================= */
+// facts come from the scheduled slot (admin intros), Mixcloud / SoundCloud details and the DJ's home town
+const DJT={t:0,key:'',f:null};
+const DJ_LIKES=['빌드업','드롭','그루브','베이스라인','킥 소리','하이햇 리듬','신스 소리','트랙 고르는 감각','믹싱 타이밍','분위기 끌어올리는 거'];
+function djSentences(txt){ return String(txt||'').split(/[.!?。\n]+/).map(x=>x.trim()).filter(x=>x.length>=6&&x.length<=28); }
+function djFactsFor(c){ const f={dj:(c.user&&c.user.name)||'',title:c.name||'',min:c.audio_length?Math.round(c.audio_length/60):0,
+    djS:djSentences(c.djIntro), muS:djSentences(c.musicIntro), tags:(c.tags||[]).map(t=>t.name).filter(x=>x&&x.length<16&&!/ra mix/i.test(x)).slice(0,4), city:'', year:c.created_time?new Date(c.created_time).getFullYear():0};
+  if(!f.dj) f.dj=f.title||'DJ';
+  const uk=c.user&&c.user.key; if(!c.sc&&uk) mcInfo(uk).then(u=>{ if(u&&(u.city||u.country)) f.city=[u.city,u.country].filter(Boolean).join(', '); });
+  return f; }
+// four kinds of fans: long-time fan, first-timer, crate digger, hype person
+function djLine(P){ const f=DJT.f, D=f.dj, like=P._djLike||(P._djLike=pick(DJ_LIKES)), kind=P._djKind!==undefined?P._djKind:(P._djKind=Math.floor(Math.random()*4)), L=[];
+  if(f.djS.length) L.push(`${D} 알아? ${pick(f.djS)}`, `${pick(f.djS)}. 그래서 ${D} 좋아해`);
+  if(f.muS.length) L.push(`이 세트 ${pick(f.muS)}래`, `${pick(f.muS)}. 딱 그 느낌이야`);
+  if(f.city) L.push(`${D} ${f.city} 출신이래`);
+  if(f.tags.length) L.push(`${pick(f.tags)} 좋아하는 사람 다 여기 모였네`);
+  if(f.min) L.push(`이 세트 ${f.min}분짜리래, 끝까지 있을 거야`);
+  if(kind===0) L.push(`${D} 공연 벌써 ${2+Math.floor(Math.random()*6)}번째야`, `${D}는 ${like}이 진짜 독보적이야`, `${D} 오는 날만 기다렸어`);
+  else if(kind===1) L.push(`${D} 처음 들어 보는데 ${like} 너무 좋다`, `이 DJ 이름 뭐였지? 아 ${D}!`, `친구가 ${D} 꼭 보라고 했는데 이유를 알겠어`);
+  else if(kind===2) L.push(`${D}는 ${like}로 유명하잖아`, f.title&&f.title!==D?`‘${f.title.slice(0,24)}’ 이거 명세트야`:`${D} 선곡은 늘 한 수 위야`, `${D}가 지금 거는 거 레코드로 찾아봐야겠다`);
+  else L.push(`${D}! ${D}! 드롭 온다!!`, `${like} 미쳤다 손 들어!!`, `${D} 최고야 🔥`);
+  return pick(L); }
+function djSpeaker(t){ const near=[], r2=14*14, ok=P=>P&&P.root&&P.root.visible!==false&&!P.social&&(!P._djT||t-P._djT>14);
+  const add=(P,x,z)=>{ const dx=x-pState.x, dz=z-pState.z; if(dx*dx+dz*dz<r2&&ok(P)) near.push(P); };
+  for(const m of HY.mem) if(m.st==='dance') add(m.P,m.P.root.position.x,m.P.root.position.z);
+  if(CROWD.fullSet) for(const i of CROWD.fullSet){ const m=CROWD.list[i]; if(m&&m.char&&m.mode==='dance') add(m.char,m.x,m.z); }
+  for(const S of SNPC) if(S.mode==='dance') add(S.P,S.P.root.position.x,S.P.root.position.z);
+  return near.length?pick(near):null; }
+updaters.push(t=>{ const c=MC.cur; if(!inGame||!c||!c.sched||!MC.playing||MC.paused||!MC.target) return;
+  let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||T.key!==MC.target.key||mcLevel(T)<.35||t<DJT.t) return;
+  if(DJT.key!==c.key+'|'+(c.user&&c.user.name)){ DJT.key=c.key+'|'+(c.user&&c.user.name); DJT.f=djFactsFor(c); DJT.t=t+3; return; }
+  DJT.t=t+rand(4.5,8); const P=djSpeaker(t); if(!P) return; P._djT=t; say(P,djLine(P),3.4); });
 
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null]),new Promise(r=>setTimeout(r,2500))]);
