@@ -1234,6 +1234,7 @@ function rebuildPlayer(){
   player.root.position.set(pState.x,pState.y,pState.z); player.root.rotation.y=pState.face;
 }
 let yaw=0,pitch=.32,camDist=LOW?8.5:7.5,orb=Math.PI,inGame=false;
+const HEADCAM={v:new THREE.Vector3(),p:null};
 const keys={};
 addEventListener('keydown',e=>{ if(/INPUT|TEXTAREA/.test(e.target.tagName)) return; keys[e.code]=true;
   if(!inGame) return;
@@ -1590,10 +1591,15 @@ function loop(){
   if(player){
     if(inGame){ updatePlayer(dt,t,t);
       const tx=pState.x, ty=pState.y+1.5, tz=pState.z;
+      if(MAP==='sphere'&&SPH.inside&&SPH.headCam!==false&&player.head){ // the show from the centre just above the player's own head
+        player.head.getWorldPosition(HEADCAM.v); if(HEADCAM.p) HEADCAM.p.lerp(HEADCAM.v,Math.min(1,dt*6)); else HEADCAM.p=HEADCAM.v.clone();
+        const e=clamp(-pitch,-1.1,1.25), ce=Math.cos(e), P=HEADCAM.p, cy=P.y+.55;
+        camera.position.set(P.x,cy,P.z); camera.lookAt(P.x-Math.sin(yaw)*ce, cy+Math.sin(e), P.z-Math.cos(yaw)*ce);
+      } else { HEADCAM.p=null;
       const op=Math.max(pitch,.04), up=Math.max(0,-pitch), dist=(camDist+vehCam())*(1-up*.4), cp=Math.cos(op);
       camera.position.set(tx+Math.sin(yaw)*dist*cp, Math.max(pState.y+.35, ty+Math.sin(op)*dist+.4-up*1.4), tz+Math.cos(yaw)*dist*cp);
       if(MAP==='sphere'&&SPH.inside){ const fy=sphCamFloor(camera.position.x,camera.position.z); if(camera.position.y<fy) camera.position.y=fy; }
-      camera.lookAt(tx, ty+Math.tan(Math.min(up,1.3))*dist*cp, tz);
+      camera.lookAt(tx, ty+Math.tan(Math.min(up,1.3))*dist*cp, tz); }
       if(tipsy>0) camera.rotateZ(Math.sin(t*.9)*.035*Math.min(tipsy,6));
       listT-=dt; if(listT<=0){ listT=.6; renderBoothList(); const nb=nearest(); if(nb.b!==npBooth){ npBooth=nb.b; renderTracks(); }
         const st=nb.b.target>.05?`${nb.b.tracks[nb.b.sel].name} 재생 중이에요. 다른 곡을 고르면 바로 바뀌어요.`:`가장 가까운 부스예요. 무대 쪽으로 걸어가면 음악이 들려요.`;
@@ -4053,7 +4059,7 @@ function sphGate(){ if(!SPH.ticket){ toast('입장권이 없어요. 왼쪽 박�
     fd.style.opacity='0'; const em=SPH.seats.filter(s=>!s.occ); if(em.length) sphSit(pick(em)); },600); }
 function sphExit(){ sphStand(true); const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.inside=false; SPH.ga=false; SPH.atrium=false; pState.x=SPX; pState.z=SPZ-12; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.22; camDist=LOW?8.5:7.5; fd.style.opacity='0'; toast('지구본점 밖으로 나왔어요. 티켓이 있으면 언제든 다시 들어갈 수 있어요'); },600); }
 function sphSit(s){ if(!s||s.occ) return; SPH.ga=false; SPH.floor=SG.concY; if(!SPH.hapticTold){ SPH.hapticTold=true; setTimeout(()=>toast('💺 햄틱 좌석: 드롭에서 좌석이 비트에 맞춰 진동해요'),2600); } if(SPH.seat){ SPH.seat.occ=false; } s.occ='me'; SPH.seat=s; if(!SPH.prevCam) SPH.prevCam={camDist,pitch}; pState.emote=null; sleepS={kind:'seat',seat:s,t:1e9,dur:1e9};
-  camDist=LOW?2.4:2.0; pitch=.06; yaw=s.ry+Math.PI; $('#seatLbl').textContent='🎟 '+sphLabel(s); $('#seatUI').hidden=false; document.body.classList.add('seated'); toast(`${sphLabel(s)} 착석! 좌석마다 보이는 뷰가 달라요. 화면을 끌어 둘러봐요`); }
+  camDist=LOW?2.4:2.0; pitch=SPH.headCam===false?.06:-.15; yaw=s.ry+Math.PI; $('#seatLbl').textContent='🎟 '+sphLabel(s); $('#seatUI').hidden=false; document.body.classList.add('seated'); toast(`${sphLabel(s)} 착석! 좌석마다 보이는 뷰가 달라요. 화면을 끌어 둘러봐요`); }
 function sphStand(quiet){ const s=SPH.seat; if(!s) return; SPH.ga=false; SPH.floor=SG.concY; s.occ=false; SPH.seat=null; if(sleepS&&sleepS.kind==='seat') sleepS=null; pState.x=SPX+s.x; pState.z=IZ+s.z; pState.y=s.y; pState.vy=0; pState.face=s.ry;
   if(SPH.prevCam){ camDist=SPH.prevCam.camDist; pitch=SPH.prevCam.pitch; SPH.prevCam=null; } $('#seatUI').hidden=true; document.body.classList.remove('seated'); if(!quiet) toast('자리에서 일어났어요. 계단석을 걸어 다니거나 좌석 맵으로 다른 자리를 골라요'); }
 function updateSleepSeat(dt,t){ const S=sleepS; if(S.kind!=='seat') return updateSleepHam(dt,t); const s=S.seat; pState.x=SPX+s.x; pState.z=IZ+s.z; pState.y=s.y-.4; pState.vy=0; ST.energy=Math.min(100,ST.energy+dt*.4);
@@ -4298,7 +4304,7 @@ function atriumClamp(){ const dx=pState.x-SPX, dz=pState.z-AZ, d=Math.hypot(dx,d
 function atriumExit(){ const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.atrium=false; pState.x=SPX; pState.z=SPZ-12; pState.y=0; pState.vy=0; pState.face=Math.PI; yaw=0; pitch=.22; camDist=LOW?8.5:7.5; fd.style.opacity='0'; applyTime(); toast('지구본점 광장으로 나왔어요'); },500); }
 function bowlEnter(){ const fd=$('#fade'); fd.style.opacity='1'; setTimeout(()=>{ SPH.atrium=false; SPH.inside=true; SPH.ga=false; SPH.floor=SG.concY; const d=SG.dLast+4; pState.x=SPX+SG.C.x; pState.z=IZ+SG.C.z-d; pState.y=SG.concY; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=.12; camDist=LOW?6.5:5.5; if(player) player.root.position.set(pState.x,pState.y,pState.z);
     fd.style.opacity='0'; toast('관람석 콘코스예요! 좌석 맵에서 빈자리를 고르거나 GA 스탠딩으로 내려가요'); setTimeout(sphMapOpen,500); },500); }
-function gaEnter(){ if(SPH.seat) sphStand(true); SPH.ga=true; SPH.floor=0; pState.x=SPX+rand(-3,3); pState.z=IZ+30-9.5; pState.y=0; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=.1; camDist=LOW?6:5.5; toast('GA 스탠딩 구역! 무대 바로 앞에서 춤춰요. 스테이지 댄스 보너스도 쌓여요'); }
+function gaEnter(){ if(SPH.seat) sphStand(true); SPH.ga=true; SPH.floor=0; pState.x=SPX+rand(-3,3); pState.z=IZ+30-9.5; pState.y=0; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=SPH.headCam===false?.1:-.15; camDist=LOW?6:5.5; toast('GA 스탠딩 구역! 무대 바로 앞에서 춤춰요. 스테이지 댄스 보너스도 쌓여요'); }
 function gaLeave(){ SPH.ga=false; SPH.floor=SG.concY; const d=SG.dLast+4; pState.x=SPX+SG.C.x; pState.z=IZ+SG.C.z-d; pState.y=SG.concY; pState.vy=0; pState.face=0; yaw=Math.PI; toast('콘코스로 올라왔어요'); }
 function sphExtraTick(t,dt){ if(MAP!=='sphere') return; const Z=SPH.zone, tr=Z.tracks[0], beat=Z.running&&ac?(ac.currentTime-Z.origin)*tr.bpm/60:t*2, bar=Math.floor(beat/4)%32, drop=bar>=28, brk=bar>=24&&bar<28;
   if(SPH.atrium){ SPH.atLast=true; hemi.intensity=.55; sun.intensity=.08; scene.fog.color.set(0x07040e); scene.fog.near=60; scene.fog.far=260; renderer.setClearColor(0x07040e); if(dust) dust.visible=false; $('#clubNow').hidden=true;
@@ -4678,7 +4684,9 @@ function svidNext(){ const V=svidCurV(); SVID.count++; if(!V.fail&&SVID.count<V.
   SVID.count=0; if(V.el&&!V.el.paused) V.el.pause(); SVID.cur=svidNextIdx(SVID.cur); svidEnsure(); const N=svidCurV(); if(N.el){ try{ N.el.currentTime=0; }catch(e){} } svidPlay(); svidApply(); }
 function svidApply(){ if(!SPH.dome) return; const V=svidCurV(); SPH.dome.material=(SVID.on&&V&&V.ok&&V.mat)?V.mat:SPH.int; if(SVID.btn) SVID.btn.textContent=SVID.on?'🎞 영상':'🎞 그래픽'; }
 updaters.push((t,dt)=>{ const inB=MAP==='sphere'&&SPH.inside;
-  if(!SVID.btn){ const su=document.getElementById('seatUI'), up=document.getElementById('seatUp'); if(su&&up){ const b=document.createElement('button'); b.id='seatScr'; b.textContent='🎞 영상'; b.addEventListener('click',()=>{ SVID.on=!SVID.on; if(SVID.on) svidPlay(); else SV_LIST.forEach(V=>{ if(V.el&&!V.el.paused) V.el.pause(); }); svidApply(); toast(SVID.on?'돔 스크린에 영상을 틀었어요':'돔 스크린을 그래픽 비주얼로 바꿨어요'); }); su.insertBefore(b,up); SVID.btn=b; } }
+  if(!SVID.btn){ const su=document.getElementById('seatUI'), up=document.getElementById('seatUp'); if(su&&up){ const b=document.createElement('button'); b.id='seatScr'; b.textContent='🎞 영상'; b.addEventListener('click',()=>{ SVID.on=!SVID.on; if(SVID.on) svidPlay(); else SV_LIST.forEach(V=>{ if(V.el&&!V.el.paused) V.el.pause(); }); svidApply(); toast(SVID.on?'돔 스크린에 영상을 틀었어요':'돔 스크린을 그래픽 비주얼로 바꿨어요'); }); su.insertBefore(b,up); SVID.btn=b;
+    const v=document.createElement('button'); v.id='seatView'; const vl=()=>{ v.textContent=SPH.headCam===false?'🎥 뒤에서':'👤 머리 위'; }; vl();
+    v.addEventListener('click',()=>{ SPH.headCam=SPH.headCam===false; pitch=SPH.headCam?-.15:.06; vl(); toast(SPH.headCam?'내 머리 위 시점으로 공연을 봐요':'내 뒤에서 보는 시점으로 바꿨어요'); }); su.insertBefore(v,up); } }
   if(inB){ svidEnsure(); const V=svidCurV(); if(SVID.on&&V&&!V.fail&&V.el&&V.el.paused&&t-SVID.tryT>2){ SVID.tryT=t; svidPlay(); } if(V&&V.mat){ const k=.82+(SPH.int.uniforms.uB.value||0)*.22; V.mat.color.setRGB(k,k,k); } }
   else SV_LIST.forEach(V=>{ if(V.el) svidRelease(V); }); });
 document.addEventListener('pointerdown',()=>{ const V=svidCurV(); if(MAP==='sphere'&&SPH.inside&&V&&V.el&&V.el.paused&&SVID.on&&!V.fail) svidPlay(); },true);
