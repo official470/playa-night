@@ -63,6 +63,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 .creator header>div{flex:1}
 .creator h1{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:44px;line-height:1;margin:0;color:var(--ember)}
 .creator header p{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.55}
+#langSel{margin-left:auto;flex:none;border:1px solid var(--panel-line);background:var(--chip);color:var(--text);border-radius:10px;padding:7px 8px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 #sheetToggle{display:none;border:0;background:var(--chip);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;white-space:nowrap}
 .name{display:flex;align-items:center;gap:10px;padding:10px 22px;font-size:14px;color:var(--muted)}
 .name input{flex:1;font:inherit;font-size:16px;color:var(--text);background:var(--chip);border:0;border-radius:10px;padding:9px 12px}
@@ -275,6 +276,7 @@ body.dressing .mapsel{display:none}
 .mapsel{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px 22px;border-top:1px solid var(--panel-line);font-size:13px;color:var(--muted)}
 .mapsel button{border:0;border-radius:999px;padding:8px 12px;background:var(--chip);font-size:13px;min-height:36px}
 .mapsel button[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-text);font-weight:700}
+.mapsel button.soon,#sp .acts button.soon{background:transparent;border:1px dashed var(--panel-line);opacity:.8}
 #fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:9;transition:opacity .4s}
 #clubNow{position:fixed;right:12px;bottom:calc(12px + var(--sab));display:flex;gap:10px;align-items:center;padding:10px 12px;z-index:5;max-width:min(330px,72vw)}
 #clubNow b{display:block;font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:18px;line-height:1.1}
@@ -616,12 +618,13 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
       <h1>플라야 아이디</h1>
       <p>이름과 맵만 고르고 바로 입장해요. 옷과 아이템은 입장한 뒤 메뉴의 스타일 꾸미기에서 골라요.</p>
     </div>
+    <select id="langSel" aria-label="Language"><option value="ko">🇰🇷 한국어</option><option value="ja">🇯🇵 日本語</option><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option><option value="es">🇪🇸 Español</option></select>
     <button id="sheetToggle" aria-expanded="true">접기</button>
   </header>
   <label class="name">이름 <input id="pname" maxlength="12" value="Dusty"></label>
   <div id="optNav" role="tablist" aria-label="스타일 항목 바로가기"></div>
   <div id="opts"></div>
-  <div class="mapsel"><span>맵</span><button data-map="playa" aria-pressed="true">🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-map="itaewon" aria-pressed="false">🇰🇷 한국 이태원</button><button data-map="nami" aria-pressed="false">🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-map="sphere" aria-pressed="false">🔮 지구본점 <small class='loc'>미국 라스베가스</small></button></div>
+  <div class="mapsel"><span>맵</span><button data-map="playa" aria-pressed="true">🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-map="itaewon" aria-pressed="false">🇰🇷 한국 이태원</button><button data-map="nami" aria-pressed="false">🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-map="sphere" aria-pressed="false">🔮 지구본점 <small class='loc'>미국 라스베가스</small></button><button type="button" class="soon" data-soon="berlin">🇩🇪 베를린점 <small class='loc'>독일 베를린 · 오픈 준비중</small></button></div>
   <div class="actions">
     <button id="randBtn" class="ghost">랜덤 룩</button>
     <button id="enterBtn" class="primary">플라야 입장</button>
@@ -714,6 +717,55 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
 (()=>{
 'use strict';
 const $=s=>document.querySelector(s);
+/* ================= I18N: ko / ja / en / de / es ================= */
+// language = saved choice, else the device language (ko, ja, en, de, es), else English. Korean text in the page, toasts,
+// speech bubbles and canvas signs is swapped through i18n/<lang>.json (exact strings + {0}-style patterns).
+const I18N=(()=>{ const SUP=['ko','ja','en','de','es'], H=/[가-힣]/; let lang=null;
+  try{ lang=localStorage.getItem('playa-lang'); }catch(e){}
+  { const q=new URLSearchParams(location.search).get('lang'); if(SUP.includes(q)){ lang=q; try{ localStorage.setItem('playa-lang',q); }catch(e){} } } // ?lang=en links open in that language
+  if(!SUP.includes(lang)){ const L=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'']).map(x=>String(x).slice(0,2).toLowerCase()); lang=L.find(x=>SUP.includes(x))||'en'; }
+  document.documentElement.lang=lang;
+  const ex=new Map(), pt=[], memo=new Map(), made=new Set(); // made: our own outputs, never translated again (no observer loops)
+  const esc=s=>s.replace(/[.*+?^$()|[\]\\]/g,'\\$&');
+  function load(d){ for(const k in d.exact||{}) ex.set(k,d.exact[k]);
+    for(const k in d.patterns||{}){ const parts=k.split(/\{(\d+)\}/); let re='^', idx=[]; for(let i=0;i<parts.length;i++){ if(i%2) { re+='(.*?)'; idx.push(+parts[i]); } else re+=esc(parts[i]).replace(/ /g,'\\s+'); }
+      pt.push({re:new RegExp(re+'$'),idx,out:d.patterns[k],w:k.replace(/\{\d+\}/g,'').length}); }
+    pt.sort((a,b)=>b.w-a.w); }
+  function core(t){ if(ex.has(t)) return ex.get(t); if(t.length>400) return null;
+    for(const p of pt){ const m=p.re.exec(t); if(m){ let o=p.out; p.idx.forEach((n,i)=>{ o=o.split('{'+n+'}').join(tr(m[i+1])); }); return o; } }
+    // a line made of known pieces joined by ' · ' or ', '
+    for(const sep of [' · ',', ','\n']){ if(t.includes(sep)){ const parts=t.split(sep), out=parts.map(x=>tr(x)); if(out.some((x,i)=>x!==parts[i])) return out.join(sep); } }
+    return null; }
+  function tr(s){ if(lang==='ko'||s==null) return s; s=String(s); if(!H.test(s)||!ex.size||made.has(s)) return s; if(memo.has(s)) return memo.get(s);
+    const m=/^(\s*)([\s\S]*?)(\s*)$/.exec(s), t=m[2].replace(/\s+/g,' '); let r=core(t);
+    // strip a leading emoji / symbol run and try again
+    if(r==null){ const e=/^([^가-힣A-Za-z0-9]+\s*)([\s\S]+)$/.exec(t); if(e){ const r2=core(e[2]); if(r2!=null) r=e[1]+r2; } }
+    r=r==null?s:m[1]+r+m[3]; if(memo.size>5000){ memo.clear(); made.clear(); } memo.set(s,r); if(r!==s) made.add(r); return r; }
+  const ready=lang==='ko'?Promise.resolve():fetch('i18n/'+lang+'.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(load).catch(()=>{});
+  return {lang,SUP,tr,ready,on:lang!=='ko'}; })();
+const tr=I18N.tr;
+// short weekday in the player's language (월 / 月 / Mon / Mo. / lun)
+const wd=d=>{ try{ return d.toLocaleDateString(I18N.lang,{weekday:'short'}); }catch(e){ return '일월화수목금토'[d.getDay()]; } };
+if(I18N.on){
+  // canvas text (signs, bubbles): translate before measuring and drawing so wrapping matches
+  const C2=CanvasRenderingContext2D.prototype;
+  ['fillText','strokeText'].forEach(fn=>{ const o=C2[fn]; C2[fn]=function(t,...a){ return o.call(this,tr(t),...a); }; });
+  const ATTR=['placeholder','aria-label','title'];
+  const trEl=el=>{ for(const a of ATTR){ const v=el.getAttribute&&el.getAttribute(a); if(v&&/[가-힣]/.test(v)){ const t=tr(v); if(t!==v) el.setAttribute(a,t); } } };
+  const trNode=n=>{ if(n.nodeType===3){ if(n.parentNode&&/^(SCRIPT|STYLE)$/.test(n.parentNode.tagName)) return; const v=n.data; if(/[가-힣]/.test(v)){ const t=tr(v); if(t!==v) n.data=t; } return; }
+    if(n.nodeType!==1||n.tagName==='SCRIPT'||n.tagName==='STYLE') return; trEl(n);
+    // never descend into <script>/<style>: the game's own source text is full of Korean
+    const SKIP=/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA)$/, w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{acceptNode:x=>x.nodeType===1&&SKIP.test(x.tagName)?NodeFilter.FILTER_REJECT:x.nodeType===3&&x.parentNode&&SKIP.test(x.parentNode.tagName)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}); let x; while((x=w.nextNode())){ if(x.nodeType===3) trNode(x); else trEl(x); } };
+  const OPT={subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:ATTR};
+  I18N.ready.then(()=>{ trNode(document.body); document.title=tr(document.title); let n=0, since=performance.now();
+    // our own edits must not wake the observer again: pause it while translating, and back off if a page part keeps fighting back
+    const mo=new MutationObserver(L=>{ const now=performance.now(); if(now-since>1000){ since=now; n=0; } n+=L.length; if(n>4000){ console.warn('i18n: too many changes, pausing a moment'); mo.disconnect(); setTimeout(()=>mo.observe(document.body,OPT),1500); return; }
+      mo.disconnect(); try{ for(const m of L){ if(m.type==='characterData') trNode(m.target); else if(m.type==='attributes') trEl(m.target); else m.addedNodes.forEach(trNode); } } finally { mo.observe(document.body,OPT); } });
+    mo.observe(document.body,OPT); });
+}
+// language picker on the first screen; a change reloads into the new language
+(()=>{ const sel=$('#langSel'); if(!sel) return; sel.value=I18N.lang; sel.addEventListener('change',()=>{ try{ localStorage.setItem('playa-lang',sel.value); }catch(e){} location.reload(); }); })();
+
 const rand=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -1405,7 +1457,7 @@ function chime(note,type,peak,dur){ type=type||'triangle'; peak=peak||.16; dur=d
 function boing(){ sfx(t=>tone(master,t,'sine',420,.2,.3,140)); }
 function whoosh(){ sfx(t=>{ const s=ac.createBufferSource(); s.buffer=noiseBuf; s.loop=true; const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.setValueAtTime(300,t); f.frequency.exponentialRampToValueAtTime(2400,t+.3); f.frequency.exponentialRampToValueAtTime(200,t+1.7); const g=ac.createGain(); env(g,t,.05,.55,1.6); s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t+1.9); }); }
 function floatLabel(title,sub,col,x,y,z,parent){ const s=new THREE.Sprite(new THREE.SpriteMaterial({map:signTex(title,sub,col),transparent:true,depthWrite:false})); s.scale.set(8,2,1); s.position.set(x,y,z); (parent||scene).add(s); return s; }
-function noteTex(text){ const c=document.createElement('canvas'); c.width=256; c.height=160; const x=c.getContext('2d'); x.fillStyle='#f3e2c2'; x.fillRect(0,0,256,160); x.strokeStyle='#b88a5a'; x.lineWidth=4; x.strokeRect(2,2,252,156);
+function noteTex(text){ text=tr(text); const c=document.createElement('canvas'); c.width=256; c.height=160; const x=c.getContext('2d'); x.fillStyle='#f3e2c2'; x.fillRect(0,0,256,160); x.strokeStyle='#b88a5a'; x.lineWidth=4; x.strokeRect(2,2,252,156);
   x.fillStyle='#3a2418'; x.font='500 24px Noto Sans KR, sans-serif'; let line=''; const lines=[];
   for(const ch of text){ if(x.measureText(line+ch).width>220){ lines.push(line); line=ch; } else line+=ch; } lines.push(line);
   lines.slice(0,4).forEach((l,i)=>x.fillText(l,18,40+i*32)); return new THREE.CanvasTexture(c); }
@@ -2169,7 +2221,7 @@ function cdG(k,s){ const n=performance.now(); if(gcd[k]&&n<gcd[k]) return false;
 function cdP(P,k,s){ P.cds=P.cds||{}; const n=performance.now(); if(P.cds[k]&&n<P.cds[k]) return false; P.cds[k]=n+s*1000; return true; }
 function clap(v){ sfx(tt=>{ for(let k=0;k<2;k++) noiseHit(master,tt+.12+k*.012,'bandpass',1800,1.2,v||.3,.06); }); }
 function rr(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r); x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath(); }
-function bubbleTex(text){ const c=document.createElement('canvas'); c.width=512; c.height=160; const x=c.getContext('2d'); x.font='600 28px Noto Sans KR, sans-serif';
+function bubbleTex(text){ text=tr(text); const c=document.createElement('canvas'); c.width=512; c.height=160; const x=c.getContext('2d'); x.font='600 28px Noto Sans KR, sans-serif';
   const L=[]; let ln=''; for(const ch of text){ if(x.measureText(ln+ch).width>440){ L.push(ln); ln=ch; } else ln+=ch; } L.push(ln); const show=L.slice(0,2); if(L.length>2) show[1]=show[1].slice(0,-1)+'…';
   const w=Math.min(496,Math.max(...show.map(s=>x.measureText(s).width))+44), h=show.length*36+30, x0=(512-w)/2, y0=118-h;
   x.fillStyle='rgba(255,250,240,.96)'; rr(x,x0,y0,w,h,20); x.fill(); x.beginPath(); x.moveTo(244,117); x.lineTo(268,117); x.lineTo(256,140); x.closePath(); x.fill();
@@ -3677,7 +3729,10 @@ function goMapNami(m){ if(m!=='nami') return goMapBase(m); if(pState.veh){ if(pS
   IT.floor=0; pState.y=0; pState.vy=0; NM.boat=null; if(NM.admit){ NM.side='island'; pState.x=NX; pState.z=-92; pState.face=0; } else { NM.side='main'; pState.x=NX-150; pState.z=-114; pState.face=Math.PI/2; }
   yaw=pState.face+Math.PI; pitch=.32; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
   toast(NM.admit?'동물원점으로 돌아왔어요':'동물원점 선착장이에요. 매표소에서 신분증과 티켓을 확인하고 배를 타요'); }
-function openMapSel(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-act='itaewon' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원 (쉘터, 페이퍼)</button><button data-act='nami' class='hot' ${MAP==='nami'?'disabled':''}>🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-act='sphere' ${MAP==='sphere'?'disabled':''}>🔮 지구본점 <small class='loc'>미국 라스베가스</small></button></div>`,a=>goMap(a)); }
+function openMapSel(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-act='itaewon' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원 (쉘터, 페이퍼)</button><button data-act='nami' class='hot' ${MAP==='nami'?'disabled':''}>🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-act='sphere' ${MAP==='sphere'?'disabled':''}>🔮 지구본점 <small class='loc'>미국 라스베가스</small></button><button data-act='berlin' class='soon'>🇩🇪 베를린점 <small class='loc'>독일 베를린 · 오픈 준비중</small></button></div>`,a=>{ if(a==='berlin'){ berlinSoon(); return; } goMap(a); }); }
+// Berlin: shown in both map pickers, not open yet
+function berlinSoon(){ toast('🇩🇪 베를린점은 오픈 준비 중이에요. 곧 만나요!'); }
+document.querySelectorAll('.mapsel [data-soon]').forEach(b=>b.addEventListener('click',berlinSoon));
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='nami'&&MAP!=='nami') setTimeout(()=>goMap('nami'),60); });
 const NM_SPOTS=[{n:'동물원점 선착장 (매표소)',x:-150,z:-114,s:'main'},{n:'동물원점 DOCK',x:0,z:-158,s:'isl'},{n:'입장 게이트',x:0,z:-106,s:'isl'},{n:'캠핑 숲 & 모닥불',x:0,z:-60,s:'in'},{n:'요가 & 명상 잔디밭',x:-6,z:-30,s:'in'},{n:'JANDI 스테이지 (하우스)',x:-12,z:4,s:'in'},{n:'HANOK 스테이지 (아프로테크)',x:16,z:42,s:'in'},{n:'SOOP 스테이지 (테크노)',x:-8,z:82,s:'in'},{n:'익스페리멘탈 사운드 존',x:2,z:116,s:'in'},{n:'히피 마켓 & 푸드 트럭',x:24,z:28,s:'in'},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
 function renderBoothListNM(){ if(MAP!=='nami') return renderBoothListIT(); const ul=$('#boothList'); if(ul.hidden) return;
@@ -4873,7 +4928,7 @@ const LU={tab:'',sel:null,auto:false};
 const luPad=n=>String(n).padStart(2,'0');
 function luHM(ms){ const d=new Date(ms); return `${luPad(d.getHours())}:${luPad(d.getMinutes())}`; }
 function luDay(ms){ const d=new Date(ms), n=new Date(schNow()), a=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime(), diff=Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime()-a)/864e5);
-  return diff===0?'오늘':diff===1?'내일':`${d.getMonth()+1}/${d.getDate()} (${'일월화수목금토'[d.getDay()]})`; }
+  return diff===0?'오늘':diff===1?'내일':`${d.getMonth()+1}/${d.getDate()} (${wd(d)})`; }
 function luWhen(s){ return `${luDay(s.start)} ${luHM(s.start)}`; }
 // every slot that is on now or still to come, tagged with its stage
 // the board shows what is on now and what starts within the next 5 hours (luAll(true) gives everything ahead)
@@ -4885,7 +4940,7 @@ function luNext(key){ const now=schNow(); return luAll(true).find(s=>s.key===key
 function luArt(s){ return s.art?`style="background-image:url('${esc(String(s.art).replace(/['"()\\\s]/g,''))}')"`:''; }
 function luPoster(s,i,big){ return `<button class="cd ${s.live?'live':''} ${big?'big':''}" data-lu="${i}"><span class="cdw"><span class="disc" aria-hidden="true"></span><span class="sleeve" ${luArt(s)}>${s.art?'':`<i>${esc((s.dj||s.title||'DJ').slice(0,14))}</i>`}${s.live?'<em>LIVE</em>':''}</span></span>
   <b>${esc(s.dj||s.title||'DJ')}</b><small>${esc(s.dj?s.title||'':'')}</small><span class="when">${s.live?'● 지금 방송 중':luWhen(s)} · ${esc(s.name)}</span></button>`; }
-function luRender(){ const body=$('#luBody'); if(!body) return; { const d=new Date(schNow()); $('#luToday').textContent=`TODAY ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} (${'일월화수목금토'[d.getDay()]}) · 지금부터 5시간 안의 공연`; } const all=luAll(), tab=LU.tab, L=tab?all.filter(s=>s.map===tab):all;
+function luRender(){ const body=$('#luBody'); if(!body) return; { const d=new Date(schNow()); $('#luToday').textContent=`TODAY ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} (${wd(d)}) · 지금부터 5시간 안의 공연`; } const all=luAll(), tab=LU.tab, L=tab?all.filter(s=>s.map===tab):all;
   $('#luTabs').innerHTML=[['','전체'],...LU_AREAS.map(([m,a])=>[m,a])].map(([m,a])=>{ const n=all.filter(s=>!m||s.map===m).length; return `<button role="tab" data-tab="${m}" aria-selected="${m===tab}">${a}${n?` <small>${n}</small>`:''}</button>`; }).join('');
   if(LU.sel){ const s=LU.sel, go=luCanGo(s.key);
     body.innerHTML=`<button class="lu-back" data-back="1">← 편성표로</button><div class="lu-detail"><div class="cdw big"><span class="disc" aria-hidden="true"></span><span class="sleeve" ${luArt(s)}>${s.art?'':`<i>${esc(s.dj||'DJ')}</i>`}${s.live?'<em>LIVE</em>':''}</span></div>
@@ -4921,7 +4976,7 @@ addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('#lineup').hidden) close
 schFetch().then(()=>{ let seen=false; try{ seen=sessionStorage.getItem('playa-lu-seen')==='1'; }catch(e){} if(seen||!luAll().length) return;
   try{ sessionStorage.setItem('playa-lu-seen','1'); }catch(e){} setTimeout(()=>openLineup(),700); });
 function luPlace(){ const b=$('#lineupBtn'), m=$('.mapc'); if(!b||!m) return; const r=m.getBoundingClientRect(), top=Math.round(r.bottom+6); if(b._top!==top){ b._top=top; b.style.top=top+'px'; } const hide=!inGame||top>innerHeight*.62||document.body.classList.contains('dressing'); if(b.hidden!==hide) b.hidden=hide; }
-function luBtn(){ const d=new Date(schNow()), td=`📅 ${d.getMonth()+1}.${d.getDate()} (${'일월화수목금토'[d.getDay()]})`, e=$('#luDate'); if(e&&e.textContent!==td) e.textContent=td;
+function luBtn(){ const d=new Date(schNow()), td=`📅 ${d.getMonth()+1}.${d.getDate()} (${wd(d)})`, e=$('#luDate'); if(e&&e.textContent!==td) e.textContent=td;
   const n=luAll().length, c=$('#luCnt'); if(c){ c.hidden=!n; c.textContent=n; } }
 luBtn(); schFetch().then(luBtn);
 updaters.push(t=>{ luPlace(); if(t-(LU.bt||0)>30){ LU.bt=t; luBtn(); } if(!$('#lineup').hidden&&t-(LU.rt||0)>20){ LU.rt=t; if(!LU.sel) luRender(); } });
@@ -4941,7 +4996,7 @@ function djFactsFor(c){ const f={key:c.key,S:sndSentences(c.musicIntro),tags:(c.
         const paras=d.split(/\n+/).map(x=>x.trim()).filter(Boolean), ch=[]; paras.forEach(x=>mcChunks(x,450).forEach(y=>ch.push(y)));
         mcTr(ch).then(out=>{ const ko=out.join('\n'); mcKo[c.key]=ko; use(ko); }).catch(()=>{}); }); } }
   return f; }
-const ga=w=>{ const c=String(w).charCodeAt(String(w).length-1); return c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28?'이':'가'; };
+const ga=w=>{ if(I18N.on) return ''; const c=String(w).charCodeAt(String(w).length-1); return c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28?'이':'가'; };
 function djLine(P){ const f=DJT.f, foc=P._sndF||(P._sndF=pick(SND_FOCUS)), q=pick(f.S), L=[
     `“${q}” 소리가 딱 그래`, `${q}. 들어 보니 진짜네`, `소개에 ${q}라고 돼 있더라`, `${foc}${ga(foc)} 소개 그대로야`, `${foc} 소리 들어 봐, 딱 그 느낌이야`];
   if(f.tags.length) L.push(`${pick(f.tags)} 사운드 제대로다`);
@@ -4958,7 +5013,7 @@ updaters.push(t=>{ const c=MC.cur; if(!inGame||!c||!c.sched||!MC.playing||MC.pau
   DJT.t=t+rand(5,9); if(!DJT.f||!DJT.f.S.length) return; const P=djSpeaker(t); if(!P) return; P._djT=t; say(P,djLine(P),3.6); });
 
 /* ================= BOOT ================= */
-const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null]),new Promise(r=>setTimeout(r,2500))]);
+const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
   buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();

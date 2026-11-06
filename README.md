@@ -10,11 +10,16 @@ playa-night/
 ├── admin.html                      DJ 편성 관리 페이지 (운영자용)
 ├── schedule.json                   편성표 (관리자 페이지가 저장)
 ├── deploy.sh                       수정 사항을 GitHub Pages에 올리는 스크립트
+├── i18n/                           번역 (ja, en, de, es) + 원문 목록
 ├── media/                          스피어 돔 영상 10편 (index.html과 같은 폴더 구조로 올려 주세요)
 │   ├── sphere-video2*.mp4, sv03~sv11.mp4      HD (휴대폰용)
 │   └── *-4k.mp4                                4K (컴퓨터용, 가벼운 버전에는 없어요)
 └── README.md                       이 설명서
 ```
+
+## 다국어
+
+한국어, 日本語, English, Deutsch, Español을 지원해요. 접속한 기기 언어에 맞춰 자동으로 바뀌고(그 밖의 언어는 영어), 첫 화면 오른쪽 위에서 직접 고를 수 있어요. 주소 뒤에 `?lang=ja`, `?lang=en`, `?lang=de`, `?lang=es`, `?lang=ko`를 붙이면 그 언어로 열려요. 번역은 `i18n/<언어>.json`에 있고, `i18n/source.json`은 번역할 한국어 원문 목록이에요.
 
 ## 실행 방법
 
