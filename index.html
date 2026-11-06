@@ -339,11 +339,8 @@ body.dressing .mapsel{display:none}
   .np{left:10px;right:10px;width:auto;bottom:calc(10px + var(--sab));padding:8px 10px;border-radius:16px}
   .np:not(.collapsed){z-index:7;box-shadow:0 -10px 40px rgba(0,0,0,.45)}
   .nphero{grid-template-columns:96px 1fr} .heroart{width:96px;height:96px}
-  #npList{max-height:min(34vh,260px)}
-  #toast{top:calc(112px + var(--sat))}
-  .nphead{cursor:pointer}
+    #toast{top:calc(112px + var(--sat))}
   .chev{display:block}
-  .np.collapsed .npbody{display:none}
   #actBtn{bottom:calc(96px + var(--sab));font-size:14px;padding:12px 18px}
   #toast{font-size:13px}
   #wish{top:28%}
@@ -368,8 +365,7 @@ body.dressing .mapsel{display:none}
   .creator h1{font-size:24px}
   #sheetToggle{display:none}
   .np{left:auto;width:min(46vw,340px)}
-  #npList{max-height:30vh}
-  #jumpBtn{bottom:calc(70px + var(--sab));width:58px;height:58px}
+    #jumpBtn{bottom:calc(70px + var(--sab));width:58px;height:58px}
   #actBtn{bottom:calc(70px + var(--sab))}
 }
 @media (prefers-reduced-motion: reduce){ .creator{transition:none} #toast{transition:none} }
@@ -525,24 +521,23 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 .herometa small{font-size:12px;color:var(--muted);display:block}
 .heroacts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .heroacts button,.heroacts a{border:0;border-radius:999px;padding:6px 10px;font:inherit;font-size:11px;font-weight:700;background:var(--chip);color:var(--text);text-decoration:none;cursor:pointer}
-.npplh{display:flex;justify-content:space-between;align-items:baseline;margin:12px 2px 6px}
-.npplh b{font-size:13px} .npplh small{font-size:11px;color:var(--muted)}
-#npList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:260px;overflow-y:auto;overscroll-behavior:contain}
-#npList button{width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;border-radius:10px;padding:6px;text-align:left;color:var(--text);font:inherit;cursor:pointer}
-#npList button:hover,#npList button.cur{background:var(--chip)}
-#npList button.cur .tx b{color:var(--gc)}
-#npList .th{width:42px;height:42px;border-radius:8px;flex:none;background-color:#2a1f30;background-size:cover;background-position:center}
-#npList .tx{flex:1;min-width:0}
-#npList .tx b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#npList .tx small{font-size:11px;color:var(--muted)}
-#npList .no{font-size:11px;color:var(--muted);min-width:18px;text-align:right}
-#npList .msg{font-size:12px;color:var(--muted);padding:8px}
 .eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px}
 .eq i{display:block;width:3px;height:100%;background:var(--gc);border-radius:1px;transform-origin:bottom;animation:npeq .9s ease-in-out infinite}
 .eq i:nth-child(2){animation-delay:-.3s} .eq i:nth-child(3){animation-delay:-.6s} .eq i:nth-child(4){animation-delay:-.15s}
 .np:not(.playing) .eq i{animation-play-state:paused}
 @keyframes npeq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
 @media (prefers-reduced-motion: reduce){ .eq i{animation:none} }
+#np .npstory{max-height:min(38vh,320px);overflow-y:auto;overscroll-behavior:contain;padding:0 2px}
+#np .npstory h4{margin:12px 0 4px;font-size:13px}
+#np .npstory p{margin:0 0 4px;font-size:13px;line-height:1.55}
+#np .npstory .orig{opacity:.85;overflow-wrap:anywhere}
+#np .npstory .hint{font-size:11px;color:var(--muted)}
+#np .npstory .mtags{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+#np .npstory .mtags span{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--chip)}
+#np .npstory .origd{margin-top:6px;font-size:12px}
+#np .npstory .origd summary{cursor:pointer;color:var(--muted)}
+.np.collapsed .npbody{display:none}
+.np .nphead{cursor:pointer}
 #clubNow{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
 #cnMix{display:none}
@@ -599,12 +594,12 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <button id="rndMenuBtn"><span class="l">막춤 룰렛</span><span class="s">룰렛</span></button>
     <button id="helpBtn"><span class="l">조작법</span><span class="s">도움</span></button>
   </div>
-  <section class="np card" id="np" aria-label="DJ 세트 플레이리스트">
+  <section class="np card" id="np" aria-label="DJ 세트">
     <div class="nprow">
       <button class="nphead" id="npToggle" aria-expanded="true"><span class="npart" id="npArt"></span><span class="nt"><b id="npName"></b><small id="npCamp"></small></span></button>
       <button class="npbtn" id="npPlay" aria-label="재생">▶</button><button class="npbtn" id="npNext" aria-label="다음 세트">⏭</button><span class="chev" id="npChev" hidden></span>
     </div>
-    <div class="npbody"><div id="npHero" class="nphero"></div><div class="npplh"><b>플레이리스트</b><small id="npPlMeta"></small></div><ol id="npList"></ol></div>
+    <div class="npbody"><div id="npHero" class="nphero"></div><div id="npStory" class="mcstory npstory"></div></div>
   </section>
   <div class="keys card" id="keys">WASD나 방향키로 이동, Shift로 달리기, Space로 점프. 드래그로 시점을 돌리고 휠로 줌해요. 위로 드래그하거나 Q를 누르면 하늘을 올려다봐요. 체험 조형물 근처에서는 E를 눌러요. 숫자 키로 춤을 바꾸고 F로 제자리 춤을 켜요. 차량은 W/S로 가속, A/D로 방향, Space로 브레이크(비행기는 상승), C로 하강해요. B로 가방을 열어요.</div>
   <div id="joy" class="idle" hidden><div id="knob"></div></div>
@@ -1540,8 +1535,9 @@ $('#timeBtn').addEventListener('click',()=>{ night=!night; applyTime(); });
 $('#muteBtn').addEventListener('click',()=>{ muted=!muted; if(master) master.gain.setTargetAtTime(muted?0:.8,ac.currentTime,.05); setBtn($('#muteBtn'),muted?'소리 켜기':'소리 끄기',muted?'소리':'음소거'); });
 $('#mapToggle').addEventListener('click',()=>{ const l=$('#boothList'); l.hidden=!l.hidden; $('#mapToggle').setAttribute('aria-expanded',String(!l.hidden)); if(!l.hidden) renderBoothList(); });
 const compact=()=>isTouch||innerWidth<=760;
-if(compact()){ $('#boothList').hidden=true; $('#mapToggle').setAttribute('aria-expanded','false'); $('#mapToggle').textContent='지도'; $('#np').classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); }
-$('#npToggle').addEventListener('click',()=>{ if(!compact()) return; const c=$('#np').classList.toggle('collapsed'); $('#npToggle').setAttribute('aria-expanded',String(!c)); });
+if(compact()){ $('#boothList').hidden=true; $('#mapToggle').setAttribute('aria-expanded','false'); $('#mapToggle').textContent='지도'; }
+$('#np').classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); // the music card starts mini and folds back when you tap elsewhere
+$('#npToggle').addEventListener('click',()=>{ const c=$('#np').classList.toggle('collapsed'); $('#npToggle').setAttribute('aria-expanded',String(!c)); });
 
 const SPOTS=[{n:'더 맨 (The Burn)',x:0,z:-15},{n:'반응형 LED 터널',x:0,z:27},{n:'거대 시소',x:19,z:27},{n:'인간 회전목마',x:-19,z:26},{n:'거대 징',x:0,z:-35},{n:'블룸 플라워',x:-31,z:-10},{n:'풍경 나무',x:-13,z:-18},{n:'거대 미끄럼틀',x:92,z:30},{n:'하늘로 거는 전화',x:61,z:-84},{n:'인피니티 미러 큐브',x:-60,z:-82},{n:'메시지 벽',x:-100,z:32},{n:'골든 가이 앨리',x:173,z:-15},{n:'비밀 재즈 카페',x:145,z:-91},{n:'블랙록 롤러 디스코',x:180,z:58},{n:'포타포티 고해성사',x:94,z:-121},{n:'사막 천문대',x:-105,z:-150},{n:'바디 페인팅 텔트',x:-162,z:-59},{n:'19+ 성인 캠프 구역',x:-188,z:51},{n:'딥 플라야 명상 오두막',x:-93,z:-256},{n:'딥 플라야 비밀 편지통',x:95,z:-261},{n:'내 텐트 (잠자기)',x:-34,z:141},{n:'차고 (버기카, 오토바이, 비행기)',x:-2,z:127},{n:'마켓',x:0,z:139},{n:'거대 그네',x:-20,z:110},{n:'바운스 패드',x:20,z:113},{n:'소리 타일',x:0,z:98},{n:'레이저 하프',x:27,z:-5},{n:'불기둥',x:0,z:19},{n:'템플',x:0,z:-174}];
 function renderBoothListOld(){
@@ -3318,7 +3314,8 @@ async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g;
   MC.list=await mcFetch(g); if(MC.target!==T||MC.genre!==g) return;
   if(!MC.list.length){ mcStatus(''); toast('Mixcloud에 연결하지 못했어요. 인터넷 연결을 확인해 주세요'); mcStop(); return; }
   MC.idx=-1; MC.fails=0; mcNext(); }
-function mcNext(){ if(!MC.target||!MC.list.length) return; MC.idx=(MC.idx+1)%MC.list.length; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null;
+// every play and every skip lands on a random set (never the same one twice in a row)
+function mcNext(){ if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
   if(MC.iframe&&MC.live){ MC.paused=false; mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
   if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1;
@@ -3356,18 +3353,20 @@ async function mcKoUi(p,key,raw,live){ const src=mcTrunc(raw,700), html=x=>esc(x
     mcKo[key]=ko; const ks=Object.keys(mcKo); if(ks.length>40) delete mcKo[ks[0]]; try{ localStorage.setItem('playa-mc-ko',JSON.stringify(mcKo)); }catch(e){} show(ko); }
   catch(e){ if(live()) p.innerHTML=`<span class='hint'>지금은 번역할 수 없어서 원문으로 보여 드려요.</span><br>`+html(src); } }
 function mcDate(t){ const d=new Date(t); return isNaN(d)?'':`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`; }
-function mcStoryUi(){ const el=document.getElementById('mcStory'); if(!el) return; const c=MC.cur;
-  if(!c||!MC.target){ if(el.dataset.key!=='-'){ el.dataset.key='-'; el.innerHTML=`<p class='hint'>부스 가까이에서 세트를 틀면 지금 나오는 세트와 DJ 이야기가 여기에 나와요.</p>`; } return; }
+// DJ introduction, then the music: the uploader's bio and the set's own notes (Korean machine translation), straight from Mixcloud
+function mcStoryInto(el,c,empty){ if(!el) return;
+  if(!c){ if(el.dataset.key!=='-'){ el.dataset.key='-'; el.innerHTML=empty?`<p class='hint'>${empty}</p>`:''; } return; }
   if(el.dataset.key===c.key) return; el.dataset.key=c.key;
   const tags=(c.tags||[]).map(t=>t.name).filter(Boolean).slice(0,5), who=c.user&&c.user.name||'';
   const sum=`${who?esc(who)+' 채널이 ':''}${c.created_time?mcDate(c.created_time)+'에 올린 ':''}${c.audio_length?Math.round(c.audio_length/60)+'분짜리 ':''}세트예요.`;
-  el.innerHTML=`<h4>🎧 지금 나오는 세트</h4><p>${sum}</p>${tags.length?`<div class='mtags'>${tags.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`:''}<h4>📖 세트 이야기</h4><p class='orig' id='mcSetTxt'>불러오는 중이에요</p><h4>🎛️ DJ·채널 이야기</h4><p class='orig' id='mcDjTxt'>불러오는 중이에요</p><p class='hint'>세트 이야기는 Mixcloud 원문을 자동 번역했어요. DJ·채널 이야기는 원문 그대로예요.</p>`;
-  const live=()=>el.isConnected&&el.dataset.key===c.key;
-  mcInfo(c.key).then(d=>{ const p=document.getElementById('mcSetTxt'); if(p&&live()){ if(d.description) mcKoUi(p,c.key,d.description,live); else p.textContent='이 세트에는 따로 적힌 설명이 없어요.'; }
-    const uk=(c.user&&c.user.key)||(d.user&&d.user.key); const q=document.getElementById('mcDjTxt');
-    if(!uk){ if(q&&live()) q.textContent='채널 정보가 없어요.'; return; }
-    return mcInfo(uk).then(u=>{ const q=document.getElementById('mcDjTxt'); if(!q||!live()) return; const where=[u.city,u.country].filter(Boolean).join(', ');
-      q.innerHTML=`<b>${esc(u.name||who)}</b>${where?' · '+esc(where):''}<br>${u.biog?mcText(u.biog,500):'채널 소개가 없어요.'}`; }); }); }
+  el.innerHTML=`<h4>🎛️ DJ 소개</h4><p class='orig st-dj'>불러오는 중이에요</p><h4>🎧 음악 소개</h4><p>${sum}</p>${tags.length?`<div class='mtags'>${tags.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`:''}<p class='orig st-set'>불러오는 중이에요</p><p class='hint'>음악 소개는 Mixcloud 원문을 자동 번역했어요. DJ 소개는 원문 그대로예요.</p>`;
+  const live=()=>el.isConnected&&el.dataset.key===c.key, P=el.querySelector('.st-set'), Q=el.querySelector('.st-dj');
+  mcInfo(c.key).then(d=>{ if(live()){ if(d.description) mcKoUi(P,c.key,d.description,live); else P.textContent='이 세트에는 따로 적힌 설명이 없어요.'; }
+    const uk=(c.user&&c.user.key)||(d.user&&d.user.key);
+    if(!uk){ if(live()) Q.textContent='DJ 정보가 없어요.'; return; }
+    return mcInfo(uk).then(u=>{ if(!live()) return; const where=[u.city,u.country].filter(Boolean).join(', ');
+      Q.innerHTML=`<b>${esc(u.name||who)}</b>${where?' · '+esc(where):''}<br>${u.biog?mcText(u.biog,500):'DJ 소개가 없어요.'}`; }); }); }
+function mcStoryUi(){ mcStoryInto(document.getElementById('mcStory'),MC.target?MC.cur:null,'부스 가까이에서 세트를 틀면 DJ 소개와 음악 소개가 여기에 나와요.'); }
 function mcUi(){ const box=document.getElementById('mcNow'); if(!box) return; const c=MC.cur;
   mcStoryUi(); if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small);
   box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud에서 보기</a></div>`;
@@ -3818,7 +3817,7 @@ document.addEventListener('pointerdown',e=>{ const T=e.target; if(!T||!T.closest
   if(!$('#bagPanel').hidden&&!inS('#bagPanel')&&!inS('#bagBtn')&&!inS('#shop')) $('#bagPanel').hidden=true;
   if(!$('#dancePanel').hidden&&!inS('#dancePanel')&&!inS('#danceMain')&&!inS('#danceBtn')){ $('#dancePanel').hidden=true; $('#danceMain').setAttribute('aria-expanded','false'); }
   if($('.tools').classList.contains('open')&&!inS('.tools')) closeMenu();
-  if(compact()&&!$('#np').classList.contains('collapsed')&&!inS('#np')){ $('#np').classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); const ch=$('#npChev'); if(ch) ch.textContent='곡 고르기'; } },true);
+  if(!$('#np').classList.contains('collapsed')&&!inS('#np')&&!inS('#musicBtn')){ $('#np').classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); const ch=$('#npChev'); if(ch) ch.textContent='곡 고르기'; } },true);
 
 /* ================= RANDOM DANCE SHUFFLE ================= */
 const RND={on:false,t:0,last:null};
@@ -4735,37 +4734,32 @@ function openSchPanel(){ const items=[['booth:techno','사막점 테크노'],['b
   openSp('📻 편성 방송 중',SCH.sched?'운영자가 정한 시간표대로 모두 같은 음악을 들어요':'편성표를 불러오는 중이에요',rows+`<div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>알겠어요</button></div>`,()=>closeSp()); mcUi(); }
 
 /* ================= DJ SET PLAYLIST CARD (album art up front, every map) ================= */
-const NPC={sig:'',lists:{},loading:'',t:0};
+const NPC={sig:'',t:0};
 const npEq="<span class='eq' aria-hidden='true'><i></i><i></i><i></i><i></i></span>";
-function npPic(c,big){ const P=c&&c.pictures; const u=P&&(big?(P['640wx640h']||P.extra_large||P.large||P.medium):(P.medium||P.small)); return u?`url("${String(u).replace(/["'()\\\s]/g,'')}")`:''; }
+function npPic(c,big){ const P=c&&c.pictures; const u=P&&(big?(P['320wx320h']||P.large||P.extra_large||P.medium):(P.medium||P.small)); return u?`url("${String(u).replace(/["'()\\\s]/g,'')}")`:''; }
 function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][0],near:mcNear(T),mine:!!(MC.cur&&MC.target&&MC.target.key===T.key)}; }
 function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff'}[T.Z&&T.Z.id]||'#b06bff'); }
-function npList(g){ if(NPC.lists[g]) return NPC.lists[g];
-  if(NPC.loading!==g){ NPC.loading=g; mcFetch(g).then(L=>{ NPC.lists[g]=L; }).catch(()=>{}).then(()=>{ if(NPC.loading===g) NPC.loading=''; NPC.sig=''; }); }
-  return null; }
-async function mcPlayIdx(g,T,i){ initAudio(); const L=await mcFetch(g); if(!L.length) return; MC.target=T; MC.genre=g; MC.list=L; MC.fails=0; MC.idx=i-1; mcNext(); NPC.sig=''; }
 function npRender(){ if(!inGame||SCH.url) return; const np=$('#np'); if(!np) return;
-  const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null, L=npList(g), open=!np.classList.contains('collapsed'), col=npColor(T);
-  const sig=[T.key,near,c&&c.key,MC.paused,MC.playing,L&&L.length,open].join('|'); if(sig===NPC.sig) return; NPC.sig=sig;
+  const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null, open=!np.classList.contains('collapsed'), col=npColor(T);
+  const sig=[T.key,near,c&&c.key,MC.paused,MC.playing,open].join('|'); if(sig===NPC.sig) return; NPC.sig=sig;
   np.style.setProperty('--gc',col); np.classList.toggle('playing',!!c&&!MC.paused);
   const art=$('#npArt'); art.style.backgroundImage=npPic(c); art.innerHTML=c?'':'🎛️';
   $('#npName').textContent=c?c.name:T.name;
   $('#npCamp').textContent=c?`${c.user&&c.user.name||''} · ${T.name}`:(near?`${gn} · ▶ 누르면 DJ 세트가 나와요`:`${gn} · 가까이 가면 DJ 세트가 나와요`);
   const pb=$('#npPlay'); pb.textContent=c&&!MC.paused?'❚❚':'▶'; pb.setAttribute('aria-label',c&&!MC.paused?'일시정지':'재생');
-  if(!open&&compact()) return;
-  $('#npHero').innerHTML=c?`<div class='heroart' style='background-image:${npPic(c,1)}'>${npEq}</div><div class='herometa'><span class='gtag'>${esc(gn)} · ${esc(T.name)}</span><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><div class='heroacts'><button data-np='story'>📖 세트·DJ 이야기</button><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud ↗</a></div></div>`
-    :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?'▶ 눌러서 DJ 세트 틀기':'부스 가까이 가면 들을 수 있어요'}</b><small>${esc(gn)} 공식 DJ·레이블 채널의 믹스셋을 원본 그대로 틀어요.</small></div>`;
-  $('#npPlMeta').textContent=`${gn}${L?' · '+L.length+'개 세트':''}`;
-  $('#npList').innerHTML=L?(L.length?L.map((s,i)=>{ const on=c&&s.key===c.key; return `<li><button data-np='i:${i}' class='${on?'cur':''}' aria-current='${on}'><span class='th' style='background-image:${npPic(s)}'></span><span class='tx'><b>${esc(s.name)}</b><small>${esc(s.user&&s.user.name||'')}${s.audio_length?' · '+Math.round(s.audio_length/60)+'분':''}</small></span>${on?npEq:`<span class='no'>${i+1}</span>`}</button></li>`; }).join(''):`<li class='msg'>지금은 세트를 불러올 수 없어요</li>`):`<li class='msg'>플레이리스트를 불러오는 중이에요</li>`;
-  if(c){ const cur=$('#npList .cur'); if(cur&&NPC.scrolled!==c.key){ NPC.scrolled=c.key; cur.scrollIntoView({block:'nearest'}); } } }
+  if(!open) return;
+  $('#npHero').innerHTML=c?`<div class='heroart' style='background-image:${npPic(c,1)}'>${npEq}</div><div class='herometa'><span class='gtag'>${esc(gn)} · ${esc(T.name)}</span><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><div class='heroacts'><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud ↗</a></div></div>`
+    :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?'▶ 눌러서 DJ 세트 틀기':'부스 가까이 가면 들을 수 있어요'}</b><small>${esc(gn)} 공식 DJ·레이블 채널의 믹스셋 중 하나를 랜덤으로 틀어요.</small></div>`;
+}
 function npFar(T,gn){ toast(`${T.name} 가까이 가야 ${gn} 세트를 틀 수 있어요`); }
 function npPlayBtn(next){ initAudio(); const {T,g,gn,near,mine}=npNow();
   if(mine&&MC.iframe){ if(next){ mcNext(); return; } if(!MC.live){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); return; } mcCall('togglePlay'); return; }
   if(!near){ npFar(T,gn); return; } MCA.skip=''; mcPlay(g,T); }
 $('#npPlay').addEventListener('click',()=>npPlayBtn(false)); $('#npNext').addEventListener('click',()=>npPlayBtn(true));
 $('#np').addEventListener('click',e=>{ const b=e.target.closest('[data-np]'); if(!b) return; const a=b.dataset.np;
-  if(a==='story') openMcPanel();
-  else if(a.startsWith('i:')){ const {T,g,gn,near}=npNow(); if(!near){ npFar(T,gn); return; } MCA.skip=''; mcPlayIdx(g,T,+a.slice(2)); } });
+  if(a==='story') openMcPanel(); });
+// the card's DJ / music introduction follows whatever is playing at this stage
+updaters.push(t=>{ const el=document.getElementById('npStory'); if(!el||$('#np').classList.contains('collapsed')) return; const {mine}=npNow(); mcStoryInto(el,mine?MC.cur:null,''); });
 $('#npToggle').addEventListener('click',()=>{ NPC.sig=''; });
 updaters.push((t)=>{ if(t-NPC.t<.35) return; NPC.t=t; npRender(); });
 
