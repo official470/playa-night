@@ -1,1 +1,18 @@
-{"version":1,"booths":{}}
+{
+ "version": 1,
+ "booths": {
+  "booth:techno": [
+   {
+    "start": 1793950800000,
+    "dur": 60,
+    "url": "https://soundcloud.com/thelotradio/ken-ishii-the-lot-radio-10-23?si=632268b167c648ca924afb69f203ebdd&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+    "title": "Ken Ishii @ The Lot Radio 10-23-2026",
+    "dj": "The Lot Radio",
+    "art": "https://i1.sndcdn.com/artworks-E3BRx10iv1T6jeMe-kpDecA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": ""
+   }
+  ]
+ },
+ "updated": "2026-11-06T07:41:39.434Z"
+}
