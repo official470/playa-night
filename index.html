@@ -3286,9 +3286,15 @@ function musicTarget(){ let best=null, bv=.02;
   return Object.assign(best,{name:nz?nz.name:(MC_ZN[Z.id]||Z.id),key:'zone:'+Z.id}); }
 const MC_ZN={shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
 // each genre pulls recent shows from official DJ / label channels
-const MC_G={techno:['테크노',['residentadvisor','CarlCox']],house:['하우스',['Defectedrecords']],afro:['아프로 하우스',['keinemusik']],
-  melodic:['멜로딕 테크노',['afterlife','johndigweed']],trance:['트랜스',['ArminvanBuuren']],deephouse:['딥하우스',['anjunadeep']],
-  dnb:['드럼앤베이스',['hospitalrecords']],psy:['사이키델릭 트랜스',['faeriepiraterainbowsparkle']],hardstyle:['하드스타일',['Q-dance']],dubstep:['덥스텝',['ukfmusic']],eclectic:['언더그라운드',['FACTMixArchive']]};
+// each genre: Korean name, official DJ / label channels, and the Mixcloud tag whose most-played mixes join the pool
+const MC_G={techno:['테크노',['residentadvisor','CarlCox','mixmag'],'techno'],house:['하우스',['Defectedrecords','mixmag'],'house'],afro:['아프로 하우스',['keinemusik'],'afro-house'],
+  melodic:['멜로딕 테크노',['afterlife','johndigweed'],'melodic-techno'],trance:['트랜스',['ArminvanBuuren'],'trance'],deephouse:['딥하우스',['anjunadeep'],'deep-house'],
+  dnb:['드럼앤베이스',['hospitalrecords','ukfmusic'],'drum-and-bass'],psy:['사이키델릭 트랜스',['faeriepiraterainbowsparkle'],'psytrance'],hardstyle:['하드스타일',['Q-dance'],'hardstyle'],dubstep:['덥스텝',['ukfmusic'],'dubstep'],eclectic:['언더그라운드',['FACTMixArchive'],'electronica']};
+// music-first sets only: no radio shows or talk formats, no non-stop medleys / remix compilations or off-genre party mixes
+const MC_RADIO=/radio|\bshow\b|podcast|episode|\bep\.?\s*\d|edition|transitions|takeover|hosted by|interview|in conversation|q&a|\btalk|broadcast|global \d|state of trance|asot|presents next|group therapy|dance department|\bweek \d/i;
+const MC_JUNK=/non ?stop|viet|remix|mash ?-?up|bootleg|\b[5-9]0'?s\b|love ?song|bxh|zalo|private|commercial|snippet|promo|instagram|tik ?tok|\bhits\b|\btop \d|\bbpm \d|hands ?up|party blaster|throwdown|r&b|hip ?hop|dancehall|naija|afrobeats?|gengeton|bongo|\s[x×]\s.*\s[x×]\s|gym|workout|reggae|grime|apres|gambl|www\.|\.com\b|\bedm\b|quarantine|mega ?mix/i;
+const MC_SCRIPT=/[Ѐ-ӿ؀-ۿऀ-ॿ฀-๿Ạ-ỹĐđ぀-ヿ㐀-鿿가-힣＀-￯]/;
+function mcMusicOnly(c){ const n=c&&c.name||'', a=c&&c.audio_length||0; return !!(c&&c.key)&&a>=1800&&a<=4*3600&&!c.is_exclusive&&!MC_RADIO.test(n)&&!MC_JUNK.test(n)&&!MC_SCRIPT.test(n+(c.user&&c.user.name||'')); }
 const MC_ORIGIN='https://player-widget.mixcloud.com';
 const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
 const MC_DEF={techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
@@ -3305,9 +3311,12 @@ addEventListener('message',e=>{ if(e.origin!==MC_ORIGIN||!MC.iframe||e.source!==
   else if(ev==='ended') mcNext();
   else if(ev==='error'){ if(++MC.fails<4) mcNext(); else { toast('Mixcloud 세트를 불러오지 못했어요'); mcStop(); } } });
 function mcShow(on){ if(!MC.iframe) return; MC.iframe.style.cssText=on?'position:fixed;left:10px;right:10px;bottom:calc(84px + var(--sab));width:calc(100% - 20px);max-width:420px;height:60px;border:0;border-radius:10px;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.4)':'position:fixed;left:-9999px;top:0;width:300px;height:60px;border:0'; }
+// pool = the genre's official channels + the tag's most-played mixes, filtered to music-first sets, the 40 most popular, shuffled
 async function mcFetch(g){ if(MC.cache[g]&&MC.cache[g].length) return MC.cache[g];
-  const lists=await Promise.all(MC_G[g][1].map(u=>fetch(`https://api.mixcloud.com/${encodeURIComponent(u)}/cloudcasts/?limit=30`).then(r=>r.ok?r.json():{data:[]}).then(d=>d.data||[]).catch(()=>[])));
-  const L=lists.flat().filter(c=>c&&c.key&&c.audio_length>600&&!c.is_exclusive);
+  const get=u=>fetch('https://api.mixcloud.com'+u).then(r=>r.ok?r.json():{data:[]}).then(d=>d.data||[]).catch(()=>[]), tag=encodeURIComponent(MC_G[g][2]);
+  const lists=await Promise.all(MC_G[g][1].map(u=>get(`/${encodeURIComponent(u)}/cloudcasts/?limit=100`)).concat([get(`/discover/${tag}/popular/?limit=100`),get(`/discover/${tag}/popular/?limit=100&offset=100`)]));
+  const seen=new Set(), L=lists.flat().filter(c=>mcMusicOnly(c)&&!seen.has(c.key)&&seen.add(c.key));
+  L.sort((a,b)=>(b.play_count||0)-(a.play_count||0)); L.length=Math.min(L.length,40);
   for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } MC.cache[g]=L; return L; }
 async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g; 
   mcStatus(`${MC_G[g][0]} DJ 세트를 찾는 중이에요`);
@@ -4749,7 +4758,7 @@ function npRender(){ if(!inGame||SCH.url) return; const np=$('#np'); if(!np) ret
   const pb=$('#npPlay'); pb.textContent=c&&!MC.paused?'❚❚':'▶'; pb.setAttribute('aria-label',c&&!MC.paused?'일시정지':'재생');
   if(!open) return;
   $('#npHero').innerHTML=c?`<div class='heroart' style='background-image:${npPic(c,1)}'>${npEq}</div><div class='herometa'><span class='gtag'>${esc(gn)} · ${esc(T.name)}</span><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><div class='heroacts'><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud ↗</a></div></div>`
-    :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?(MCA.on?'곧 자동으로 DJ 세트가 나와요':'▶ 눌러서 DJ 세트 틀기'):'부스 가까이 가면 자동으로 나와요'}</b><small>${esc(gn)} 공식 DJ·레이블 채널의 믹스셋 중 하나를 랜덤으로 틀어요.</small></div>`;
+    :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?(MCA.on?'곧 자동으로 DJ 세트가 나와요':'▶ 눌러서 DJ 세트 틀기'):'부스 가까이 가면 자동으로 나와요'}</b><small>${esc(gn)} 인기 DJ 세트 중 하나를 랜덤으로 틀어요. 라디오 쇼는 빼고 음악만 나와요.</small></div>`;
 }
 function npFar(T,gn){ toast(`${T.name} 가까이 가야 ${gn} 세트를 틀 수 있어요`); }
 function npPlayBtn(next){ initAudio(); const {T,g,gn,near,mine}=npNow();
