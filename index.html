@@ -4876,21 +4876,23 @@ function luDay(ms){ const d=new Date(ms), n=new Date(schNow()), a=new Date(n.get
   return diff===0?'오늘':diff===1?'내일':`${d.getMonth()+1}/${d.getDate()} (${'일월화수목금토'[d.getDay()]})`; }
 function luWhen(s){ return `${luDay(s.start)} ${luHM(s.start)}`; }
 // every slot that is on now or still to come, tagged with its stage
-function luAll(){ const B=SCH.sched&&SCH.sched.booths||{}, now=schNow(), out=[];
-  for(const k in B) for(const s of B[k]){ const end=s.start+(s.dur||60)*60000; if(end>now&&LU_INFO[k]) out.push(Object.assign({key:k,end,live:s.start<=now},s,LU_INFO[k])); }
+// the board shows what is on now and what starts within the next 5 hours (luAll(true) gives everything ahead)
+const LU_WINDOW=5*3600000;
+function luAll(full){ const B=SCH.sched&&SCH.sched.booths||{}, now=schNow(), lim=full?Infinity:now+LU_WINDOW, out=[];
+  for(const k in B) for(const s of B[k]){ const end=s.start+(s.dur||60)*60000; if(end>now&&s.start<lim&&LU_INFO[k]) out.push(Object.assign({key:k,end,live:s.start<=now},s,LU_INFO[k])); }
   return out.sort((a,b)=>a.start-b.start); }
-function luNext(key){ const now=schNow(); return luAll().find(s=>s.key===key&&s.start>now)||null; }
+function luNext(key){ const now=schNow(); return luAll(true).find(s=>s.key===key&&s.start>now)||null; }
 function luArt(s){ return s.art?`style="background-image:url('${esc(String(s.art).replace(/['"()\\\s]/g,''))}')"`:''; }
 function luPoster(s,i,big){ return `<button class="cd ${s.live?'live':''} ${big?'big':''}" data-lu="${i}"><span class="cdw"><span class="disc" aria-hidden="true"></span><span class="sleeve" ${luArt(s)}>${s.art?'':`<i>${esc((s.dj||s.title||'DJ').slice(0,14))}</i>`}${s.live?'<em>LIVE</em>':''}</span></span>
   <b>${esc(s.dj||s.title||'DJ')}</b><small>${esc(s.dj?s.title||'':'')}</small><span class="when">${s.live?'● 지금 방송 중':luWhen(s)} · ${esc(s.name)}</span></button>`; }
-function luRender(){ const body=$('#luBody'); if(!body) return; { const d=new Date(schNow()); $('#luToday').textContent=`TODAY ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} (${'일월화수목금토'[d.getDay()]}) · 지점별 플레이리스트와 DJ 포스터`; } const all=luAll(), tab=LU.tab, L=tab?all.filter(s=>s.map===tab):all;
+function luRender(){ const body=$('#luBody'); if(!body) return; { const d=new Date(schNow()); $('#luToday').textContent=`TODAY ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} (${'일월화수목금토'[d.getDay()]}) · 지금부터 5시간 안의 공연`; } const all=luAll(), tab=LU.tab, L=tab?all.filter(s=>s.map===tab):all;
   $('#luTabs').innerHTML=[['','전체'],...LU_AREAS.map(([m,a])=>[m,a])].map(([m,a])=>{ const n=all.filter(s=>!m||s.map===m).length; return `<button role="tab" data-tab="${m}" aria-selected="${m===tab}">${a}${n?` <small>${n}</small>`:''}</button>`; }).join('');
   if(LU.sel){ const s=LU.sel, go=luCanGo(s.key);
     body.innerHTML=`<button class="lu-back" data-back="1">← 편성표로</button><div class="lu-detail"><div class="cdw big"><span class="disc" aria-hidden="true"></span><span class="sleeve" ${luArt(s)}>${s.art?'':`<i>${esc(s.dj||'DJ')}</i>`}${s.live?'<em>LIVE</em>':''}</span></div>
       <div><span class="gtag">${esc(s.area)} · ${esc(s.name)}</span><h3>${esc(s.dj||s.title||'DJ')}</h3><p class="t">${esc(s.dj?s.title||'':'')}</p><p class="w">${s.live?'● 지금 방송 중 · ':''}${luWhen(s)} – ${luHM(s.end)} (${s.dur}분)</p>
       ${s.djIntro?`<h4>🎛️ DJ 소개</h4><p>${esc(s.djIntro).replace(/\n/g,'<br>')}</p>`:''}${s.musicIntro?`<h4>🎧 음악 소개</h4><p>${esc(s.musicIntro).replace(/\n/g,'<br>')}</p>`:''}
       <div class="lu-acts">${go?`<button class="hot" data-go="${esc(s.key)}">📍 ${esc(s.name)}로 가기</button>`:`<p class="hint">${inGame?`${esc(s.area)}에서 열려요. 메뉴의 맵 이동으로 가면 ${esc(s.name)} 근처에서 들을 수 있어요.`:'게임에 입장한 뒤 그 부스 근처로 가면 들을 수 있어요.'}</p>`}</div></div></div>`; return; }
-  if(!L.length){ body.innerHTML=`<div class="lu-empty"><div class="cdw"><span class="disc"></span><span class="sleeve"><i>COMING<br>SOON</i></span></div><b>${tab?'이 지점에는 ':''}아직 편성된 DJ 공연이 없어요</b><p>운영자가 편성하면 여기에 라인업과 타임테이블이 올라와요.</p></div>`; return; }
+  if(!L.length){ body.innerHTML=`<div class="lu-empty"><div class="cdw"><span class="disc"></span><span class="sleeve"><i>COMING<br>SOON</i></span></div><b>${tab?'이 지점에는 ':''}앞으로 5시간 안에는 편성된 DJ 공연이 없어요</b><p>운영자가 편성하면 여기에 라인업과 타임테이블이 올라와요.</p></div>`; return; }
   const live=L.filter(s=>s.live), up=L.filter(s=>!s.live), idx=s=>all.indexOf(s);
   let h='';
   if(live.length) h+=`<h3 class="lu-h">🔴 ON AIR <small>지금 방송 중</small></h3><div class="lu-grid big">${live.map(s=>luPoster(s,idx(s),1)).join('')}</div>`;
@@ -4920,31 +4922,29 @@ schFetch().then(()=>{ let seen=false; try{ seen=sessionStorage.getItem('playa-lu
   try{ sessionStorage.setItem('playa-lu-seen','1'); }catch(e){} setTimeout(()=>openLineup(),700); });
 function luPlace(){ const b=$('#lineupBtn'), m=$('.mapc'); if(!b||!m) return; const r=m.getBoundingClientRect(), top=Math.round(r.bottom+6); if(b._top!==top){ b._top=top; b.style.top=top+'px'; } const hide=!inGame||top>innerHeight*.62||document.body.classList.contains('dressing'); if(b.hidden!==hide) b.hidden=hide; }
 function luBtn(){ const d=new Date(schNow()), td=`📅 ${d.getMonth()+1}.${d.getDate()} (${'일월화수목금토'[d.getDay()]})`, e=$('#luDate'); if(e&&e.textContent!==td) e.textContent=td;
-  const end=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime(), n=luAll().filter(s=>s.start<end).length, c=$('#luCnt'); if(c){ c.hidden=!n; c.textContent=n; } }
+  const n=luAll().length, c=$('#luCnt'); if(c){ c.hidden=!n; c.textContent=n; } }
 luBtn(); schFetch().then(luBtn);
 updaters.push(t=>{ luPlace(); if(t-(LU.bt||0)>30){ LU.bt=t; luBtn(); } if(!$('#lineup').hidden&&t-(LU.rt||0)>20){ LU.rt=t; if(!LU.sel) luRender(); } });
 
-/* ================= DANCERS TALK ABOUT THE DJ (each in their own voice) ================= */
-// facts come from the scheduled slot (admin intros), Mixcloud / SoundCloud details and the DJ's home town
+/* ================= DANCERS TALK ABOUT THE SOUND (only when the set has an intro) ================= */
+// mixes have no vocals to quote: people react to the sound, never name the DJ, and only speak when the set's intro gives them something to go on
 const DJT={t:0,key:'',f:null};
-const DJ_LIKES=['빌드업','드롭','그루브','베이스라인','킥 소리','하이햇 리듬','신스 소리','트랙 고르는 감각','믹싱 타이밍','분위기 끌어올리는 거'];
-function djSentences(txt){ return String(txt||'').split(/[.!?。\n]+/).map(x=>x.trim()).filter(x=>x.length>=6&&x.length<=28); }
-function djFactsFor(c){ const f={dj:(c.user&&c.user.name)||'',title:c.name||'',min:c.audio_length?Math.round(c.audio_length/60):0,
-    djS:djSentences(c.djIntro), muS:djSentences(c.musicIntro), tags:(c.tags||[]).map(t=>t.name).filter(x=>x&&x.length<16&&!/ra mix/i.test(x)).slice(0,4), city:'', year:c.created_time?new Date(c.created_time).getFullYear():0};
-  if(!f.dj) f.dj=f.title||'DJ';
-  const uk=c.user&&c.user.key; if(!c.sc&&uk) mcInfo(uk).then(u=>{ if(u&&(u.city||u.country)) f.city=[u.city,u.country].filter(Boolean).join(', '); });
+const SND_FOCUS=['킥','베이스','하이햇','신스','패드','퍼커션','저음','빌드업','드롭','그루브','리듬'];
+function sndSentences(txt){ const out=[]; String(txt||'').split(/[.!?。\n]+/).forEach(x=>{ x=x.trim(); if(x.length>30) x.split(/[,，·]/).forEach(y=>{ y=y.trim(); if(y.length>=6&&y.length<=30) out.push(y); }); else if(x.length>=6) out.push(x); });
+  return out.filter(x=>!/https?:|www\.|@|\.com|트랙리스트|tracklist|구독|subscribe|follow|팔로우/i.test(x)); }
+function djFactsFor(c){ const f={key:c.key,S:sndSentences(c.musicIntro),tags:(c.tags||[]).map(t=>t.name).filter(x=>x&&x.length<16&&!/ra mix|mix$/i.test(x)).slice(0,3)};
+  if(!f.S.length){ // no admin intro: use the set's own description, in Korean
+    const use=ko=>{ const S=sndSentences(ko); if(S.length&&DJT.f===f) f.S=S; };
+    if(mcKo[c.key]) use(mcKo[c.key]);
+    else { const desc=c.sc?Promise.resolve(c.description||''):mcInfo(c.key).then(d=>d&&d.description||'');
+      desc.then(d=>{ d=mcTrunc(d,600); if(!d) return; if((d.match(/[가-힣]/g)||[]).length>d.length*.2) return use(d);
+        const paras=d.split(/\n+/).map(x=>x.trim()).filter(Boolean), ch=[]; paras.forEach(x=>mcChunks(x,450).forEach(y=>ch.push(y)));
+        mcTr(ch).then(out=>{ const ko=out.join('\n'); mcKo[c.key]=ko; use(ko); }).catch(()=>{}); }); } }
   return f; }
-// four kinds of fans: long-time fan, first-timer, crate digger, hype person
-function djLine(P){ const f=DJT.f, D=f.dj, like=P._djLike||(P._djLike=pick(DJ_LIKES)), kind=P._djKind!==undefined?P._djKind:(P._djKind=Math.floor(Math.random()*4)), L=[];
-  if(f.djS.length) L.push(`${D} 알아? ${pick(f.djS)}`, `${pick(f.djS)}. 그래서 ${D} 좋아해`);
-  if(f.muS.length) L.push(`이 세트 ${pick(f.muS)}래`, `${pick(f.muS)}. 딱 그 느낌이야`);
-  if(f.city) L.push(`${D} ${f.city} 출신이래`);
-  if(f.tags.length) L.push(`${pick(f.tags)} 좋아하는 사람 다 여기 모였네`);
-  if(f.min) L.push(`이 세트 ${f.min}분짜리래, 끝까지 있을 거야`);
-  if(kind===0) L.push(`${D} 공연 벌써 ${2+Math.floor(Math.random()*6)}번째야`, `${D}는 ${like}이 진짜 독보적이야`, `${D} 오는 날만 기다렸어`);
-  else if(kind===1) L.push(`${D} 처음 들어 보는데 ${like} 너무 좋다`, `이 DJ 이름 뭐였지? 아 ${D}!`, `친구가 ${D} 꼭 보라고 했는데 이유를 알겠어`);
-  else if(kind===2) L.push(`${D}는 ${like}로 유명하잖아`, f.title&&f.title!==D?`‘${f.title.slice(0,24)}’ 이거 명세트야`:`${D} 선곡은 늘 한 수 위야`, `${D}가 지금 거는 거 레코드로 찾아봐야겠다`);
-  else L.push(`${D}! ${D}! 드롭 온다!!`, `${like} 미쳤다 손 들어!!`, `${D} 최고야 🔥`);
+const ga=w=>{ const c=String(w).charCodeAt(String(w).length-1); return c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28?'이':'가'; };
+function djLine(P){ const f=DJT.f, foc=P._sndF||(P._sndF=pick(SND_FOCUS)), q=pick(f.S), L=[
+    `“${q}” 소리가 딱 그래`, `${q}. 들어 보니 진짜네`, `소개에 ${q}라고 돼 있더라`, `${foc}${ga(foc)} 소개 그대로야`, `${foc} 소리 들어 봐, 딱 그 느낌이야`];
+  if(f.tags.length) L.push(`${pick(f.tags)} 사운드 제대로다`);
   return pick(L); }
 function djSpeaker(t){ const near=[], r2=14*14, ok=P=>P&&P.root&&P.root.visible!==false&&!P.social&&(!P._djT||t-P._djT>14);
   const add=(P,x,z)=>{ const dx=x-pState.x, dz=z-pState.z; if(dx*dx+dz*dz<r2&&ok(P)) near.push(P); };
@@ -4954,8 +4954,8 @@ function djSpeaker(t){ const near=[], r2=14*14, ok=P=>P&&P.root&&P.root.visible!
   return near.length?pick(near):null; }
 updaters.push(t=>{ const c=MC.cur; if(!inGame||!c||!c.sched||!MC.playing||MC.paused||!MC.target) return;
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||T.key!==MC.target.key||mcLevel(T)<.35||t<DJT.t) return;
-  if(DJT.key!==c.key+'|'+(c.user&&c.user.name)){ DJT.key=c.key+'|'+(c.user&&c.user.name); DJT.f=djFactsFor(c); DJT.t=t+3; return; }
-  DJT.t=t+rand(4.5,8); const P=djSpeaker(t); if(!P) return; P._djT=t; say(P,djLine(P),3.4); });
+  if(DJT.key!==c.key){ DJT.key=c.key; DJT.f=djFactsFor(c); DJT.t=t+3; return; }
+  DJT.t=t+rand(5,9); if(!DJT.f||!DJT.f.S.length) return; const P=djSpeaker(t); if(!P) return; P._djT=t; say(P,djLine(P),3.6); });
 
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null]),new Promise(r=>setTimeout(r,2500))]);

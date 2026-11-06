@@ -75,6 +75,8 @@ details.setup ol{padding-left:20px;margin:10px 0}
 details.setup li{margin:4px 0}
 .embed iframe{width:100%;border:0;border-radius:10px}
 .empty{padding:16px;text-align:center}
+.autofill{margin:0 0 18px;border-color:var(--pink)}
+.src.auto{background:#2a8a5a}
 .tabs{display:flex;gap:6px;margin-bottom:12px}
 .tabs button{border:1px solid var(--line);background:none;border-radius:999px;padding:7px 14px;font-weight:700;cursor:pointer}
 .tabs button[aria-pressed=true]{background:var(--text);color:var(--bg)}
@@ -146,6 +148,14 @@ details.setup li{margin:4px 0}
         <button class="btn danger" id="clearTok">토큰 지우기</button>
       </div>
     </details>
+
+    <div class="card autofill">
+      <div class="row" style="justify-content:space-between">
+        <div><b>⚡ 전체 자동 편성</b><br><span class="muted small">모든 부스(21곳)의 지금부터 24시간 빈 시간을, 그 부스 장르의 인기 음악 세트로 채워요. 이미 편성한 시간은 그대로 둬요.</span></div>
+        <div class="row"><button type="button" class="btn main" id="autoBtn">전체 자동 돌리기</button><button type="button" class="btn sm danger" id="autoClear">자동 편성만 지우기</button></div>
+      </div>
+      <p class="small muted" id="autoMsg" style="margin:8px 0 0"></p>
+    </div>
 
     <h2 id="bTitle"></h2>
     <p class="muted small" id="bSub"></p>
@@ -252,7 +262,7 @@ function render(){ renderNav(); $('#publish').disabled=!dirty||!token; $('#publi
   const S=slotsOf(cur).slice().sort((a,b)=>a.start-b.start), live=S.find(isLive);
   $('#onair').innerHTML=live?`<div class="card onair">${live.art?`<img src="${esc(live.art)}" alt="">`:''}<div><b>● 지금 방송 중</b> · ${hm(live.start)}–${hm(endOf(live))}<br>${esc(live.title||live.url)}${live.dj?' · '+esc(live.dj):''}</div></div>`:`<p class="muted small">지금은 편성이 없어서 인기 DJ 세트가 랜덤으로 나와요.</p>`;
   const show=$('#showPast').checked, list=S.map(s=>({s,i:slotsOf(cur).indexOf(s)})).filter(({s})=>show||endOf(s)>Date.now());
-  $('#slots').innerHTML=list.length?list.map(({s,i})=>`<div class="card slot ${isLive(s)?'live':''} ${endOf(s)<=Date.now()?'past':''}">${s.art?`<img src="${esc(s.art)}" alt="">`:''}<div class="tx"><span class="when">${fmt(s.start)} – ${hm(endOf(s))}</span> <span class="src ${srcOf(s.url)||'mc'}">${srcOf(s.url)==='sc'?'SoundCloud':'Mixcloud'}</span><b>${esc(s.title||s.url)}</b><span class="muted small">${esc(s.dj||'')}${s.dj?' · ':''}${s.dur}분${s.djIntro||s.musicIntro?' · 소개 있음':''}</span></div><div class="acts"><button class="btn sm" data-edit="${i}">수정</button><button class="btn sm" data-copy="${i}">복제</button><button class="btn sm danger" data-del="${i}">삭제</button></div></div>`).join('')
+  $('#slots').innerHTML=list.length?list.map(({s,i})=>`<div class="card slot ${isLive(s)?'live':''} ${endOf(s)<=Date.now()?'past':''}">${s.art?`<img src="${esc(s.art)}" alt="">`:''}<div class="tx"><span class="when">${fmt(s.start)} – ${hm(endOf(s))}</span> <span class="src ${srcOf(s.url)||'mc'}">${srcOf(s.url)==='sc'?'SoundCloud':'Mixcloud'}</span>${s.auto?' <span class="src auto">자동</span>':''}<b>${esc(s.title||s.url)}</b><span class="muted small">${esc(s.dj||'')}${s.dj?' · ':''}${s.dur}분${s.djIntro||s.musicIntro?' · 소개 있음':''}</span></div><div class="acts"><button class="btn sm" data-edit="${i}">수정</button><button class="btn sm" data-copy="${i}">복제</button><button class="btn sm danger" data-del="${i}">삭제</button></div></div>`).join('')
     :`<div class="card empty muted">아직 편성이 없어요. 아래에서 추가해 주세요.</div>`;
   checkOverlap(); }
 
@@ -349,6 +359,40 @@ $('#form').addEventListener('submit',e=>{ e.preventDefault(); const s=formSlot()
   const S=slotsOf(cur); if(editIdx>=0) S[editIdx]=s; else S.push(s); dirty=true;
   status(`${fmt(s.start)} 편성을 ${editIdx>=0?'고쳤어요':'추가했어요'}. 위의 ‘게임에 게시하기’를 눌러야 반영돼요`,'ok'); resetForm(); render(); });
 $('#publish').addEventListener('click',publish);
+
+// ---- full auto-schedule: fill every booth's free time for the next 24 h with popular music-first sets, never touching existing slots
+const POOL={};
+async function poolFor(tag){ if(POOL[tag]) return POOL[tag]; const L=[];
+  // the three pages load together
+  const pages=await Promise.all([0,100,200].map(off=>fetch(`https://api.mixcloud.com/discover/${encodeURIComponent(tag)}/popular/?limit=100&offset=${off}`).then(r=>r.json()).then(j=>j.data||[]).catch(()=>[])));
+  pages.flat().forEach(c=>{ if(c&&c.key&&!c.is_exclusive) L.push(c); });
+  let P=L.filter(musicOnly); if(P.length<4) P=L.filter(c=>(c.audio_length||0)>=1800&&(c.audio_length||0)<=4*3600&&!RADIO.test(c.name||''));
+  const seen=new Set(); P=P.filter(c=>!seen.has(c.key)&&seen.add(c.key)).sort((a,b)=>(b.play_count||0)-(a.play_count||0)).slice(0,60);
+  if(P.length) POOL[tag]=P; return P; } // an empty result (e.g. rate limit) is not cached, so a retry can work
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+async function autoFill(){ const keys=AREAS.flatMap(([a,L])=>L.map(([k])=>k));
+  if(!confirm(`모든 부스(${keys.length}곳)의 지금부터 24시간 빈 시간을 인기 세트로 채울까요? 이미 편성한 시간은 그대로 둬요.`)) return;
+  const btn=$('#autoBtn'); btn.disabled=true; const now=Date.now(), from=Math.ceil(now/300000)*300000, to=now+24*3600000; let added=0, done=0;
+  for(const k of keys){ $('#autoMsg').textContent=`${NAME[k].split(' · ')[0]} 채우는 중이에요 (${++done}/${keys.length})`;
+    const pool=shuffle(await poolFor(BOOTH_TAG[k]||'techno')); if(!pool.length) continue;
+    const S=slotsOf(k), busy=S.map(s=>[s.start,endOf(s)]).filter(([a,b])=>b>from).sort((a,b)=>a[0]-b[0]);
+    let t=from, i=0, guard=0;
+    while(t<to&&guard++<200){ const block=busy.find(([a,b])=>t>=a&&t<b); if(block){ t=block[1]; continue; }
+      const nextStart=(busy.find(([a])=>a>t)||[Infinity])[0], gap=Math.min(nextStart,to+4*3600000)-t; if(gap<30*60000){ t=nextStart===Infinity?to:nextStart; continue; }
+      // the next set from the shuffled pool that fits the gap (pool cycles if 24 h needs more)
+      let c=null; for(let n=0;n<pool.length;n++){ const x=pool[(i+n)%pool.length]; if(x.audio_length*1000<=gap){ c=x; i=(i+n+1)%pool.length; break; } }
+      if(!c){ t=nextStart===Infinity?to:nextStart; continue; }
+      const dur=Math.max(1,Math.ceil(c.audio_length/60)), slot={start:t,dur,url:'https://www.mixcloud.com'+c.key,title:c.name,dj:c.user&&c.user.name||'',art:c.pictures&&(c.pictures['320wx320h']||c.pictures.large||c.pictures.medium)||'',djIntro:'',musicIntro:'',auto:true};
+      S.push(slot); busy.push([slot.start,endOf(slot)]); busy.sort((a,b)=>a[0]-b[0]); t=endOf(slot); added++; } }
+  const failed=keys.every(k=>!(POOL[BOOTH_TAG[k]||'techno']||[]).length); dirty=dirty||added>0; btn.disabled=false; render();
+  if(failed){ $('#autoMsg').textContent='Mixcloud에서 인기 세트를 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.'; status('인기 세트를 불러오지 못했어요','err'); return; }
+  $('#autoMsg').textContent=added?`${added}개 세트를 자동으로 편성했어요. 위의 ‘게임에 게시하기’를 눌러야 게임에 반영돼요.`:'채울 빈 시간이 없어요.';
+  status(added?`자동 편성 ${added}개 완료. 게시해야 반영돼요`:'채울 빈 시간이 없어요',added?'ok':''); }
+$('#autoBtn').addEventListener('click',autoFill);
+$('#autoClear').addEventListener('click',()=>{ const now=Date.now(), del=[]; for(const k in data.booths) data.booths[k].forEach(x=>{ if(x.auto&&x.start>now) del.push([k,x]); });
+  if(!del.length){ $('#autoMsg').textContent='지울 자동 편성이 없어요. (지금 방송 중인 세트는 남겨 둬요)'; return; }
+  if(!confirm(`앞으로 남은 자동 편성 ${del.length}개를 지울까요? 직접 편성한 것과 지금 방송 중인 세트는 그대로 둬요.`)) return;
+  del.forEach(([k,x])=>{ const S=data.booths[k], i=S.indexOf(x); if(i>=0) S.splice(i,1); }); dirty=true; render(); $('#autoMsg').textContent=`자동 편성 ${del.length}개를 지웠어요. 게시해야 반영돼요.`; });
 $('#playGame').addEventListener('click',()=>{ $('#playGame').href='./?v='+Date.now(); });
 $('#saveTok').addEventListener('click',async()=>{ token=$('#token').value.trim(); try{ localStorage.setItem('playa-admin-token',token); }catch(e){} $('#token').value=''; await checkConn(); await load(); });
 $('#clearTok').addEventListener('click',()=>{ token=''; try{ localStorage.removeItem('playa-admin-token'); }catch(e){} checkConn(); render(); status('토큰을 지웠어요'); });
