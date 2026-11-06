@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>플라야 나이트 DJ 편성</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -15,6 +17,8 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
 button,input,textarea,select{font:inherit;color:inherit}
 a{color:var(--cyan)}
 header{position:sticky;top:0;z-index:5;background:rgba(36,28,56,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:calc(14px + env(safe-area-inset-top,0px)) 20px 12px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;border-bottom:1px solid var(--line)}
+header .hlogo{height:44px;width:auto;filter:drop-shadow(0 0 10px rgba(255,40,40,.35))}
+@media (max-width:760px){ header .hlogo{height:30px} }
 h1{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:26px;line-height:1.1;margin:0}
 h1 small{display:block;font-family:"Noto Sans KR",sans-serif;font-size:12px;color:var(--muted);margin-top:4px}
 .clock{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-size:26px;color:var(--cyan);font-variant-numeric:tabular-nums}
@@ -114,6 +118,7 @@ details.setup li{margin:4px 0}
 </head>
 <body>
 <header>
+  <img src="assets/logo.png" alt="REAL HOUSE CLUB" class="hlogo">
   <h1>DJ 편성 관리<small>플라야 나이트 · 부스별 시간대에 Mixcloud / SoundCloud 세트를 정해요</small></h1>
   <div class="clock" id="clock" aria-label="현재 시각"></div>
   <span class="grow"></span>

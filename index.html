@@ -5,7 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>플라야 나이트 — 버닝맨 3D</title>
+<title>리얼하우스클럽 REAL HOUSE CLUB · 플라야 나이트 3D 페스티벌</title>
+<meta name="description" content="리얼하우스클럽(REAL HOUSE CLUB)의 3D 페스티벌 게임 플라야 나이트. 사막 부스, 이태원 클럽, 남이섬, 라스베가스 스피어에서 편성된 DJ 세트를 같이 듣고 춤춰요. 설치 없이 브라우저에서 바로.">
+<meta name="keywords" content="리얼하우스클럽, 리얼 하우스 클럽, REAL HOUSE CLUB, realhouse club, リアルハウスクラブ, 플라야 나이트, Playa Night, 3D 페스티벌 게임, 버닝맨 게임, DJ 세트, 하우스 음악, 테크노">
+<link rel="canonical" href="https://realhouse.club/">
+<link rel="alternate" hreflang="ko" href="https://realhouse.club/?lang=ko">
+<link rel="alternate" hreflang="ja" href="https://realhouse.club/?lang=ja">
+<link rel="alternate" hreflang="en" href="https://realhouse.club/?lang=en">
+<link rel="alternate" hreflang="de" href="https://realhouse.club/?lang=de">
+<link rel="alternate" hreflang="es" href="https://realhouse.club/?lang=es">
+<link rel="alternate" hreflang="x-default" href="https://realhouse.club/">
+<meta property="og:site_name" content="REAL HOUSE CLUB 리얼하우스클럽">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="en_US">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","@id":"https://realhouse.club/#org","name":"REAL HOUSE CLUB","alternateName":["리얼하우스클럽","리얼 하우스 클럽","リアルハウスクラブ","Real House Club","realhouse club"],"url":"https://realhouse.club/","logo":"https://realhouse.club/assets/logo.png","image":"https://realhouse.club/assets/icon-512.png"},
+ {"@type":"WebSite","@id":"https://realhouse.club/#site","name":"REAL HOUSE CLUB","alternateName":["리얼하우스클럽","リアルハウスクラブ"],"url":"https://realhouse.club/","inLanguage":["ko","ja","en","de","es"],"publisher":{"@id":"https://realhouse.club/#org"}},
+ {"@type":"VideoGame","name":"Playa Night · 플라야 나이트 · プラヤ・ナイト","alternateName":["리얼하우스클럽 플라야 나이트","REAL HOUSE CLUB Playa Night"],"url":"https://realhouse.club/","image":"https://realhouse.club/assets/icon-512.png","description":"3D festival web game by REAL HOUSE CLUB: walk between desert booths, Itaewon clubs, Nami Island stages and the Las Vegas Sphere, and dance to scheduled DJ sets together.","genre":["Music","Simulation"],"gamePlatform":["Web browser","Mobile"],"applicationCategory":"Game","operatingSystem":"Any","inLanguage":["ko","ja","en","de","es"],"publisher":{"@id":"https://realhouse.club/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]}</script>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="REAL HOUSE CLUB 리얼하우스클럽 · Playa Night">
+<meta property="og:description" content="리얼하우스클럽의 3D 페스티벌 게임. 부스마다 편성된 DJ 세트를 같이 듣고 춤춰요.">
+<meta property="og:image" content="https://realhouse.club/assets/icon-512.png">
+<meta property="og:url" content="https://realhouse.club/">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -52,7 +76,20 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 [hidden]{display:none!important}
 .s{display:none}
 
-#loading{position:fixed;inset:0;display:grid;place-items:center;background:var(--stage);color:#ffd9b0;z-index:50;
+/* splash: REAL HOUSE CLUB logo on black */
+#loading .ld{display:flex;flex-direction:column;align-items:center;gap:18px}
+#loading .ldlogo{width:min(72vw,460px);height:auto;filter:drop-shadow(0 0 28px rgba(255,30,30,.45));animation:ldGlow 2.4s ease-in-out infinite}
+#loading .ldtx{font-family:"Noto Sans KR",sans-serif;font-size:14px;font-weight:700;letter-spacing:.2em;color:rgba(255,120,120,.75)}
+#loading{transition:opacity .5s ease}
+#loading.out{opacity:0;pointer-events:none}
+@keyframes ldGlow{50%{filter:drop-shadow(0 0 44px rgba(255,40,40,.7));transform:scale(1.02)}}
+@media (prefers-reduced-motion: reduce){ #loading .ldlogo{animation:none} }
+.brandlogo{display:block;height:46px;width:auto;margin:0 0 8px -4px;filter:drop-shadow(0 0 10px rgba(255,40,40,.35))}
+@media (max-width:760px){ .brandlogo{height:32px;margin-bottom:4px} }
+.lu-head .lulogo{height:40px;width:auto;margin-right:10px;vertical-align:middle}
+.lu-head>div{display:flex;align-items:center;flex-wrap:wrap}
+.lu-head>div small{flex-basis:100%}
+#loading{position:fixed;inset:0;display:grid;place-items:center;background:#000;color:#ffd9b0;z-index:50;
   font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-size:clamp(28px,6vw,56px)}
 
 /* creator */
@@ -341,7 +378,7 @@ body.dressing .mapsel{display:none}
   .np{left:10px;right:10px;width:auto;bottom:calc(10px + var(--sab));padding:8px 10px;border-radius:16px}
   .np:not(.collapsed){z-index:7;box-shadow:0 -10px 40px rgba(0,0,0,.45)}
   .nphero{grid-template-columns:96px 1fr} .heroart{width:96px;height:96px}
-    #toast{top:calc(112px + var(--sat))}
+    #toast{top:calc(150px + var(--sat))}
   .chev{display:block}
   #actBtn{bottom:calc(96px + var(--sab));font-size:14px;padding:12px 18px}
   #toast{font-size:13px}
@@ -462,6 +499,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #bmHud i{display:block;width:90px;height:6px;border-radius:3px;background:var(--chip);overflow:hidden}
 #bmHud i b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff7a2f,#ffcf3a)}
 #bmHud small{font-weight:500;opacity:.75;font-size:11px}
+@media (max-width:760px),(pointer:coarse){ #bmHud{top:calc(var(--sat) + 104px);max-width:calc(100vw - 20px);white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:4px;font-size:12px;padding:6px 12px;border-radius:14px;text-align:center} #bmHud small{display:none} #stageBonus{top:calc(var(--sat) + 104px)} }
 .mcMini{position:fixed;right:12px;top:calc(var(--sat) + 118px);width:300px;height:60px;border:0;border-radius:10px;z-index:7;box-shadow:0 6px 20px rgba(0,0,0,.35);background:#fff}
 @media (max-width:760px),(pointer:coarse){ .mcMini{width:230px;right:8px;top:calc(var(--sat) + 112px)} }
 /* unified drop-down menu on every screen (no overlapping with the coin board) */
@@ -544,8 +582,11 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 /* DJ lineup board */
 #lineup{position:fixed;inset:0;z-index:70;background:rgba(8,5,16,.38);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:calc(12px + var(--sat)) 12px calc(12px + var(--sab))}
 #lineup[hidden]{display:none}
+#lineup{overflow:hidden;overscroll-behavior:contain;touch-action:pan-y}
+.lu-tabs{touch-action:pan-x}
+.lu-in>*{max-width:100%}
 /* translucent white sheet; its own dark-on-light tokens */
-.lu-in{--text:#1a1024;--muted:#5d5470;--panel-line:rgba(26,16,36,.14);--chip:rgba(26,16,36,.07);width:min(1000px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;background:rgba(255,255,255,.56);backdrop-filter:blur(26px) saturate(1.4);-webkit-backdrop-filter:blur(26px) saturate(1.4);border:1px solid rgba(255,255,255,.6);border-radius:22px;padding:18px 18px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35);color:var(--text)}
+.lu-in{overflow-x:hidden;touch-action:pan-y;--text:#1a1024;--muted:#5d5470;--panel-line:rgba(26,16,36,.14);--chip:rgba(26,16,36,.07);width:min(1000px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;background:rgba(255,255,255,.56);backdrop-filter:blur(26px) saturate(1.4);-webkit-backdrop-filter:blur(26px) saturate(1.4);border:1px solid rgba(255,255,255,.6);border-radius:22px;padding:18px 18px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35);color:var(--text)}
 .lu-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:-18px;margin:-18px -18px 0;padding:18px 18px 10px;background:linear-gradient(rgba(255,255,255,.62) 70%,rgba(255,255,255,0));z-index:2}
 .lu-head b{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:30px;line-height:1;display:block;letter-spacing:.01em}
 .lu-head small{display:block;color:var(--muted);font-size:12px;margin-top:6px;letter-spacing:.06em}
@@ -601,6 +642,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
   .lu-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .lu-grid.big{grid-template-columns:1fr 1fr} .lu-detail{grid-template-columns:1fr} .lu-detail .cdw{width:62%} .lu-detail h3{font-size:26px} }
 @media (prefers-reduced-motion: reduce){ .cd.live .disc,.lu-detail .disc,.cdw .sleeve em{animation:none} .cdw .disc{transition:none} }
 #clubNow{display:none!important}
+.np.np-off{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
 #cnMix{display:none}
 #clubNow.mc #cnTrack{display:none}
@@ -608,13 +650,14 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
 </style>
 </head>
 <body>
-<section id="lineup" hidden aria-label="DJ 편성표" role="dialog" aria-modal="true"><div class="lu-in"><div class="lu-head"><div><b>DJ 편성표</b><small id="luToday">LINEUP · 지점별 클럽·부스 DJ 타임테이블</small></div><button id="luClose">닫기</button></div><div class="lu-tabs" id="luTabs" role="tablist"></div><div id="luBody"></div></div></section>
+<section id="lineup" hidden aria-label="DJ 편성표" role="dialog" aria-modal="true"><div class="lu-in"><div class="lu-head"><div><img class="lulogo" src="assets/logo.png" alt="REAL HOUSE CLUB"><b>DJ 편성표</b><small id="luToday">LINEUP · 지점별 클럽·부스 DJ 타임테이블</small></div><button id="luClose">닫기</button></div><div class="lu-tabs" id="luTabs" role="tablist"></div><div id="luBody"></div></div></section>
 <canvas id="c" aria-label="버닝맨 3D 월드"></canvas>
-<div id="loading">플라야로 가는 중</div>
+<div id="loading"><div class="ld"><img src="assets/logo.png" alt="REAL HOUSE CLUB" class="ldlogo"><span class="ldtx">플라야로 가는 중</span></div></div>
 
 <section id="creator" class="creator" hidden aria-label="캐릭터 만들기">
   <header>
     <div>
+      <img class="brandlogo" src="assets/logo.png" alt="REAL HOUSE CLUB">
       <h1>플라야 아이디</h1>
       <p>이름과 맵만 고르고 바로 입장해요. 옷과 아이템은 입장한 뒤 메뉴의 스타일 꾸미기에서 골라요.</p>
     </div>
@@ -725,6 +768,12 @@ const I18N=(()=>{ const SUP=['ko','ja','en','de','es'], H=/[가-힣]/; let lang=
   { const q=new URLSearchParams(location.search).get('lang'); if(SUP.includes(q)){ lang=q; try{ localStorage.setItem('playa-lang',q); }catch(e){} } } // ?lang=en links open in that language
   if(!SUP.includes(lang)){ const L=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'']).map(x=>String(x).slice(0,2).toLowerCase()); lang=L.find(x=>SUP.includes(x))||'en'; }
   document.documentElement.lang=lang;
+  { const META={ko:['리얼하우스클럽 REAL HOUSE CLUB · 플라야 나이트 3D 페스티벌','리얼하우스클럽(REAL HOUSE CLUB)의 3D 페스티벌 게임 플라야 나이트. 사막 부스, 이태원 클럽, 남이섬, 라스베가스 스피어에서 편성된 DJ 세트를 같이 듣고 춤춰요.'],
+      ja:['リアルハウスクラブ REAL HOUSE CLUB · プラヤ・ナイト 3Dフェス','リアルハウスクラブ(REAL HOUSE CLUB)の3DフェスゲームPlaya Night。砂漠のブース、梨泰院のクラブ、南怡島、ラスベガスのスフィアで、編成されたDJセットを一緒に聴いて踊ろう。ブラウザですぐ遊べます。'],
+      en:['REAL HOUSE CLUB · Playa Night 3D festival game','Playa Night by REAL HOUSE CLUB: a 3D festival game in your browser. Walk between desert booths, Itaewon clubs, Nami Island and the Las Vegas Sphere and dance to scheduled DJ sets together.'],
+      de:['REAL HOUSE CLUB · Playa Night 3D-Festivalspiel','Playa Night von REAL HOUSE CLUB: ein 3D-Festivalspiel im Browser. Wüsten-Booths, Clubs in Itaewon, die Nami-Insel und die Sphere in Las Vegas – tanz gemeinsam zu geplanten DJ-Sets.'],
+      es:['REAL HOUSE CLUB · Playa Night, juego de festival 3D','Playa Night de REAL HOUSE CLUB: un juego de festival en 3D en tu navegador. Recorre cabinas del desierto, clubs de Itaewon, la isla Nami y la Sphere de Las Vegas y baila con sets de DJ programados.']}[lang];
+    document.title=META[0]; const md=document.querySelector('meta[name=description]'); if(md) md.content=META[1]; }
   const ex=new Map(), pt=[], memo=new Map(), made=new Set(); // made: our own outputs, never translated again (no observer loops)
   const esc=s=>s.replace(/[.*+?^$()|[\]\\]/g,'\\$&');
   function load(d){ for(const k in d.exact||{}) ex.set(k,d.exact[k]);
@@ -4891,6 +4940,8 @@ function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][
 function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff'}[T.Z&&T.Z.id]||'#b06bff'); }
 function npRender(){ if(!inGame) return; const np=$('#np'); if(!np) return;
   const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null, open=!np.classList.contains('collapsed'), col=npColor(T);
+  // the card waits until you reach a stage (or a set is playing); it stays out of the way on the desert drive and at the gate
+  const off=(typeof BM!=='undefined'&&BM.mode)||!(c||near); if(np.classList.contains('np-off')!==off){ np.classList.toggle('np-off',off); NPC.sig=''; } if(off) return;
   const sk=schKey(T), sl=SCH.sched&&schSlot(sk), nx=sl?null:luNext(sk), sig=[T.key,near,c&&c.key,MC.paused,MC.playing,open,sl&&sl.id,nx&&nx.start].join('|'); if(sig===NPC.sig) return; NPC.sig=sig;
   np.style.setProperty('--gc',col); np.classList.toggle('playing',!!c&&!MC.paused);
   const art=$('#npArt'); art.style.backgroundImage=npPic(c); art.innerHTML=c?'':'🎛️';
@@ -5015,7 +5066,7 @@ const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:
 fontsReady.then(()=>{
   buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
-  $('#loading').hidden=true; $('#creator').hidden=false;
+  { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }
   resize(); loop();
 });
