@@ -543,8 +543,8 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #lineup{position:fixed;inset:0;z-index:70;background:rgba(8,5,16,.38);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:calc(12px + var(--sat)) 12px calc(12px + var(--sab))}
 #lineup[hidden]{display:none}
 /* translucent white sheet; its own dark-on-light tokens */
-.lu-in{--text:#1a1024;--muted:#5d5470;--panel-line:rgba(26,16,36,.14);--chip:rgba(26,16,36,.07);width:min(1000px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;background:rgba(255,255,255,.78);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);border:1px solid rgba(255,255,255,.6);border-radius:22px;padding:18px 18px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35);color:var(--text)}
-.lu-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:-18px;margin:-18px -18px 0;padding:18px 18px 10px;background:linear-gradient(rgba(255,255,255,.92) 70%,rgba(255,255,255,0));z-index:2}
+.lu-in{--text:#1a1024;--muted:#5d5470;--panel-line:rgba(26,16,36,.14);--chip:rgba(26,16,36,.07);width:min(1000px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;background:rgba(255,255,255,.56);backdrop-filter:blur(26px) saturate(1.4);-webkit-backdrop-filter:blur(26px) saturate(1.4);border:1px solid rgba(255,255,255,.6);border-radius:22px;padding:18px 18px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35);color:var(--text)}
+.lu-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:-18px;margin:-18px -18px 0;padding:18px 18px 10px;background:linear-gradient(rgba(255,255,255,.62) 70%,rgba(255,255,255,0));z-index:2}
 .lu-head b{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:30px;line-height:1;display:block;letter-spacing:.01em}
 .lu-head small{display:block;color:var(--muted);font-size:12px;margin-top:6px;letter-spacing:.06em}
 .lu-head button,.lu-back{border:0;border-radius:999px;padding:9px 16px;background:var(--chip);color:var(--text);font:inherit;font-weight:700;cursor:pointer;flex:none}
@@ -581,7 +581,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 @keyframes luSpin{to{transform:rotate(360deg)}}
 @keyframes luBlink{50%{opacity:.55}}
 .lu-tts{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.lu-tt{background:rgba(255,255,255,.6);border:1px solid var(--panel-line);border-radius:14px;padding:12px}
+.lu-tt{background:rgba(255,255,255,.42);border:1px solid var(--panel-line);border-radius:14px;padding:12px}
 .lu-tt>b{display:block;font-size:15px;margin-bottom:6px} .lu-tt>b small{font-size:11px;color:var(--muted);font-weight:500}
 .lu-tt .row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:0;border-top:1px dashed var(--panel-line);background:none;color:var(--text);font:inherit;padding:8px 2px;cursor:pointer}
 .lu-tt .row .tm{font-size:11px;font-weight:700;color:var(--muted);min-width:78px;font-variant-numeric:tabular-nums;line-height:1.35}
