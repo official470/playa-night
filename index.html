@@ -3478,7 +3478,7 @@ addEventListener('message',e=>{ if(e.origin!==MC_ORIGIN||!MC.iframe||e.source!==
   if(m.type!=='event') return; const a=m.data&&m.data.args; mcEv(m.data&&m.data.eventName,a?+a[0]:NaN); });
 // player events from either widget: progress / play / pause / ended / error
 function mcEv(ev,pos){
-  if(ev==='progress'||ev==='play'){ if(ev==='progress'&&Number.isFinite(pos)){ MC.pos=pos; MC.posAt=performance.now(); } MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
+  if(ev==='progress'||ev==='play'){ if(ev==='progress'&&Number.isFinite(pos)){ MC.pos=pos; MC.posAt=performance.now(); } MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); if(MC.schId&&!SCH.synced){ try{ schSyncNow(); SCH.lastSync=clk.elapsedTime; }catch(e){} } } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
   else if(ev==='pause'){ MC.paused=true; mcUi(); }
   else if(ev==='ended'){ if(MC.schId){ MC.paused=true; mcUi(); return; } mcNext(); } // a scheduled set plays once, start to end, then the slot is over
   else if(ev==='error'){ if(++MC.fails<4) mcNext(); else { toast('DJ 세트를 불러오지 못했어요'); mcStop(); } } }
@@ -4926,7 +4926,17 @@ function schNow(){ return Date.now()+SCH.skew; }
 async function schFetch(){ try{ const t0=Date.now(), r=await fetch(SCH.url+(SCH.url.includes('?')?'&':'?')+'t='+t0,{cache:'no-store'}), t1=Date.now();
     if(!r.ok){ SCH.sched=null; return; } const dh=Date.parse(r.headers.get('date')||''); if(Number.isFinite(dh)) SCH.skew=dh+500-(t0+t1)/2;
     const d=await r.json(); SCH.sched=d&&d.booths?d:null; SCH.fail=0; }catch(e){ SCH.fail++; } }
-function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]).slice().sort((a,b)=>a.start-b.start); const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } } if(!s) return null; const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); return t<end?Object.assign({id:key+'@'+s.start+'@'+s.url},s):null; }
+// every set starts a minute in (past the slow intro); the same offset for everyone keeps the room in sync
+const SCH_SKIP=60, SCH_GAP=30*60000;
+function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]).slice().sort((a,b)=>a.start-b.start); const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } }
+  if(s){ const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); if(t<end) return Object.assign({id:key+'@'+s.start+'@'+s.url},s); }
+  return schFill(key,L,t,s); }
+// between scheduled sets the stage never goes quiet: it replays one of its own sets in 30-minute blocks, picked from the clock so every player hears the same one
+function schFill(key,L,t,prev){ const pool=[], seen=new Set(); for(const x of L) if(x.url&&!seen.has(x.url)){ seen.add(x.url); pool.push(x); } if(!pool.length) return null;
+  const prevEnd=prev?(prev.dur?prev.start+prev.dur*60000:t):-Infinity, nx=L.find(x=>x.start>t), b=Math.floor(t/SCH_GAP);
+  let st=Math.max(b*SCH_GAP,prevEnd); const end=Math.min((b+1)*SCH_GAP,nx?nx.start:Infinity); if(!(st<=t&&t<end)) return null;
+  let h=b; for(const c of key) h=(h*31+c.charCodeAt(0))>>>0; const x=pool[h%pool.length];
+  return Object.assign({},x,{start:st,dur:(end-st)/60000,id:key+'@fill'+st+'@'+x.url,fill:true}); }
 function schItem(sl){ const base={name:sl.title||'',titled:!!sl.title,user:{name:sl.dj||''},djIntro:sl.djIntro||'',musicIntro:sl.musicIntro||'',sched:true,pictures:sl.art?{medium:sl.art,'320wx320h':sl.art}:null};
   const su=scUrl(sl.url); if(su) return Object.assign(base,{sc:true,key:su,name:sl.title||'SoundCloud 세트'});
   const mk=mcKey(sl.url); if(!mk) return null; const it=Object.assign(base,{key:mk,name:sl.title||decodeURIComponent(mk.split('/').filter(Boolean).pop()||'').split('-').join(' ')});
@@ -4945,9 +4955,11 @@ updaters.push(t=>{ if(MCA.onClaude) return;
   if(!mine||MC.schId!==slot.id){ const it=schItem(slot); if(!it) return; mcPlayItem(it,T); MC.schId=slot.id; SCH.synced=false; SCH.lastSync=t;
     toast(`📻 편성 방송: ${T.name}에서 ${it.name}을(를) 모두 같이 듣고 있어요`); return; }
   // jump to where everyone else is: right after it starts, then a drift check every 20 s
-  if(MC.playing&&MC.pos!=null&&t-SCH.lastSync>(SCH.synced?20:0)){ SCH.lastSync=t; SCH.synced=true;
-    const exp=(schNow()-slot.start)/1000, p=MC.pos+(MC.paused?0:(performance.now()-MC.posAt)/1000);
-    if(Math.abs(p-exp)>4) mcCall('seek',Math.max(0,exp)); } });
+  // the very first play jumps straight there (no waiting for a progress tick)
+  if(MC.playing&&(MC.pos!=null||!SCH.synced)&&t-SCH.lastSync>(SCH.synced?20:0)){ schSyncNow(slot); SCH.lastSync=t; } });
+function schSyncNow(slot){ slot=slot||(MC.target&&schSlot(schKey(MC.target))); if(!slot||MC.schId!==slot.id) return; const first=!SCH.synced; SCH.synced=true;
+  const exp=(schNow()-slot.start)/1000+SCH_SKIP, p=MC.pos==null?0:MC.pos+(MC.paused?0:(performance.now()-MC.posAt)/1000);
+  if(first||Math.abs(p-exp)>4) mcCall('seek',Math.max(0,exp)); }
 
 // nearest stage on this map that has a scheduled set on right now
 function schWarm(){ const C=[];
