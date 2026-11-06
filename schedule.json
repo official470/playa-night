@@ -375,6 +375,17 @@
     "djIntro": "",
     "musicIntro": "",
     "auto": true
+   },
+   {
+    "start": 1794039720000,
+    "dur": 58,
+    "url": "https://www.mixcloud.com/bbemusic/terry-hunter-chicago-house-music-ritual/",
+    "title": "Terry Hunter - Chicago House Music Ritual",
+    "dj": "BBE Music",
+    "art": "https://thumbnailer.mixcloud.com/unsafe/320x320/extaudio/e/6/5/f/51f9-b4f2-409c-aea6-e49c6d808a27.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true
    }
   ],
   "booth:afro": [
@@ -4409,5 +4420,5 @@
    }
   ]
  },
- "updated": "2026-11-06T08:20:56.446Z"
+ "updated": "2026-11-06T08:22:55.298Z"
 }
