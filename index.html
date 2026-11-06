@@ -2493,7 +2493,7 @@ function updateSpaces(t,dt){
   const visR2=Math.pow(scene.fog.far*.85,2);
   for(let i=0;i<SNPC.length;i++){ const S=SNPC[i], P=S.P;
     if(S.mode==='skate'){ S.ang+=S.spd*dt; const w=S.g.localToWorld(_sv.set(Math.cos(S.ang)*S.a,0,Math.sin(S.ang)*S.b)); P.root.position.set(w.x,0,w.z); const sg=Math.sign(S.spd); P.root.rotation.y=S.g.rotation.y+Math.atan2(-Math.sin(S.ang)*S.a*sg,Math.cos(S.ang)*S.b*sg); }
-    const dx=P.root.position.x-pState.x, dz=P.root.position.z-pState.z, d2=dx*dx+dz*dz; P.root.visible=d2<visR2; if(!P.root.visible||d2>6400) continue; if(d2>1600&&(frame+i)%3) continue;
+    const dx=P.root.position.x-pState.x, dz=P.root.position.z-pState.z, d2=dx*dx+dz*dz; P.root.visible=d2<visR2&&!S.djOff; if(!P.root.visible||d2>6400) continue; if(d2>1600&&(frame+i)%3) continue;
     if(P.social) socialPose(P,t); else poseChar(P,S.mode,t,S.fixed!==undefined?S.fixed:S.zone?boothBeat(S.zone,t):t*2.05); }
   for(const P of ALLP){ const s=P.social; if(!s) continue; s.t-=dt;
     if(s.reply!==undefined){ s.reply-=dt; if(s.reply<=0){ if(s.partner) say(s.partner,pick(REPLY)); s.reply=undefined; } }
@@ -4956,6 +4956,13 @@ function schWarm(){ const C=[];
   C.sort((a,b)=>a[1]-b[1]);
   for(const [T,d] of C){ if(d>400) break; const slot=schSlot(schKey(T)); if(!slot) continue; const it=schItem(slot); if(it) return {T,slot,it}; }
   return null; }
+
+// a stage only has its DJ behind the decks while a set is scheduled there right now
+const DJV={t:-99};
+function djStageKey(id){ return id==='shelter'?'club3':id==='paper'?'club4':'zone:'+id; }
+updaters.push(t=>{ if(t-DJV.t<1) return; DJV.t=t;
+  for(const b of BOOTHS){ if(b.dj&&b.dj.root){ const on=!!(SCH.sched&&schSlot('booth:'+b.id)); if(b.dj.root.visible!==on) b.dj.root.visible=on; } }
+  for(const S of SNPC){ if(S.mode!=='dj'||!S.zone) continue; S.djOff=!(SCH.sched&&schSlot(djStageKey(S.zone.id))); if(S.djOff) S.P.root.visible=false; } });
 
 /* ================= DJ SET PLAYLIST CARD (album art up front, every map) ================= */
 const NPC={sig:'',t:0};
