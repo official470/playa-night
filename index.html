@@ -3287,11 +3287,11 @@ function musicTarget(){ let best=null, bv=.02;
 const MC_ZN={shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
 // each genre pulls recent shows from official DJ / label channels
 // each genre: Korean name, official DJ / label channels, and the Mixcloud tag whose most-played mixes join the pool
-const MC_G={techno:['테크노',['residentadvisor','CarlCox','mixmag'],'techno'],house:['하우스',['Defectedrecords','mixmag'],'house'],afro:['아프로 하우스',['keinemusik'],'afro-house'],
+const MC_G={techno:['테크노',['residentadvisor','CarlCox'],'techno'],house:['하우스',['Defectedrecords'],'house'],afro:['아프로 하우스',['keinemusik'],'afro-house'],
   melodic:['멜로딕 테크노',['afterlife','johndigweed'],'melodic-techno'],trance:['트랜스',['ArminvanBuuren'],'trance'],deephouse:['딥하우스',['anjunadeep'],'deep-house'],
   dnb:['드럼앤베이스',['hospitalrecords','ukfmusic'],'drum-and-bass'],psy:['사이키델릭 트랜스',['faeriepiraterainbowsparkle'],'psytrance'],hardstyle:['하드스타일',['Q-dance'],'hardstyle'],dubstep:['덥스텝',['ukfmusic'],'dubstep'],eclectic:['언더그라운드',['FACTMixArchive'],'electronica']};
 // music-first sets only: no radio shows or talk formats, no non-stop medleys / remix compilations or off-genre party mixes
-const MC_RADIO=/radio|\bshow\b|podcast|episode|\bep\.?\s*\d|edition|transitions|takeover|hosted by|interview|in conversation|q&a|\btalk|broadcast|global \d|state of trance|asot|presents next|group therapy|dance department|\bweek \d/i;
+const MC_RADIO=/radio|\bshow\b|podcast|episode|\bep\.?\s*\d|edition|transitions|takeover|hosted by|interview|in conversation|q&a|\btalk|broadcast|global\b[\s\-–:#]*\d|sirius|\bfm\b|tatw|carl cox global|planet perfecto|\bsessions? \d+|presents unfold|trance around the world|^#\d{3,}|multi ?-?genre|state of trance|asot|presents next|group therapy|dance department|\bweek \d|on rotation|in session|discuss|\bchats?\b|conversation|documentary|lecture|masterclass|tutorial|\bpanel\b|in the studio|behind the|meet the|\bspeaks?\b|\btalks?\b|story of|history of|introducing|\bmini ?-?mix|\bin focus\b|profile/i;
 const MC_JUNK=/non ?stop|viet|remix|mash ?-?up|bootleg|\b[5-9]0'?s\b|love ?song|bxh|zalo|private|commercial|snippet|promo|instagram|tik ?tok|\bhits\b|\btop \d|\bbpm \d|hands ?up|party blaster|throwdown|r&b|hip ?hop|dancehall|naija|afrobeats?|gengeton|bongo|\s[x×]\s.*\s[x×]\s|gym|workout|reggae|grime|apres|gambl|www\.|\.com\b|\bedm\b|quarantine|mega ?mix/i;
 const MC_SCRIPT=/[Ѐ-ӿ؀-ۿऀ-ॿ฀-๿Ạ-ỹĐđ぀-ヿ㐀-鿿가-힣＀-￯]/;
 function mcMusicOnly(c){ const n=c&&c.name||'', a=c&&c.audio_length||0; return !!(c&&c.key)&&a>=1800&&a<=4*3600&&!c.is_exclusive&&!MC_RADIO.test(n)&&!MC_JUNK.test(n)&&!MC_SCRIPT.test(n+(c.user&&c.user.name||'')); }
@@ -4155,19 +4155,23 @@ function hyStage(o){ if(!o) return null; if(o.dj&&o.dj.root){ if(!o.djW){ o.djW=
   const z=NM.zones.find(q=>q.Z===o); if(z){ const s={jandi:[-12,20],hanok:[16,58],soop:[-8,98],exp:[2,132],aero:[-26,49],hut:[-26,66.6]}[z.id]; if(s){ o.stage={x:NX+s[0],z:s[1]}; return o.stage; } }
   if(o===SPH.zone){ o.stage={x:SPX,z:IZ+30}; return o.stage; } if(o.x!==undefined) return {x:o.x,z:o.z}; return null; }
 function hyStrip(c){ c.top='tee'; c.topColor=c.skin; c.outer='none'; }
-function hySpawn(shirtless){ const c=randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2; P.root.position.set(pState.x+Math.cos(a)*18,pState.y,pState.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
-  const i=HY.mem.length; HY.mem.push({P,c,st:'in',slot:{a:i*2.399+Math.random()*.3,r:i<10?rand(2.4,3.6):rand(3.4,6.4)},shirtless,faceDJ:Math.random()<.9,ph:Math.random()*6,outT:0}); if(shirtless) say(P,'웃통 벗고 논다!',1.6); }
+// the crowd fills the floor in front of the DJ (rows facing the stage), never around or after the player
+function hyAnchor(){ const src=hyBest(), st=hyStage(src); if(!st) return null; let dx,dz,x,z;
+  if(src.front&&src.pos){ dx=src.front.x-src.pos.x; dz=src.front.z-src.pos.z; } else { dx=pState.x-st.x; dz=pState.z-st.z; }
+  const L=Math.hypot(dx,dz)||1; dx/=L; dz/=L; if(src.front){ x=src.front.x; z=src.front.z; } else { x=st.x+dx*3.5; z=st.z+dz*3.5; } return {x,z,dx,dz,y:pState.y}; }
+function hySlot(i){ const A=HY.anchor, row=Math.floor(i/8), col=i%8, lat=(col-3.5)*1.15+rand(-.25,.25), dep=row*1.25+rand(-.2,.2); return {x:A.x+A.dx*dep+A.dz*lat,z:A.z+A.dz*dep-A.dx*lat}; }
+function hySpawn(shirtless){ if(!HY.anchor) HY.anchor=hyAnchor(); if(!HY.anchor) return; const c=randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2, A=HY.anchor; P.root.position.set(A.x+Math.cos(a)*18,A.y,A.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
+  const i=HY.mem.length; HY.mem.push({P,c,st:'in',slot:hySlot(i),away:{x:A.dx+rand(-.7,.7),z:A.dz+rand(-.7,.7)},shirtless,tw:rand(-.25,.25),ph:Math.random()*6,outT:0}); if(shirtless) say(P,'웃통 벗고 논다!',1.6); }
 function hyUndress(m){ if(m.dead||m.st==='out'||m.shirtless) return; const old=m.c.outer!=='none'?m.c.outerColor:m.c.topColor; hyStrip(m.c); const pos=m.P.root.position.clone(), ry=m.P.root.rotation.y, dn=m.P.dance; scene.remove(m.P.root); const P=buildCharacter(m.c); P.dance=dn; P.root.position.copy(pos); P.root.rotation.y=ry; scene.add(P.root); m.P=P; m.shirtless=true; say(P,'웃통 벗자!',1.6);
   const sh=new THREE.Mesh(G.box,M(old)); sh.scale.set(.42,.46,.06); sh.position.set(pos.x,pos.y+1.9,pos.z); scene.add(sh); HY.shirts.push({m:sh,v:new THREE.Vector3(rand(-1.5,1.5),rand(4.5,6.5),rand(-1.5,1.5)),w:new THREE.Vector3(rand(-8,8),rand(-8,8),rand(-8,8)),life:2}); }
 function hyCheerSound(l){ if(!ac||!master) return; const tt=ac.currentTime; if(!HY.nb){ const b=ac.createBuffer(1,Math.floor(ac.sampleRate*1.2),ac.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; HY.nb=b; }
   const s=ac.createBufferSource(); s.buffer=HY.nb; const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000+Math.random()*300; bp.Q.value=.55; const g=ac.createGain(); g.gain.setValueAtTime(0.0001,tt); g.gain.linearRampToValueAtTime(.04+.025*Math.min(l,5),tt+.12); g.gain.exponentialRampToValueAtTime(.0005,tt+.95); s.connect(bp); bp.connect(g); g.connect(master); s.start(tt); s.stop(tt+1.1); }
-// milestones only: nobody gathers around or follows the player any more
-function hyLevel(k){ if(k===2){ toast('🔥 2분 돌파! 분위기가 달아올라요'); }
-  else if(k===3){ toast('🔥🔥 3분! 계속 달려요'); }
-  else if(k===4){ toast('🔥🔥🔥 4분! 분위기가 최고조예요'); }
+function hyLevel(k){ if(k===2){ for(let i=0;i<(LOW?6:10);i++) HY.queue.push({sp:1}); toast('🔥 2분 돌파! 사람들이 스테이지 앞으로 모여들어요'); }
+  else if(k===3){ for(let i=0;i<(LOW?10:22);i++) HY.queue.push({sp:1}); toast('🔥🔥 3분! 스테이지 앞이 사람들로 가득 차요'); }
+  else if(k===4){ for(let i=0;i<(LOW?4:10);i++) HY.queue.push({sp:1}); toast('🔥🔥🔥 4분! 분위기가 최고조예요'); }
   else if(k===5&&!HY.bonus){ HY.bonus=true; addCoins(50); coinBurst(50); toast('🏆 5분 연속 스테이지 댄스! 보너스 +50코인'); } }
 updaters.push((t,dt)=>{
-  if(STG.on) HY.total+=dt; else if(STG.t===0&&HY.total>0){ HY.total=0; HY.lvl=0; HY.bonus=false; HY.queue=[]; HY.mem.forEach(m=>{ m.st='out'; }); }
+  if(STG.on) HY.total+=dt; else if(STG.t===0&&HY.total>0){ HY.total=0; HY.lvl=0; HY.bonus=false; HY.queue=[]; HY.anchor=null; HY.mem.forEach(m=>{ m.st='out'; }); }
   const L=HY.total>=300?5:HY.total>=240?4:HY.total>=180?3:HY.total>=120?2:0; if(L>HY.lvl){ for(let k=HY.lvl+1;k<=L;k++) hyLevel(k); HY.lvl=L; }
   const hb=document.getElementById('sbHype'); if(hb){ const s=Math.floor(HY.total), tx=HY.total>0?`${HY.lvl>=5?'🏆':'🔥'.repeat(Math.max(0,HY.lvl-1))} 총 ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`:''; if(hb.textContent!==tx) hb.textContent=tx; }
   for(let n=0;n<(LOW?1:2)&&HY.queue.length;n++){ const q=HY.queue.shift(); if(q.strip) hyUndress(q.strip); else hySpawn(!!q.bare); }
@@ -4175,10 +4179,10 @@ updaters.push((t,dt)=>{
     if(cheer&&bar!==HY.cheerB){ HY.cheerB=bar; hyCheerSound(HY.lvl); const live=HY.mem.filter(m=>m.st==='dance'); for(let k=0;k<Math.min(live.length,HY.lvl>=3?4:2);k++) say(pick(live).P,pick(HY_CHEER),1.3); }
     const armsUp=cheer&&(beat%4)<1;
     for(const m of HY.mem){ const p=m.P.root.position;
-      if(m.st==='out'){ let dx=p.x-pState.x, dz=p.z-pState.z, d=Math.hypot(dx,dz)||1; p.x+=dx/d*2.6*dt; p.z+=dz/d*2.6*dt; m.P.root.rotation.y=Math.atan2(dx,dz); poseChar(m.P,'walk',t+m.ph,0); m.outT+=dt; if(m.outT>7){ scene.remove(m.P.root); m.dead=true; } continue; }
-      p.y+=(pState.y-p.y)*Math.min(1,dt*6); const tx=pState.x+Math.cos(m.slot.a)*m.slot.r, tz=pState.z+Math.sin(m.slot.a)*m.slot.r, dx=tx-p.x, dz=tz-p.z, d=Math.hypot(dx,dz);
+      if(m.st==='out'){ let dx=m.away?m.away.x:p.x-pState.x, dz=m.away?m.away.z:p.z-pState.z, d=Math.hypot(dx,dz)||1; p.x+=dx/d*2.6*dt; p.z+=dz/d*2.6*dt; m.P.root.rotation.y=Math.atan2(dx,dz); poseChar(m.P,'walk',t+m.ph,0); m.outT+=dt; if(m.outT>7){ scene.remove(m.P.root); m.dead=true; } continue; }
+      const fy=HY.anchor?HY.anchor.y:pState.y; p.y+=(fy-p.y)*Math.min(1,dt*6); const tx=m.slot.x, tz=m.slot.z, dx=tx-p.x, dz=tz-p.z, d=Math.hypot(dx,dz);
       if(d>.4){ const sp=Math.min(d,(d>5?3.6:2.4)*dt); p.x+=dx/d*sp; p.z+=dz/d*sp; m.P.root.rotation.y=Math.atan2(dx,dz); poseChar(m.P,d>5?'run':'walk',t+m.ph,0); }
-      else { m.st='dance'; const fs=m.faceDJ&&stg; m.P.root.rotation.y=fs?Math.atan2(stg.x-p.x,stg.z-p.z):Math.atan2(pState.x-p.x,pState.z-p.z); poseChar(m.P,'dance',t+m.ph,beat); if(armsUp) m.P.sh.forEach((sh,i)=>{ sh.rotation.x=-2.8+Math.sin(t*10+m.ph+i)*.15; }); } }
+      else { m.st='dance'; m.P.root.rotation.y=stg?Math.atan2(stg.x-p.x,stg.z-p.z)+m.tw:Math.atan2(pState.x-p.x,pState.z-p.z); poseChar(m.P,'dance',t+m.ph,beat); if(armsUp) m.P.sh.forEach((sh,i)=>{ sh.rotation.x=-2.8+Math.sin(t*10+m.ph+i)*.15; }); } }
     HY.mem=HY.mem.filter(m=>!m.dead); }
   if(HY.shirts.length) HY.shirts=HY.shirts.filter(s=>{ s.life-=dt; if(s.life<=0){ scene.remove(s.m); return false; } s.v.y-=9.8*dt; s.m.position.addScaledVector(s.v,dt); s.m.rotation.x+=s.w.x*dt; s.m.rotation.y+=s.w.y*dt; s.m.rotation.z+=s.w.z*dt; return true; }); });
 
