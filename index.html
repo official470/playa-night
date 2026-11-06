@@ -3302,15 +3302,30 @@ const MC_DEF={techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance
 // every stage plays only its own genre
 function mcDefault(T){ return MC_DEF[T.kind==='booth'?T.b.id:T.Z.id]||'deephouse'; }
 // the widget speaks a small postMessage protocol; talking to it directly avoids loading Mixcloud's helper script
-function mcCall(name,...args){ if(!MC.iframe||!MC.iframe.contentWindow) return; MC.iframe.contentWindow.postMessage(JSON.stringify({type:'method',data:{methodId:++MC.mid,methodName:name,args}}),MC_ORIGIN); }
+function mcCall(name,...args){ if(MC.kind==='sc'){ const w=MC.w; if(!w) return; try{ if(name==='togglePlay') w.toggle(); else if(name==='seek') w.seekTo(Math.max(0,args[0])*1000); else if(name==='setVolume') w.setVolume(Math.round(args[0]*100)); else if(name==='play'||name==='pause') w[name](); }catch(e){} return; }
+  if(!MC.iframe||!MC.iframe.contentWindow) return; MC.iframe.contentWindow.postMessage(JSON.stringify({type:'method',data:{methodId:++MC.mid,methodName:name,args}}),MC_ORIGIN); }
 addEventListener('message',e=>{ if(e.origin!==MC_ORIGIN||!MC.iframe||e.source!==MC.iframe.contentWindow) return; let m; try{ m=JSON.parse(e.data); }catch(x){ return; }
   if(m.type==='ready') MC.iframe.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN);
-  if(m.type!=='event') return; const ev=m.data&&m.data.eventName;
-  if(ev==='progress'||ev==='play'){ const a=m.data.args; if(ev==='progress'&&a&&Number.isFinite(+a[0])){ MC.pos=+a[0]; MC.posAt=performance.now(); } MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
+  if(m.type!=='event') return; const a=m.data&&m.data.args; mcEv(m.data&&m.data.eventName,a?+a[0]:NaN); });
+// player events from either widget: progress / play / pause / ended / error
+function mcEv(ev,pos){
+  if(ev==='progress'||ev==='play'){ if(ev==='progress'&&Number.isFinite(pos)){ MC.pos=pos; MC.posAt=performance.now(); } MC.live=true; if(!MC.playing){ MC.playing=true; MC.fails=0; MC.vol=-1; mcShow(false); } if(ev==='play'&&MC.paused){ MC.paused=false; mcUi(); } }
   else if(ev==='pause'){ MC.paused=true; mcUi(); }
   else if(ev==='ended') mcNext();
-  else if(ev==='error'){ if(++MC.fails<4) mcNext(); else { toast('Mixcloud 세트를 불러오지 못했어요'); mcStop(); } } });
-function mcShow(on){ if(!MC.iframe) return; MC.iframe.style.cssText=on?'position:fixed;left:10px;right:10px;bottom:calc(84px + var(--sab));width:calc(100% - 20px);max-width:420px;height:60px;border:0;border-radius:10px;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.4)':'position:fixed;left:-9999px;top:0;width:300px;height:60px;border:0'; }
+  else if(ev==='error'){ if(++MC.fails<4) mcNext(); else { toast('DJ 세트를 불러오지 못했어요'); mcStop(); } } }
+// SoundCloud: the official embed widget driven through its api.js (no key or login), used for sets an admin schedules
+let scApiP=null;
+function scApi(){ if(window.SC&&SC.Widget) return Promise.resolve(); if(!scApiP) scApiP=new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://w.soundcloud.com/player/api.js'; s.onload=()=>window.SC&&SC.Widget?res():rej(); s.onerror=()=>{ scApiP=null; rej(); }; document.head.appendChild(s); }); return scApiP; }
+function scUrl(u){ try{ const p=new URL(String(u).trim()), h=p.hostname.toLowerCase(); if(p.protocol!=='https:'||!(h==='soundcloud.com'||h==='www.soundcloud.com'||h==='m.soundcloud.com'||h==='on.soundcloud.com')) return null; if(h==='m.soundcloud.com') p.hostname='soundcloud.com'; p.search=''; p.hash=''; return p.toString(); }catch(e){ return null; } }
+function scInfo(w,c){ try{ w.getCurrentSound(s=>{ if(!s||MC.cur!==c) return; if(!c.titled) c.name=s.title||c.name; if(!(c.user&&c.user.name)) c.user={name:s.user&&s.user.username||''};
+    const art=(s.artwork_url||(s.user&&s.user.avatar_url)||''); if(art&&!c.pictures) c.pictures={medium:art.replace('-large','-t300x300'),'320wx320h':art.replace('-large','-t500x500')};
+    c.audio_length=Math.round((s.full_duration||s.duration||0)/1000)||c.audio_length; if(s.description&&!c.description) c.description=s.description; NPC.sig=''; mcUi(); }); }catch(e){} }
+function scCreate(c){ const f=document.createElement('iframe'); f.allow='autoplay'; f.title='SoundCloud player';
+  f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(c.key)+'&auto_play=true&visual=false&show_comments=false&hide_related=true&show_teaser=false'; MC.iframe=f; mcShow(false); document.body.appendChild(f);
+  scApi().then(()=>{ if(MC.iframe!==f) return; const w=SC.Widget(f), E=SC.Widget.Events, on=fn=>(e)=>{ if(MC.w===w) fn(e); }; MC.w=w;
+    w.bind(E.READY,on(()=>{ scInfo(w,MC.cur); try{ w.play(); }catch(e){} })); w.bind(E.PLAY,on(()=>{ mcEv('play'); scInfo(w,MC.cur); })); w.bind(E.PAUSE,on(()=>mcEv('pause'))); w.bind(E.FINISH,on(()=>mcEv('ended')));
+    w.bind(E.PLAY_PROGRESS,on(e=>mcEv('progress',e&&e.currentPosition/1000))); w.bind(E.ERROR,on(()=>mcEv('error'))); }).catch(()=>{ if(MC.iframe===f) mcEv('error'); }); }
+function mcShow(on){ if(!MC.iframe) return; const h=MC.kind==='sc'?120:60; MC.iframe.style.cssText=on?`position:fixed;left:10px;right:10px;bottom:calc(84px + var(--sab));width:calc(100% - 20px);max-width:420px;height:${h}px;border:0;border-radius:10px;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.4)`:`position:fixed;left:-9999px;top:0;width:300px;height:${h}px;border:0`; }
 // pool = the genre's official channels + the tag's most-played mixes, filtered to music-first sets, the 40 most popular, shuffled
 async function mcFetch(g){ if(MC.cache[g]&&MC.cache[g].length) return MC.cache[g];
   const get=u=>fetch('https://api.mixcloud.com'+u).then(r=>r.ok?r.json():{data:[]}).then(d=>d.data||[]).catch(()=>[]), tag=encodeURIComponent(MC_G[g][2]);
@@ -3326,15 +3341,17 @@ async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g;
 // every play and every skip lands on a random set (never the same one twice in a row)
 function mcNext(){ if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
-  if(MC.iframe&&MC.live){ MC.paused=false; mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
-  if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1;
+  const kind=c.sc?'sc':'mc';
+  if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:true,visual:false,show_comments:false,hide_related:true,callback:()=>scInfo(w,c)}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
+  if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1; MC.kind=kind; MC.w=null;
+  if(kind==='sc'){ scCreate(c); const f=MC.iframe; MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } },6000); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
   const f=document.createElement('iframe'); f.allow='autoplay'; f.title='Mixcloud player';
   f.src=`${MC_ORIGIN}/widget/iframe/?feed=${encodeURIComponent(c.key)}&hide_cover=1&mini=1&autoplay=1`; MC.iframe=f; mcShow(false); document.body.appendChild(f);
   f.addEventListener('load',()=>{ if(MC.iframe===f) f.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN); });
   // mobile browsers can block autoplay inside the iframe; show the real player so one tap on its play button starts it
   MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } },6000);
   mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); }
-function mcStop(){ MC.schId=null; $('#clubNow').classList.remove('mc'); if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
+function mcStop(){ MC.schId=null; $('#clubNow').classList.remove('mc'); if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } MC.w=null; clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
 function mcStatus(s){ const el=document.getElementById('mcStatus'); if(el) el.textContent=s; }
 function mcTitle(){ const c=MC.cur; return c?`${c.name}${c.user&&c.user.name?' — '+c.user.name:''}`:''; }
 // what is playing now: the set's own notes and the uploading DJ / channel's bio, straight from Mixcloud
@@ -3365,25 +3382,29 @@ function mcDate(t){ const d=new Date(t); return isNaN(d)?'':`${d.getFullYear()}�
 // DJ introduction, then the music: the uploader's bio and the set's own notes (Korean machine translation), straight from Mixcloud
 function mcStoryInto(el,c,empty){ if(!el) return;
   if(!c){ if(el.dataset.key!=='-'){ el.dataset.key='-'; el.innerHTML=empty?`<p class='hint'>${empty}</p>`:''; } return; }
-  if(el.dataset.key===c.key) return; el.dataset.key=c.key;
-  const tags=(c.tags||[]).map(t=>t.name).filter(Boolean).slice(0,5), who=c.user&&c.user.name||'';
-  const sum=`${who?esc(who)+' 채널이 ':''}${c.created_time?mcDate(c.created_time)+'에 올린 ':''}${c.audio_length?Math.round(c.audio_length/60)+'분짜리 ':''}세트예요.`;
-  el.innerHTML=`<h4>🎛️ DJ 소개</h4><p class='orig st-dj'>불러오는 중이에요</p><h4>🎧 음악 소개</h4><p>${sum}</p>${tags.length?`<div class='mtags'>${tags.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`:''}<p class='orig st-set'>불러오는 중이에요</p><p class='hint'>음악 소개는 Mixcloud 원문을 자동 번역했어요. DJ 소개는 원문 그대로예요.</p>`;
-  const live=()=>el.isConnected&&el.dataset.key===c.key, P=el.querySelector('.st-set'), Q=el.querySelector('.st-dj');
-  mcInfo(c.key).then(d=>{ if(live()){ if(d.description) mcKoUi(P,c.key,d.description,live); else P.textContent='이 세트에는 따로 적힌 설명이 없어요.'; }
-    const uk=(c.user&&c.user.key)||(d.user&&d.user.key);
+  const sig=c.key+'|'+(c.description?1:0)+'|'+(c.audio_length||0)+'|'+(c.user&&c.user.name||''); if(el.dataset.key===sig) return; el.dataset.key=sig;
+  const tags=(c.tags||[]).map(t=>t.name).filter(Boolean).slice(0,5), who=c.user&&c.user.name||'', br=x=>esc(x).replace(/\n/g,'<br>');
+  const sum=c.sc?`${who?esc(who)+'의 ':''}SoundCloud ${c.audio_length?Math.round(c.audio_length/60)+'분짜리 ':''}세트예요.`
+    :`${who?esc(who)+' 채널이 ':''}${c.created_time?mcDate(c.created_time)+'에 올린 ':''}${c.audio_length?Math.round(c.audio_length/60)+'분짜리 ':''}세트예요.`;
+  const hint=c.djIntro&&c.musicIntro?'DJ 소개와 음악 소개는 운영자가 쓴 글이에요.':c.djIntro||c.musicIntro?'운영자가 쓴 소개가 함께 나와요. 나머지는 원문(음악 소개는 자동 번역)이에요.':'음악 소개는 원문을 자동 번역했어요. DJ 소개는 원문 그대로예요.';
+  el.innerHTML=`${c.sched?`<p class='hint'>📻 운영자가 편성한 세트예요. 지금 모두 같은 부분을 듣고 있어요.</p>`:''}<h4>🎛️ DJ 소개</h4><p class='orig st-dj'>${c.djIntro?`${who?`<b>${esc(who)}</b><br>`:''}${br(c.djIntro)}`:'불러오는 중이에요'}</p><h4>🎧 음악 소개</h4><p>${sum}</p>${tags.length?`<div class='mtags'>${tags.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`:''}<p class='orig st-set'>${c.musicIntro?br(c.musicIntro):'불러오는 중이에요'}</p><p class='hint'>${hint}</p>`;
+  const live=()=>el.isConnected&&el.dataset.key===sig, P=el.querySelector('.st-set'), Q=el.querySelector('.st-dj');
+  if(c.sc){ if(!c.musicIntro){ if(c.description) mcKoUi(P,c.key,c.description,live); else P.textContent=c.audio_length?'이 세트에는 따로 적힌 설명이 없어요.':'불러오는 중이에요'; }
+    if(!c.djIntro) Q.innerHTML=who?`<b>${esc(who)}</b><br>SoundCloud에서 활동하는 아티스트예요.`:'불러오는 중이에요'; return; }
+  mcInfo(c.key).then(d=>{ if(live()&&!c.musicIntro){ if(d.description) mcKoUi(P,c.key,d.description,live); else P.textContent='이 세트에는 따로 적힌 설명이 없어요.'; }
+    if(c.djIntro) return; const uk=(c.user&&c.user.key)||(d.user&&d.user.key);
     if(!uk){ if(live()) Q.textContent='DJ 정보가 없어요.'; return; }
     return mcInfo(uk).then(u=>{ if(!live()) return; const where=[u.city,u.country].filter(Boolean).join(', ');
       Q.innerHTML=`<b>${esc(u.name||who)}</b>${where?' · '+esc(where):''}<br>${u.biog?mcText(u.biog,500):'DJ 소개가 없어요.'}`; }); }); }
 function mcStoryUi(){ mcStoryInto(document.getElementById('mcStory'),MC.target?MC.cur:null,'부스 가까이에서 세트를 틀면 DJ 소개와 음악 소개가 여기에 나와요.'); }
 function mcUi(){ const box=document.getElementById('mcNow'); if(!box) return; const c=MC.cur;
-  mcStoryUi(); if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small);
-  box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud에서 보기</a></div>`;
+  mcStoryUi(); if(!c||!MC.target){ box.innerHTML=''; mcStatus(''); return; } const art=c.pictures&&(c.pictures.medium||c.pictures.small||c.pictures['320wx320h']);
+  box.innerHTML=`${art?`<img src='${esc(art)}' alt='' width='56' height='56'>`:''}<div><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><a href='${esc(c.sc?c.key:'https://www.mixcloud.com'+c.key)}' target='_blank' rel='noopener noreferrer'>${c.sc?'SoundCloud':'Mixcloud'}에서 보기</a></div>`;
   mcStatus(`${MC.target.name}에서 재생 중`); }
 function mcNear(T){ return mcLevel(T)>=.35; }
-function openMcPanel(){ if(SCH.url) return openSchPanel(); const T=musicTarget(), g=mcDefault(T), gn=MC_G[g][0], on=MC.target&&MC.target.key===T.key;
+function openMcPanel(){ const T=musicTarget(), g=mcDefault(T), gn=MC_G[g][0], on=MC.target&&MC.target.key===T.key;
   openSp('DJ 세트',`${T.name} · ${gn} · Mixcloud`,`${mcNear(T)?'':`<p class='quote'>${esc(T.name)} 가까이 가야 ${esc(gn)} 세트를 틀 수 있어요. 부스마다 그 부스 장르만 나와요.</p>`}<div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><p id='mcStatus' style='font-size:12px;color:var(--muted)'></p><div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='play' class='hot' style='grid-column:1/-1'>${esc(gn)} ${on?'다른 세트':'세트 틀기'}</button><button data-act='toggle'>일시정지 / 재생</button><button data-act='stop'>게임 음악으로</button><button data-act='auto' style='grid-column:1/-1'>${mcaLabel()}</button></div>`,a=>{
-    if(a==='play'){ const N=musicTarget(), k=mcDefault(N); if(!mcNear(N)){ toast(`${N.name} 가까이 가야 ${MC_G[k][0]} 세트를 틀 수 있어요`); return; }
+    if(a==='play'){ const N=musicTarget(), k=mcDefault(N); if(MC.schId&&MC.target&&MC.target.key===N.key){ toast('📻 편성 방송 중이라 다른 세트로 넘길 수 없어요'); return; } if(!mcNear(N)){ toast(`${N.name} 가까이 가야 ${MC_G[k][0]} 세트를 틀 수 있어요`); return; }
       if(MC.target&&MC.target.key===N.key&&MC.list.length) mcNext(); else mcPlay(k,N);
       const hb=document.querySelector("#spBody [data-act='play']"); if(hb) hb.textContent=`${MC_G[k][0]} 다른 세트`; }
     else if(a==='toggle'){ if(MC.iframe) mcCall('togglePlay'); }
@@ -4159,29 +4180,34 @@ function hyStrip(c){ c.top='tee'; c.topColor=c.skin; c.outer='none'; }
 function hyAnchor(){ const src=hyBest(), st=hyStage(src); if(!st) return null; let dx,dz,x,z;
   if(src.front&&src.pos){ dx=src.front.x-src.pos.x; dz=src.front.z-src.pos.z; } else { dx=pState.x-st.x; dz=pState.z-st.z; }
   const L=Math.hypot(dx,dz)||1; dx/=L; dz/=L; if(src.front){ x=src.front.x; z=src.front.z; } else { x=st.x+dx*3.5; z=st.z+dz*3.5; } return {x,z,dx,dz,y:pState.y}; }
-function hySlot(i){ const A=HY.anchor, row=Math.floor(i/8), col=i%8, lat=(col-3.5)*1.15+rand(-.25,.25), dep=row*1.25+rand(-.2,.2); return {x:A.x+A.dx*dep+A.dz*lat,z:A.z+A.dz*dep-A.dx*lat}; }
+// slots fill the front rows first; the longer you dance, the tighter everyone packs toward the stage
+function hySlot(i){ return {i,jl:rand(-.25,.25),jd:rand(-.2,.2)}; }
+function hyDense(){ return clamp(1-(HY.total-120)/900,.62,1); }
+function hyPos(sl){ const A=HY.anchor, k=hyDense(), row=Math.floor(sl.i/8), col=sl.i%8, lat=(col-3.5)*1.15*k+sl.jl*k, dep=Math.max(0,row*1.25*k+sl.jd*k); sl.x=A.x+A.dx*dep+A.dz*lat; sl.z=A.z+A.dz*dep-A.dx*lat; return sl; }
 function hySpawn(shirtless){ if(!HY.anchor) HY.anchor=hyAnchor(); if(!HY.anchor) return; const c=randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2, A=HY.anchor; P.root.position.set(A.x+Math.cos(a)*18,A.y,A.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
   const i=HY.mem.length; HY.mem.push({P,c,st:'in',slot:hySlot(i),away:{x:A.dx+rand(-.7,.7),z:A.dz+rand(-.7,.7)},shirtless,tw:rand(-.25,.25),ph:Math.random()*6,outT:0}); if(shirtless) say(P,'웃통 벗고 논다!',1.6); }
 function hyUndress(m){ if(m.dead||m.st==='out'||m.shirtless) return; const old=m.c.outer!=='none'?m.c.outerColor:m.c.topColor; hyStrip(m.c); const pos=m.P.root.position.clone(), ry=m.P.root.rotation.y, dn=m.P.dance; scene.remove(m.P.root); const P=buildCharacter(m.c); P.dance=dn; P.root.position.copy(pos); P.root.rotation.y=ry; scene.add(P.root); m.P=P; m.shirtless=true; say(P,'웃통 벗자!',1.6);
   const sh=new THREE.Mesh(G.box,M(old)); sh.scale.set(.42,.46,.06); sh.position.set(pos.x,pos.y+1.9,pos.z); scene.add(sh); HY.shirts.push({m:sh,v:new THREE.Vector3(rand(-1.5,1.5),rand(4.5,6.5),rand(-1.5,1.5)),w:new THREE.Vector3(rand(-8,8),rand(-8,8),rand(-8,8)),life:2}); }
 function hyCheerSound(l){ if(!ac||!master) return; const tt=ac.currentTime; if(!HY.nb){ const b=ac.createBuffer(1,Math.floor(ac.sampleRate*1.2),ac.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; HY.nb=b; }
   const s=ac.createBufferSource(); s.buffer=HY.nb; const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000+Math.random()*300; bp.Q.value=.55; const g=ac.createGain(); g.gain.setValueAtTime(0.0001,tt); g.gain.linearRampToValueAtTime(.04+.025*Math.min(l,5),tt+.12); g.gain.exponentialRampToValueAtTime(.0005,tt+.95); s.connect(bp); bp.connect(g); g.connect(master); s.start(tt); s.stop(tt+1.1); }
-function hyLevel(k){ if(k===2){ for(let i=0;i<(LOW?6:10);i++) HY.queue.push({sp:1}); toast('🔥 2분 돌파! 사람들이 스테이지 앞으로 모여들어요'); }
-  else if(k===3){ for(let i=0;i<(LOW?10:22);i++) HY.queue.push({sp:1}); toast('🔥🔥 3분! 스테이지 앞이 사람들로 가득 차요'); }
-  else if(k===4){ for(let i=0;i<(LOW?4:10);i++) HY.queue.push({sp:1}); toast('🔥🔥🔥 4분! 분위기가 최고조예요'); }
+function hyLevel(k){ if(k===2){ toast('🔥 2분 돌파! 사람들이 하나둘 스테이지 앞으로 모여들어요'); }
+  else if(k===3){ toast('🔥🔥 3분! 스테이지 앞이 점점 차오르고 있어요'); }
+  else if(k===4){ toast('🔥🔥🔥 4분! 맨 앞까지 꽉 찼어요'); }
   else if(k===5&&!HY.bonus){ HY.bonus=true; addCoins(50); coinBurst(50); toast('🏆 5분 연속 스테이지 댄스! 보너스 +50코인'); } }
 updaters.push((t,dt)=>{
-  if(STG.on) HY.total+=dt; else if(STG.t===0&&HY.total>0){ HY.total=0; HY.lvl=0; HY.bonus=false; HY.queue=[]; HY.anchor=null; HY.mem.forEach(m=>{ m.st='out'; }); }
+  if(STG.on) HY.total+=dt; else if(STG.t===0&&HY.total>0){ HY.total=0; HY.lvl=0; HY.bonus=false; HY.queue=[]; HY.anchor=null; HY.spawnT=0; HY.mem.forEach(m=>{ m.st='out'; }); }
   const L=HY.total>=300?5:HY.total>=240?4:HY.total>=180?3:HY.total>=120?2:0; if(L>HY.lvl){ for(let k=HY.lvl+1;k<=L;k++) hyLevel(k); HY.lvl=L; }
   const hb=document.getElementById('sbHype'); if(hb){ const s=Math.floor(HY.total), tx=HY.total>0?`${HY.lvl>=5?'🏆':'🔥'.repeat(Math.max(0,HY.lvl-1))} 총 ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`:''; if(hb.textContent!==tx) hb.textContent=tx; }
+  if(STG.on&&HY.total>=120&&HY.mem.filter(m=>m.st!=='out').length+HY.queue.length<(LOW?40:84)){ HY.spawnT=(HY.spawnT||0)-dt; if(HY.spawnT<=0){ HY.queue.push({sp:1}); HY.spawnT=HY.total<180?4.5:HY.total<300?3:2.2; } }
   for(let n=0;n<(LOW?1:2)&&HY.queue.length;n++){ const q=HY.queue.shift(); if(q.strip) hyUndress(q.strip); else hySpawn(!!q.bare); }
   if(HY.mem.length){ const src=hyBest(), stg=hyStage(src), beat=hyBeat(src,t), bar=Math.floor(beat/4), cheer=HY.lvl>=2&&STG.on;
     if(cheer&&bar!==HY.cheerB){ HY.cheerB=bar; hyCheerSound(HY.lvl); const live=HY.mem.filter(m=>m.st==='dance'); for(let k=0;k<Math.min(live.length,HY.lvl>=3?4:2);k++) say(pick(live).P,pick(HY_CHEER),1.3); }
     const armsUp=cheer&&(beat%4)<1;
     for(const m of HY.mem){ const p=m.P.root.position;
       if(m.st==='out'){ let dx=m.away?m.away.x:p.x-pState.x, dz=m.away?m.away.z:p.z-pState.z, d=Math.hypot(dx,dz)||1; p.x+=dx/d*2.6*dt; p.z+=dz/d*2.6*dt; m.P.root.rotation.y=Math.atan2(dx,dz); poseChar(m.P,'walk',t+m.ph,0); m.outT+=dt; if(m.outT>7){ scene.remove(m.P.root); m.dead=true; } continue; }
-      const fy=HY.anchor?HY.anchor.y:pState.y; p.y+=(fy-p.y)*Math.min(1,dt*6); const tx=m.slot.x, tz=m.slot.z, dx=tx-p.x, dz=tz-p.z, d=Math.hypot(dx,dz);
-      if(d>.4){ const sp=Math.min(d,(d>5?3.6:2.4)*dt); p.x+=dx/d*sp; p.z+=dz/d*sp; m.P.root.rotation.y=Math.atan2(dx,dz); poseChar(m.P,d>5?'run':'walk',t+m.ph,0); }
+      const fy=HY.anchor?HY.anchor.y:pState.y; p.y+=(fy-p.y)*Math.min(1,dt*6); hyPos(m.slot); const tx=m.slot.x, tz=m.slot.z, dx=tx-p.x, dz=tz-p.z, d=Math.hypot(dx,dz);
+      if(d>(m.st==='dance'?.9:.4)){ m.st='in'; const sp=Math.min(d,(d>5?3.6:2.4)*dt); p.x+=dx/d*sp; p.z+=dz/d*sp; m.P.root.rotation.y=Math.atan2(dx,dz); poseChar(m.P,d>5?'run':'walk',t+m.ph,0); }
+      else if(m.st==='dance'&&d>.05){ const sp=Math.min(d,.6*dt); p.x+=dx/d*sp; p.z+=dz/d*sp; m.st='dance'; m.P.root.rotation.y=stg?Math.atan2(stg.x-p.x,stg.z-p.z)+m.tw:m.P.root.rotation.y; poseChar(m.P,'dance',t+m.ph,beat); }
       else { m.st='dance'; m.P.root.rotation.y=stg?Math.atan2(stg.x-p.x,stg.z-p.z)+m.tw:Math.atan2(pState.x-p.x,pState.z-p.z); poseChar(m.P,'dance',t+m.ph,beat); if(armsUp) m.P.sh.forEach((sh,i)=>{ sh.rotation.x=-2.8+Math.sin(t*10+m.ph+i)*.15; }); } }
     HY.mem=HY.mem.filter(m=>!m.dead); }
   if(HY.shirts.length) HY.shirts=HY.shirts.filter(s=>{ s.life-=dt; if(s.life<=0){ scene.remove(s.m); return false; } s.v.y-=9.8*dt; s.m.position.addScaledVector(s.v,dt); s.m.rotation.x+=s.w.x*dt; s.m.rotation.y+=s.w.y*dt; s.m.rotation.z+=s.w.z*dt; return true; }); });
@@ -4715,38 +4741,42 @@ try{ const v=localStorage.getItem('playa-mc-auto2'); if(v!==null) MCA.on=v==='1'
 function mcaSave(){ try{ localStorage.setItem('playa-mc-auto2',MCA.on?'1':'0'); }catch(e){} }
 function mcLevel(T){ return T.kind==='booth'?(T.b.target||0):(T.Z.target||0)/(T.Z.vol||.85); }
 function mcKey(u){ try{ const p=new URL(String(u).trim()), h=p.hostname.toLowerCase(); if(p.protocol!=='https:'||!(h==='mixcloud.com'||h.endsWith('.mixcloud.com'))) return null; const path=p.pathname.endsWith('/')?p.pathname:p.pathname+'/'; return path.split('/').filter(Boolean).length>=2?path:null; }catch(e){ return null; } }
-// play one specific mix (used by the broadcast schedule)
-function mcPlayKey(key,T,title){ initAudio(); MC.target=T; MC.genre=''; MC.list=[{key,name:title||decodeURIComponent(key.split('/').filter(Boolean).pop()||'').split('-').join(' '),user:{name:''}}]; MC.idx=-1; MC.fails=0; mcNext(); }
-updaters.push(t=>{ if(!MCA.on||MCA.onClaude||SCH.url||!inGame||(typeof BM!=='undefined'&&BM.mode)||t-MCA.lastTry<1.5) return;
-  let T; try{ T=musicTarget(); }catch(e){ return; } if(!T) return;
+// play one scheduled set (Mixcloud or SoundCloud) on its own
+function mcPlayItem(it,T){ initAudio(); MC.target=T; MC.genre=''; MC.list=[it]; MC.idx=-1; MC.fails=0; mcNext(); }
+updaters.push(t=>{ if(!MCA.on||MCA.onClaude||!inGame||(typeof BM!=='undefined'&&BM.mode)||t-MCA.lastTry<1.5) return;
+  let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||(SCH.sched&&schSlot(schKey(T)))) return;
   if(MCA.skip&&MCA.skip!==T.key) MCA.skip=''; // stopping at one stage only silences that stage
   if(mcLevel(T)<.35||MCA.skip===T.key||(MC.target&&MC.target.key===T.key)) return;
   MCA.lastTry=t; mcPlay(mcDefault(T),T); });
 
-// 편성 서버 주소를 넣으면 모든 유저가 편성표대로 같은 믹스의 같은 부분을 들어요. 예: 'https://playa-schedule.myname.workers.dev'
-const SCHEDULE_URL='';
-const SCH={url:'',sched:null,skew:0,lastFetch:-99,lastSync:-99,synced:false,fail:0};
-try{ SCH.url=(SCHEDULE_URL||localStorage.getItem('playa-sched-url')||'').trim().replace(/\/+$/,''); }catch(e){ SCH.url=SCHEDULE_URL; }
+// 편성표: admin.html이 GitHub 저장소의 schedule.json에 저장하고, 게임은 1분마다 읽어요. 부스마다 시간대별 Mixcloud / SoundCloud 세트
+const SCHEDULE_URL='schedule.json';
+const SCH={url:SCHEDULE_URL,sched:null,skew:0,lastFetch:-99,lastSync:-99,synced:false,fail:0};
+try{ const o=localStorage.getItem('playa-sched-url'); if(o) SCH.url=o; }catch(e){}
 function schNow(){ return Date.now()+SCH.skew; }
-async function schFetch(){ try{ const t0=Date.now(); const r=await fetch(SCH.url+'/time',{cache:'no-store'}); const j=await r.json(); const t1=Date.now(); if(Number.isFinite(j.now)) SCH.skew=j.now-(t0+t1)/2;
-    const r2=await fetch(SCH.url+'/schedule',{cache:'no-store'}); const d=await r2.json(); if(d&&d.booths) SCH.sched=d; SCH.fail=0; }catch(e){ SCH.fail++; } }
-function schSlot(key){ const L=(SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]; const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } } if(!s) return null; const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); return t<end?Object.assign({id:key+'@'+s.start},s):null; }
+// the server's Date header keeps every player on the same clock (within about a second)
+async function schFetch(){ try{ const t0=Date.now(), r=await fetch(SCH.url+(SCH.url.includes('?')?'&':'?')+'t='+t0,{cache:'no-store'}), t1=Date.now();
+    if(!r.ok){ SCH.sched=null; return; } const dh=Date.parse(r.headers.get('date')||''); if(Number.isFinite(dh)) SCH.skew=dh+500-(t0+t1)/2;
+    const d=await r.json(); SCH.sched=d&&d.booths?d:null; SCH.fail=0; }catch(e){ SCH.fail++; } }
+function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]).slice().sort((a,b)=>a.start-b.start); const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } } if(!s) return null; const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); return t<end?Object.assign({id:key+'@'+s.start+'@'+s.url},s):null; }
+function schItem(sl){ const base={name:sl.title||'',titled:!!sl.title,user:{name:sl.dj||''},djIntro:sl.djIntro||'',musicIntro:sl.musicIntro||'',sched:true,pictures:sl.art?{medium:sl.art,'320wx320h':sl.art}:null};
+  const su=scUrl(sl.url); if(su) return Object.assign(base,{sc:true,key:su,name:sl.title||'SoundCloud 세트'});
+  const mk=mcKey(sl.url); if(!mk) return null; const it=Object.assign(base,{key:mk,name:sl.title||decodeURIComponent(mk.split('/').filter(Boolean).pop()||'').split('-').join(' ')});
+  mcInfo(mk).then(d=>{ if(!d||!d.key) return; if(!it.pictures&&d.pictures) it.pictures=d.pictures; if(!it.titled) it.name=d.name||it.name; if(!it.user.name&&d.user) it.user={name:d.user.name,key:d.user.key}; else if(d.user) it.user.key=d.user.key; it.audio_length=d.audio_length; it.tags=d.tags; it.created_time=d.created_time; NPC.sig=''; mcUi(); });
+  return it; }
 // the admin page names the two clubs club3 / club4
 function schKey(T){ return T.key==='zone:shelter'?'club3':T.key==='zone:paper'?'club4':T.key; }
-updaters.push(t=>{ if(!SCH.url||MCA.onClaude||!inGame) return;
+updaters.push(t=>{ if(MCA.onClaude||!inGame) return;
   if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||mcLevel(T)<.35) return;
   const slot=schSlot(schKey(T)), mine=MC.target&&MC.target.key===T.key;
-  if(!slot){ if(mine&&MC.schId){ mcStop(); toast(`${T.name} 편성이 끝났어요. 기본 게임 음악이 나와요`); } return; }
-  if(!mine||MC.schId!==slot.id){ const key=mcKey(slot.url); if(!key) return; mcPlayKey(key,T,slot.title); MC.schId=slot.id; SCH.synced=false; SCH.lastSync=t;
-    toast(`📻 편성 방송: ${T.name}에서 ${slot.title||'편성된 믹스'}를 모두 같이 듣고 있어요`); return; }
+  if(!slot){ if(mine&&MC.schId){ mcStop(); MCA.lastTry=-99; toast(`${T.name} 편성이 끝났어요. 다시 인기 DJ 세트가 나와요`); } return; }
+  if(!mine||MC.schId!==slot.id){ const it=schItem(slot); if(!it) return; mcPlayItem(it,T); MC.schId=slot.id; SCH.synced=false; SCH.lastSync=t;
+    toast(`📻 편성 방송: ${T.name}에서 ${it.name}을(를) 모두 같이 듣고 있어요`); return; }
   // jump to where everyone else is: right after it starts, then a drift check every 20 s
   if(MC.playing&&MC.pos!=null&&t-SCH.lastSync>(SCH.synced?20:1.5)){ SCH.lastSync=t; SCH.synced=true;
     const exp=(schNow()-slot.start)/1000, p=MC.pos+(MC.paused?0:(performance.now()-MC.posAt)/1000);
     if(Math.abs(p-exp)>4) mcCall('seek',Math.max(0,exp)); } });
-function openSchPanel(){ const items=[['booth:techno','사막점 테크노'],['booth:house','사막점 하우스'],['booth:afro','사막점 아프로테크'],['booth:melodic','사막점 멜로딕'],['booth:trance','사막점 트랜스'],['booth:dnb','사막점 드럼앤베이스'],['booth:psy','사막점 사이키델릭'],['booth:dubstep','사막점 덥스텝'],['booth:hardstyle','사막점 하드스타일'],['club3','이태원 4F 쉘터'],['club4','이태원 5F 페이퍼']];
-  const rows=items.map(([k,n])=>{ const s=schSlot(k); return `<p style='margin:4px 0;font-size:13px'>${s?'🔴':'⚪'} <b>${esc(n)}</b> ${s?esc(s.title||'편성된 믹스'):'기본 게임 음악'}</p>`; }).join('');
-  openSp('📻 편성 방송 중',SCH.sched?'운영자가 정한 시간표대로 모두 같은 음악을 들어요':'편성표를 불러오는 중이에요',rows+`<div id='mcNow' class='audnow'></div><div id='mcStory' class='mcstory'></div><div class='acts' style='grid-template-columns:1fr'><button data-act='ok' class='hot'>알겠어요</button></div>`,()=>closeSp()); mcUi(); }
 
 /* ================= DJ SET PLAYLIST CARD (album art up front, every map) ================= */
 const NPC={sig:'',t:0};
@@ -4754,21 +4784,21 @@ const npEq="<span class='eq' aria-hidden='true'><i></i><i></i><i></i><i></i></sp
 function npPic(c,big){ const P=c&&c.pictures; const u=P&&(big?(P['320wx320h']||P.large||P.extra_large||P.medium):(P.medium||P.small)); return u?`url("${String(u).replace(/["'()\\\s]/g,'')}")`:''; }
 function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][0],near:mcNear(T),mine:!!(MC.cur&&MC.target&&MC.target.key===T.key)}; }
 function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff'}[T.Z&&T.Z.id]||'#b06bff'); }
-function npRender(){ if(!inGame||SCH.url) return; const np=$('#np'); if(!np) return;
+function npRender(){ if(!inGame) return; const np=$('#np'); if(!np) return;
   const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null, open=!np.classList.contains('collapsed'), col=npColor(T);
   const sig=[T.key,near,c&&c.key,MC.paused,MC.playing,open].join('|'); if(sig===NPC.sig) return; NPC.sig=sig;
   np.style.setProperty('--gc',col); np.classList.toggle('playing',!!c&&!MC.paused);
   const art=$('#npArt'); art.style.backgroundImage=npPic(c); art.innerHTML=c?'':'🎛️';
   $('#npName').textContent=c?c.name:T.name;
-  $('#npCamp').textContent=c?`${c.user&&c.user.name||''} · ${T.name}`:(near?(MCA.on?`${gn} · 곧 DJ 세트가 자동으로 나와요`:`${gn} · ▶ 누르면 DJ 세트가 나와요`):`${gn} · 가까이 가면 DJ 세트가 나와요`);
+  $('#npCamp').textContent=c?`${c.sched?'📻 편성 · ':''}${c.user&&c.user.name||''} · ${T.name}`:(near?(MCA.on?`${gn} · 곧 DJ 세트가 자동으로 나와요`:`${gn} · ▶ 누르면 DJ 세트가 나와요`):`${gn} · 가까이 가면 DJ 세트가 나와요`);
   const pb=$('#npPlay'); pb.textContent=c&&!MC.paused?'❚❚':'▶'; pb.setAttribute('aria-label',c&&!MC.paused?'일시정지':'재생');
   if(!open) return;
-  $('#npHero').innerHTML=c?`<div class='heroart' style='background-image:${npPic(c,1)}'>${npEq}</div><div class='herometa'><span class='gtag'>${esc(gn)} · ${esc(T.name)}</span><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><div class='heroacts'><a href='https://www.mixcloud.com${esc(c.key)}' target='_blank' rel='noopener noreferrer'>Mixcloud ↗</a></div></div>`
+  $('#npHero').innerHTML=c?`<div class='heroart' style='background-image:${npPic(c,1)}'>${npEq}</div><div class='herometa'><span class='gtag'>${esc(gn)} · ${esc(T.name)}</span><b>${esc(c.name)}</b><small>${esc(c.user&&c.user.name||'')}${c.audio_length?' · '+Math.round(c.audio_length/60)+'분':''}${MC.paused?' · 일시정지':''}</small><div class='heroacts'><a href='${esc(c.sc?c.key:'https://www.mixcloud.com'+c.key)}' target='_blank' rel='noopener noreferrer'>${c.sc?'SoundCloud':'Mixcloud'} ↗</a></div></div>`
     :`<div class='heroart empty'><span>${esc(gn)}</span></div><div class='herometa'><span class='gtag'>${esc(T.name)}</span><b>${near?(MCA.on?'곧 자동으로 DJ 세트가 나와요':'▶ 눌러서 DJ 세트 틀기'):'부스 가까이 가면 자동으로 나와요'}</b><small>${esc(gn)} 인기 DJ 세트 중 하나를 랜덤으로 틀어요. 라디오 쇼는 빼고 음악만 나와요.</small></div>`;
 }
 function npFar(T,gn){ toast(`${T.name} 가까이 가야 ${gn} 세트를 틀 수 있어요`); }
 function npPlayBtn(next){ initAudio(); const {T,g,gn,near,mine}=npNow();
-  if(mine&&MC.iframe){ if(next){ mcNext(); return; } if(!MC.live){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); return; } mcCall('togglePlay'); return; }
+  if(mine&&MC.iframe){ if(next){ if(MC.schId){ toast('📻 편성 방송 중이라 다른 세트로 넘길 수 없어요'); return; } mcNext(); return; } if(!MC.live){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); return; } mcCall('togglePlay'); return; }
   if(!near){ npFar(T,gn); return; } MCA.skip=''; mcPlay(g,T); }
 $('#npPlay').addEventListener('click',()=>npPlayBtn(false)); $('#npNext').addEventListener('click',()=>npPlayBtn(true));
 $('#np').addEventListener('click',e=>{ const b=e.target.closest('[data-np]'); if(!b) return; const a=b.dataset.np;

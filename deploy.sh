@@ -16,6 +16,8 @@ if [ -z "$(git log origin/main..HEAD --oneline 2>/dev/null)" ]; then
   echo "올릴 새 변경이 없어요. 사이트: $SITE"
   exit 0
 fi
+# 관리자 페이지가 schedule.json을 GitHub에 직접 저장하므로, 그 변경을 먼저 받아온 뒤 올려요
+git pull -q --rebase origin main
 git push -q origin main
 echo "GitHub에 올렸어요. 사이트 반영을 기다리는 중..."
 SHA=$(git rev-parse HEAD)
