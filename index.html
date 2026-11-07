@@ -3145,7 +3145,7 @@ updaters.push((t,dt)=>{ if(congaT<=0) return; congaT-=dt; let lx=pState.x, lz=pS
 DANCES.push({id:'cutting',n:'커팅 셰이프'},{id:'hakken',n:'가버 하켄'},{id:'jumpstyle',n:'점프스타일'},{id:'liquid',n:'리퀘드 글러빙'},{id:'vogue',n:'보깅'},{id:'robot',n:'로봇 댄스'},{id:'moonwalk',n:'문워크'},{id:'sprinkler',n:'스프링클러'},{id:'raise',n:'레이즈 더 루프'},{id:'lasso',n:'라쏘 스윙'});
 Object.assign(DDESC,{cutting:'발끝을 비틀며 팔로 모양을 자르는 셔플',hakken:'가버 비트에 맞춘 초고속 발구르기',jumpstyle:'점프하며 다리를 번갈아 킥',liquid:'손끝으로 물처럼 흐르는 글러빙',vogue:'비트마다 각 잡힌 포즈로 프레임',robot:'끊어지는 로봇 관절 동작',moonwalk:'뒤로 미끄러지듯, 가끔 모자 터치',sprinkler:'한 손은 머리 뒤, 팔을 뚝뚝 끊어 회전',raise:'두 손으로 천장을 밀어 올려요',lasso:'머리 위로 올가미를 빙빙'});
 ['robot','hakken'].forEach(d=>GENRE_DANCE.techno.push(d)); ['vogue','cutting','moonwalk'].forEach(d=>GENRE_DANCE.house.push(d)); GENRE_DANCE.afro.push('raise'); GENRE_DANCE.melodic.push('liquid'); ['liquid','lasso'].forEach(d=>GENRE_DANCE.trance.push(d));
-Object.assign(GENRE_DANCE,{dnb:['jumpstyle','shuffle','pump','cutting','hands'],psy:['liquid','stomp','sway','hands','lasso'],dubstep:['robot','headbang','stomp','raise'],hardstyle:['hardstyle','jumpstyle','hakken','pump','raise']});
+Object.assign(GENRE_DANCE,{dnb:['jumpstyle','shuffle','pump','cutting','hands'],psy:['liquid','stomp','sway','hands','lasso'],dubstep:['robot','headbang','stomp','raise'],hardstyle:['headbang','sway','stomp','wave','tut']});
 BOOTHS.find(b=>b.id==='house').tracks.push(
   {name:'애시드 하우스 309',bpm:124,root:36,kick:K4,hat:OFF,clap:CL,bass:'0.c.0.30.c0.7.3.',bt:'acid',prog:[[0,'min'],[0,'min'],[5,'min'],[0,'min']]},
   {name:'UK 개러지 투스텝',bpm:132,root:36,kick:'x.....x...x.....',hat:'..x..x.x..x..x.x',clap:'....x.......x...',bass:'0...0..3..0..7..',bt:'sub',prog:[[0,'min9'],[5,'min7'],[3,'maj7'],[-2,'dom7']],chord:'..x.....x..x....',ct:'stab'});
@@ -3170,11 +3170,12 @@ BOOTHS.push(
    {name:'서브 마운틴',bpm:140,root:28,kick:'x.........x.....',clap:'........x.......',h16:1,bass:'0.......0...0.0.',bt:'rumble',prog:[[0,'min'],[0,'min'],[0,'min'],[3,'min']],chord:'x...............',ct:'pad'},
    {name:'먼지 그로울',bpm:142,root:30,kick:'x.....x...x.....',clap:'........x.......',hat:'x.x.x.x.x.x.x.x.',bass:'0.0.0c..0.3.0...',bt:'acid',prog:[[0,'min'],[1,'min'],[0,'min'],[-2,'min']],lead:'0.......3.......',lt:'bell'},
    {name:'멜로딕 베이스',bpm:150,root:33,kick:'x.........x.....',clap:'........x.......',h16:1,bass:'0...0...7...5...',bt:'rolling',prog:[[0,'min7'],[8,'maj7'],[3,'maj7'],[10,'dom7']],chord:'x...............',ct:'saw',lead:'0.1.2.3.2.1.0...',lt:'arp'}]},
- {id:'hardstyle',name:'하드스타일',camp:'Thunder Dome 캠프',col:'#ff6a1a',ang:330,R:230,tracks:[
-   {name:'썬더 킥',bpm:150,root:33,kick:K4,oh:OFF,clap:CL,bass:'..0...0...0...0.',bt:'rumble',prog:[[0,'min'],[-4,'maj'],[-2,'maj'],[3,'maj']],chord:'x.......x.......',ct:'saw',lead:'0.2.1.0.2.3.2.1.',lt:'arp'},
-   {name:'유포릭 런',bpm:152,root:36,kick:K4,oh:OFF,clap:CL,bass:'..0...0...0...0.',bt:'rumble',prog:[[0,'maj'],[7,'maj'],[9,'min'],[5,'maj']],chord:'..x...x...x...x.',ct:'saw',lead:'0123012301230123',lt:'arp'},
-   {name:'가버 스톰',bpm:178,root:31,kick:K4,h16:1,clap:CL,bass:'0...0...0...0...',bt:'rumble',prog:[[0,'min'],[0,'min'],[1,'min'],[0,'min']]},
-   {name:'점프스타일 펄스',bpm:150,root:33,kick:K4,oh:OFF,bass:'..0...0...0...0.',bt:'acid',prog:[[0,'min'],[0,'min'],[-2,'min'],[3,'min']],chord:'x...x...x...x...',ct:'stab'}]});
+ {id:'hardstyle',name:'딥테크노',camp:'Deep Dome 캠프',col:'#3d7bff',ang:330,R:230,tracks:[
+   {name:'딥 서브 그루브',bpm:124,root:33,kick:K4,hat:OFF,rim:'...x.....x..x...',bass:'0..0..0...0..0..',bt:'sub',prog:[[0,'min'],[0,'min'],[-2,'min'],[0,'min']],chord:'x.......x.......',ct:'pad'},
+   {name:'다크 펄스',bpm:126,root:31,kick:K4,hat:OFF,clap:CL,bass:'.0.0.0.0.0.0.0.0',bt:'rumble',prog:[[0,'min'],[1,'min'],[0,'min'],[-2,'min']]},
+   {name:'미드나잇 드라이브',bpm:125,root:36,kick:K4,oh:OFF,rim:'..x...x...x...x.',bass:'0...0..0..0...0.',bt:'sub',prog:[[0,'min7'],[5,'min7'],[3,'maj7'],[-2,'min7']],chord:'..x.......x.....',ct:'pad'}]});
+// desert keeps four stages: techno, house, afro tech and deep techno
+const BOOTH_CUT=['dubstep','melodic','trance','psy','dnb'];
 function postRave(){ BOOTHS.forEach(b=>{ if(!b.R) return; if(b.light&&b.light.parent){ b.light.parent.remove(b.light); b.light={intensity:0}; }
     scene.children.forEach(o=>{ if(!o.isMesh||!o.geometry) return; if(!(o.geometry.type==='IcosahedronGeometry'||o.geometry===G.half)) return; if(Math.hypot(o.position.x-b.pos.x,o.position.z-b.pos.z)<34) o.visible=false; }); }); }
 
@@ -3614,7 +3615,7 @@ const MC_ZN={shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'�
 // each genre: Korean name, official DJ / label channels, and the Mixcloud tag whose most-played mixes join the pool
 const MC_G={techno:['테크노',['residentadvisor','CarlCox'],'techno'],house:['하우스',['Defectedrecords'],'house'],afro:['아프로 하우스',['keinemusik'],'afro-house'],
   melodic:['멜로딕 테크노',['afterlife','johndigweed'],'melodic-techno'],trance:['트랜스',['ArminvanBuuren'],'trance'],deephouse:['딥하우스',['anjunadeep'],'deep-house'],
-  dnb:['드럼앤베이스',['hospitalrecords','ukfmusic'],'drum-and-bass'],psy:['사이키델릭 트랜스',['faeriepiraterainbowsparkle'],'psytrance'],hardstyle:['하드스타일',['Q-dance'],'hardstyle'],dubstep:['덥스텝',['ukfmusic'],'dubstep'],eclectic:['언더그라운드',['FACTMixArchive'],'electronica']};
+  dnb:['드럼앤베이스',['hospitalrecords','ukfmusic'],'drum-and-bass'],psy:['사이키델릭 트랜스',['faeriepiraterainbowsparkle'],'psytrance'],hardstyle:['딥테크노',['johndigweed','residentadvisor'],'deep-techno'],dubstep:['덥스텝',['ukfmusic'],'dubstep'],eclectic:['언더그라운드',['FACTMixArchive'],'electronica']};
 // music-first sets only: no radio shows or talk formats, no non-stop medleys / remix compilations or off-genre party mixes
 const MC_RADIO=/radio|\bshow\b|podcast|episode|\bep\.?\s*\d|edition|transitions|takeover|hosted by|interview|in conversation|q&a|\btalk|broadcast|global\b[\s\-–:#]*\d|sirius|\bfm\b|tatw|carl cox global|planet perfecto|\bsessions? \d+|presents unfold|trance around the world|^#\d{3,}|multi ?-?genre|state of trance|asot|presents next|group therapy|dance department|\bweek \d|on rotation|in session|discuss|\bchats?\b|conversation|documentary|lecture|masterclass|tutorial|\bpanel\b|in the studio|behind the|meet the|\bspeaks?\b|\btalks?\b|story of|history of|introducing|\bmini ?-?mix|\bin focus\b|profile/i;
 const MC_JUNK=/non ?stop|viet|remix|mash ?-?up|bootleg|\b[5-9]0'?s\b|love ?song|bxh|zalo|private|commercial|snippet|promo|instagram|tik ?tok|\bhits\b|\btop \d|\bbpm \d|hands ?up|party blaster|throwdown|r&b|hip ?hop|dancehall|naija|afrobeats?|gengeton|bongo|\s[x×]\s.*\s[x×]\s|gym|workout|reggae|grime|apres|gambl|www\.|\.com\b|\bedm\b|quarantine|mega ?mix/i;
@@ -5273,7 +5274,7 @@ $('#npToggle').addEventListener('click',()=>{ NPC.sig=''; });
 updaters.push((t)=>{ if(t-NPC.t<.35) return; NPC.t=t; npRender(); });
 
 /* ================= DJ LINEUP BOARD (schedule.json → by map, booth, CD posters) ================= */
-const LU_AREAS=[['playa','🏜 사막점',[['booth:techno','테크노 부스'],['booth:house','하우스 부스'],['booth:afro','아프로테크 부스'],['booth:melodic','멜로딕 테크노 부스'],['booth:trance','트랜스 부스'],['booth:dnb','드럼앤베이스 부스'],['booth:psy','사이키델릭 트랜스 부스'],['booth:dubstep','덥스텝 부스'],['booth:hardstyle','하드스타일 부스'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
+const LU_AREAS=[['playa','🏜 사막점',[['booth:techno','테크노 부스'],['booth:house','하우스 부스'],['booth:afro','아프로테크 부스'],['booth:hardstyle','딥테크노 부스'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
   ['itaewon','🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼']]],
   ['nami','🌲 남이섬',[['zone:nm-jandi','JANDI 스테이지'],['zone:nm-hanok','HANOK 스테이지'],['zone:nm-soop','SOOP 스테이지'],['zone:nm-exp','익스페리멘탈 사운드 존'],['zone:nm-hut','명상 오두막'],['zone:nm-aero','에어로빅 코너']]],
   ['sphere','🔮 라스베가스',[['zone:sphere','스피어']]]];
@@ -5400,6 +5401,7 @@ updaters.push((t,dt)=>{ const P=skyLogoSpot(); SKYL.on+=((P?1:0)-SKYL.on)*Math.m
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
+  for(let i=BOOTHS.length-1;i>=0;i--) if(BOOTH_CUT.includes(BOOTHS[i].id)) BOOTHS.splice(i,1);
   buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
