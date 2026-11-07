@@ -174,7 +174,7 @@ details.setup li{margin:4px 0}
 
     <h3>인기 세트 찾기</h3>
     <div class="card" id="browse">
-      <div class="tabs" role="group" aria-label="찾을 곳"><button type="button" data-src="mc" aria-pressed="true">Mixcloud 인기</button><button type="button" data-src="sc" aria-pressed="false">SoundCloud</button></div>
+      <div class="tabs" role="group" aria-label="찾을 곳"><button type="button" data-src="mc" aria-pressed="true">Mixcloud 인기</button><button type="button" data-src="sc" aria-pressed="false">내 SoundCloud</button></div>
       <div id="bMc">
         <div class="row"><select id="gTag" aria-label="장르" style="width:auto;flex:none"></select><input id="q" type="search" placeholder="DJ 이름이나 키워드로 검색 (예: Boris Brejcha)" aria-label="검색어" style="flex:1;min-width:180px"><button type="button" class="btn" id="qBtn">검색</button></div>
         <label style="flex-direction:row;align-items:center;gap:6px;font-weight:400;margin-top:8px" class="small"><input type="checkbox" id="onlyMusic" checked style="width:auto"> 라디오·토크·메들리는 빼고 음악 세트만 (게임 자동 재생과 같은 기준)</label>
@@ -183,7 +183,13 @@ details.setup li{margin:4px 0}
         <div class="row" style="margin-top:8px"><button type="button" class="btn sm" id="moreBtn">더 불러오기</button></div>
       </div>
       <div id="bSc" hidden>
-        <p class="small">SoundCloud는 공식 승인을 받은 앱 키 없이는 인기 순위 목록을 불러올 수 없어요. 아래 버튼으로 SoundCloud에서 찾은 뒤, 트랙이나 세트 주소를 아래 ‘세트 주소’에 붙여 넣으면 바로 미리듣기와 편성을 할 수 있어요.</p>
+        <p class="small"><b>내 SoundCloud 불러오기</b> · 내 좋아요(Likes), 플레이리스트, 또는 아무 DJ 프로필 주소를 넣으면 그 안의 트랙과 세트가 앨범 이미지와 함께 여기 올라와요.</p>
+        <div class="row"><input id="scSrc" type="url" inputmode="url" placeholder="https://soundcloud.com/내아이디/likes  또는  …/sets/플레이리스트" aria-label="SoundCloud 주소" style="flex:1;min-width:200px"><button type="button" class="btn main" id="scLoad">불러오기</button></div>
+        <div class="sclinks" id="scSaved"></div>
+        <div class="row small" style="margin-top:6px;gap:12px"><label style="flex-direction:row;align-items:center;gap:6px;font-weight:400"><input type="checkbox" id="scLong" style="width:auto"> 20분 이상 세트만</label><label style="flex-direction:row;align-items:center;gap:6px;font-weight:400"><input type="checkbox" id="scPop" style="width:auto"> 재생 많은 순</label></div>
+        <p class="muted small" id="scMeta" style="margin:8px 0 0"></p>
+        <div class="blist" id="sclist"></div>
+        <p class="muted small" style="margin-top:10px">공개된 목록만 불러올 수 있어요. 비공개 플레이리스트는 SoundCloud에서 공개로 바꾸거나, 아래에서 찾아 주소를 ‘세트 주소’에 붙여 넣어 주세요.</p>
         <div class="sclinks" id="sclinks"></div>
       </div>
     </div>
@@ -336,8 +342,8 @@ function preview(key){ const c=B.items.find(x=>x.key===key); B.playing=key; $('#
   $('#pvFrame').innerHTML=`<iframe title="Mixcloud 미리듣기" allow="autoplay" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&autoplay=1&feed=${encodeURIComponent(key)}"></iframe>`; $('#pvbar').hidden=false; renderList(); }
 function useSet(key){ $('#pvbar').hidden=true; $('#pvFrame').innerHTML=''; B.playing=''; $('#url').value='https://www.mixcloud.com'+key; fetchMeta(); renderList(); $('#formTitle').scrollIntoView({behavior:'smooth'}); }
 $('#blist').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.pv) preview(b.dataset.pv); else if(b.dataset.use) useSet(b.dataset.use); });
-$('#pvUse').addEventListener('click',()=>{ if(B.playing) useSet(B.playing); });
-$('#pvClose').addEventListener('click',()=>{ $('#pvbar').hidden=true; $('#pvFrame').innerHTML=''; B.playing=''; renderList(); });
+$('#pvUse').addEventListener('click',()=>{ if(!B.playing) return; if(/^https:/.test(B.playing)) scUse(B.playing); else useSet(B.playing); });
+$('#pvClose').addEventListener('click',()=>{ $('#pvbar').hidden=true; $('#pvFrame').innerHTML=''; B.playing=''; renderList(); if(SCL.items.length) scRender(); });
 $('#gTag').addEventListener('change',()=>{ B.tag=$('#gTag').value; B.q=''; $('#q').value=''; loadList(true); renderScLinks(); });
 $('#qBtn').addEventListener('click',()=>{ B.q=$('#q').value.trim(); loadList(true); });
 $('#q').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); B.q=$('#q').value.trim(); loadList(true); } });
@@ -347,6 +353,52 @@ function renderScLinks(){ const g=(TAGS.find(t=>t[0]===B.tag)||['',B.tag]); cons
   $('#sclinks').innerHTML=[[`${g[1]} DJ 세트 찾기`,`https://soundcloud.com/search/sets?q=${q(en+' dj set')}`],[`${g[1]} 라이브 믹스 찾기`,`https://soundcloud.com/search/sounds?q=${q(en+' live mix')}`],['Boiler Room 찾기',`https://soundcloud.com/search/sets?q=${q('boiler room '+en)}`],['SoundCloud 둘러보기','https://soundcloud.com/discover']]
     .map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener noreferrer">${esc(n)} ↗</a>`).join(''); }
 $('#browse .tabs').addEventListener('click',e=>{ const b=e.target.closest('[data-src]'); if(!b) return; B.src=b.dataset.src; $('#browse .tabs').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); $('#bMc').hidden=B.src!=='mc'; $('#bSc').hidden=B.src!=='sc'; });
+
+// ---- my SoundCloud: likes, playlists or a profile, read through the official embed player (no app key needed)
+const SCL={items:[],busy:false,src:''};
+let scSaved=[]; try{ scSaved=JSON.parse(localStorage.getItem('playa-sc-src')||'[]')||[]; }catch(e){ scSaved=[]; }
+function scSavedRender(){ $('#scSaved').innerHTML=scSaved.map((u,i)=>`<a href="#" data-scs="${i}">${esc(u.replace(/^https:\/\/(www\.|m\.)?soundcloud\.com\//,''))}</a>`).join(''); }
+function scWidgetList(u,onPage){ return scApi().then(()=>new Promise(res=>{ const f=document.createElement('iframe'); f.style.cssText='position:fixed;right:0;bottom:0;width:300px;height:300px;opacity:.01;pointer-events:none;border:0;z-index:-1'; f.allow='autoplay'; f.setAttribute('aria-hidden','true'); f.tabIndex=-1;
+  f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(u)+'&auto_play=false'; document.body.appendChild(f); const w=SC.Widget(f); let done=false, got=null;
+  const fin=L=>{ if(done) return; done=true; f.remove(); res(L); }; setTimeout(()=>fin(got),90000);
+  // the player pulls the list in pages of about 20 every couple of seconds: keep reading until it stops growing (up to 300)
+  w.bind(SC.Widget.Events.READY,()=>{ let last=-1, same=0; const tick=()=>w.getSounds(L=>{ L=L||[]; got=L; const n=L.length; if(n===last&&n>0) same++; else { same=0; if(n>0&&onPage) onPage(L); } last=n; if(same>=5||n>=300||done) fin(L); else setTimeout(tick,1000); }); tick(); }); }));
+}
+async function scResolve(u){ let p; try{ p=new URL(u.trim()); }catch(e){ throw new Error('주소 형식이 아니에요'); }
+  if(!/(^|\.)soundcloud\.com$/.test(p.hostname)) throw new Error('soundcloud.com 주소를 넣어 주세요');
+  p.hostname='soundcloud.com'; p.search=''; p.hash=''; const parts=p.pathname.split('/').filter(Boolean); if(!parts.length) throw new Error('프로필이나 플레이리스트 주소를 넣어 주세요');
+  if(parts[1]==='sets'&&parts[2]) return {url:p.toString(),kind:'플레이리스트'};
+  const r=await fetch('https://soundcloud.com/oembed?format=json&url='+encodeURIComponent('https://soundcloud.com/'+parts[0])); if(!r.ok) throw new Error('프로필을 찾지 못했어요');
+  const m=/users%2F(\d+)/.exec((await r.json()).html||''); if(!m) throw new Error('프로필을 찾지 못했어요');
+  if(parts[1]==='likes') return {url:'https://api.soundcloud.com/users/'+m[1]+'/favorites',kind:'좋아요'};
+  return {url:'https://api.soundcloud.com/users/'+m[1],kind:'업로드'}; }
+async function scLoad(u){ u=(u||$('#scSrc').value).trim(); if(!u||SCL.busy) return; SCL.busy=true; $('#scSrc').value=u; $('#scMeta').textContent='SoundCloud에서 불러오는 중이에요 (10초쯤 걸려요)'; $('#sclist').innerHTML='';
+  try{ const R=await scResolve(u); SCL.src=R.kind; const onPage=P=>{ SCL.items=P.filter(x=>x&&x.title); scRender(); $('#scMeta').textContent+=' · 더 불러오는 중…'; };
+    let L=await scWidgetList(R.url,onPage);
+    // the very first player on the page sometimes stops after its first page of about 20: a second player reads the rest
+    if(L&&L.length>=15&&L.length<=20){ const L2=await scWidgetList(R.url,onPage); if(L2&&L2.length>L.length) L=L2; } if(!L) throw new Error('목록을 읽지 못했어요. 공개된 목록인지 확인해 주세요');
+    // anything the player has not filled in yet is looked up one by one
+    await Promise.all(L.filter(x=>x&&!x.title&&x.id).slice(0,80).map(async x=>{ try{ const r=await fetch('https://soundcloud.com/oembed?format=json&url='+encodeURIComponent('https://api.soundcloud.com/tracks/'+x.id)); if(!r.ok) return; const j=await r.json(); const by=(j.title||'').lastIndexOf(' by ');
+      x.title=by>0?j.title.slice(0,by):j.title; x.user={username:j.author_name}; x.artwork_url=j.thumbnail_url; x._oe=1; }catch(e){} }));
+    SCL.items=L.filter(x=>x&&x.title); SCL.src=R.kind;
+    scSaved=[u].concat(scSaved.filter(x=>x!==u)).slice(0,6); try{ localStorage.setItem('playa-sc-src',JSON.stringify(scSaved)); }catch(e){} scSavedRender(); }
+  catch(e){ SCL.items=[]; $('#scMeta').textContent='불러오지 못했어요: '+e.message; SCL.busy=false; return; }
+  SCL.busy=false; scRender(); }
+function scKey(x){ return x.permalink_url||(x.id?'https://api.soundcloud.com/tracks/'+x.id:''); }
+function scRender(){ let L=SCL.items.slice(); const long=$('#scLong').checked; if(long) L=L.filter(x=>(x.full_duration||x.duration||0)>=1200e3); if($('#scPop').checked) L.sort((a,b)=>(b.playback_count||0)-(a.playback_count||0));
+  $('#scMeta').textContent=`${SCL.src} · ${L.length}개${long?` (전체 ${SCL.items.length}개 중 20분 이상)`:''}`;
+  $('#sclist').innerHTML=L.length?L.map((x,i)=>{ const art=(x.artwork_url||(x.user&&x.user.avatar_url)||'').replace('-large','-t300x300'), k=scKey(x), sec=Math.round((x.full_duration||x.duration||0)/1000), tr=x.policy==='SNIP'||(x.duration&&x.full_duration&&x.duration<x.full_duration);
+    return `<div class="bi ${B.playing===k?'playing':''}"><span class="rank">${i+1}</span>${art?`<img src="${esc(art)}" alt="" loading="lazy">`:'<img alt="">'}<div class="tx"><b>${esc(x.title)}</b><span>${esc(x.user&&x.user.username||'')}${sec?` · ${sec>=3600?Math.floor(sec/3600)+'시간 '+Math.round(sec%3600/60)+'분':Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')}`:''}${x.playback_count?` · ▶ ${num(x.playback_count)}`:''}${tr?' · 🔒 30초 미리듣기만 (게임에서 전체 재생 안 됨)':''}</span></div><div class="acts"><button type="button" class="btn sm" data-scpv="${esc(k)}">▶ 미리듣기</button><button type="button" class="btn sm main" data-scuse="${esc(k)}">편성하기</button></div></div>`; }).join('')
+    :'<p class="muted small">조건에 맞는 트랙이 없어요.</p>'; }
+function scPreview(k){ const x=SCL.items.find(x=>scKey(x)===k); B.playing=k; $('#pvTitle').textContent=x?`${x.title} — ${x.user&&x.user.username||''}`:k;
+  $('#pvFrame').innerHTML=`<iframe title="SoundCloud 미리듣기" allow="autoplay" style="height:120px" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(k)}&auto_play=true&visual=false&show_comments=false&hide_related=true"></iframe>`; $('#pvbar').hidden=false; scRender(); }
+function scUse(k){ $('#pvbar').hidden=true; $('#pvFrame').innerHTML=''; B.playing=''; $('#url').value=k; fetchMeta(); scRender(); $('#formTitle').scrollIntoView({behavior:'smooth'}); }
+$('#sclist').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.scpv) scPreview(b.dataset.scpv); else if(b.dataset.scuse) scUse(b.dataset.scuse); });
+$('#scSaved').addEventListener('click',e=>{ const a=e.target.closest('[data-scs]'); if(!a) return; e.preventDefault(); scLoad(scSaved[+a.dataset.scs]); });
+$('#scLoad').addEventListener('click',()=>scLoad());
+$('#scSrc').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); scLoad(); } });
+['#scLong','#scPop'].forEach(q=>$(q).addEventListener('change',scRender));
+scSavedRender();
 $('#showPast').addEventListener('change',render);
 $('#slots').addEventListener('click',e=>{ const t=e.target; const S=slotsOf(cur);
   if(t.dataset.del!==undefined){ const s=S[+t.dataset.del]; if(confirm(`${fmt(s.start)} ‘${s.title||s.url}’ 편성을 지울까요?`)){ S.splice(+t.dataset.del,1); dirty=true; resetForm(); render(); status('지웠어요. 게시해야 게임에 반영돼요'); } }
