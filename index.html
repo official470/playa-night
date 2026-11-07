@@ -4208,7 +4208,10 @@ function kpvEnsure(){ if(KPV.R) return; const box=document.createElement('div');
   $('#kpvWear').addEventListener('click',()=>{ const it=KPV.item; kpvClose(); if(it) it.apply(); });
   document.addEventListener('pointerdown',e=>{ const b=$('#kpv'); if(!b||b.hidden||e.target.closest('#kpv')) return; kpvClose(); },true);
   addEventListener('keydown',e=>{ if(e.code==='Escape') kpvClose(); }); }
-function kpvOpen(it){ kpvEnsure(); KPV.item=it; $('#kpvBrand').textContent=it.brand; $('#kpvName').textContent=it.name; $('#kpvNote').textContent=it.note; $('#kpvWear').textContent=it.keep?'입고 있어요':it.worn?'벗기':'입기';
+function kpvOpen(it){ if(document.body.classList.contains('dressing')&&typeof SV!=='undefined'&&SV.R){
+    if(!it.keep) it.apply(); SV.focus={...(FOCUS[it.cat]||FOCUS.def),until:performance.now()/1000+2.6}; SV.rot=it.cat==='신발'?.7:.35;
+    const sm=document.querySelector('#styleView small'); if(sm){ sm.textContent=`${it.brand===it.cat?'':it.brand+' · '}${it.name}`; clearTimeout(SV.capT); SV.capT=setTimeout(()=>{ sm.textContent='드래그해서 돌려 보세요'; },3000); } return; }
+  kpvEnsure(); KPV.item=it; $('#kpvBrand').textContent=it.brand; $('#kpvName').textContent=it.name; $('#kpvNote').textContent=it.note; $('#kpvWear').textContent=it.keep?'입고 있어요':it.worn?'벗기':'입기';
   KPV.full=false; $('#kpvView').textContent='전신 보기'; if(KPV.P) KPV.scene.remove(KPV.P.root); KPV.P=buildCharacter(it.cfg); KPV.P.dance='sway'; KPV.scene.add(KPV.P.root);
   KPV.rot=it.cat==='신발'?.7:.35; KPV.tgt=FOCUS[it.cat]||FOCUS.def; KPV.cy=null; KPV.cd=null; $('#kpv').hidden=false; if(!KPV.raf) kpvLoop(); }
 function kpvLoop(){ const b=$('#kpv'); if(!b||b.hidden){ KPV.raf=0; return; } KPV.raf=requestAnimationFrame(kpvLoop); const t=performance.now()/1000, f=KPV.full?FOCUS.def:KPV.tgt;
@@ -4272,7 +4275,8 @@ function svLoop(){ if(!document.body.classList.contains('dressing')||$('#creator
   const k=JSON.stringify(cfg); if(k!==SV.key){ SV.key=k; if(SV.P) SV.scene.remove(SV.P.root); SV.P=buildCharacter(cfg); SV.P.dance='sway'; SV.scene.add(SV.P.root); }
   const cv=SV.R.domElement, w=cv.clientWidth, h=cv.clientHeight; if(w>10&&h>10){ const pr=SV.R.getPixelRatio(); if(cv.width!==Math.round(w*pr)||cv.height!==Math.round(h*pr)){ SV.R.setSize(w,h,false); SV.cam.aspect=w/h; SV.cam.updateProjectionMatrix(); } }
   const t=performance.now()/1000; if(!SV.drag) SV.rot+=.004; if(SV.P){ SV.P.root.rotation.y=SV.rot; poseChar(SV.P,'dance',t,t*1.3); }
-  const asp=SV.cam.aspect||1, d=asp<.8?3.6:3.2; SV.cam.position.set(0,1.05,d); SV.cam.lookAt(0,.92,0); SV.R.render(SV.scene,SV.cam); }
+  const asp=SV.cam.aspect||1, F=SV.focus&&t<SV.focus.until?SV.focus:null, ty=F?F.y:.92, td=F?Math.max(1.3,F.d*(asp<.8?1.15:1)):(asp<.8?3.6:3.2);
+  SV.cy=SV.cy==null?ty:SV.cy+(ty-SV.cy)*.08; SV.cd=SV.cd==null?td:SV.cd+(td-SV.cd)*.08; SV.cam.position.set(0,SV.cy+.13,SV.cd); SV.cam.lookAt(0,SV.cy,0); SV.R.render(SV.scene,SV.cam); }
 $('#dressBtn').addEventListener('click',()=>{ svEnsure(); SV.key=''; if(!SV.raf) svLoop(); });
 
 /* ================= LAS VEGAS SPHERE ================= */
