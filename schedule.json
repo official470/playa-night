@@ -918,15 +918,14 @@
     "auto": true
    },
    {
-    "start": 1794054900000,
-    "dur": 129,
-    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
-    "title": "RA.1017 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
+    "start": 1794056160000,
+    "dur": 8,
+    "url": "https://soundcloud.com/andmeandyou/me-life",
+    "title": "&ME - L.I.F.E",
+    "dj": "&ME",
+    "art": "https://i1.sndcdn.com/artworks-s9XYvcFHNm5z8a7m-uZFtOA-t500x500.jpg",
     "djIntro": "",
-    "musicIntro": "",
-    "auto": true
+    "musicIntro": ""
    },
    {
     "start": 1794062640000,
@@ -7379,5 +7378,5 @@
    }
   ]
  },
- "updated": "2026-11-07T10:43:51.163Z"
+ "updated": "2026-11-07T12:56:31.303Z"
 }
