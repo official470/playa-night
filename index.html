@@ -428,11 +428,19 @@ body.dressing .mapsel{display:none}
 #danceRand{left:calc(50% + 6px)}
 #danceRand span{font-size:9px;letter-spacing:-.04em;white-space:nowrap}
 body.inveh #danceMain,body.inveh #danceRand{display:none}
+/* style room + bag sit in the same row as dance / roulette */
+.qbtn{width:50px;height:50px;bottom:calc(24px + var(--sab));display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;line-height:1;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.qbtn span{font-size:9px;margin-top:2px;letter-spacing:-.04em;white-space:nowrap}
+#styleMain{left:calc(50% - 118px);background:linear-gradient(135deg,#ffcf3a,#ff4fa8);color:#141414}
+#bagMain{left:calc(50% + 68px);background:linear-gradient(135deg,#9b6bff,#46d6ff)}
+body.inveh .qbtn,body.seated .qbtn,body.dressing .qbtn{display:none!important}
 @media (max-width:760px),(pointer:coarse){
   #jumpBtn{right:16px;bottom:calc(84px + var(--sab));width:56px;height:56px}
   #downBtn{right:16px;bottom:calc(150px + var(--sab));width:56px;height:56px}
   #danceMain{left:auto;right:19px;bottom:calc(150px + var(--sab))}
   #danceRand{left:auto;right:19px;bottom:calc(210px + var(--sab))}
+  #styleMain{left:auto;right:19px;bottom:calc(270px + var(--sab))}
+  #bagMain{left:auto;right:19px;bottom:calc(330px + var(--sab))}
   #actBtn{max-width:calc(100vw - 180px);overflow:hidden;text-overflow:ellipsis}
 }
 /* menu popup: small text only */
@@ -677,7 +685,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <div>
       <img class="brandlogo neon" src="assets/logo.png" alt="REAL HOUSE CLUB">
       <h1>플라야 아이디</h1>
-      <p>이름과 맵만 고르고 바로 입장해요.</p>
+      <p>이름과 맵만 고르고 바로 입장해요. 옷은 입장한 뒤 👗 스타일룸 버튼에서 골라요.</p>
     </div>
     <select id="langSel" aria-label="Language"><option value="ko">🇰🇷 한국어</option><option value="ja">🇯🇵 日本語</option><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option><option value="es">🇪🇸 Español</option></select>
     <button id="sheetToggle" aria-expanded="true">접기</button>
@@ -731,6 +739,8 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
   <div id="joy" class="idle" hidden><div id="knob"></div></div>
   <button id="danceMain" class="rbtn" aria-expanded="false" aria-label="춤 고르기">💃<span>춤</span></button>
   <button id="danceRand" class="rbtn" aria-pressed="false" aria-label="막춤 룰렛, 춤이 랜덤으로 바뀌어요">🎲<span>막춤룰렛</span></button>
+  <button id="styleMain" class="rbtn qbtn" aria-label="스타일룸, 옷 갈아입기">👗<span>스타일룸</span></button>
+  <button id="bagMain" class="rbtn qbtn" aria-label="가방 열기">🎒<span id="bagMainT">가방</span></button>
   <button id="jumpBtn" class="rbtn" hidden>점프</button>
   <button id="downBtn" class="rbtn" hidden>하강</button>
   <section id="bagPanel" class="card" hidden aria-label="가방">
@@ -2322,7 +2332,7 @@ function bagUse(n){ const it=ITEMS[n]; if(!bag[n]||!it) return;
   if(pState.veh){ toast('탈것에서 내린 뒤에 쓸 수 있어요'); return; }
   bag[n]--; if(bag[n]<=0) delete bag[n]; saveBag(); useItem(it); renderBag();
   if(it.k!=='ashtray') $('#bagPanel').hidden=true; }
-function renderBag(){ const n=bagCount(); setBtn($('#bagBtn'),n?`가방 ${n}`:'가방',n?`가방 ${n}`:'가방');
+function renderBag(){ const n=bagCount(); setBtn($('#bagBtn'),n?`가방 ${n}`:'가방',n?`가방 ${n}`:'가방'); const bm=document.getElementById('bagMainT'); if(bm) bm.textContent=n?`가방 ${n}`:'가방';
   if($('#bagPanel').hidden) return;
   $('#bagCap').textContent=`${n}/${BAG_MAX}칸`;
   const names=Object.keys(bag).filter(k=>bag[k]>0&&ITEMS[k]);
@@ -4124,7 +4134,7 @@ document.addEventListener('pointerdown',e=>{ const T=e.target; if(!T||!T.closest
   if(!$('#sp').hidden&&!inS('#sp')) closeSp();
   if(!$('#shop').hidden&&!inS('#shop')&&!inS('#sp')) $('#shop').hidden=true;
   if(!$('#wish').hidden&&!inS('#wish')) $('#wish').hidden=true;
-  if(!$('#bagPanel').hidden&&!inS('#bagPanel')&&!inS('#bagBtn')&&!inS('#shop')) $('#bagPanel').hidden=true;
+  if(!$('#bagPanel').hidden&&!inS('#bagPanel')&&!inS('#bagBtn')&&!inS('#bagMain')&&!inS('#shop')) $('#bagPanel').hidden=true;
   if(!$('#dancePanel').hidden&&!inS('#dancePanel')&&!inS('#danceMain')&&!inS('#danceBtn')){ $('#dancePanel').hidden=true; $('#danceMain').setAttribute('aria-expanded','false'); }
   if($('.tools').classList.contains('open')&&!inS('.tools')) closeMenu();
   if(!$('#np').classList.contains('collapsed')&&!inS('#np')&&!inS('#musicBtn')){ $('#np').classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); const ch=$('#npChev'); if(ch) ch.textContent='곡 고르기'; } },true);
@@ -4134,6 +4144,8 @@ const RND={on:false,t:0,last:null};
 function rndPick(){ const ids=DANCES.map(d=>d.id).filter(id=>id!==myDance&&id!==RND.last); const id=pick(ids.length?ids:DANCES.map(d=>d.id)); RND.last=myDance; setDance(id,false); toast(`🎲 막춤 룰렛: ${DANCES.find(d=>d.id===id).n}!`); RND.t=6+Math.random()*3; }
 function setRnd(on){ RND.on=on; $('#danceRand').setAttribute('aria-pressed',String(on)); if(on){ if(pState.veh||sleepS){ RND.on=false; $('#danceRand').setAttribute('aria-pressed','false'); toast('지금은 룰렛을 돌릴 수 없어요'); return; } rndPick(); } else toast('막춤 룰렛 멈춤! 지금 춤으로 계속 춰요'); }
 $('#danceRand').addEventListener('click',()=>setRnd(!RND.on));
+$('#styleMain').addEventListener('click',e=>{ e.stopPropagation(); $('#dressBtn').click(); });
+$('#bagMain').addEventListener('click',e=>{ e.stopPropagation(); $('#bagBtn').click(); });
 updaters.push((t,dt)=>{ if(!RND.on) return; if(!danceOn||!inGame||sleepS||pState.veh){ RND.on=false; $('#danceRand').setAttribute('aria-pressed','false'); return; } RND.t-=dt; if(RND.t<=0) rndPick(); });
 
 /* ================= STYLE EDITOR + MENU EXTRAS ================= */
