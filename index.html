@@ -285,6 +285,18 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 .creator .hint{display:block!important;font-size:12px}
 #optNav{display:flex;gap:6px;overflow-x:auto;padding:8px 22px;border-bottom:1px solid var(--panel-line);scrollbar-width:none;flex:none}
 #optNav::-webkit-scrollbar{display:none}
+#optNav{display:grid!important;grid-template-columns:repeat(5,1fr);gap:6px;overflow:visible}
+#optNav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px!important;border-radius:14px!important;font-size:12px!important;min-height:52px!important;line-height:1.15;white-space:nowrap}
+#optNav button b{font-size:18px;line-height:1}
+#optNav button.on{background:var(--chip-on)!important;color:var(--chip-on-text)!important;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+#opts .sec[hidden]{display:none!important}
+body.dressing #sp{display:none!important}
+/* shake beat: the screen edges thump on every beat (phones without a vibration API, i.e. iPhone, still feel the rhythm) */
+#shkPulse{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;box-shadow:inset 0 0 70px 18px #ff4fa8}
+#shkPulse.st{box-shadow:inset 0 0 90px 26px #46d6ff}
+#shkPulse.go{animation:shkP .38s ease-out}
+@keyframes shkP{0%{opacity:.95;transform:scale(1.015)}100%{opacity:0;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){#shkPulse.go{animation-duration:.2s}}
 #optNav button{flex:none;border:0;background:var(--chip);color:var(--text);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;min-height:34px}
 body.dressing .mapsel{display:none}
 /* menu icons */
@@ -4154,8 +4166,14 @@ updaters.push((t,dt)=>{ if(!RND.on) return; if(!danceOn||!inGame||sleepS||pState
 
 /* ================= STYLE EDITOR + MENU EXTRAS ================= */
 const NAVN={'스타일 프리셋':'프리셋','브랜드샵':'브랜드샵','내 옷장':'옷장','시그니처 춤':'춤','피부 톤':'피부','머리 장식':'모자','특별 아이템':'특별'};
-function renderOptNav(){ const secs=[...document.querySelectorAll('#opts .sec')]; $('#optNav').innerHTML=secs.map((s,i)=>{ const h=s.querySelector('h2'); const t=h?h.textContent:''; return `<button data-nav='${i}'>${esc(NAVN[t]||t)}</button>`; }).join(''); }
-$('#optNav').addEventListener('click',e=>{ const b=e.target.closest('[data-nav]'); if(!b) return; const s=document.querySelectorAll('#opts .sec')[+b.dataset.nav]; if(s) $('#opts').scrollTo({top:s.offsetTop-$('#opts').offsetTop,behavior:'smooth'}); });
+// style room: a few big tabs instead of one long scroll of 12 sections
+const OPT_GROUPS=[['✨','추천 룩',['스타일 프리셋','브랜드샵']],['👕','옷',['상의','아우터','하의','신발']],['💇','헤어·얼굴',['헤어','피부 톤','얼굴','머리 장식']],['⭐','특별',['특별 아이템','시그니처 춤']],['🧺','내 옷장',['내 옷장']]];
+let optG=0;
+function optGroupOf(t){ const g=OPT_GROUPS.findIndex(G=>G[2].includes(t)); return g<0?3:g; }
+function renderOptNav(){ const secs=[...document.querySelectorAll('#opts .sec')];
+  $('#optNav').innerHTML=OPT_GROUPS.map((G,i)=>`<button data-grp='${i}' role='tab' aria-selected='${i===optG}' class='${i===optG?'on':''}'><b>${G[0]}</b>${G[1]}</button>`).join('');
+  secs.forEach(sec=>{ const h=sec.querySelector('h2'), t=h?h.textContent:''; sec.hidden=optGroupOf(t)!==optG; }); }
+$('#optNav').addEventListener('click',e=>{ const b=e.target.closest('[data-grp]'); if(!b) return; optG=+b.dataset.grp; renderOptNav(); $('#opts').scrollTop=0; });
 new MutationObserver(renderOptNav).observe($('#opts'),{childList:true});
 $('#dressBtn').addEventListener('click',()=>{ document.body.classList.add('dressing'); selMap=MAP; $('#creator h1').textContent='스타일 꾸미기'; const p=$('#creator header p'); if(p) p.textContent='고르면 바로 캐릭터에 입혀져요. 화면을 드래그하면 캐릭터를 돌려 볼 수 있어요.'; $('#enterBtn').textContent='적용하고 돌아가기'; const c=$('#creator'); if(c.classList.contains('min')) $('#sheetToggle').click(); $('#opts').scrollTop=0; });
 $('#enterBtn').addEventListener('click',()=>{ document.body.classList.remove('dressing'); });
@@ -4486,12 +4504,14 @@ async function shkArm(){ try{ if(typeof DeviceMotionEvent!=='undefined'&&typeof 
     if(!SHK.armed){ addEventListener('devicemotion',shkOn); SHK.armed=true; } toast('📳 이제 폰을 음악 박자에 맞춰 흔들어 보세요! 꾸준히 흔들면 코인 3배'); }catch(e){ toast('이 기기에서는 움직임 센서를 쓸 수 없어요'); } }
 updaters.push(()=>{ const t=shkNow(); SHK.active=SHK.armed&&t-SHK.last<Math.max(1.1,SHK.ivl*2.2); if(!SHK.active) SHK.steady=false;
   let b=document.getElementById('shakeBtn'); const want=isTouch&&inGame&&STG.on&&!SHK.armed;
-  if(want&&!b){ b=document.createElement('button'); b.id='shakeBtn'; b.type='button'; b.textContent='📳 폰 흔들어 춤추기 · 코인 3배'; b.addEventListener('click',e=>{ e.stopPropagation(); shkArm(); }); document.body.appendChild(b); }
+  if(want&&!b){ b=document.createElement('button'); b.id='shakeBtn'; b.type='button'; b.textContent='📳 폰 흔들어 춤추기 · 코인 3배'; b.addEventListener('click',e=>{ e.stopPropagation(); shkBuzz(); shkArm(); }); document.body.appendChild(b); }
   if(b) b.hidden=!want; });
 
 // vibration on every shake beat (stronger double pulse once the rhythm is steady); iPhone has no vibrate API, so tap a hidden iOS 18 switch for a haptic tick
 let HAPL=null;
-function shkBuzz(){ try{ if(navigator.vibrate){ navigator.vibrate(SHK.steady?[45,35,60]:35); return; }
+function shkPulse(){ let el=document.getElementById('shkPulse'); if(!el){ el=document.createElement('div'); el.id='shkPulse'; el.setAttribute('aria-hidden','true'); document.body.appendChild(el); }
+  el.classList.remove('go'); void el.offsetWidth; el.classList.toggle('st',!!SHK.steady); el.classList.add('go'); }
+function shkBuzz(){ shkPulse(); try{ if(navigator.vibrate){ navigator.vibrate(SHK.steady?[45,35,60]:35); return; }
   if(!HAPL){ const l=document.createElement('label'), i=document.createElement('input'); i.type='checkbox'; i.setAttribute('switch',''); l.appendChild(i); l.setAttribute('aria-hidden','true'); l.style.cssText='position:fixed;left:-200px;top:0;opacity:0;pointer-events:none'; document.body.appendChild(l); HAPL=l; }
   HAPL.click(); if(SHK.steady) setTimeout(()=>{ try{ HAPL.click(); }catch(e){} },70); }catch(e){} }
 
