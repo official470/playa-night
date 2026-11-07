@@ -1557,8 +1557,12 @@ const joy=$('#joy'), knob=$('#knob'); let jv={x:0,y:0};
 const ptrs=new Map(); let joyId=null, joyO={x:0,y:0}, pinchD=0;
 function joyHome(){ joy.style.left='84px'; joy.style.top=(innerHeight-(LOW&&innerHeight<520?110:170))+'px'; joy.classList.add('idle'); knob.style.transform=''; }
 canvas.addEventListener('contextmenu',e=>e.preventDefault());
+let tapT=0, tapX=0, tapY=0;
 canvas.addEventListener('pointerdown',e=>{
-  canvas.setPointerCapture(e.pointerId);
+  // double-tap anywhere (joystick side or the screen) = jump; the jump button only shows in vehicles (brake / climb)
+  if(inGame && e.pointerType!=='mouse' && !pState.veh){ const now=performance.now();
+    if(now-tapT<320 && Math.hypot(e.clientX-tapX,e.clientY-tapY)<90){ jump(); tapT=0; } else { tapT=now; tapX=e.clientX; tapY=e.clientY; } }
+  try{ canvas.setPointerCapture(e.pointerId); }catch(err){}
   if(inGame && e.pointerType!=='mouse' && joyId===null && e.clientX<innerWidth*.45 && ptrs.size===0){
     joyId=e.pointerId; joyO={x:e.clientX,y:e.clientY}; joy.style.left=e.clientX+'px'; joy.style.top=e.clientY+'px'; joy.classList.remove('idle'); return;
   }
@@ -1810,7 +1814,7 @@ $('#sheetToggle').addEventListener('click',()=>{ const c=$('#creator'); const mi
   $('#sheetToggle').textContent=min?'펼치기':'접기'; $('#sheetToggle').setAttribute('aria-expanded',String(!min)); setTimeout(resize,280); });
 $('#enterBtn').addEventListener('click',()=>{
   initAudio(); inGame=true; setTimeout(()=>chime(69,'sine',.12,1.2),120); $('#creator').hidden=true; $('#hud').hidden=false;
-  if(isTouch){ $('#joy').hidden=false; $('#jumpBtn').hidden=false; $('#keys').hidden=true; joyHome(); }
+  if(isTouch){ $('#joy').hidden=false; $('#jumpBtn').hidden=!pState.veh; $('#keys').hidden=true; joyHome(); }
   yaw=pState.face+Math.PI; resize(); updateSkyBtn();
   toast(isTouch?`${$('#pname').value||'버너'}님, 환영해요. 왼쪽을 끌면 이동, 오른쪽을 끌면 시점, 두 손가락으로 줌해요`:`${$('#pname').value||'버너'}님, 플라야에 오신 걸 환영해요`);
 });
@@ -2015,7 +2019,7 @@ function makeVeh(kind,o,x,z){ o.g.rotation.order='YXZ'; o.g.position.set(x,0,z);
 function engineOn(kind){ engineOff(); if(!ac||!master) return; const o=ac.createOscillator(), f=ac.createBiquadFilter(), g=ac.createGain(); o.type='sawtooth'; o.frequency.value=40; f.type='lowpass'; f.frequency.value=kind==='plane'?900:500; g.gain.value=0; o.connect(f); f.connect(g); g.connect(master); o.start(); g.gain.setTargetAtTime(kind==='plane'?.045:.035,ac.currentTime,.2); engine={o,g}; }
 function engineOff(){ if(!engine||!ac){ engine=null; return; } const e=engine; e.g.gain.setTargetAtTime(0,ac.currentTime,.08); try{ e.o.stop(ac.currentTime+.4); }catch(err){} engine=null; }
 function enterVehicle(V){ clearUse(); pState.veh=V; V.v=0; danceOn=false; engineOn(V.kind);
-  if(isTouch){ $('#jumpBtn').textContent=V.kind==='plane'?'상승':'브레이크'; $('#downBtn').hidden=V.kind!=='plane'; }
+  if(isTouch){ $('#jumpBtn').hidden=false; $('#jumpBtn').textContent=V.kind==='plane'?'상승':'브레이크'; $('#downBtn').hidden=V.kind!=='plane'; }
   const head={car:'버기카에 탔어요. ',moto:'오토바이에 탔어요. ',plane:'경비행기에 탔어요. '}[V.kind];
   toast(head+(isTouch?(V.kind==='plane'?'조이스틱을 위로 밀어 속도를 올리고 상승 버튼을 누르면 이륙해요':'조이스틱 위아래로 가속과 후진, 좌우로 방향을 바꿔요'):(V.kind==='plane'?'W로 속도를 올리고 Space로 이륙, C로 하강, 착륙 후 E로 내려요':'W/S로 가속과 후진, A/D로 방향, Space로 브레이크, E로 내려요'))); }
 function exitVehicle(){ const V=pState.veh; if(!V) return;
@@ -2023,7 +2027,7 @@ function exitVehicle(){ const V=pState.veh; if(!V) return;
   V.v=0; V.roll=0; V.pitch=0; V.alt=0; V.g.position.y=0; V.g.rotation.set(0,V.h,0); V.g.updateMatrixWorld(true);
   const side=V.g.localToWorld(_w.set(V.kind==='plane'?5.5:2.4,0,0)); pState.x=side.x; pState.z=side.z; pState.y=0; pState.vy=0; pState.face=V.h; pState.veh=null;
   player.root.quaternion.identity(); player.root.rotation.set(0,pState.face,0);
-  engineOff(); holdUp=holdDown=false; if(isTouch){ $('#jumpBtn').textContent='점프'; $('#downBtn').hidden=true; } }
+  engineOff(); holdUp=holdDown=false; if(isTouch){ $('#jumpBtn').textContent='점프'; $('#jumpBtn').hidden=true; $('#downBtn').hidden=true; } }
 function updateVehicle(dt,t){
   const V=pState.veh, S=VSPEC[V.kind];
   const ix=clamp((keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+jv.x,-1,1), iy=clamp((keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)+jv.y,-1,1);
@@ -4160,7 +4164,7 @@ $('#musicBtn').addEventListener('click',()=>{ const np=$('#np'); np.classList.re
 $('#rndMenuBtn').addEventListener('click',()=>setRnd(!RND.on));
 updaters.push(()=>{ const v=!!pState.veh; if(document.body.classList.contains('inveh')!==v) document.body.classList.toggle('inveh',v); });
 $('#helpBtn').addEventListener('click',()=>{ const T=isTouch;
-  openSp('조작법',T?'터치 조작':'키보드와 마우스',T?`<p><b>이동</b> 화면 왼쪽을 누른 채 끌어요</p><p><b>시점</b> 화면 오른쪽을 끌고, 두 손가락으로 줌해요</p><p><b>춤</b> 💃 버튼으로 고르고, 🎲 막춤 룰렛을 켜면 춤이 랜덤으로 바뀌어요</p><p><b>상호작용</b> 화면 아래 가운데 버튼을 눌러요</p><p><b>창 닫기</b> 창 바깥 빈 곳을 누르면 닫혀요</p>`:`<p><b>이동</b> WASD 또는 방향키, Shift 달리기, Space 점프</p><p><b>시점</b> 드래그로 돌리고 휠로 줌, Q는 하늘 보기</p><p><b>춤</b> 숫자 키로 바꾸고 F로 제자리 춤</p><p><b>상호작용</b> E, 가방은 B, 창 닫기는 Esc 또는 빈 곳 클릭</p><p><b>탈것</b> W/S 가속, A/D 방향, Space 브레이크(비행기는 상승), C 하강</p>`,()=>closeSp()); });
+  openSp('조작법',T?'터치 조작':'키보드와 마우스',T?`<p><b>이동</b> 화면 왼쪽을 누른 채 끌어요</p><p><b>점프</b> 화면이나 조이스틱을 두 번 톡톡 눌러요</p><p><b>시점</b> 화면 오른쪽을 끌고, 두 손가락으로 줌해요</p><p><b>춤</b> 💃 버튼으로 고르고, 🎲 막춤 룰렛을 켜면 춤이 랜덤으로 바뀌어요</p><p><b>상호작용</b> 화면 아래 가운데 버튼을 눌러요</p><p><b>창 닫기</b> 창 바깥 빈 곳을 누르면 닫혀요</p>`:`<p><b>이동</b> WASD 또는 방향키, Shift 달리기, Space 점프</p><p><b>시점</b> 드래그로 돌리고 휠로 줌, Q는 하늘 보기</p><p><b>춤</b> 숫자 키로 바꾸고 F로 제자리 춤</p><p><b>상호작용</b> E, 가방은 B, 창 닫기는 Esc 또는 빈 곳 클릭</p><p><b>탈것</b> W/S 가속, A/D 방향, Space 브레이크(비행기는 상승), C 하강</p>`,()=>closeSp()); });
 
 /* ================= STYLE ITEM 3D PREVIEW POPUP ================= */
 const TYPE_CAT={top:'상의',outer:'아우터',bottom:'하의',shoes:'신발',head:'모자',face:'얼굴',extra:'특별 아이템'};
