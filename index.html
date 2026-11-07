@@ -243,6 +243,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 #bagList li{display:flex;align-items:center;gap:8px;background:var(--chip);border-radius:10px;padding:7px 10px;font-size:13px;line-height:1.4}
 #bagList li span{flex:1} #bagList small{color:var(--muted);font-size:11px}
 #bagList button,#wardrobe button{border:0;border-radius:8px;padding:8px 12px;background:var(--ember);color:#fff;font-weight:700;font-size:12px;min-height:34px}
+#bagList .bthumb{width:52px;height:52px;flex:none;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.18),rgba(255,255,255,.04));display:flex;align-items:center;justify-content:center;font-size:24px;font-style:normal}
 #bagList li.empty{background:none;color:var(--muted);font-size:12px;padding:4px 0}
 #shopList em{display:block;font-style:normal;font-size:12px;font-weight:700;color:var(--ember);margin-top:2px}
 #shopList .btns{display:flex;flex-direction:column;gap:4px}
@@ -2348,11 +2349,23 @@ function bagUse(n){ const it=ITEMS[n]; if(!bag[n]||!it) return;
   if(pState.veh){ toast('탈것에서 내린 뒤에 쓸 수 있어요'); return; }
   bag[n]--; if(bag[n]<=0) delete bag[n]; saveBag(); useItem(it); renderBag();
   if(it.k!=='ashtray') $('#bagPanel').hidden=true; }
+// bag thumbnails: each item's 3D model rendered once into a small picture and cached
+const BTH={R:null,scene:null,cam:null,cache:{}};
+function bagThumb(name){ if(BTH.cache[name]!==undefined) return BTH.cache[name]; let url='';
+  try{ const it=ITEMS[name]; if(!BTH.R){ BTH.R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); BTH.R.setPixelRatio(1); BTH.R.setSize(128,128,false);
+      BTH.scene=new THREE.Scene(); BTH.scene.add(new THREE.HemisphereLight(0xfff4e8,0x5a4a6a,1.1)); const dl=new THREE.DirectionalLight(0xffffff,.9); dl.position.set(2,4,3); BTH.scene.add(dl); const rl=new THREE.DirectionalLight(0xff9ad2,.4); rl.position.set(-3,2,-2); BTH.scene.add(rl);
+      BTH.cam=new THREE.PerspectiveCamera(32,1,.01,100); }
+    const m=itemModel(it), hold=new THREE.Group(); hold.add(m); BTH.scene.add(hold); m.updateMatrixWorld(true);
+    const box=new THREE.Box3().setFromObject(m), sz=box.getSize(new THREE.Vector3()), c=box.getCenter(new THREE.Vector3()); m.position.sub(c); hold.rotation.set(.25,-.55,0);
+    const r=Math.max(sz.x,sz.y,sz.z)||1; BTH.cam.position.set(0,0,r*2.1); BTH.cam.lookAt(0,0,0); BTH.R.setClearColor(0x000000,0); BTH.R.render(BTH.scene,BTH.cam);
+    url=BTH.R.domElement.toDataURL('image/png'); BTH.scene.remove(hold);
+    hold.traverse(o=>{ if(o.geometry) o.geometry.dispose(); }); }catch(e){ url=''; }
+  return BTH.cache[name]=url; }
 function renderBag(){ const n=bagCount(); setBtn($('#bagBtn'),n?`가방 ${n}`:'가방',n?`가방 ${n}`:'가방'); const bm=document.getElementById('bagMainT'); if(bm) bm.textContent=n?`가방 ${n}`:'가방';
   if($('#bagPanel').hidden) return;
   $('#bagCap').textContent=`${n}/${BAG_MAX}칸`;
   const names=Object.keys(bag).filter(k=>bag[k]>0&&ITEMS[k]);
-  $('#bagList').innerHTML=names.length?names.map(k=>`<li><span>${k} <small>×${bag[k]}</small><br><small>${ITEMS[k].d||''}</small></span><button data-use='${k}'>사용</button></li>`).join(''):`<li class='empty'>비어 있어요. 상점에서 ‘가방에 넣기’를 눌러 보세요.</li>`;
+  $('#bagList').innerHTML=names.length?names.map(k=>{ const u=bagThumb(k); return `<li>${u?`<img class='bthumb' src='${u}' alt=''>`:`<i class='bthumb'>🎁</i>`}<span>${k} <small>×${bag[k]}</small><br><small>${ITEMS[k].d||''}</small></span><button data-use='${k}'>사용</button></li>`; }).join(''):`<li class='empty'>비어 있어요. 상점에서 ‘가방에 넣기’를 눌러 보세요.</li>`;
   const ow=owned.filter(k=>ITEMS[k]);
   $('#wardrobe').innerHTML=ow.length?ow.map(k=>`<button data-wear='${k}'>${k} 입기</button>`).join(''):`<small style='color:var(--muted)'>아직 산 옷이 없어요. 미라지 부티크에 가 보세요.</small>`; }
 function renderShopBase(){ const S=curShop; if(!S) return; $('#shopCoins').textContent=coins; $('#shopBag').textContent=`가방 ${bagCount()}/${BAG_MAX}`;
