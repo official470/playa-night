@@ -140,9 +140,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 #boothList .cat{padding:4px 0 0}
 #boothList .cat button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--chip);color:var(--text);border-radius:10px;padding:9px 10px;font-size:13px;font-weight:700;text-align:left}
 #boothList .cat small{font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap}
-#boothList .bighd{display:flex;align-items:baseline;gap:6px;padding:8px 4px 4px;font-size:13px;font-weight:800}
+#boothList .bighd{display:block;padding:6px 0 2px}
+#boothList .bighd button{width:100%;display:flex;align-items:baseline;gap:6px;background:var(--chip);color:var(--text);border-radius:10px;padding:10px;font-size:13px;font-weight:800;text-align:left}
+#boothList .bighd button i{margin-left:auto;font-style:normal;color:var(--muted)}
 #boothList .bighd small{font-size:11px;color:var(--muted);font-weight:500}
-#boothList .bighd.det{margin-top:6px;border-top:1px solid var(--panel-line);padding-top:10px}
+#boothList .bighd.det{margin-top:2px}
 #boothList .bigrow{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:2px 0 4px}
 #boothList .bigrow button{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:6px;align-items:center;text-align:left;background:var(--chip);color:var(--text);padding:8px;border-radius:12px;font-weight:700;font-size:13px}
 #boothList .bigrow button b{grid-row:1/3;font-size:20px;line-height:1}
@@ -301,7 +303,7 @@ body.dressing #sp{display:none!important}
 #optNav button{flex:none;border:0;background:var(--chip);color:var(--text);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;min-height:34px}
 body.dressing .mapsel{display:none}
 /* menu icons */
-#mapBtn .l::before{content:'🧭 '} #bagBtn .l::before{content:'🎒 '} #danceBtn .l::before{content:'💃 '} #skyBtn .l::before{content:'🌌 '} #timeBtn .l::before{content:'🌓 '} #muteBtn .l::before{content:'🔊 '} #gfxBtn .l::before{content:'✨ '} #dressBtn .l::before{content:'👕 '} #mapListBtn .l::before{content:'🗺 '} #musicBtn .l::before{content:'🎵 '} #rndMenuBtn .l::before{content:'🎲 '} #helpBtn .l::before{content:'❔ '}
+#mapBtn .l::before{content:'🗺️ '} #bagBtn .l::before{content:'🎒 '} #danceBtn .l::before{content:'💃 '} #skyBtn .l::before{content:'🌌 '} #timeBtn .l::before{content:'🌓 '} #muteBtn .l::before{content:'🔊 '} #gfxBtn .l::before{content:'✨ '} #dressBtn .l::before{content:'👕 '} #mapListBtn .l::before{content:'🗺 '} #musicBtn .l::before{content:'🎵 '} #rndMenuBtn .l::before{content:'🎲 '} #helpBtn .l::before{content:'❔ '}
 @media (max-width:760px),(pointer:coarse){
   .creator:not(.min){height:62%;height:62dvh}
   #optNav{padding:6px 16px}
@@ -555,7 +557,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 /* cute emoji icons in the drop-down */
 .tools button#dressBtn:not(#menuBtn),.tools button#bagBtn:not(#menuBtn),.tools button#skyBtn:not(#menuBtn),.tools button#mapListBtn:not(#menuBtn){display:none!important}
 .tools.open #dressBtn .l::before{content:'👗  '!important}
-.tools.open #mapBtn .l::before{content:'🧭  '!important}
+.tools.open #mapBtn .l::before{content:'🗺️  '!important}
 .tools.open #mapListBtn .l::before{content:'🗺️  '!important}
 .tools.open #musicBtn .l::before{content:'🎵  '!important}
 .tools.open #danceBtn .l::before{content:'💃  '!important}
@@ -721,14 +723,14 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <span class="st" title="취기"><span aria-hidden="true">🍺</span><i><b id="stD"></b></i></span>
     <small id="statusTxt"></small></div>
   <nav class="mapc card" aria-label="캠프 지도">
-    <button class="maphead" id="mapToggle" aria-expanded="true">지도 · 맵 이동</button>
-    <button class="mapclose" id="mapClose" hidden>✕ 지도 닫기</button>
+    <button class="maphead" id="mapToggle" aria-expanded="true">🗺️ 맵/이동</button>
+    <button class="mapclose" id="mapClose" hidden>✕ 맵/이동 닫기</button>
     <ul id="boothList"></ul>
   </nav>
   <button class="card" id="lineupBtn" aria-label="오늘의 DJ 편성표"><span class="lud" id="luDate"></span><b>DJ 라인업</b><em id="luCnt" hidden></em></button>
   <div class="tools">
     <button id="menuBtn" aria-expanded="false">메뉴</button>
-    <button id="mapBtn"><span class="l">지도 · 맵 이동</span><span class="s">지도</span></button>
+    <button id="mapBtn"><span class="l">맵/이동</span><span class="s">🗺️ 맵</span></button>
     <button hidden id="bagBtn"><span class="l">가방</span><span class="s">가방</span></button>
     <button id="danceBtn"><span class="l">춤 고르기</span><span class="s">춤</span></button>
     <button id="skyBtn"><span class="l">하늘 보기</span><span class="s">하늘</span></button>
@@ -1836,7 +1838,7 @@ $('#timeBtn').addEventListener('click',()=>{ night=!night; applyTime(); });
 $('#muteBtn').addEventListener('click',()=>{ muted=!muted; if(master) master.gain.setTargetAtTime(muted?0:.8,ac.currentTime,.05); setBtn($('#muteBtn'),muted?'소리 켜기':'소리 끄기',muted?'소리':'음소거'); });
 $('#mapToggle').addEventListener('click',()=>{ const l=$('#boothList'); l.hidden=!l.hidden; $('#mapToggle').setAttribute('aria-expanded',String(!l.hidden)); if(!l.hidden) renderBoothList(); });
 const compact=()=>isTouch||innerWidth<=760;
-if(compact()){ $('#boothList').hidden=true; $('#mapToggle').setAttribute('aria-expanded','false'); $('#mapToggle').textContent='지도'; }
+if(compact()){ $('#boothList').hidden=true; $('#mapToggle').setAttribute('aria-expanded','false'); $('#mapToggle').textContent='🗺️ 맵/이동'; }
 $('#np').classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); // the music card starts mini and folds back when you tap elsewhere
 $('#npToggle').addEventListener('click',()=>{ const c=$('#np').classList.toggle('collapsed'); $('#npToggle').setAttribute('aria-expanded',String(!c)); });
 
@@ -2943,7 +2945,7 @@ updaters.push(updateFun);
 /* ================= MAP CATEGORIES ================= */
 const CATS=[['music','🎵 음악 부스','#ff4fa8'],['main','🔥 메인 명소','#ff7a2f'],['art','🎨 체험 조형물','#46d6ff'],['camp','🏕 테마 캠프','#ffcf3a'],['shop','🛍 상점','#c6ff3d'],['ride','🚗 탈것과 내 캠프','#9b6bff'],['deep','🌌 딥 플라야와 19+','#c8b49a']];
 const CAT_OF={'더 맨 (The Burn)':'main','템플':'main','골든 가이 앨리':'camp','비밀 재즈 카페':'camp','블랙록 롤러 디스코':'camp','포타포티 고해성사':'camp','사막 천문대':'camp','바디 페인팅 텐트':'camp','19+ 성인 캠프 구역':'deep','딥 플라야 명상 오두막':'deep','딥 플라야 비밀 편지통':'deep','내 텐트 (잠자기)':'ride','차고 (버기카, 오토바이, 비행기)':'ride','마켓':'shop'};
-const openCats=new Set(['music']);
+const openCats=new Set();
 function renderBoothListPlaya(){ const ul=$('#boothList'); if(ul.hidden) return; const nb=nearest().b, dist=(x,z)=>Math.round(Math.hypot(x-pState.x,z-pState.z)); let h='';
   CATS.forEach(([k,label,col])=>{ let items;
     if(k==='music') items=BOOTHS.map((b,i)=>({html:`<span class='dot' style='background:${b.col};box-shadow:0 0 8px ${b.col}'></span><span class='nm'>${b.name}<small>${dist(b.front.x,b.front.z)}m</small></span><button data-go='${i}'>가기</button>`,d:dist(b.front.x,b.front.z),near:b===nb}));
@@ -4452,8 +4454,10 @@ const SP_SPOTS=[{n:'지구본점 광장',x:0,z:-60},{n:'박스오피스 (입장�
 function renderBoothListSph(){ if(MAP!=='sphere') return renderBoothListNM(); const ul=$('#boothList'); if(ul.hidden) return;
   ul.innerHTML=`<li class='cat'><button disabled>🔮 지구본점 · 미국 라스베가스<small>${SP_SPOTS.filter(s=>!s.go).length}곳</small></button></li>`+SP_SPOTS.map((s,i)=>s.go?'':`<li><span class='dot' style='background:${s.go?'#9b6bff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&!SPH.inside?`<small>${Math.round(Math.hypot(SPX+s.x-pState.x,SPZ+s.z-pState.z))}m</small>`:''}</span><button data-sp='${i}'>가기</button></li>`).join(''); }
 function mapsBig(){ return [['playa','🏜','사막점','미국 네바다'],['itaewon','🇰🇷','이태원','한국 서울'],['nami','🌲','동물원점','한국 남이섬'],['sphere','🔮','지구본점','미국 라스베가스'],['berlin','🇩🇪','베를린점','오픈 준비중']]; }
-function renderBoothList(){ const ul=$('#boothList'); if(ul.hidden) return; renderBoothListSph(); const MB=mapsBig(), cur=MB.find(m=>m[0]===MAP)||MB[0];
-  ul.insertAdjacentHTML('afterbegin',`<li class='bighd'>🌍 지점 이동 <small>큰 지역</small></li><li class='bigrow'>${MB.map(m=>`<button data-big='${m[0]}' class='${m[0]===MAP?'here':''}${m[0]==='berlin'?' soon':''}'><b>${m[1]}</b><span>${m[2]}</span><small>${m[0]===MAP?'지금 여기':m[3]}</small></button>`).join('')}</li><li class='bighd det'>📍 ${cur[2]} 안에서 이동 <small>세부 장소</small></li>`); }
+const MAPSEC={big:false,det:false};
+function renderBoothList(){ const ul=$('#boothList'); if(ul.hidden) return; renderBoothListSph(); if(!MAPSEC.det) ul.innerHTML=''; const MB=mapsBig(), cur=MB.find(m=>m[0]===MAP)||MB[0];
+  ul.insertAdjacentHTML('afterbegin',`<li class='bighd'><button data-msec='big' aria-expanded='${MAPSEC.big}'>🌍 지점 이동 <small>지금 ${cur[1]} ${cur[2]}</small><i>${MAPSEC.big?'▾':'▸'}</i></button></li>${MAPSEC.big?`<li class='bigrow'>${MB.map(m=>`<button data-big='${m[0]}' class='${m[0]===MAP?'here':''}${m[0]==='berlin'?' soon':''}'><b>${m[1]}</b><span>${m[2]}</span><small>${m[0]===MAP?'지금 여기':m[3]}</small></button>`).join('')}</li>`:''}<li class='bighd det'><button data-msec='det' aria-expanded='${MAPSEC.det}'>📍 세부 장소 <small>${cur[2]} 안에서 이동</small><i>${MAPSEC.det?'▾':'▸'}</i></button></li>`); }
+$('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-msec]'); if(!b) return; const k=b.dataset.msec; MAPSEC[k]=!MAPSEC[k]; renderBoothList(); });
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-big]'); if(!b) return; const m=b.dataset.big; if(m==='berlin'){ berlinSoon(); return; } if(m===MAP){ toast(`지금 ${b.querySelector('span').textContent}에 있어요`); return; } goMap(m); });
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-sp]'); if(!b) return; const s=SP_SPOTS[+b.dataset.sp]; if(s.go){ goMap(s.go); return; }
   if(s.seat){ if(!SPH.inside){ toast(SPH.ticket?'입장 게이트를 지나야 들어갈 수 있어요':'먼저 박스오피스에서 입장권을 사요'); return; } sphMapOpen(); return; }
