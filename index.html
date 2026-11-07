@@ -140,6 +140,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 #boothList .cat{padding:4px 0 0}
 #boothList .cat button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:6px;background:var(--chip);color:var(--text);border-radius:10px;padding:9px 10px;font-size:13px;font-weight:700;text-align:left}
 #boothList .cat small{font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap}
+#boothList .bighd{display:flex;align-items:baseline;gap:6px;padding:8px 4px 4px;font-size:13px;font-weight:800}
+#boothList .bighd small{font-size:11px;color:var(--muted);font-weight:500}
+#boothList .bighd.det{margin-top:6px;border-top:1px solid var(--panel-line);padding-top:10px}
+#boothList .bigrow{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:2px 0 4px}
+#boothList .bigrow button{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:6px;align-items:center;text-align:left;background:var(--chip);color:var(--text);padding:8px;border-radius:12px;font-weight:700;font-size:13px}
+#boothList .bigrow button b{grid-row:1/3;font-size:20px;line-height:1}
+#boothList .bigrow button small{font-size:10.5px;color:var(--muted);font-weight:500}
+#boothList .bigrow button.here{background:var(--chip-on);color:var(--chip-on-text);box-shadow:0 0 0 2px var(--chip-on-text) inset}
+#boothList .bigrow button.here small{color:inherit;opacity:.8}
+#boothList .bigrow button.soon{opacity:.55}
 #boothList .sub{padding:8px 6px 2px;font-size:11px;color:var(--muted);font-weight:700}
 .tools{position:fixed;right:12px;top:calc(12px + var(--sat));display:flex;gap:6px;z-index:5;flex-wrap:wrap;justify-content:flex-end;max-width:62vw}
 .tools button{border:1px solid var(--panel-line);background:var(--panel);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:12px;padding:9px 12px;font-size:13px;font-weight:700;min-height:40px}
@@ -522,7 +532,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 .tools.open button .l::before,.tools.open button::before{content:none!important}
 @media (min-width:761px) and (pointer:fine){ .mapc{max-width:calc(50vw - 200px)!important} }
 /* cute emoji icons in the drop-down */
-.tools button#dressBtn:not(#menuBtn),.tools button#bagBtn:not(#menuBtn),.tools button#skyBtn:not(#menuBtn){display:none!important}
+.tools button#dressBtn:not(#menuBtn),.tools button#bagBtn:not(#menuBtn),.tools button#skyBtn:not(#menuBtn),.tools button#mapListBtn:not(#menuBtn){display:none!important}
 .tools.open #dressBtn .l::before{content:'👗  '!important}
 .tools.open #mapBtn .l::before{content:'🧭  '!important}
 .tools.open #mapListBtn .l::before{content:'🗺️  '!important}
@@ -690,14 +700,14 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <span class="st" title="취기"><span aria-hidden="true">🍺</span><i><b id="stD"></b></i></span>
     <small id="statusTxt"></small></div>
   <nav class="mapc card" aria-label="캠프 지도">
-    <button class="maphead" id="mapToggle" aria-expanded="true">캠프 지도</button>
+    <button class="maphead" id="mapToggle" aria-expanded="true">지도 · 맵 이동</button>
     <button class="mapclose" id="mapClose" hidden>✕ 지도 닫기</button>
     <ul id="boothList"></ul>
   </nav>
   <button class="card" id="lineupBtn" aria-label="오늘의 DJ 편성표"><span class="lud" id="luDate"></span><b>DJ 라인업</b><em id="luCnt" hidden></em></button>
   <div class="tools">
     <button id="menuBtn" aria-expanded="false">메뉴</button>
-    <button id="mapBtn"><span class="l">맵 이동</span><span class="s">맵</span></button>
+    <button id="mapBtn"><span class="l">지도 · 맵 이동</span><span class="s">지도</span></button>
     <button hidden id="bagBtn"><span class="l">가방</span><span class="s">가방</span></button>
     <button id="danceBtn"><span class="l">춤 고르기</span><span class="s">춤</span></button>
     <button id="skyBtn"><span class="l">하늘 보기</span><span class="s">하늘</span></button>
@@ -3302,12 +3312,12 @@ function itTick(t,dt){ const was=MAP; MAP=pState.z>1500?'sphere':(pState.x>1500?
   IT.lightP.intensity=.8+pP*.7; IT.ball.rotation.y=t*.6;
   IT.laserMP.opacity=(night?.25:.12)+pP*.45; IT.lasersP.forEach((L,k)=>{ L.rotation.y=-Math.PI/2+Math.sin(t*.55+k*1.3)*.65; L.rotation.x=.1+Math.sin(t*.45+k)*.08; }); }
 function openMapSelOld(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr 1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-act='itaewon' class='hot' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원</button></div><p>이태원 맵에는 걸어서 들어갈 수 있는 클럽 건물이 있어요. 4F 쉘터(딥테크노), 5F 페이퍼(하우스 루프탑).</p>`,a=>goMap(a)); }
-$('#mapBtn').addEventListener('click',openMapSel);
+$('#mapBtn').addEventListener('click',()=>{ const l=$('#boothList'); l.hidden=false; $('#mapToggle').setAttribute('aria-expanded','true'); renderBoothList(); });
 document.querySelectorAll('.mapsel [data-map]').forEach(b=>b.addEventListener('click',()=>{ selMap=b.dataset.map; document.querySelectorAll('.mapsel [data-map]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); }));
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='itaewon'&&MAP!=='itaewon') setTimeout(()=>goMap('itaewon'),50); });
 const IT_SPOTS=[{n:'이태원 거리 입구',x:OX-1.5,z:-58},{n:'횡단보도 앞',x:OX-1,z:-35},{n:'클럽 건물 앞 (경호원)',x:OX+5,z:-4},{n:'4F 쉘터 (딥테크노)',fl:3},{n:'5F 페이퍼 (하우스 루프탑)',fl:4},{n:'사막점으로 돌아가기',back:1}];
 function renderBoothListIT(){ if(MAP!=='itaewon') return renderBoothListPlaya(); const ul=$('#boothList'); if(ul.hidden) return;
-  ul.innerHTML=`<li class='cat'><button disabled>🇰🇷 이태원 · 한국 서울<small>${IT_SPOTS.length}곳</small></button></li>`+IT_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.fl===3?'#ff2a2a':s.fl===4?'#ffcf8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-it='${i}'>가기</button></li>`).join(''); }
+  ul.innerHTML=`<li class='cat'><button disabled>🇰🇷 이태원 · 한국 서울<small>${IT_SPOTS.filter(s=>!s.back).length}곳</small></button></li>`+IT_SPOTS.map((s,i)=>s.back?'':`<li><span class='dot' style='background:${s.fl===3?'#ff2a2a':s.fl===4?'#ffcf8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-it='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-it]'); if(!b) return; const s=IT_SPOTS[+b.dataset.it];
   if(s.back){ goMap('playa'); return; }
   if(s.fl){ if(!IT.stamped){ toast('먼저 경호원에게 신분증을 보여 주고 도장을 받아야 해요'); IT.floor=0; pState.x=OX+5; pState.z=-4; pState.y=0; return; } goFloor(s.fl); return; }
@@ -3896,7 +3906,7 @@ document.querySelectorAll('.mapsel [data-soon]').forEach(b=>b.addEventListener('
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='nami'&&MAP!=='nami') setTimeout(()=>goMap('nami'),60); });
 const NM_SPOTS=[{n:'동물원점 선착장 (매표소)',x:-150,z:-114,s:'main'},{n:'동물원점 DOCK',x:0,z:-158,s:'isl'},{n:'입장 게이트',x:0,z:-106,s:'isl'},{n:'캠핑 숲 & 모닥불',x:0,z:-60,s:'in'},{n:'요가 & 명상 잔디밭',x:-6,z:-30,s:'in'},{n:'JANDI 스테이지 (하우스)',x:-12,z:4,s:'in'},{n:'HANOK 스테이지 (아프로테크)',x:16,z:42,s:'in'},{n:'SOOP 스테이지 (테크노)',x:-8,z:82,s:'in'},{n:'익스페리멘탈 사운드 존',x:2,z:116,s:'in'},{n:'히피 마켓 & 푸드 트럭',x:24,z:28,s:'in'},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
 function renderBoothListNM(){ if(MAP!=='nami') return renderBoothListIT(); const ul=$('#boothList'); if(ul.hidden) return;
-  ul.innerHTML=`<li class='cat'><button disabled>🌲 동물원점 · 한국 남이섬<small>${NM_SPOTS.length}곳</small></button></li>`+NM_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.go?'#9b6bff':s.s==='in'?'#3dff8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(NX+s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-nm='${i}'>가기</button></li>`).join(''); }
+  ul.innerHTML=`<li class='cat'><button disabled>🌲 동물원점 · 한국 남이섬<small>${NM_SPOTS.filter(s=>!s.go).length}곳</small></button></li>`+NM_SPOTS.map((s,i)=>s.go?'':`<li><span class='dot' style='background:${s.go?'#9b6bff':s.s==='in'?'#3dff8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(NX+s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-nm='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-nm]'); if(!b) return; const s=NM_SPOTS[+b.dataset.nm]; if(s.go){ goMap(s.go); return; } if(NM.boat) return;
   if(s.s==='main'){ NM.side='main'; } else if(s.s==='isl'){ if(!NM.paid){ toast('먼저 매표소에서 티켓을 사고 배를 타야 해요'); return; } NM.side='island'; } else { if(!NM.admit){ toast(NM.paid?'게이트에서 팔찌를 확인받아야 들어갈 수 있어요':'먼저 매표소에서 티켓을 사고 배를 타야 해요'); return; } NM.side='island'; }
   pState.x=NX+s.x; pState.z=s.z; pState.y=0; pState.face=0; yaw=Math.PI; });
@@ -4388,8 +4398,12 @@ function goMapSph(m){ if(SPH.seat) sphStand(true); if(m!=='sphere'){ SPH.inside=
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='sphere'&&MAP!=='sphere') setTimeout(()=>goMap('sphere'),70); });
 NM_SPOTS.splice(NM_SPOTS.length-2,0,{n:'지구본점으로',go:'sphere'});
 const SP_SPOTS=[{n:'지구본점 광장',x:0,z:-60},{n:'박스오피스 (입장권)',x:-24,z:-34},{n:'입장 게이트',x:0,z:-12},{n:'좌석 맵 (공연장 안)',seat:1},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'},{n:'동물원점으로',go:'nami'}];
-function renderBoothList(){ if(MAP!=='sphere') return renderBoothListNM(); const ul=$('#boothList'); if(ul.hidden) return;
-  ul.innerHTML=`<li class='cat'><button disabled>🔮 지구본점 · 미국 라스베가스<small>${SP_SPOTS.length}곳</small></button></li>`+SP_SPOTS.map((s,i)=>`<li><span class='dot' style='background:${s.go?'#9b6bff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&!SPH.inside?`<small>${Math.round(Math.hypot(SPX+s.x-pState.x,SPZ+s.z-pState.z))}m</small>`:''}</span><button data-sp='${i}'>가기</button></li>`).join(''); }
+function renderBoothListSph(){ if(MAP!=='sphere') return renderBoothListNM(); const ul=$('#boothList'); if(ul.hidden) return;
+  ul.innerHTML=`<li class='cat'><button disabled>🔮 지구본점 · 미국 라스베가스<small>${SP_SPOTS.filter(s=>!s.go).length}곳</small></button></li>`+SP_SPOTS.map((s,i)=>s.go?'':`<li><span class='dot' style='background:${s.go?'#9b6bff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&!SPH.inside?`<small>${Math.round(Math.hypot(SPX+s.x-pState.x,SPZ+s.z-pState.z))}m</small>`:''}</span><button data-sp='${i}'>가기</button></li>`).join(''); }
+function mapsBig(){ return [['playa','🏜','사막점','미국 네바다'],['itaewon','🇰🇷','이태원','한국 서울'],['nami','🌲','동물원점','한국 남이섬'],['sphere','🔮','지구본점','미국 라스베가스'],['berlin','🇩🇪','베를린점','오픈 준비중']]; }
+function renderBoothList(){ const ul=$('#boothList'); if(ul.hidden) return; renderBoothListSph(); const MB=mapsBig(), cur=MB.find(m=>m[0]===MAP)||MB[0];
+  ul.insertAdjacentHTML('afterbegin',`<li class='bighd'>🌍 지점 이동 <small>큰 지역</small></li><li class='bigrow'>${MB.map(m=>`<button data-big='${m[0]}' class='${m[0]===MAP?'here':''}${m[0]==='berlin'?' soon':''}'><b>${m[1]}</b><span>${m[2]}</span><small>${m[0]===MAP?'지금 여기':m[3]}</small></button>`).join('')}</li><li class='bighd det'>📍 ${cur[2]} 안에서 이동 <small>세부 장소</small></li>`); }
+$('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-big]'); if(!b) return; const m=b.dataset.big; if(m==='berlin'){ berlinSoon(); return; } if(m===MAP){ toast(`지금 ${b.querySelector('span').textContent}에 있어요`); return; } goMap(m); });
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-sp]'); if(!b) return; const s=SP_SPOTS[+b.dataset.sp]; if(s.go){ goMap(s.go); return; }
   if(s.seat){ if(!SPH.inside){ toast(SPH.ticket?'입장 게이트를 지나야 들어갈 수 있어요':'먼저 박스오피스에서 입장권을 사요'); return; } sphMapOpen(); return; }
   if(SPH.inside){ toast('공연장 안에 있어요. 뒤쪽 EXIT로 나가요'); return; } pState.x=SPX+s.x; pState.z=SPZ+s.z; pState.y=0; pState.face=0; yaw=Math.PI; });
