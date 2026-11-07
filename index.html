@@ -5077,7 +5077,8 @@ function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[k
   if(s){ const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); if(t<end) return Object.assign({id:key+'@'+s.start+'@'+s.url},s); }
   return schFill(key,L,t,s); }
 // between scheduled sets the stage never goes quiet: it replays one of its own sets in 30-minute blocks, picked from the clock so every player hears the same one
-function schFill(key,L,t,prev){ const pool=[], seen=new Set(); for(const x of L) if(x.url&&!seen.has(x.url)){ seen.add(x.url); pool.push(x); } if(!pool.length) return null;
+function schFill(key,L,t,prev){ let pool=[]; const seen=new Set(); for(const x of L) if(x.url&&!seen.has(x.url)){ seen.add(x.url); pool.push(x); } if(!pool.length) return null;
+  const long=pool.filter(x=>(x.dur||60)>=30); if(long.length) pool=long; // a 3-minute track cannot cover a 30-minute block
   const prevEnd=prev?(prev.dur?prev.start+prev.dur*60000:t):-Infinity, nx=L.find(x=>x.start>t), b=Math.floor(t/SCH_GAP);
   let st=Math.max(b*SCH_GAP,prevEnd); const end=Math.min((b+1)*SCH_GAP,nx?nx.start:Infinity); if(!(st<=t&&t<end)) return null;
   let h=b; for(const c of key) h=(h*31+c.charCodeAt(0))>>>0; const x=pool[h%pool.length];
