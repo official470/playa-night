@@ -3902,6 +3902,17 @@
     "djIntro": "",
     "musicIntro": "",
     "auto": true
+   },
+   {
+    "start": 1794134520000,
+    "dur": 62,
+    "url": "https://www.mixcloud.com/Professor_Eddy/slow-disco-at-the-poolside/",
+    "title": "Slow Disco At The Poolside",
+    "dj": "Professor Eddy",
+    "art": "https://thumbnailer.mixcloud.com/unsafe/320x320/extaudio/f/8/c/9/e2bc-6aef-4bf2-95a7-e13d54cf8434",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true
    }
   ],
   "zone:potty": [
@@ -5216,6 +5227,17 @@
     "title": "Live from the Adriatic 2026: Unai Trotti",
     "dj": "Unai Trotti",
     "art": "https://i1.sndcdn.com/artworks-j3dvrrsIze8KHyJ9-rgMmCQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true
+   },
+   {
+    "start": 1794134400000,
+    "dur": 152,
+    "url": "https://www.mixcloud.com/FatboySlim/fatboy-slim-all-night-long-pacha-ibiza-part-1/",
+    "title": "Fatboy Slim - All Night Long - Pacha Ibiza (Part 1)",
+    "dj": "Fatboy Slim",
+    "art": "https://thumbnailer.mixcloud.com/unsafe/320x320/extaudio/8/d/9/9/b4b0-67bb-480a-b591-cd4f8e8fdde4",
     "djIntro": "",
     "musicIntro": "",
     "auto": true
@@ -7357,5 +7379,5 @@
    }
   ]
  },
- "updated": "2026-11-07T10:38:46.281Z"
+ "updated": "2026-11-07T10:43:51.163Z"
 }
