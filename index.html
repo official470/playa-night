@@ -490,6 +490,8 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #smCv{width:100%;height:auto;aspect-ratio:1.15;display:block;touch-action:none;border-radius:12px;background:#120a1e;cursor:pointer}
 #stageBonus{position:fixed;left:50%;top:calc(var(--sat) + 58px);transform:translateX(-50%);z-index:5;pointer-events:none;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;white-space:nowrap}
 #stageBonus[hidden]{display:none}
+#shakeBtn{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(168px + var(--sab));z-index:6;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:14px;color:#1a0f08;background:linear-gradient(90deg,#ffcf3a,#ff4fd8);box-shadow:0 6px 20px rgba(255,79,216,.45)}
+#shakeBtn[hidden]{display:none}
 #stageBonus i{display:block;width:70px;height:6px;border-radius:3px;background:var(--chip);overflow:hidden}
 #stageBonus i b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffcf3a,#ff4fd8);border-radius:3px}
 #sp.bigmap{left:50%!important;top:50%!important;bottom:auto!important;right:auto!important;transform:translate(-50%,-50%)!important;width:min(940px,96vw)!important;max-height:94vh!important;max-height:94dvh!important;z-index:40;box-shadow:0 0 0 100vmax rgba(0,0,0,.5),0 20px 60px rgba(0,0,0,.5)}
@@ -1587,8 +1589,8 @@ function updatePlayer(dt,t,clock){
   else if(pState.emote){ poseChar(player,pState.emote.kind,t,0); pAct='idle'; }
   else if(pState.use){ poseChar(player,'use',t,useRaise()); pAct='idle'; }
   else if(ST.burn){ poseChar(player,'tired',t,0); pAct='idle'; }
-  else if(nb && nb.target>.3){ poseChar(player,'dance',t,boothBeat(nb,clock)); danceEarn(dt,(nb.target>.6?2:1)*danceBonus()); pAct='dance'; }
-  else if(danceOn){ poseChar(player,'dance',t,clock*2.07); danceEarn(dt,danceBonus()); pAct='dance'; }
+  else if(nb && nb.target>.3){ poseChar(player,'dance',t,SHK.active?shkBeat():boothBeat(nb,clock)); danceEarn(dt,(nb.target>.6?2:1)*danceBonus()); pAct='dance'; }
+  else if(danceOn||SHK.active){ poseChar(player,'dance',t,SHK.active?shkBeat():clock*2.07); danceEarn(dt,danceBonus()); pAct='dance'; }
   else { poseChar(player,'idle',t,0); pAct='idle'; }
 }
 function nearest(){ let best=null,bd=1e9; for(const b of BOOTHS){ const d=Math.hypot(b.front.x-pState.x,b.front.z-pState.z); if(d<bd){bd=d;best=b;} } return {b:best,d:bd}; }
@@ -1721,7 +1723,7 @@ function updateInstallations(t,dt){
     pa.needsUpdate=true; f.p.material.opacity=Math.max(0,f.life/2.6);
     if(f.life<=0){ scene.remove(f.p); f.p.geometry.dispose(); f.p.material.dispose(); fireworks.splice(i,1); } }
   curInter=null;
-  if(inGame && !pState.ride){ let bd=1e9; for(const I of INTER){ const p=I.pos(), d0=Math.hypot(p.x-pState.x,p.z-pState.z); if(d0<I.r){ const d=d0-(I.prio||0); if(d<bd){ bd=d; curInter=I; } } } }
+  if(inGame && !pState.ride){ let bd=1e9; for(const I of INTER){ const p=I.pos(), d0=Math.hypot(p.x-pState.x,p.z-pState.z); if(d0<I.r*1.5+1){ const d=d0-(I.prio||0); if(d<bd){ bd=d; curInter=I; } } } }
   const lbl=(!inGame||sleepS||!$('#wish').hidden||!$('#shop').hidden||!$('#sp').hidden)?null:(pState.ride||pState.veh||pState.art)?'내리기':curInter?curInter.label:null;
   const ab=$('#actBtn'); if(lbl){ const tx=lbl+(isTouch?'':' (E)'); if(ab.textContent!==tx) ab.textContent=tx; ab.hidden=false; } else ab.hidden=true;
 }
@@ -2049,7 +2051,7 @@ function buildMarket(){
     const lp=g.localToWorld(new THREE.Vector3(0,5.6,.5)); floatLabel(S.name,S.sub,S.col,lp.x,lp.y,lp.z);
     const cc=g.localToWorld(new THREE.Vector3(0,0,.3)); colliders.push({x:cc.x,z:cc.z,r:2.8});
     const front=g.localToWorld(new THREE.Vector3(0,0,3.4));
-    INTER.push({pos:()=>front,r:3.6,label:`${S.name} 들어가기`,act:()=>openShop(S)});
+    INTER.push({pos:()=>cc,r:5,label:`${S.name} 들어가기`,act:()=>openShop(S)});
   });
   const cg=new THREE.CylinderGeometry(.42,.42,.09,LOW?12:18), cm=M('#ffcf3a',{glow:.9});
   for(let i=0;i<(LOW?36:50);i++){ const m=new THREE.Mesh(cg,cm); m.rotation.set(0,0,Math.PI/2); scene.add(m); const c={m,wait:0,ph:Math.random()*6}; placeCoin(c); COINS.push(c); }
@@ -3267,7 +3269,7 @@ function buildItaewon(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sc
     B(1.8,.7,4.2,M('#ff8a1a'),0,.6,0,g); B(1.6,.6,2.2,M('#1e1e26'),0,1.2,-.2,g); B(.6,.22,.3,M('#fff3d0',{glow:1.5}),0,1.6,-.2,g); [-.6,.6].forEach(x=>{ B(.3,.14,.05,M('#fff3d0',{glow:1.8}),x,.65,2.12,g); B(.3,.12,.05,M('#ff2a2a',{glow:1.6}),x,.7,-2.12,g); });
     [[-.85,1.3],[.85,1.3],[-.85,-1.3],[.85,-1.3]].forEach(([x,z])=>{ const w=mesh(G.cyl,M('#111111'),x,.32,z,.32,.24,.32,g); w.rotation.z=Math.PI/2; });
     g.rotation.y=dir>0?0:Math.PI; IT.cars.push({g,dir,v:rand(7,11)}); }
-  INTER.push({pos:()=>(MAP==='itaewon'&&IT.floor===0&&!inBldg(pState.x,pState.z))?{x:OX+5.9,z:0}:FARV,r:2.4,get label(){ return IT.stamped?'클럽 건물로 들어가기':'클럽 입장 (신분증 확인)'; },act:clubEntry});
+  INTER.push({pos:()=>(MAP==='itaewon'&&IT.floor===0&&!inBldg(pState.x,pState.z))?{x:OX+5.9,z:0}:FARV,r:3.5,get label(){ return IT.stamped?'클럽 건물로 들어가기':'클럽 입장 (신분증 확인)'; },act:clubEntry});
   INTER.push({pos:()=>(MAP==='itaewon'&&inBldg(pState.x,pState.z))?{x:OX+19.2,z:7}:FARV,r:2.2,label:'엘리베이터',act:openElevator});
   INTER.push({pos:()=>(MAP==='itaewon'&&IT.floor===3)?{x:OX+12.4,z:6.6}:FARV,r:2.2,label:'쉘터 바',act:()=>openShop({id:'shelterbar',name:'쉘터 바',sub:'맥주, 샷, 물',items:[ITEMS['플라야 라거'],ITEMS['데킬라 샷'],ITEMS['생수']]})});
   INTER.push({pos:()=>(MAP==='itaewon'&&IT.floor===4)?{x:OX+17.4,z:-5.2}:FARV,r:2.2,label:'페이퍼 바',act:()=>openShop({id:'paperbar',name:'페이퍼 루프탑 바',sub:'칵테일, 맥주, 버블티',items:[ITEMS['선셋 칵테일'],ITEMS['플라야 라거'],ITEMS['버블티'],ITEMS['생수']]})});
@@ -3557,6 +3559,7 @@ const MC_JUNK=/non ?stop|viet|remix|mash ?-?up|bootleg|\b[5-9]0'?s\b|love ?song|
 const MC_SCRIPT=/[Ѐ-ӿ؀-ۿऀ-ॿ฀-๿Ạ-ỹĐđ぀-ヿ㐀-鿿가-힣＀-￯]/;
 function mcMusicOnly(c){ const n=c&&c.name||'', a=c&&c.audio_length||0; return !!(c&&c.key)&&a>=1800&&a<=4*3600&&!c.is_exclusive&&!MC_RADIO.test(n)&&!MC_JUNK.test(n)&&!MC_SCRIPT.test(n+(c.user&&c.user.name||'')); }
 const MC_ORIGIN='https://player-widget.mixcloud.com';
+const MC_NOVOL=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
 const MC_DEF={techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
   shelter:'techno',paper:'house',sphere:'melodic',jazz:'eclectic',disco:'house',potty:'house','nm-jandi':'house','nm-hanok':'afro','nm-soop':'techno','nm-exp':'eclectic','nm-hut':'deephouse','nm-aero':'house','bm-war':'techno','bm-bus':'house'};
@@ -3603,15 +3606,15 @@ async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g;
 function mcNext(){ if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null; MC.autoPaused=false;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
   const kind=c.sc?'sc':'mc';
-  if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:true,visual:false,show_comments:false,hide_related:true,callback:()=>scInfo(w,c)}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,true); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
+  if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; const go=!MC.quiet||!MC_NOVOL; if(!go) MC.autoPaused=true; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:go,visual:false,show_comments:false,hide_related:true,callback:()=>scInfo(w,c)}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,go); mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); return; }
   if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1; MC.kind=kind; MC.w=null;
-  if(kind==='sc'){ scCreate(c); const f=MC.iframe; MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ if(MC.target&&mcLevel(MC.target)>=.35){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } else MC.needTap=true; } },6000); mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); return; }
+  if(kind==='sc'){ scCreate(c); const f=MC.iframe; MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ if(MC.target&&mcLevel(MC.target)>=.35){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } else MC.needTap=true; } },6000); mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); return; }
   const f=document.createElement('iframe'); f.allow='autoplay'; f.title='Mixcloud player';
   f.src=`${MC_ORIGIN}/widget/iframe/?feed=${encodeURIComponent(c.key)}&hide_cover=1&mini=1&autoplay=1`; MC.iframe=f; mcShow(false); document.body.appendChild(f);
   f.addEventListener('load',()=>{ if(MC.iframe===f) f.contentWindow.postMessage(JSON.stringify({type:'getApi'}),MC_ORIGIN); });
   // mobile browsers can block autoplay inside the iframe; show the real player so one tap on its play button starts it
   MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ if(MC.target&&mcLevel(MC.target)>=.35){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } else MC.needTap=true; } },6000);
-  mcUi(); toast(`${MC.target.name} · ${mcTitle()}`); }
+  mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); }
 function mcStop(){ MC.schId=null; $('#clubNow').classList.remove('mc'); if(MC.iframe){ mcCall('pause'); MC.iframe.remove(); } MC.w=null; clearTimeout(MC.showT); MC.iframe=null; MC.target=null; MC.cur=null; MC.playing=false; MC.live=false; mcUi(); }
 function mcStatus(s){ const el=document.getElementById('mcStatus'); if(el) el.textContent=s; }
 function mcTitle(){ const c=MC.cur; return c?`${c.name}${c.user&&c.user.name?' — '+c.user.name:''}`:''; }
@@ -3672,8 +3675,9 @@ function mcTick(){ const T=MC.target; if(!T||!MC.iframe) return; let v;
   // Volume alone is not enough: iPhone ignores the player's volume, so the music would keep playing everywhere.
   const lv=clamp(v||0,0,1);
   // phones that ignore the player's volume (iPhone / iPad) cut the set once you step away from the stage front; elsewhere it fades out first
-  const NOVOL=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1), off=NOVOL?.4:.05, on=NOVOL?.5:.1;
-  if(MC.live){ if(lv<off&&!MC.autoPaused&&!MC.paused){ MC.autoPaused=true; mcCall('pause'); }
+  const NOVOL=MC_NOVOL, off=NOVOL?.4:.05, on=NOVOL?.5:.1;
+  // where the volume works, a scheduled set keeps running silently in sync so walking back in is instant; iPhone ignores volume, so it pauses
+  if(MC.live){ if(lv<off&&!MC.autoPaused&&!MC.paused&&(NOVOL||!MC.schId)){ MC.autoPaused=true; mcCall('pause'); }
     else if(lv>on&&MC.autoPaused){ MC.autoPaused=false; mcCall('play'); SCH.synced=false; SCH.lastSync=-99; } }
   if(!MC.playing) return; v=Math.round(lv*(muted?0:1)*100)/100;
   if(Math.abs(v-MC.vol)>=.03||(v===0&&MC.vol!==0)){ MC.vol=v; mcCall('setVolume',v); }
@@ -3847,10 +3851,10 @@ function buildNami(){ const IG=new THREE.Group(); IG.position.set(NX,0,0); scene
   for(let i=0;i<(LOW?24:36);i++){ const m=new THREE.Mesh(cg,cm); m.rotation.set(0,0,Math.PI/2); scene.add(m); const c={m,wait:0,ph:Math.random()*6,main:i<6}; place(c); NM.coins.push(c); }
   // interactions
   const isN=()=>MAP==='nami'&&inGame&&!NM.boat;
-  INTER.push({pos:()=>isN()&&NM.side==='main'?{x:NX-160,z:-118}:FARV,r:3,get label(){ return NM.paid?'배에 타기':'매표소 (신분증, 티켓, 입장 코인)'; },act:nmBooth});
+  INTER.push({pos:()=>isN()&&NM.side==='main'?{x:NX-160,z:-118}:FARV,r:5,get label(){ return NM.paid?'배에 타기':'매표소 (신분증, 티켓, 입장 코인)'; },act:nmBooth});
   INTER.push({pos:()=>isN()&&NM.side==='main'&&NM.paid?{x:NX-112,z:-128}:FARV,r:3,label:'배에 타기',act:()=>startFerry(1)});
   INTER.push({pos:()=>isN()&&NM.side==='island'?{x:NX,z:-162}:FARV,r:3,label:'배 타고 육지로 나가기',act:()=>startFerry(0)});
-  INTER.push({pos:()=>isN()&&NM.side==='island'?{x:NX,z:-102}:FARV,r:3,get label(){ return NM.admit?'게이트 (입장 완료)':'입장 게이트 (팔찌 확인)'; },act:nmGate});
+  INTER.push({pos:()=>isN()&&NM.side==='island'?{x:NX,z:-102}:FARV,r:5,get label(){ return NM.admit?'게이트 (입장 완료)':'입장 게이트 (팔찌 확인)'; },act:nmGate});
   NM.fires.forEach(F=>INTER.push({pos:()=>isN()&&NM.admit?{x:F.x,z:F.z}:FARV,r:4,label:'모닥불 (불멍, 마시멜로, 잠자기)',act:nmFireAct}));
   INTER.push({pos:()=>isN()&&NM.admit?{x:NX-20,z:-27}:FARV,r:4,label:'요가 클래스 참여',act:()=>{ pState.emote={kind:'yoga',t:24,regen:1.6,bell:0}; toast('선생님을 따라 요가 자세를 해요. 움직이지 않으면 체력이 차요'); }});
   INTER.push({pos:()=>isN()&&NM.admit?{x:NX+18,z:-34}:FARV,r:3,label:'사운드 배스 명상 참여',act:()=>{ pState.emote={kind:'meditate',t:24,regen:2.5,bell:0}; toast('싱잉볼 소리에 맞춰 숨을 고르세요'); }});
@@ -4333,8 +4337,8 @@ function buildSphere(){ const EG=new THREE.Group(); EG.position.set(SPX,0,SPZ); 
   $('#seatMapB').addEventListener('click',sphMapOpen); $('#seatUp').addEventListener('click',()=>sphStand()); $('#seatCheer').addEventListener('click',()=>{ SPH.cheerT=3; chime(84,'sine',.06,.3); for(let i=0;i<5;i++) spawnFx('heart',i*.08); });
   // interactions
   const ok=()=>MAP==='sphere'&&inGame;
-  INTER.push({pos:()=>ok()&&!SPH.inside?{x:SPX-24,z:SPZ-37}:FARV,r:4.5,prio:5,get label(){ return SPH.ticket?'박스오피스 (티켓 보유 중)':`박스오피스 (입장권 ${SPH_PRICE}코인)`; },act:sphBox});
-  INTER.push({pos:()=>ok()&&!SPH.inside?{x:SPX,z:SPZ-4}:FARV,r:5,prio:5,label:'입장 게이트 (티켓 확인)',act:sphGate});
+  INTER.push({pos:()=>ok()&&!SPH.inside?{x:SPX-24,z:SPZ-37}:FARV,r:6,prio:5,get label(){ return SPH.ticket?'박스오피스 (티켓 보유 중)':`박스오피스 (입장권 ${SPH_PRICE}코인)`; },act:sphBox});
+  INTER.push({pos:()=>ok()&&!SPH.inside?{x:SPX,z:SPZ-4}:FARV,r:7,prio:5,label:'입장 게이트 (티켓 확인)',act:sphGate});
   INTER.push({pos:()=>ok()&&SPH.inside&&!SPH.seat?{x:SPX,z:IZ+ez-1.4}:FARV,r:3,label:'공연장 나가기',act:sphExit});
   INTER.push({pos:()=>ok()&&SPH.inside&&!SPH.seat?SPH.kiosk:FARV,r:3,label:'좌석 맵 보기',act:sphMapOpen});
   SNPC.forEach(S=>{ if(S.P.root.position.z>1500&&!ALLP.includes(S.P)){ ALLP.push(S.P); if(S.talk) TALKP.push(S.P); } });
@@ -4408,15 +4412,62 @@ function sphTick(t,dt){ const inS=MAP==='sphere'; document.body.classList.toggle
     for(const c of SPH.coins){ if(!c.m.visible){ c.wait-=dt; if(c.wait<=0) sphCoin(c); continue; } c.m.rotation.y=t*2.4+c.ph; c.m.position.y=1.1+Math.sin(t*2+c.ph)*.12; const dx=c.m.position.x-pState.x, dz=c.m.position.z-pState.z; if(dx*dx+dz*dz<2){ c.m.visible=false; c.wait=40; addCoins(10); chime(88,'sine',.08,.3); } } } }
 $('#cnNext').addEventListener('click',()=>{ if(MAP!=='sphere'||!SPH.inside) return; SPH.i=(SPH.i+1)%SPH_TR.length; SPH.zone.tracks[0]=SPH_TR[SPH.i]; SPH.zone.running=false; toast(`다음 곡: ${SPH_TR[SPH.i].name}`); });
 
+/* ================= DESERT DRIVE SOUND: engine, tyres on the playa, wind and crowds cheering from the art cars ================= */
+const DRV={n:null,cheerT:2,on:0};
+function drvNoise(){ if(DRV.nb) return DRV.nb; const b=ac.createBuffer(1,Math.floor(ac.sampleRate*2),ac.sampleRate), d=b.getChannelData(0); let br=0; for(let i=0;i<d.length;i++){ const w=Math.random()*2-1; br=(br+.02*w)/1.02; d[i]=w*.6+br*3; } DRV.nb=b; return b; }
+function drvBuild(){ const tt=ac.currentTime, out=ac.createGain(); out.gain.value=0; out.connect(master);
+  const loop=()=>{ const s=ac.createBufferSource(); s.buffer=drvNoise(); s.loop=true; s.start(tt,Math.random()*1.5); return s; };
+  // engine: two detuned saws through a low-pass that opens with speed
+  const eg=ac.createGain(), lp=ac.createBiquadFilter(); lp.type='lowpass'; lp.Q.value=4; const o1=ac.createOscillator(), o2=ac.createOscillator(); o1.type='sawtooth'; o2.type='square'; o1.connect(lp); o2.connect(lp); lp.connect(eg); eg.connect(out); o1.start(tt); o2.start(tt);
+  // tyres on the dry lake bed and the wind past the roof
+  const rs=loop(), rf=ac.createBiquadFilter(), rg=ac.createGain(); rf.type='bandpass'; rf.frequency.value=320; rf.Q.value=.7; rs.connect(rf); rf.connect(rg); rg.connect(out);
+  const ws=loop(), wf=ac.createBiquadFilter(), wg=ac.createGain(); wf.type='highpass'; wf.frequency.value=1400; ws.connect(wf); wf.connect(wg); wg.connect(out);
+  DRV.n={out,eg,lp,o1,o2,rf,rg,wf,wg}; }
+// a crowd on a passing art car whoops and cheers; now and then someone whistles
+function drvCheer(k){ const tt=ac.currentTime, s=ac.createBufferSource(); s.buffer=drvNoise(); const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=850+Math.random()*500; bp.Q.value=.9; const g=ac.createGain(), pan=ac.createStereoPanner?ac.createStereoPanner():null;
+  g.gain.setValueAtTime(.0001,tt); g.gain.linearRampToValueAtTime(.05*k,tt+.18); g.gain.exponentialRampToValueAtTime(.0006,tt+1.5); s.connect(bp); bp.connect(g); if(pan){ pan.pan.value=rand(-.9,.9); g.connect(pan); pan.connect(master); } else g.connect(master); s.start(tt,Math.random()); s.stop(tt+1.6);
+  for(let v=0;v<3;v++){ if(Math.random()<.55) continue; const o=ac.createOscillator(), og=ac.createGain(), st=tt+rand(0,.5), f=rand(380,620); o.type='sawtooth'; o.frequency.setValueAtTime(f,st); o.frequency.exponentialRampToValueAtTime(f*rand(1.5,2.1),st+.22); o.frequency.exponentialRampToValueAtTime(f*1.2,st+.6);
+    const of=ac.createBiquadFilter(); of.type='bandpass'; of.frequency.value=f*2; of.Q.value=2; og.gain.setValueAtTime(.0001,st); og.gain.linearRampToValueAtTime(.018*k,st+.06); og.gain.exponentialRampToValueAtTime(.0005,st+.7); o.connect(of); of.connect(og); og.connect(master); o.start(st); o.stop(st+.75); }
+  if(Math.random()<.35){ const o=ac.createOscillator(), og=ac.createGain(), st=tt+rand(.1,.6); o.type='sine'; o.frequency.setValueAtTime(1500,st); o.frequency.exponentialRampToValueAtTime(2600,st+.18); o.frequency.exponentialRampToValueAtTime(1700,st+.45); og.gain.setValueAtTime(.0001,st); og.gain.linearRampToValueAtTime(.025*k,st+.04); og.gain.exponentialRampToValueAtTime(.0005,st+.5); o.connect(og); og.connect(master); o.start(st); o.stop(st+.55); } }
+updaters.push((t,dt)=>{ if(!ac||!master) return; const driving=inGame&&typeof BM!=='undefined'&&BM.mode==='drive';
+  DRV.on+=((driving?1:0)-DRV.on)*Math.min(1,dt*(driving?4:1.5)); if(DRV.on<.005&&!driving){ if(DRV.n) DRV.n.out.gain.setTargetAtTime(0,ac.currentTime,.1); return; }
+  if(!DRV.n) drvBuild(); const N=DRV.n, now=ac.currentTime, v=BM.v||0, off=Math.abs(BM.cx||0)>8, rev=clamp((v-26)/30,0,1);
+  N.out.gain.setTargetAtTime(DRV.on*.9,now,.1);
+  const f=34+v*1.35+Math.sin(t*7)*1.5; N.o1.frequency.setTargetAtTime(f,now,.08); N.o2.frequency.setTargetAtTime(f*.5+.7,now,.08); N.lp.frequency.setTargetAtTime(260+rev*900,now,.1); N.eg.gain.setTargetAtTime(.05+rev*.04,now,.1);
+  N.rf.frequency.setTargetAtTime(off?520:300+v*3,now,.1); N.rg.gain.setTargetAtTime((off?.35:.16)*(.4+v/56)*(off?.8+Math.abs(Math.sin(t*14))*.6:1),now,.05);
+  N.wg.gain.setTargetAtTime(.02+Math.pow(v/56,2)*.12,now,.15); N.wf.frequency.setTargetAtTime(900+v*18,now,.2);
+  // cheers come more often when art cars and ravers are close by on the road
+  if(driving){ DRV.cheerT-=dt; if(DRV.cheerT<=0){ DRV.cheerT=rand(2.2,5); drvCheer(rand(.7,1.3)); } } });
+
+/* ================= SHAKE TO DANCE: the phone's motion drives your dance, steady shaking on the beat pays 3x ================= */
+// each shake is one beat: your avatar hits a move on every shake, and a steady rhythm for half the minute triples the stage bonus
+var SHK={armed:false,n:0,last:-9,iv:[],ivl:.5,active:false,steady:false,hp:[0,0,0],g:null,prev:0};
+function shkNow(){ return performance.now()/1000; }
+function shkBeat(){ const f=Math.min(.999,(shkNow()-SHK.last)/SHK.ivl); return SHK.n+f; }
+function shkOn(e){ let a=e.acceleration, x,y,z;
+  if(a&&a.x!=null){ x=a.x; y=a.y; z=a.z; } else { const g=e.accelerationIncludingGravity; if(!g||g.x==null) return; if(!SHK.g) SHK.g=[g.x,g.y,g.z]; SHK.g=SHK.g.map((v,i)=>v*.9+[g.x,g.y,g.z][i]*.1); x=g.x-SHK.g[0]; y=g.y-SHK.g[1]; z=g.z-SHK.g[2]; }
+  const m=Math.hypot(x||0,y||0,z||0), t=shkNow();
+  if(m>7&&SHK.prev<=7&&t-SHK.last>.22){ const d=t-SHK.last; if(d<1.4){ SHK.iv.push(d); if(SHK.iv.length>6) SHK.iv.shift(); const S=SHK.iv.slice().sort((a,b)=>a-b); SHK.ivl=clamp(S[S.length>>1],.25,1.2);
+      SHK.steady=SHK.iv.length>=3&&SHK.iv.slice(-4).every(v=>Math.abs(v-SHK.ivl)<SHK.ivl*.28); } else { SHK.iv=[]; SHK.steady=false; }
+    SHK.last=t; SHK.n++; if(navigator.vibrate) try{ navigator.vibrate(18); }catch(err){} }
+  SHK.prev=m; }
+async function shkArm(){ try{ if(typeof DeviceMotionEvent!=='undefined'&&typeof DeviceMotionEvent.requestPermission==='function'){ const r=await DeviceMotionEvent.requestPermission(); if(r!=='granted'){ toast('움직임 센서를 허용해야 흔들어 춤출 수 있어요'); return; } }
+    if(!SHK.armed){ addEventListener('devicemotion',shkOn); SHK.armed=true; } toast('📳 이제 폰을 음악 박자에 맞춰 흔들어 보세요! 꾸준히 흔들면 코인 3배'); }catch(e){ toast('이 기기에서는 움직임 센서를 쓸 수 없어요'); } }
+updaters.push(()=>{ const t=shkNow(); SHK.active=SHK.armed&&t-SHK.last<Math.max(1.1,SHK.ivl*2.2); if(!SHK.active) SHK.steady=false;
+  let b=document.getElementById('shakeBtn'); const want=isTouch&&inGame&&STG.on&&!SHK.armed;
+  if(want&&!b){ b=document.createElement('button'); b.id='shakeBtn'; b.type='button'; b.textContent='📳 폰 흔들어 춤추기 · 코인 3배'; b.addEventListener('click',e=>{ e.stopPropagation(); shkArm(); }); document.body.appendChild(b); }
+  if(b) b.hidden=!want; });
+
 /* ================= STAGE DANCE BONUS: 1 MIN = +3 COINS ================= */
 const STG={t:0,grace:0,el:null};
 function stageNear(){ const L=[...BOOTHS,...ZONES]; if(typeof IT!=='undefined'){ if(IT.zS) L.push(IT.zS); if(IT.zP) L.push(IT.zP); } return L.some(z=>z&&z.target>.3); }
-updaters.push((t,dt)=>{ if(!STG.el){ const d=document.createElement('div'); d.id='stageBonus'; d.className='card'; d.hidden=true; d.setAttribute('aria-live','polite'); d.innerHTML=`<span>🎤 <span id='sbT'>0:00</span> / 1:00</span><i><b id='sbBar'></b></i><span id='sbHype' style='font-size:11px'></span>`; document.body.appendChild(d); STG.el=d; }
+updaters.push((t,dt)=>{ if(!STG.el){ const d=document.createElement('div'); d.id='stageBonus'; d.className='card'; d.hidden=true; d.setAttribute('aria-live','polite'); d.innerHTML=`<span>🎤 <span id='sbT'>0:00</span> / 1:00</span><i><b id='sbBar'></b></i><span id='sbHype' style='font-size:11px'></span><span id='sbShk' style='font-size:11px;color:#ffcf3a'></span>`; document.body.appendChild(d); STG.el=d; }
   const on=inGame&&!sleepS&&!pState.veh&&pAct==='dance'&&stageNear(); STG.on=on;
-  if(on){ STG.grace=2; STG.t+=dt; if(STG.t>=60){ STG.t-=60; addCoins(10); coinBurst(10); toast('🎉 스테이지에서 1분 동안 춤췄어요! +10코인'); } }
-  else if(STG.grace>0){ STG.grace-=dt; if(STG.grace<=0) STG.t=0; }
+  if(on){ STG.grace=2; STG.t+=dt; if(SHK.steady) STG.sh=(STG.sh||0)+dt; if(STG.t>=60){ STG.t-=60; const x3=(STG.sh||0)>=30, c=x3?30:10; STG.sh=0; addCoins(c); coinBurst(c); toast(x3?`📳 박자 맞춰 흔들며 1분 춤췄어요! 코인 3배 +${c}코인`:'🎉 스테이지에서 1분 동안 춤췄어요! +10코인'); } }
+  else if(STG.grace>0){ STG.grace-=dt; if(STG.grace<=0){ STG.t=0; STG.sh=0; } }
   const show=STG.t>0&&inGame; if(STG.el.hidden===show) STG.el.hidden=!show;
-  if(show){ const s=Math.floor(STG.t), txt=`0:${String(s).padStart(2,'0')}`; const e=document.getElementById('sbT'); if(e.textContent!==txt) e.textContent=txt; document.getElementById('sbBar').style.width=(STG.t/60*100).toFixed(1)+'%'; } });
+  if(show){ const s=Math.floor(STG.t), txt=`0:${String(s).padStart(2,'0')}`; const e=document.getElementById('sbT'); if(e.textContent!==txt) e.textContent=txt; document.getElementById('sbBar').style.width=(STG.t/60*100).toFixed(1)+'%';
+    const hy=document.getElementById('sbShk'), ht=SHK.armed?(SHK.steady?`📳 x3 ${Math.min(30,Math.floor(STG.sh||0))}/30초`:SHK.active?'📳 박자를 일정하게':'📳 흔들어요'):''; if(hy&&hy.dataset.shk!==ht){ hy.dataset.shk=ht; hy.textContent=ht; } } });
 
 /* ================= COIN FANFARE BURST ================= */
 const CB={parts:[],sprites:[]};
@@ -4447,23 +4498,25 @@ function hyAnchor(){ const src=hyBest(), st=hyStage(src); if(!st) return null; l
   const L=Math.hypot(dx,dz)||1; dx/=L; dz/=L; if(src.front){ x=src.front.x; z=src.front.z; } else { x=st.x+dx*3.5; z=st.z+dz*3.5; } return {x,z,dx,dz,y:pState.y}; }
 // slots fill the front rows first; the longer you dance, the tighter everyone packs toward the stage
 function hySlot(i){ return {i,jl:rand(-.25,.25),jd:rand(-.2,.2)}; }
-function hyDense(){ return clamp(1-(HY.total-120)/900,.62,1); }
-function hyPos(sl){ const A=HY.anchor, k=hyDense(), row=Math.floor(sl.i/8), col=sl.i%8, lat=(col-3.5)*1.15*k+sl.jl*k, dep=Math.max(0,row*1.25*k+sl.jd*k); sl.x=A.x+A.dx*dep+A.dz*lat; sl.z=A.z+A.dz*dep-A.dx*lat; return sl; }
+function hyDense(){ return clamp(1-(HY.total-120)/360,.58,1); }
+function hyPos(sl){ const A=HY.anchor, k=hyDense(), row=Math.floor(sl.i/10), col=sl.i%10, lat=(col-4.5)*1.1*k+sl.jl*k, dep=Math.max(0,row*1.15*k+sl.jd*k); sl.x=A.x+A.dx*dep+A.dz*lat; sl.z=A.z+A.dz*dep-A.dx*lat; return sl; }
 function hySpawn(shirtless){ if(!HY.anchor) HY.anchor=hyAnchor(); if(!HY.anchor) return; const c=randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2, A=HY.anchor; P.root.position.set(A.x+Math.cos(a)*18,A.y,A.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
   const i=HY.mem.length; HY.mem.push({P,c,st:'in',slot:hySlot(i),away:{x:A.dx+rand(-.7,.7),z:A.dz+rand(-.7,.7)},shirtless,tw:rand(-.25,.25),ph:Math.random()*6,outT:0}); if(shirtless) say(P,'웃통 벗고 논다!',1.6); }
 function hyUndress(m){ if(m.dead||m.st==='out'||m.shirtless) return; const old=m.c.outer!=='none'?m.c.outerColor:m.c.topColor; hyStrip(m.c); const pos=m.P.root.position.clone(), ry=m.P.root.rotation.y, dn=m.P.dance; scene.remove(m.P.root); const P=buildCharacter(m.c); P.dance=dn; P.root.position.copy(pos); P.root.rotation.y=ry; scene.add(P.root); m.P=P; m.shirtless=true; say(P,'웃통 벗자!',1.6);
   const sh=new THREE.Mesh(G.box,M(old)); sh.scale.set(.42,.46,.06); sh.position.set(pos.x,pos.y+1.9,pos.z); scene.add(sh); HY.shirts.push({m:sh,v:new THREE.Vector3(rand(-1.5,1.5),rand(4.5,6.5),rand(-1.5,1.5)),w:new THREE.Vector3(rand(-8,8),rand(-8,8),rand(-8,8)),life:2}); }
 function hyCheerSound(l){ if(!ac||!master) return; const tt=ac.currentTime; if(!HY.nb){ const b=ac.createBuffer(1,Math.floor(ac.sampleRate*1.2),ac.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; HY.nb=b; }
   const s=ac.createBufferSource(); s.buffer=HY.nb; const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000+Math.random()*300; bp.Q.value=.55; const g=ac.createGain(); g.gain.setValueAtTime(0.0001,tt); g.gain.linearRampToValueAtTime(.04+.025*Math.min(l,5),tt+.12); g.gain.exponentialRampToValueAtTime(.0005,tt+.95); s.connect(bp); bp.connect(g); g.connect(master); s.start(tt); s.stop(tt+1.1); }
-function hyLevel(k){ if(k===2){ toast('🔥 2분 돌파! 사람들이 하나둘 스테이지 앞으로 모여들어요'); }
+function hyLevel(k){ if(k===2){ toast('🔥 2분 돌파! 사람들이 스테이지 앞으로 우르르 몰려와요'); }
   else if(k===3){ toast('🔥🔥 3분! 스테이지 앞이 점점 차오르고 있어요'); }
   else if(k===4){ toast('🔥🔥🔥 4분! 맨 앞까지 꽉 찼어요'); }
   else if(k===5&&!HY.bonus){ HY.bonus=true; addCoins(50); coinBurst(50); toast('🏆 5분 연속 스테이지 댄스! 보너스 +50코인'); } }
 updaters.push((t,dt)=>{
-  if(STG.on) HY.total+=dt; else if(STG.t===0&&HY.total>0){ HY.total=0; HY.lvl=0; HY.bonus=false; HY.queue=[]; HY.anchor=null; HY.spawnT=0; HY.mem.forEach(m=>{ m.st='out'; }); }
+  if(STG.on) HY.total+=dt; else if(STG.t===0&&HY.total>0){ HY.total=0; HY.lvl=0; HY.bonus=false; HY.rush=false; HY.queue=[]; HY.anchor=null; HY.spawnT=0; HY.mem.forEach(m=>{ m.st='out'; }); }
   const L=HY.total>=300?5:HY.total>=240?4:HY.total>=180?3:HY.total>=120?2:0; if(L>HY.lvl){ for(let k=HY.lvl+1;k<=L;k++) hyLevel(k); HY.lvl=L; }
   const hb=document.getElementById('sbHype'); if(hb){ const s=Math.floor(HY.total), tx=HY.total>0?`${HY.lvl>=5?'🏆':'🔥'.repeat(Math.max(0,HY.lvl-1))} 총 ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`:''; if(hb.textContent!==tx) hb.textContent=tx; }
-  if(STG.on&&HY.total>=120&&HY.mem.filter(m=>m.st!=='out').length+HY.queue.length<(LOW?40:84)){ HY.spawnT=(HY.spawnT||0)-dt; if(HY.spawnT<=0){ HY.queue.push({sp:1}); HY.spawnT=HY.total<180?4.5:HY.total<300?3:2.2; } }
+  // at two minutes a wave of ravers rushes the front, then the floor keeps packing tighter until it is wall to wall
+  if(STG.on&&HY.total>=120&&!HY.rush){ HY.rush=true; for(let k=0;k<(LOW?14:28);k++) HY.queue.push({sp:1}); }
+  if(STG.on&&HY.total>=120&&HY.mem.filter(m=>m.st!=='out').length+HY.queue.length<(LOW?56:120)){ HY.spawnT=(HY.spawnT||0)-dt; if(HY.spawnT<=0){ HY.queue.push({sp:1}); HY.spawnT=HY.total<180?1.4:HY.total<300?1:.8; } }
   for(let n=0;n<(LOW?1:2)&&HY.queue.length;n++){ const q=HY.queue.shift(); if(q.strip) hyUndress(q.strip); else hySpawn(!!q.bare); }
   if(HY.mem.length){ const src=hyBest(), stg=hyStage(src), beat=hyBeat(src,t), bar=Math.floor(beat/4), cheer=HY.lvl>=2&&STG.on;
     if(cheer&&bar!==HY.cheerB){ HY.cheerB=bar; hyCheerSound(HY.lvl); const live=HY.mem.filter(m=>m.st==='dance'); for(let k=0;k<Math.min(live.length,HY.lvl>=3?4:2);k++) say(pick(live).P,pick(HY_CHEER),1.3); }
@@ -4812,7 +4865,7 @@ function bmChoose(){ const L=[['air','🚚 실버 에어트레일러','픽업트
   openSp('캠핑카 고르기','블랙록 사막을 달려 사막점으로 가요',`<p>수많은 아트카와 함께 사막을 달려요. 지붕 위에서 춤추며 가요!</p><div class='acts' style='grid-template-columns:1fr'>${L.map(([k,n,d])=>`<button data-act='${k}'>${n}<br><small style='font-weight:500;opacity:.75'>${d}</small></button>`).join('')}<button data-act='skip' class='ghost'>달리기 건너뛰고 게이트로</button></div>`,a=>{ closeSp(); if(a==='skip') bmArrive(true); else if(BM.campers[a]) bmDriveStart(a); }); }
 function bmStart(){ bmBuild(); if(SPH.seat) sphStand(true); SPH.inside=false; BM.mode='choose'; BM.kind=null; Object.values(BM.campers).forEach(c=>c.g.visible=false); pState.x=0; pState.z=BM.RZ0-6; pState.y=0; pState.vy=0; pState.face=0; yaw=Math.PI; pitch=.25; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
   BM.zones.forEach(z=>{ z.Z.vol=.85; }); BM.cars.forEach(c=>{ c.g.position.z=BM.RZ0+c.dz; c.g.position.x=c.x0; c.parked=false; c.g.rotation.y=0; }); toast('블랙록 사막 입구예요! 캠핑카를 골라 사막점까지 달려가요'); setTimeout(bmChoose,400); }
-function bmDriveStart(k){ BM.kind=k; const C=BM.campers[k]; Object.values(BM.campers).forEach(c=>c.g.visible=false); C.g.visible=true; BM.cx=0; BM.cz=BM.RZ0; BM.v=26; BM.el=0; C.g.position.set(0,0,BM.cz); C.g.rotation.set(0,0,0); BM.mode='drive'; sleepS={kind:'drive',t:1e9,dur:1e9}; BM.prevCam=camDist; camDist=LOW?14:13; pitch=.28; yaw=Math.PI; $('#bmHud').hidden=false; danceOn=true;
+function bmDriveStart(k){ BM.kind=k; const C=BM.campers[k]; Object.values(BM.campers).forEach(c=>c.g.visible=false); C.g.visible=true; BM.cx=0; BM.cz=BM.RZ0; BM.v=26; BM.el=0; C.g.position.set(0,0,BM.cz); C.g.rotation.set(0,0,0); BM.mode='drive'; sleepS={kind:'drive',t:1e9,dur:1e9}; BM.prevCam=camDist; camDist=LOW?14:13; pitch=.28; yaw=Math.PI; $('#bmHud').hidden=false; danceOn=true; DRV.cheerT=.6;
   $('#bmHint').textContent=isTouch?'조이스틱 위아래 속도, 좌우 방향':'W/S 속도, A/D 방향'; toast('출발! 아트카들과 함께 사막점으로 달려요'); sfx(tt=>{ tone(master,tt,'sawtooth',98,.06,.5); tone(master,tt+.2,'sawtooth',131,.06,.6); }); }
 function bmDrive(dt,t){ const C=BM.campers[BM.kind]; if(!C){ sleepS=null; return; } const ix=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+jv.x, iy=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)+jv.y;
   // the 540 m run to the gate always takes 15 s or less: brisk cruise, and a catch-up floor if you slow down or leave the road
@@ -5039,7 +5092,9 @@ function schKey(T){ return T.key==='zone:shelter'?'club3':T.key==='zone:paper'?'
 updaters.push(t=>{ if(MCA.onClaude) return;
   if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!inGame) return; if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
   // warm the player before you get there: the nearest live scheduled stage loads silently, so moving to any booth only swaps the set inside a ready player
-  if(!MC.iframe&&t-(SCH.warmT||-99)>8){ SCH.warmT=t; const w=schWarm(); if(w){ mcPlayItem(w.it,w.T); MC.schId=w.slot.id; SCH.synced=false; SCH.lastSync=t; } }
+  // keep the player loaded with the nearest live stage's set while you are not listening to anything: walking up to any booth only fades in a set that is already playing in sync
+  if(t-(SCH.warmT||-99)>(MC.iframe?3:8)){ SCH.warmT=t; const hearing=MC.iframe&&MC.target&&mcLevel(MC.target)>.05;
+    if(!hearing){ const w=schWarm(); if(w&&w.slot.id!==MC.schId){ MC.quiet=true; mcPlayItem(w.it,w.T); MC.quiet=false; MC.schId=w.slot.id; SCH.synced=false; SCH.lastSync=t; } } }
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||mcLevel(T)<.35) return;
   const slot=schSlot(schKey(T)), mine=MC.target&&MC.target.key===T.key;
   if(mine&&MC.needTap&&MC.iframe&&!MC.playing){ MC.needTap=false; mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); }
