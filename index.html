@@ -294,11 +294,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 #optNav button.on{background:var(--chip-on)!important;color:var(--chip-on-text)!important;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 #opts .sec[hidden]{display:none!important}
 body.dressing #sp{display:none!important}
-/* mobile top bar: row 1 = map/move + menu, row 2 = stamina/coins, row 3 = DJ lineup; an open map panel sits above everything */
+/* mobile top bar: row 1 = stamina/coins, row 2 = map/move + menu, row 3 = DJ lineup; an open map panel sits above everything */
 @media (max-width:760px),(pointer:coarse){
-  #coinHud{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:calc(58px + var(--sat))!important;max-width:calc(100vw - 20px)}
+  #coinHud{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:calc(10px + var(--sat))!important;max-width:calc(100vw - 20px)}
+  .mapc{top:calc(50px + var(--sat))!important}
+  body .tools{top:calc(50px + var(--sat))!important}
   #lineupBtn{top:calc(98px + var(--sat))!important}
-  .mapc:has(#boothList:not([hidden])){z-index:25!important;max-height:calc(100dvh - 120px);display:flex;flex-direction:column}
+  .mapc:has(#boothList:not([hidden])){z-index:25!important;max-height:calc(100dvh - 160px);display:flex;flex-direction:column}
   .mapc:has(#boothList:not([hidden])) #boothList{max-height:none;flex:1;min-height:0}
   body:has(.mapc #boothList:not([hidden])) #sp{visibility:hidden}
 }
@@ -731,14 +733,14 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <span class="st" title="취기"><span aria-hidden="true">🍺</span><i><b id="stD"></b></i></span>
     <small id="statusTxt"></small></div>
   <nav class="mapc card" aria-label="캠프 지도">
-    <button class="maphead" id="mapToggle" aria-expanded="true">🗺️ 맵/이동</button>
-    <button class="mapclose" id="mapClose" hidden>✕ 맵/이동 닫기</button>
+    <button class="maphead" id="mapToggle" aria-expanded="true">🗺️ 이동하기(MAP)</button>
+    <button class="mapclose" id="mapClose" hidden>✕ 닫기</button>
     <ul id="boothList"></ul>
   </nav>
   <button class="card" id="lineupBtn" aria-label="오늘의 DJ 편성표"><span class="lud" id="luDate"></span><b>DJ 라인업</b><em id="luCnt" hidden></em></button>
   <div class="tools">
     <button id="menuBtn" aria-expanded="false">메뉴</button>
-    <button id="mapBtn"><span class="l">맵/이동</span><span class="s">🗺️ 맵</span></button>
+    <button id="mapBtn"><span class="l">이동하기(MAP)</span><span class="s">🗺️ 맵</span></button>
     <button hidden id="bagBtn"><span class="l">가방</span><span class="s">가방</span></button>
     <button id="danceBtn"><span class="l">춤 고르기</span><span class="s">춤</span></button>
     <button id="skyBtn"><span class="l">하늘 보기</span><span class="s">하늘</span></button>
@@ -1846,7 +1848,7 @@ $('#timeBtn').addEventListener('click',()=>{ night=!night; applyTime(); });
 $('#muteBtn').addEventListener('click',()=>{ muted=!muted; if(master) master.gain.setTargetAtTime(muted?0:.8,ac.currentTime,.05); setBtn($('#muteBtn'),muted?'소리 켜기':'소리 끄기',muted?'소리':'음소거'); });
 $('#mapToggle').addEventListener('click',()=>{ const l=$('#boothList'); l.hidden=!l.hidden; $('#mapToggle').setAttribute('aria-expanded',String(!l.hidden)); if(!l.hidden) renderBoothList(); });
 const compact=()=>isTouch||innerWidth<=760;
-if(compact()){ $('#boothList').hidden=true; $('#mapToggle').setAttribute('aria-expanded','false'); $('#mapToggle').textContent='🗺️ 맵/이동'; }
+if(compact()){ $('#boothList').hidden=true; $('#mapToggle').setAttribute('aria-expanded','false'); $('#mapToggle').textContent='🗺️ 이동하기(MAP)'; }
 $('#np').classList.add('collapsed'); $('#npToggle').setAttribute('aria-expanded','false'); // the music card starts mini and folds back when you tap elsewhere
 $('#npToggle').addEventListener('click',()=>{ const c=$('#np').classList.toggle('collapsed'); $('#npToggle').setAttribute('aria-expanded',String(!c)); });
 
