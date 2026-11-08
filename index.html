@@ -316,6 +316,9 @@ body.dressing #sp{display:none!important}
 #stepBoard .me{margin-top:6px;width:100%;border:0;border-radius:10px;padding:8px;background:var(--chip);color:var(--text);font:inherit;font-size:12px;font-weight:700}
 @media (max-width:760px),(pointer:coarse){ #stepHud{left:10px;width:min(220px,62vw)} #stepHud .dig i{font-size:13px;padding:3px 2px;min-width:10px} }
 @media (prefers-reduced-motion:reduce){ #stepHud.on .dig i:last-child{animation:none} }
+/* left-hand menus: whichever one is open comes to the front, the others stay underneath */
+.mapc:has(#boothList:not([hidden])){z-index:25!important}
+#stepHud:has(#stepBoard:not([hidden])){z-index:24}
 /* mobile top bar: row 1 = stamina/coins, row 2 = map/move + menu, row 3 = DJ lineup; an open map panel sits above everything */
 @media (max-width:760px),(pointer:coarse){
   #coinHud{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:calc(10px + var(--sat))!important;max-width:calc(100vw - 20px)}
