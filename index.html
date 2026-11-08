@@ -294,6 +294,28 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 #optNav button.on{background:var(--chip-on)!important;color:var(--chip-on-text)!important;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 #opts .sec[hidden]{display:none!important}
 body.dressing #sp{display:none!important}
+/* dance pedometer: odometer digits on the left, ranking opens while dancing */
+#stepHud{position:fixed;left:12px;bottom:calc(150px + var(--sab));z-index:5;padding:0;border-radius:14px;overflow:hidden;width:min(250px,calc(100vw - 24px))}
+#stepHud[hidden]{display:none!important}
+#stepTop{display:flex;align-items:center;gap:8px;width:100%;border:0;background:transparent;color:var(--text);padding:8px 10px;font:inherit;cursor:pointer;text-align:left}
+#stepTop .sl{font-size:12px;font-weight:800;white-space:nowrap}
+#stepTop .sr{margin-left:auto;font-size:11px;color:var(--muted);white-space:nowrap}
+#stepHud .dig{display:flex;gap:2px}
+#stepHud .dig i{font-style:normal;font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:15px;line-height:1;background:#0c0b10;color:#c6ff3d;border-radius:4px;padding:4px 3px;min-width:12px;text-align:center;box-shadow:inset 0 -6px 8px rgba(255,255,255,.06)}
+#stepHud .dig i.z{color:#3a4a2a}
+#stepHud.on{box-shadow:0 0 0 2px #c6ff3d inset,0 0 18px rgba(198,255,61,.35)}
+#stepHud.on .dig i:last-child{animation:stepTick .5s ease-out infinite}
+@keyframes stepTick{0%{transform:translateY(-3px)}100%{transform:none}}
+#stepBoard{border-top:1px solid var(--panel-line);padding:6px 10px 10px}
+#stepBoard .sbh{font-size:12px;font-weight:800;margin-bottom:4px} #stepBoard .sbh small{font-weight:500;color:var(--muted);font-size:10.5px}
+#stepList{list-style:none;margin:0;padding:0;max-height:180px;overflow-y:auto}
+#stepList li{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:8px;font-size:12px}
+#stepList li b{width:22px;text-align:center} #stepList li span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} #stepList li em{font-style:normal;font-family:ui-monospace,Menlo,monospace;font-weight:700}
+#stepList li.mine{background:var(--chip-on);color:var(--chip-on-text)}
+#stepList li.note{color:var(--muted);font-size:10.5px;padding-top:6px}
+#stepBoard .me{margin-top:6px;width:100%;border:0;border-radius:10px;padding:8px;background:var(--chip);color:var(--text);font:inherit;font-size:12px;font-weight:700}
+@media (max-width:760px),(pointer:coarse){ #stepHud{bottom:auto;top:calc(140px + var(--sat));width:min(220px,62vw)} #stepHud .dig i{font-size:13px;padding:3px 2px;min-width:10px} }
+@media (prefers-reduced-motion:reduce){ #stepHud.on .dig i:last-child{animation:none} }
 /* mobile top bar: row 1 = stamina/coins, row 2 = map/move + menu, row 3 = DJ lineup; an open map panel sits above everything */
 @media (max-width:760px),(pointer:coarse){
   #coinHud{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:calc(10px + var(--sat))!important;max-width:calc(100vw - 20px)}
@@ -4674,6 +4696,30 @@ updaters.push((t,dt)=>{ if(!player||!inGame){ if(OOB.pool.length) OOB.pool.forEa
     G.g.position.set(pr.position.x+Math.sin(a)*d, pr.position.y+ease*G.rise, pr.position.z+Math.cos(a)*d);
     G.g.rotation.set(0,pr.rotation.y+G.spin*ease,0); G.g.scale.setScalar(1+ease*(G.big-1));
     G.mat.color.setHSL((G.hue+e*.25)%1,1,.6); G.mat.opacity=Math.min(1,e*8)*Math.pow(1-e,1.6)*.6; }); });
+
+/* ================= DANCE PEDOMETER: steps only count while you dance ================= */
+// left-side odometer; dancing opens the ranking (top dancers + your rank). Ranking source is pluggable (STEPS.board).
+const STEPS={n:0,acc:0,saveT:0,el:null,open:false,manual:false,shown:-1,board:null,id:''};
+try{ STEPS.n=+(localStorage.getItem('playa-steps')||0)||0; STEPS.id=localStorage.getItem('playa-step-id')||''; }catch(e){}
+if(!STEPS.id){ STEPS.id=String(1000+Math.floor(Math.random()*9000)); try{ localStorage.setItem('playa-step-id',STEPS.id); }catch(e){} }
+function stepName(){ return ((($('#pname')&&$('#pname').value)||'버너').trim()||'버너').slice(0,12)+'#'+STEPS.id; }
+function stepFmt(n){ return String(Math.floor(n)).padStart(7,'0'); }
+function stepBuild(){ const d=document.createElement('div'); d.id='stepHud'; d.className='card'; d.hidden=true;
+  d.innerHTML=`<button id='stepTop' aria-expanded='false' aria-label='만보기, 춤출 때만 올라가요. 눌러서 랭킹 보기'><span class='sl'>🕺 만보기</span><span id='stepDig' class='dig'></span><span class='sr'>랭킹 ▸</span></button><div id='stepBoard' hidden><div class='sbh'>💃 춤 만보기 랭킹 <small>춤출 때만 올라가요</small></div><ol id='stepList'></ol><button id='stepMe' class='me'>나의 순위 보기</button></div>`;
+  document.body.appendChild(d); STEPS.el=d;
+  $('#stepTop').addEventListener('click',e=>{ e.stopPropagation(); STEPS.manual=!STEPS.open; stepOpen(!STEPS.open); });
+  $('#stepMe').addEventListener('click',e=>{ e.stopPropagation(); const me=document.querySelector('#stepList li.mine'); if(me) me.scrollIntoView({block:'center',behavior:'smooth'}); const r=stepRank(); toast(r.rank?`나의 순위 ${r.rank}위 · ${Math.floor(STEPS.n).toLocaleString()}걸음`:'아직 랭킹에 오르지 않았어요. 춤을 춰 보세요!'); }); }
+function stepOpen(o){ STEPS.open=o; $('#stepBoard').hidden=!o; $('#stepTop').setAttribute('aria-expanded',String(o)); $('#stepTop .sr').textContent=o?'접기 ▾':'랭킹 ▸'; if(o) stepRender(); }
+// everyone on the board: the shared board when one is connected, otherwise just you
+function stepRank(){ const me={name:stepName(),n:Math.floor(STEPS.n),me:true}; let L=(STEPS.board||[]).filter(x=>x.name!==me.name).map(x=>({name:x.name,n:x.n})); L.push(me); L.sort((a,b)=>b.n-a.n); return {L,rank:L.findIndex(x=>x.me)+1}; }
+function stepRender(){ const {L,rank}=stepRank(); const top=L.slice(0,10); if(rank>10) top.push(L[rank-1]);
+  $('#stepList').innerHTML=top.map(x=>{ const r=L.indexOf(x)+1; return `<li class='${x.me?'mine':''}'><b>${r<=3?['🥇','🥈','🥉'][r-1]:r}</b><span>${esc(x.name)}</span><em>${x.n.toLocaleString()}</em></li>`; }).join('')+(STEPS.board?'':`<li class='note'>다른 참여자 기록은 랭킹 서버가 연결되면 함께 보여요</li>`); }
+updaters.push((t,dt)=>{ if(!STEPS.el) stepBuild(); const show=inGame&&!document.body.classList.contains('dressing'); if(STEPS.el.hidden===show) STEPS.el.hidden=!show; if(!show) return;
+  const dancing=pAct==='dance'&&!sleepS&&!pState.veh; STEPS.el.classList.toggle('on',dancing);
+  if(dancing){ STEPS.acc+=dt*(SHK.active?3:2.2); if(STEPS.acc>=1){ const k=Math.floor(STEPS.acc); STEPS.acc-=k; STEPS.n+=k; } STEPS.saveT+=dt; if(STEPS.saveT>3){ STEPS.saveT=0; try{ localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); }catch(e){} } }
+  // dancing opens the ranking; it folds again a few seconds after you stop (unless you opened it yourself)
+  if(dancing){ STEPS.idle=0; if(!STEPS.open) stepOpen(true); } else if(STEPS.open&&!STEPS.manual){ STEPS.idle=(STEPS.idle||0)+dt; if(STEPS.idle>4) stepOpen(false); }
+  const v=Math.floor(STEPS.n); if(v!==STEPS.shown){ STEPS.shown=v; const s=stepFmt(v); $('#stepDig').innerHTML=[...s].map((c,i)=>`<i class='${i<s.length-String(v).length?'z':''}'>${c}</i>`).join(''); if(STEPS.open&&(v%5===0)) stepRender(); } });
 
 /* ================= STAGE DANCE BONUS: 1 MIN = +3 COINS ================= */
 const STG={t:0,grace:0,el:null};
