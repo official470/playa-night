@@ -295,7 +295,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 #opts .sec[hidden]{display:none!important}
 body.dressing #sp{display:none!important}
 /* dance pedometer: odometer digits on the left, ranking opens while dancing */
-#stepHud{position:fixed;left:12px;bottom:calc(150px + var(--sab));z-index:5;padding:0;border-radius:14px;overflow:hidden;width:min(250px,calc(100vw - 24px))}
+#stepHud{position:fixed;left:12px;top:calc(110px + var(--sat));z-index:5;padding:0;border-radius:14px;overflow:hidden;width:min(250px,calc(100vw - 24px))}
 #stepHud[hidden]{display:none!important}
 #stepTop{display:flex;align-items:center;gap:8px;width:100%;border:0;background:transparent;color:var(--text);padding:8px 10px;font:inherit;cursor:pointer;text-align:left}
 #stepTop .sl{font-size:12px;font-weight:800;white-space:nowrap}
@@ -314,7 +314,7 @@ body.dressing #sp{display:none!important}
 #stepList li.mine{background:var(--chip-on);color:var(--chip-on-text)}
 #stepList li.note{color:var(--muted);font-size:10.5px;padding-top:6px}
 #stepBoard .me{margin-top:6px;width:100%;border:0;border-radius:10px;padding:8px;background:var(--chip);color:var(--text);font:inherit;font-size:12px;font-weight:700}
-@media (max-width:760px),(pointer:coarse){ #stepHud{bottom:auto;top:calc(140px + var(--sat));width:min(220px,62vw)} #stepHud .dig i{font-size:13px;padding:3px 2px;min-width:10px} }
+@media (max-width:760px),(pointer:coarse){ #stepHud{left:10px;width:min(220px,62vw)} #stepHud .dig i{font-size:13px;padding:3px 2px;min-width:10px} }
 @media (prefers-reduced-motion:reduce){ #stepHud.on .dig i:last-child{animation:none} }
 /* mobile top bar: row 1 = stamina/coins, row 2 = map/move + menu, row 3 = DJ lineup; an open map panel sits above everything */
 @media (max-width:760px),(pointer:coarse){
@@ -3403,8 +3403,8 @@ function buildTeller(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sce
   face(telCanvas(512,256,(x,w,h)=>{ x.fillStyle='#121214'; x.fillRect(0,0,w,h); x.strokeStyle='#1e1e22'; x.lineWidth=3; for(let y=8;y<h;y+=10){ x.beginPath(); x.moveTo(0,y); x.lineTo(w,y); x.stroke(); } x.fillStyle='#e0251e'; x.font='900 170px sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('teller',w/2,h/2+10); }),2.7,1.35,1.05,26.25);
   // bouncer at the door
   const bnc={top:'long',topColor:'#141414',outer:'none',bottom:'cargo',bottomColor:'#141414',shoes:'boots',shoeColor:'#141414',hairStyle:'buzz',hairColor:'#1b1412',head:'bucket',headColor:'#7a1414',face:'none',extra:'none'};
-  TEL.bouncer=addNPC(bnc,{x:OX-27.4,z:22.4},Math.PI/2,'idle',{talk:true}).P;
-  const S2=addNPC(null,{x:OX-26.6,z:25.8},-Math.PI/2,'talk',{talk:true});
+  TEL.bouncer=addNPC(bnc,{x:OX-27.9,z:21.1},Math.PI/2+.5,'idle',{talk:true}).P;
+  const S2=addNPC(null,{x:OX-21.5,z:27.1},Math.PI,'talk',{talk:true});
   // ---------- B1 room ----------
   const X=TEL.X, R=new THREE.Group(); R.position.x=X; IG.add(R); TEL.room=R;
   const shell=new THREE.Mesh(new THREE.BoxGeometry(60,24,50),new THREE.MeshBasicMaterial({color:0x0a0102,side:THREE.BackSide})); shell.position.y=8; R.add(shell);
@@ -3419,6 +3419,12 @@ function buildTeller(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sce
   const led=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({fog:false,map:telCanvas(256,128,(x,w,h)=>{ x.fillStyle='#5a0606'; x.fillRect(0,0,w,h); for(let i=0;i<w;i+=6){ x.fillStyle=i%12?'#ff3a2a':'#c41a12'; x.fillRect(i,8,3,h-16); } })}));
   led.scale.set(9,2.6,1); led.position.set(10.38,1.7,-1.2); led.rotation.y=-Math.PI/2; R.add(led); TEL.led=led;
   B(1.2,1.05,3.6,M('#0a0a0a'),8.6,.52,-1.2,R); B(1.22,.04,3.62,M('#ff2a2a',{glow:1}),8.6,1.06,-1.2,R);
+  { const gm=new THREE.MeshBasicMaterial({color:0x1c1c22}), scr=new THREE.MeshBasicMaterial({color:0x7ab8ff,fog:false}), jog=new THREE.MeshBasicMaterial({color:0xd8e4ff,fog:false}), led=new THREE.MeshBasicMaterial({color:0xff3a2a,fog:false});
+    [-2.4,0].forEach(z=>{ B(.75,.1,.95,gm,8.55,1.13,z,R); const sc=new THREE.Mesh(G.box,scr); sc.scale.set(.22,.02,.4); sc.position.set(8.82,1.19,z); R.add(sc);
+      const jw=new THREE.Mesh(new THREE.CylinderGeometry(.24,.24,.03,24),gm); jw.position.set(8.48,1.19,z); R.add(jw); const ring=new THREE.Mesh(new THREE.TorusGeometry(.24,.018,6,24),jog); ring.rotation.x=Math.PI/2; ring.position.set(8.48,1.21,z); R.add(ring);
+      [.22,-.22].forEach(dz=>{ const q=new THREE.Mesh(G.box,led); q.scale.set(.06,.02,.06); q.position.set(8.24,1.19,z+dz); R.add(q); }); });
+    B(.65,.12,.62,gm,8.55,1.14,-1.2,R); for(let k=0;k<4;k++){ const f=new THREE.Mesh(G.box,k%2?scr:led); f.scale.set(.05,.03,.04); f.position.set(8.4+(k%2)*.1,1.21,-1.42+k*.15); R.add(f); }
+    const lamp=new THREE.Mesh(G.box,new THREE.MeshBasicMaterial({color:0xfff0d0,fog:false})); lamp.scale.set(.05,.05,.5); lamp.position.set(9.05,1.6,-1.2); R.add(lamp); }
   // the bar on the DJ's right: counter and glowing shelves along the right wall
   B(7,1.1,.9,M('#140a0a'),5.4,.55,6.6,R); B(7.02,.05,.92,M('#ff2a2a',{glow:1.1}),5.4,1.12,6.6,R);
   for(let r=0;r<2;r++){ B(7,.05,.4,M('#ff3a2a',{glow:1.6}),5.4,1.7+r*.6,8.15,R); for(let i=0;i<9;i++) bottle(R,2.3+i*.75,1.73+r*.6,8.15,pick(['#ff6a4a','#ffd0b0','#c41a12'])); }
@@ -3451,11 +3457,15 @@ function telEntry(){ const B_=TEL.bouncer;
     if(a==='stk'&&!TEL.admitted){ addCoins(-20); const s=document.getElementById('telStk'); if(s) s.classList.add('on'); sfx(tt=>tone(master,tt,'sine',220,.08,.12,140)); TEL.admitted=true; say(B_,'즐거운 시간 되세요');
       setTimeout(()=>{ closeSp(); telGo(true); },1200); } }); }
 function telGo(down){ closeSp(); const fd=$('#fade'); fd.style.opacity='1'; sfx(tt=>{ tone(master,tt,'sine',down?330:660,.08,.4); tone(master,tt+.15,'sine',down?220:880,.08,.5); });
-  setTimeout(()=>{ if(down){ TEL.in=true; IT.floor=0; if(!TEL.cfg){ TEL.cfg=JSON.parse(JSON.stringify(cfg)); ['kOuter','kTop','kHead','kAcc','kWorn'].forEach(k=>delete cfg[k]); Object.assign(cfg,TEL_BLACK); rebuildPlayer(); }
-      pState.x=OX+TEL.X-4.2; pState.z=-4.4; pState.face=Math.PI/2+.25; camDist=5; pitch=.22; toast('B1 텔러. 빨간 연기 속 테크노, 다들 검은 옷이에요'); }
-    else { telLeave(); pState.x=TEL.door.x+1.6; pState.z=TEL.door.z; pState.face=Math.PI/2; camDist=LOW?8.5:7.5; pitch=.32; toast('골목으로 나왔어요. 원래 옷으로 갈아입었어요'); }
+  setTimeout(()=>{ if(down){ TEL.in=true; IT.floor=0;       pState.x=OX+TEL.X-4.2; pState.z=-4.4; pState.face=Math.PI/2+.25; camDist=5; pitch=.22; toast('B1 텔러. 빨간 연기 속 테크노, 다들 검은 옷이에요'); }
+    else { telLeave(); pState.x=TEL.door.x+1.6; pState.z=TEL.door.z; pState.face=Math.PI/2; camDist=LOW?8.5:7.5; pitch=.32; toast('골목으로 나왔어요'); }
     pState.y=0; pState.vy=0; yaw=pState.face+Math.PI; fd.style.opacity='0'; },450); }
-function telLeave(){ TEL.in=false; if(sky) sky.visible=true; if(stars) stars.visible=night; if(moon) moon.visible=night; const L=IT.lightS; if(L&&TEL.lit){ L.position.copy(TEL.lit.p); L.color.setHex(TEL.lit.c); L.distance=TEL.lit.d; L.intensity=1.4; TEL.lit=null; } if(TEL.cfg){ Object.keys(TEL_BLACK).forEach(k=>delete cfg[k]); Object.assign(cfg,TEL.cfg); TEL.cfg=null; rebuildPlayer(); } }
+function telLeave(){ TEL.in=false; if(sky) sky.visible=true; if(stars) stars.visible=night; if(moon) moon.visible=night; const L=IT.lightS; if(L&&TEL.lit){ L.position.copy(TEL.lit.p); L.color.setHex(TEL.lit.c); L.distance=TEL.lit.d; L.intensity=1.4; TEL.lit=null; } }
+// Itaewon dress code: arriving in Itaewon puts you in an all-black look; leaving gives your own outfit back
+const ITB={cfg:null};
+updaters.push(()=>{ if(!inGame||!player) return; const inIT=MAP==='itaewon';
+  if(inIT&&!ITB.cfg){ ITB.cfg=JSON.parse(JSON.stringify(cfg)); ['kOuter','kTop','kHead','kAcc','kWorn'].forEach(k=>delete cfg[k]); Object.assign(cfg,TEL_BLACK); rebuildPlayer(); toast('이태원 드레스 코드: 올 블랙으로 갈아입었어요'); }
+  else if(!inIT&&ITB.cfg){ Object.keys(TEL_BLACK).forEach(k=>delete cfg[k]); Object.assign(cfg,ITB.cfg); ITB.cfg=null; rebuildPlayer(); } });
 function telTick(t,dt){ if(TEL.in&&!telInside()) telLeave();
   if(!TEL.in) return;
   // dark red haze: people fade to silhouettes a few metres away
@@ -4715,6 +4725,7 @@ function stepRank(){ const me={name:stepName(),n:Math.floor(STEPS.n),me:true}; l
 function stepRender(){ const {L,rank}=stepRank(); const top=L.slice(0,10); if(rank>10) top.push(L[rank-1]);
   $('#stepList').innerHTML=top.map(x=>{ const r=L.indexOf(x)+1; return `<li class='${x.me?'mine':''}'><b>${r<=3?['🥇','🥈','🥉'][r-1]:r}</b><span>${esc(x.name)}</span><em>${x.n.toLocaleString()}</em></li>`; }).join('')+(STEPS.board?'':`<li class='note'>다른 참여자 기록은 랭킹 서버가 연결되면 함께 보여요</li>`); }
 updaters.push((t,dt)=>{ if(!STEPS.el) stepBuild(); const show=inGame&&!document.body.classList.contains('dressing'); if(STEPS.el.hidden===show) STEPS.el.hidden=!show; if(!show) return;
+  { const lu0=document.getElementById('lineupBtn'), lu=lu0&&lu0.offsetParent?lu0:document.querySelector('.mapc'), r=lu&&lu.offsetParent?lu.getBoundingClientRect():null, top=r?Math.round(r.bottom+6):110, left=r?Math.round(r.left):12; if(top!==STEPS.top||left!==STEPS.left){ STEPS.top=top; STEPS.left=left; STEPS.el.style.top=top+'px'; STEPS.el.style.left=left+'px'; } }
   const dancing=pAct==='dance'&&!sleepS&&!pState.veh; STEPS.el.classList.toggle('on',dancing);
   if(dancing){ STEPS.acc+=dt*(SHK.active?3:2.2); if(STEPS.acc>=1){ const k=Math.floor(STEPS.acc); STEPS.acc-=k; STEPS.n+=k; } STEPS.saveT+=dt; if(STEPS.saveT>3){ STEPS.saveT=0; try{ localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); }catch(e){} } }
   // dancing opens the ranking; it folds again a few seconds after you stop (unless you opened it yourself)
@@ -4763,7 +4774,7 @@ function hyAnchor(){ const src=hyBest(), st=hyStage(src); if(!st) return null; l
 function hySlot(i){ return {i,jl:rand(-.25,.25),jd:rand(-.2,.2)}; }
 function hyDense(){ return clamp(1-(HY.total-120)/360,.58,1); }
 function hyPos(sl){ const A=HY.anchor, k=hyDense(), row=Math.floor(sl.i/10), col=sl.i%10, lat=(col-4.5)*1.1*k+sl.jl*k, dep=Math.max(0,row*1.15*k+sl.jd*k); sl.x=A.x+A.dx*dep+A.dz*lat; sl.z=A.z+A.dz*dep-A.dx*lat; return sl; }
-function hySpawn(shirtless){ if(!HY.anchor) HY.anchor=hyAnchor(); if(!HY.anchor) return; const c=randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2, A=HY.anchor; P.root.position.set(A.x+Math.cos(a)*18,A.y,A.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
+function hySpawn(shirtless){ if(!HY.anchor) HY.anchor=hyAnchor(); if(!HY.anchor) return; const c=(typeof TEL!=='undefined'&&TEL.in)?Object.assign(randomConfig(),telLook()):MAP==='itaewon'?Object.assign(randomConfig(),shelterLook()):randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2, A=HY.anchor; P.root.position.set(A.x+Math.cos(a)*18,A.y,A.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
   const i=HY.mem.length; HY.mem.push({P,c,st:'in',slot:hySlot(i),away:{x:A.dx+rand(-.7,.7),z:A.dz+rand(-.7,.7)},shirtless,tw:rand(-.25,.25),ph:Math.random()*6,outT:0}); if(shirtless) say(P,'웃통 벗고 논다!',1.6); }
 function hyUndress(m){ if(m.dead||m.st==='out'||m.shirtless) return; const old=m.c.outer!=='none'?m.c.outerColor:m.c.topColor; hyStrip(m.c); const pos=m.P.root.position.clone(), ry=m.P.root.rotation.y, dn=m.P.dance; scene.remove(m.P.root); const P=buildCharacter(m.c); P.dance=dn; P.root.position.copy(pos); P.root.rotation.y=ry; scene.add(P.root); m.P=P; m.shirtless=true; say(P,'웃통 벗자!',1.6);
   const sh=new THREE.Mesh(G.box,M(old)); sh.scale.set(.42,.46,.06); sh.position.set(pos.x,pos.y+1.9,pos.z); scene.add(sh); HY.shirts.push({m:sh,v:new THREE.Vector3(rand(-1.5,1.5),rand(4.5,6.5),rand(-1.5,1.5)),w:new THREE.Vector3(rand(-8,8),rand(-8,8),rand(-8,8)),life:2}); }
