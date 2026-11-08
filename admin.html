@@ -51,6 +51,16 @@ section{padding:18px 22px 60px;max-width:900px;min-width:0}
 h2{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-size:28px;margin:0 0 2px}
 h3{font-size:16px;margin:26px 0 10px}
 .muted{color:var(--muted)} .small{font-size:13px}
+#dash{grid-column:1/-1;margin-bottom:14px}
+.dkpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
+.dkpi div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+.dkpi small{display:block;color:var(--muted);font-size:12px}.dkpi b{font-size:20px}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.dlist{list-style:none;margin:0 0 10px;padding:0}
+.dlist li{display:grid;grid-template-columns:22px minmax(0,1.2fr) minmax(60px,1fr) auto;gap:8px;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid var(--line)}
+.dlist .dn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dlist .db{height:8px;background:var(--panel);border-radius:4px;overflow:hidden}.dlist .db i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--cyan))}
+.dlist em{font-style:normal;color:var(--muted);font-size:12px;white-space:nowrap}
 .card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px}
 .onair{display:flex;gap:12px;align-items:center;margin:12px 0}
 .onair img,.slot img,.pv img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex:none;background:var(--panel)}
@@ -125,11 +135,41 @@ details.setup li{margin:4px 0}
   <div class="clock" id="clock" aria-label="현재 시각"></div>
   <span class="grow"></span>
   <span class="chip" id="conn">연결 확인 중</span>
+  <button class="btn" id="dashBtn">📊 대시보드</button>
   <a class="btn" id="playGame" href="./" target="_blank" rel="noopener">🎮 게임 들어가기</a>
   <button class="btn main" id="publish" disabled>게임에 게시하기</button>
   <p id="status" role="status" aria-live="polite"></p>
 </header>
 <main>
+<section id="dash" class="card" hidden aria-label="방문 통계 대시보드">
+  <div class="row" style="justify-content:space-between;align-items:center">
+    <h2 style="margin:0">📊 방문 통계 대시보드</h2>
+    <div class="row"><span class="small muted" id="dWho"></span><button class="btn" id="dLogin" hidden>Google로 로그인</button><button class="btn" id="dClose">닫기</button></div>
+  </div>
+  <div id="dSetup" hidden>
+    <p class="small">아직 통계 서버(Firebase, 무료 요금제)가 연결되지 않았어요. 아래 순서대로 한 번만 설정하면 게임 방문 기록이 쌓이기 시작해요. 카드 등록 없이 무료(Spark) 요금제로 돼요.</p>
+    <ol class="small">
+      <li><a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer">Firebase 콘솔</a>에서 <b>프로젝트 추가</b> → 이름(예: realhouse-club) → 애널리틱스는 꺼도 돼요.</li>
+      <li>왼쪽 <b>빌드 → Realtime Database → 데이터베이스 만들기</b> (위치는 아무거나, <b>잠금 모드</b>로 시작).</li>
+      <li>Realtime Database의 <b>규칙</b> 탭에 아래 규칙을 붙여 넣고 <b>게시</b>해요.</li>
+      <li><b>빌드 → Authentication → 시작하기 → Google</b> 사용 설정. 설정 탭의 <b>승인된 도메인</b>에 <code>realhouse.club</code>을 추가해요.</li>
+      <li>프로젝트 설정(톱니바퀴) → 내 앱 → <b>웹 앱 추가(&lt;/&gt;)</b> → 나오는 <code>firebaseConfig</code> 내용을 아래 칸에 붙여 넣고 <b>저장</b>을 눌러요. (GitHub 연결이 되어 있어야 해요)</li>
+    </ol>
+    <textarea id="dRules" readonly rows="9" class="small" style="width:100%;font-family:monospace"></textarea>
+    <textarea id="dCfg" rows="6" class="small" style="width:100%;font-family:monospace;margin-top:8px" placeholder="const firebaseConfig = { apiKey: ..., authDomain: ..., databaseURL: ..., projectId: ..., appId: ... };"></textarea>
+    <div class="row" style="margin-top:6px"><button class="btn main" id="dSaveCfg">저장</button><span class="small muted" id="dCfgMsg"></span></div>
+  </div>
+  <div id="dBody" hidden>
+    <div class="tabs" role="group" aria-label="기간" style="margin:10px 0"><button type="button" data-range="1" aria-pressed="true">오늘</button><button type="button" data-range="7" aria-pressed="false">7일</button><button type="button" data-range="30" aria-pressed="false">30일</button><button type="button" id="dReload" aria-pressed="false">↻ 새로고침</button></div>
+    <div class="dkpi" id="dKpi"></div>
+    <div class="dgrid">
+      <div><h3>🏆 체류 랭킹</h3><ol class="dlist" id="dRank"></ol></div>
+      <div><h3>🗺️ 지역별</h3><ol class="dlist" id="dReg"></ol><h3>🎧 스테이지별</h3><ol class="dlist" id="dStage"></ol></div>
+    </div>
+    <h3>📅 날짜별 방문자</h3><ol class="dlist" id="dDay"></ol>
+    <p class="small muted" id="dNote"></p>
+  </div>
+</section>
   <nav id="booths" aria-label="부스"></nav>
   <section>
     <details class="setup card" id="setup">
@@ -495,6 +535,51 @@ addEventListener('beforeunload',e=>{ if(dirty){ e.preventDefault(); e.returnValu
 const tick=()=>{ const d=new Date(); $('#clock').textContent=`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; };
 setInterval(tick,1000); setInterval(()=>{ if(!document.hidden) render(); },30000); tick();
 resetForm(); checkConn(); load(); setTag(BOOTH_TAG[cur]||'techno');
+/* ===== visitor stats dashboard (Firebase Realtime Database, free Spark plan) ===== */
+const DASH={app:null,db:null,auth:null,range:1,data:null};
+const DASH_ADMIN='official@realsnap.ai';
+const DASH_RULES=JSON.stringify({rules:{sessions:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["last"],"$sid":{".write":"!data.exists() || data.child('uid').val() == newData.child('uid').val()",".validate":"newData.hasChildren(['uid','start','last','dur']) && newData.child('dur').isNumber() && newData.child('dur').val() < 86400"}},steps:{".read":true,".indexOn":["n"],"$uid":{".write":true,".validate":"newData.child('n').isNumber()"}}}},null,2);
+function dLoad(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
+function dFmt(sec){ sec=Math.round(sec||0); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60; return h?`${h}시간 ${m}분`:m?`${m}분 ${s}초`:`${s}초`; }
+function dBar(rows,max,fmt){ return rows.map((r,i)=>`<li><b>${i+1}</b><span class='dn'>${esc(r.name)}</span><span class='db'><i style='width:${Math.max(2,Math.round(r.v/max*100))}%'></i></span><em>${fmt(r)}</em></li>`).join('')||`<li class='muted small'>아직 기록이 없어요</li>`; }
+async function dashOpen(){ $('#dash').hidden=false; $('#dash').scrollIntoView({behavior:'smooth',block:'start'});
+  try{ await dLoad('firebase-config.js?t='+Date.now()); }catch(e){}
+  const C=window.FB_CONFIG; if(!C||!C.databaseURL){ $('#dSetup').hidden=false; $('#dBody').hidden=true; $('#dLogin').hidden=true; $('#dRules').value=DASH_RULES; return; }
+  $('#dSetup').hidden=true;
+  if(!DASH.app){ await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');
+    DASH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); DASH.db=DASH.app.database(); DASH.auth=DASH.app.auth();
+    DASH.auth.onAuthStateChanged(u=>{ $('#dWho').textContent=u?u.email:''; $('#dLogin').hidden=!!u; $('#dBody').hidden=!u; if(u) dashLoad(); }); } else if(DASH.auth.currentUser) dashLoad(); }
+async function dashLoad(){ const since=Date.now()-(DASH.range===1?(Date.now()-new Date().setHours(0,0,0,0)):DASH.range*864e5); $('#dNote').textContent='불러오는 중…';
+  try{ const snap=await DASH.db.ref('sessions').orderByChild('last').startAt(since).once('value'); const S=[]; snap.forEach(c=>{ S.push(c.val()); }); dashRender(S); $('#dNote').textContent=`세션 ${S.length}개 기준 · ${new Date().toLocaleTimeString('ko-KR')} 업데이트`; }
+  catch(e){ $('#dNote').textContent='불러오지 못했어요: '+(e&&e.message||e)+' (Firebase 규칙과 로그인 계정을 확인해 주세요)'; } }
+function dashRender(S){ const users={}, reg={}, stg={}, day={}; let tot=0, mob=0;
+  const RN={playa:'🏜 사막점',itaewon:'🇰🇷 이태원',nami:'🌲 동물원점',sphere:'🔮 지구본점'};
+  S.forEach(x=>{ const d=+x.dur||0; tot+=d; if(x.mob) mob++;
+    const u=users[x.uid]||(users[x.uid]={name:x.name||'버너',v:0,n:0,steps:0,last:0}); u.v+=d; u.n++; u.steps=Math.max(u.steps,+x.steps||0); if(x.last>u.last){ u.last=x.last; u.name=x.name||u.name; }
+    Object.entries(x.regions||{}).forEach(([k,v])=>{ const r=reg[k]||(reg[k]={name:RN[k]||k,v:0,n:0}); r.v+=v; r.n++; });
+    Object.entries(x.stages||{}).forEach(([k,v])=>{ const r=stg[k]||(stg[k]={name:(x.names&&x.names[k])||k,v:0,n:0}); r.v+=v; r.n++; });
+    const dk=new Date(x.start).toLocaleDateString('ko-KR',{month:'numeric',day:'numeric',weekday:'short'}); const D=day[dk]||(day[dk]={name:dk,u:new Set(),v:0,t:new Date(x.start).setHours(0,0,0,0)}); D.u.add(x.uid); D.v+=d; });
+  const U=Object.entries(users).map(([id,u])=>({...u,id})), nu=U.length;
+  $('#dKpi').innerHTML=[['방문자',nu+'명'],['방문(세션)',S.length+'회'],['평균 체류',dFmt(S.length?tot/S.length:0)],['총 체류',dFmt(tot)],['모바일',S.length?Math.round(mob/S.length*100)+'%':'-']].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join('');
+  const R=U.sort((a,b)=>b.v-a.v).slice(0,20); $('#dRank').innerHTML=dBar(R.map(u=>({name:u.name+' #'+u.id.slice(1,5),v:u.v,n:u.n,steps:u.steps})),R[0]?R[0].v:1,r=>`${dFmt(r.v)} · ${r.n}회${r.steps?` · ${r.steps.toLocaleString()}걸음`:''}`);
+  const G=Object.values(reg).sort((a,b)=>b.v-a.v); $('#dReg').innerHTML=dBar(G,G[0]?G[0].v:1,r=>`${dFmt(r.v)} · ${r.n}회`);
+  const T=Object.values(stg).sort((a,b)=>b.v-a.v).slice(0,15); $('#dStage').innerHTML=dBar(T,T[0]?T[0].v:1,r=>`${dFmt(r.v)} · ${r.n}회`);
+  const D=Object.values(day).sort((a,b)=>b.t-a.t).map(d=>({name:d.name,v:d.u.size,t:d.v})); const dm=Math.max(1,...D.map(d=>d.v)); $('#dDay').innerHTML=dBar(D,dm,r=>`${r.v}명 · ${dFmt(r.t)}`); }
+$('#dashBtn').addEventListener('click',()=>{ const d=$('#dash'); if(!d.hidden){ d.hidden=true; return; } dashOpen(); });
+$('#dClose').addEventListener('click',()=>{ $('#dash').hidden=true; });
+$('#dLogin').addEventListener('click',()=>{ if(!DASH.auth) return; DASH.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>{ $('#dNote').textContent='로그인 실패: '+e.message; $('#dBody').hidden=false; }); });
+document.querySelectorAll('#dash [data-range]').forEach(b=>b.addEventListener('click',()=>{ DASH.range=+b.dataset.range; document.querySelectorAll('#dash [data-range]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); dashLoad(); }));
+$('#dReload').addEventListener('click',()=>dashLoad());
+// the config pasted from Firebase console is saved as firebase-config.js in the game repo (same GitHub token as the schedule)
+$('#dSaveCfg').addEventListener('click',async()=>{ const raw=$('#dCfg').value; const pick=k=>{ const m=raw.match(new RegExp(k+'\\s*:\\s*["\\\']([^"\\\']+)')); return m?m[1]:''; };
+  const cfg={apiKey:pick('apiKey'),authDomain:pick('authDomain'),databaseURL:pick('databaseURL'),projectId:pick('projectId'),appId:pick('appId')};
+  if(!cfg.databaseURL||!cfg.projectId){ $('#dCfgMsg').textContent='databaseURL과 projectId가 있어야 해요. Realtime Database를 만든 뒤 다시 복사해 주세요.'; return; }
+  if(!token){ $('#dCfgMsg').textContent='먼저 위의 GitHub 연결을 해 주세요.'; return; }
+  const url=`https://api.github.com/repos/${REPO}/contents/firebase-config.js`, H={Accept:'application/vnd.github+json',Authorization:'Bearer '+token};
+  try{ let sha; const g=await fetch(url+'?ref=main&t='+Date.now(),{headers:H,cache:'no-store'}); if(g.ok) sha=(await g.json()).sha;
+    const body='// Firebase web config for visitor stats (saved from the admin dashboard)\nwindow.FB_CONFIG='+JSON.stringify(cfg)+';\n';
+    const r=await fetch(url,{method:'PUT',headers:H,body:JSON.stringify({message:'Connect Firebase for visitor stats (admin)',content:b64(body),branch:'main',...(sha?{sha}:{})})});
+    if(!r.ok) throw new Error('GitHub '+r.status); $('#dCfgMsg').textContent='저장했어요. 1~2분 뒤 사이트에 반영되면 이 창을 다시 열어 Google로 로그인하세요.'; }catch(e){ $('#dCfgMsg').textContent='저장 실패: '+e.message; } });
 })();
 </script>
 </body>
