@@ -1598,6 +1598,8 @@ function rebuildPlayer(){
   player.root.position.set(pState.x,pState.y,pState.z); player.root.rotation.y=pState.face;
 }
 let yaw=0,pitch=.32,camDist=LOW?8.5:7.5,orb=Math.PI,inGame=false;
+// music keeps playing while you change clothes in the style room
+function hearOn(){ return inGame||document.body.classList.contains('dressing'); }
 const HEADCAM={v:new THREE.Vector3(),p:null};
 const keys={};
 addEventListener('keydown',e=>{ if(/INPUT|TEXTAREA/.test(e.target.tagName)) return; keys[e.code]=true;
@@ -1931,7 +1933,7 @@ function loop(){
     fpsAcc=0; fpsN=0; }
   for(const b of BOOTHS){
     const d=Math.hypot(b.front.x-pState.x,b.front.z-pState.z);
-    const v=inGame?Math.pow(clamp(1-(d-10)/80,0,1),1.6):0; b.target=v;
+    const v=hearOn()?Math.pow(clamp(1-(d-10)/80,0,1),1.6):0; b.target=v;
     if(b.out) b.out.gain.setTargetAtTime(v*.9,ac.currentTime,.15);
     if(d>scene.fog.far){ b.group.visible=false; continue; } b.group.visible=true;
     const beat=boothBeat(b,t), frac=((beat%1)+1)%1, pulse=Math.exp(-frac*5);
@@ -2679,7 +2681,7 @@ function buildSpaces(){
 function updateSpaces(t,dt){
   if(ac&&master) for(const Z of ZONES) zoneAudio(Z);
   if(partyT>0) partyT-=dt;
-  for(const Z of ZONES){ const d=Math.hypot(Z.x-pState.x,Z.z-pState.z); let v=inGame?Math.pow(clamp(1-(d-4)/Z.r,0,1),1.5)*Z.vol:0; if(Z.party&&partyT<=0) v=0; Z.target=v; if(Z.out) Z.out.gain.setTargetAtTime(v,ac.currentTime,.15); }
+  for(const Z of ZONES){ const d=Math.hypot(Z.x-pState.x,Z.z-pState.z); let v=hearOn()?Math.pow(clamp(1-(d-4)/Z.r,0,1),1.5)*Z.vol:0; if(Z.party&&partyT<=0) v=0; Z.target=v; if(Z.out) Z.out.gain.setTargetAtTime(v,ac.currentTime,.15); }
   const visR2=Math.pow(scene.fog.far*.85,2);
   for(let i=0;i<SNPC.length;i++){ const S=SNPC[i], P=S.P;
     if(S.mode==='skate'){ S.ang+=S.spd*dt; const w=S.g.localToWorld(_sv.set(Math.cos(S.ang)*S.a,0,Math.sin(S.ang)*S.b)); P.root.position.set(w.x,0,w.z); const sg=Math.sign(S.spd); P.root.rotation.y=S.g.rotation.y+Math.atan2(-Math.sin(S.ang)*S.a*sg,Math.cos(S.ang)*S.b*sg); }
@@ -3483,7 +3485,7 @@ $('#cnNext').addEventListener('click',()=>{ if(IT.floor===3||IT.floor===4){ setC
 function itTick(t,dt){ const was=MAP; MAP=pState.z>1500?'sphere':(pState.x>1500?'itaewon':(pState.x<-1500?'nami':'playa')); document.body.classList.toggle('itaewon',MAP==='itaewon');
   if(was!==MAP){ if(MAP==='playa'){ IT.floor=0; applyCut(-1); applyTime(); } renderBoothList(); }
   if(dust) dust.visible=MAP!=='itaewon';
-  for(const Z of [IT.zS,IT.zP]){ let v=0; if(MAP==='itaewon'&&inGame){ if(IT.floor===Z.floor) v=.85; else if(IT.floor===0){ const d=Math.hypot(pState.x-(OX+15),pState.z); if(d<45) v=(Z.floor===4?.05+.1*IT.roofOpen:.06)*(1-d/45); } } Z.target=v; if(Z.out&&ac) Z.out.gain.setTargetAtTime(v,ac.currentTime,.2); }
+  for(const Z of [IT.zS,IT.zP]){ let v=0; if(MAP==='itaewon'&&hearOn()){ if(IT.floor===Z.floor) v=.85; else if(IT.floor===0){ const d=Math.hypot(pState.x-(OX+15),pState.z); if(d<45) v=(Z.floor===4?.05+.1*IT.roofOpen:.06)*(1-d/45); } } Z.target=v; if(Z.out&&ac) Z.out.gain.setTargetAtTime(v,ac.currentTime,.2); }
   const cn=$('#clubNow'), inClub=MAP==='itaewon'&&inGame&&(IT.floor===3||IT.floor===4); cn.hidden=!inClub;
   if(inClub){ const nm=IT.floor===3?'4F 쉘터':'5F 페이퍼', tr=IT_TR[IT.floor][IT_TI[IT.floor]].name+' · '+(IT.floor===3?'딥테크노':'하우스'); if($('#cnName').textContent!==nm) $('#cnName').textContent=nm; if($('#cnTrack').textContent!==tr) $('#cnTrack').textContent=tr; $('#cnDot').style.background=IT.floor===3?'#ff2a2a':'#ffcf8a'; }
   if(MAP!=='itaewon') return;
@@ -5398,7 +5400,7 @@ function schItem(sl){ const base={name:sl.title||'',titled:!!sl.title,user:{name
 // the admin page names the two clubs club3 / club4
 function schKey(T){ return T.key==='zone:shelter'?'club3':T.key==='zone:paper'?'club4':T.key; }
 updaters.push(t=>{ if(MCA.onClaude) return;
-  if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!inGame) return; if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
+  if(t-SCH.lastFetch>60){ SCH.lastFetch=t; schFetch(); } if(!hearOn()) return; if(!SCH.sched||(typeof BM!=='undefined'&&BM.mode)) return;
   // warm the player before you get there: the nearest live scheduled stage loads silently, so moving to any booth only swaps the set inside a ready player
   // keep the player loaded with the nearest live stage's set while you are not listening to anything: walking up to any booth only fades in a set that is already playing in sync
   if(t-(SCH.warmT||-99)>(MC.iframe?3:8)){ SCH.warmT=t; const hearing=MC.iframe&&MC.target&&mcLevel(MC.target)>.05;
@@ -5555,7 +5557,7 @@ function djSpeaker(t){ const near=[], r2=14*14, ok=P=>P&&P.root&&P.root.visible!
   if(CROWD.fullSet) for(const i of CROWD.fullSet){ const m=CROWD.list[i]; if(m&&m.char&&m.mode==='dance') add(m.char,m.x,m.z); }
   for(const S of SNPC) if(S.mode==='dance') add(S.P,S.P.root.position.x,S.P.root.position.z);
   return near.length?pick(near):null; }
-updaters.push(t=>{ const c=MC.cur; if(!inGame||!c||!c.sched||!MC.playing||MC.paused||!MC.target) return;
+updaters.push(t=>{ const c=MC.cur; if(!hearOn()||!c||!c.sched||!MC.playing||MC.paused||!MC.target) return;
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||T.key!==MC.target.key||mcLevel(T)<.35||t<DJT.t) return;
   if(DJT.key!==c.key){ DJT.key=c.key; DJT.f=djFactsFor(c); DJT.t=t+3; return; }
   DJT.t=t+rand(5,9); if(!DJT.f||!DJT.f.S.length) return; const P=djSpeaker(t); if(!P) return; P._djT=t; say(P,djLine(P),3.6); });
