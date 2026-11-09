@@ -297,13 +297,13 @@ body.dressing #sp{display:none!important}
 /* the 1-minute stage timer bar is hidden; the coin bonus itself still pays out */
 #stageBonus{display:none!important}
 /* dance pedometer: odometer digits on the left, ranking opens while dancing */
-#stepHud{position:fixed;left:12px;top:calc(110px + var(--sat));z-index:5;padding:0;border-radius:14px;overflow:hidden;width:min(250px,calc(100vw - 24px))}
+#stepHud{position:fixed;left:12px;top:calc(110px + var(--sat));z-index:5;padding:0;border-radius:12px;overflow:hidden;width:auto;max-width:calc(100vw - 24px)}
 #stepHud[hidden]{display:none!important}
-#stepTop{display:flex;align-items:center;gap:8px;width:100%;border:0;background:transparent;color:var(--text);padding:8px 10px;font:inherit;cursor:pointer;text-align:left}
-#stepTop .sl{font-size:12px;font-weight:800;white-space:nowrap}
+#stepTop{display:flex;align-items:center;gap:5px;width:100%;border:0;background:transparent;color:var(--text);padding:5px 7px;font:inherit;cursor:pointer;text-align:left}
+#stepTop .sl{font-size:14px;line-height:1;font-weight:800;white-space:nowrap}
 #stepTop .sr{margin-left:auto;font-size:11px;color:var(--muted);white-space:nowrap}
-#stepHud .dig{display:flex;gap:2px}
-#stepHud .dig i{font-style:normal;font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:15px;line-height:1;background:#0c0b10;color:#c6ff3d;border-radius:4px;padding:4px 3px;min-width:12px;text-align:center;box-shadow:inset 0 -6px 8px rgba(255,255,255,.06)}
+#stepHud .dig{display:flex;gap:1px}
+#stepHud .dig i{font-style:normal;font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:12px;line-height:1;background:#0c0b10;color:#c6ff3d;border-radius:3px;padding:3px 2px;min-width:9px;text-align:center;box-shadow:inset 0 -6px 8px rgba(255,255,255,.06)}
 #stepHud .dig i.z{color:#3a4a2a}
 #stepHud.on{box-shadow:0 0 0 2px #c6ff3d inset,0 0 18px rgba(198,255,61,.35)}
 #stepHud.on .dig i:last-child{animation:stepTick .5s ease-out infinite}
@@ -316,7 +316,7 @@ body.dressing #sp{display:none!important}
 #stepList li.mine{background:var(--chip-on);color:var(--chip-on-text)}
 #stepList li.note{color:var(--muted);font-size:10.5px;padding-top:6px}
 #stepBoard .me{margin-top:6px;width:100%;border:0;border-radius:10px;padding:8px;background:var(--chip);color:var(--text);font:inherit;font-size:12px;font-weight:700}
-@media (max-width:760px),(pointer:coarse){ #stepHud{left:10px;width:min(220px,62vw)} #stepHud .dig i{font-size:13px;padding:3px 2px;min-width:10px} }
+@media (max-width:760px),(pointer:coarse){ #stepHud{left:10px} #stepHud .dig i{font-size:11px;padding:3px 2px;min-width:8px} }
 @media (prefers-reduced-motion:reduce){ #stepHud.on .dig i:last-child{animation:none} }
 /* left-hand menus: whichever one is open comes to the front, the others stay underneath */
 .mapc:has(#boothList:not([hidden])){z-index:25!important}
@@ -4723,7 +4723,7 @@ if(!STEPS.id){ STEPS.id=String(1000+Math.floor(Math.random()*9000)); try{ localS
 function stepName(){ return ((($('#pname')&&$('#pname').value)||'버너').trim()||'버너').slice(0,12)+'#'+STEPS.id; }
 function stepFmt(n){ return String(Math.floor(n)).padStart(7,'0'); }
 function stepBuild(){ const d=document.createElement('div'); d.id='stepHud'; d.className='card'; d.hidden=true;
-  d.innerHTML=`<button id='stepTop' aria-expanded='false' aria-label='만보기, 춤출 때만 올라가요. 눌러서 랭킹 보기'><span class='sl'>🕺 만보기</span><span id='stepDig' class='dig'></span><span class='sr'>랭킹 ▸</span></button><div id='stepBoard' hidden><div class='sbh'>💃 춤 만보기 랭킹 <small>춤출 때만 올라가요</small></div><ol id='stepList'></ol><button id='stepMe' class='me'>나의 순위 보기</button></div>`;
+  d.innerHTML=`<button id='stepTop' aria-expanded='false' aria-label='만보기, 춤출 때만 올라가요. 눌러서 랭킹 보기'><span class='sl' title='만보기 (춤출 때만 올라가요)'>🕺</span><span id='stepDig' class='dig'></span><span class='sr'>랭킹 ▸</span></button><div id='stepBoard' hidden><div class='sbh'>💃 춤 만보기 랭킹 <small>춤출 때만 올라가요</small></div><ol id='stepList'></ol><button id='stepMe' class='me'>나의 순위 보기</button></div>`;
   document.body.appendChild(d); STEPS.el=d;
   $('#stepTop').addEventListener('click',e=>{ e.stopPropagation(); if(!STEP_RANK){ toast(`🕺 지금까지 춤으로 ${Math.floor(STEPS.n).toLocaleString()}걸음`); return; } STEPS.manual=!STEPS.open; stepOpen(!STEPS.open); });
   if(!STEP_RANK){ d.querySelector('.sr').remove(); $('#stepTop').setAttribute('aria-label','만보기, 춤출 때만 올라가요'); }
