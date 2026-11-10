@@ -4804,12 +4804,28 @@ function stepOpen(o){ STEPS.open=o; $('#stepBoard').hidden=!o; $('#stepTop').set
 function stepRank(){ const me={name:stepName(),n:Math.floor(STEPS.n),me:true}; let L=(STEPS.board||[]).filter(x=>x.name!==me.name).map(x=>({name:x.name,n:x.n})); L.push(me); L.sort((a,b)=>b.n-a.n); return {L,rank:L.findIndex(x=>x.me)+1}; }
 function stepRender(){ const {L,rank}=stepRank(); const top=L.slice(0,10); if(rank>10) top.push(L[rank-1]);
   $('#stepList').innerHTML=top.map(x=>{ const r=L.indexOf(x)+1; return `<li class='${x.me?'mine':''}'><b>${r<=3?['🥇','🥈','🥉'][r-1]:r}</b><span>${esc(x.name)}</span><em>${x.n.toLocaleString()}</em></li>`; }).join('')+(STEPS.board?'':`<li class='note'>다른 참여자 기록은 랭킹 서버가 연결되면 함께 보여요</li>`); }
+// every 100 steps: the count pops up over your head with a fanfare and confetti (every 1000: fireworks too)
+const SP_FX=[];
+function stepParty(v){ if(!player||!player.root) return; const big=v%1000===0;
+  const c=document.createElement('canvas'); c.width=512; c.height=224; const x=c.getContext('2d'); x.textAlign='center'; x.lineJoin='round';
+  x.font='900 120px sans-serif'; x.lineWidth=18; x.strokeStyle='#1a0f08'; x.strokeText(v.toLocaleString(),256,118); const gr=x.createLinearGradient(0,20,0,124); gr.addColorStop(0,'#fff3a8'); gr.addColorStop(1,big?'#ff4fa8':'#ffb02a'); x.fillStyle=gr; x.fillText(v.toLocaleString(),256,118);
+  x.font='800 44px Noto Sans KR, sans-serif'; x.lineWidth=10; const sub='🎉 '+tr('걸음 돌파!'); x.strokeText(sub,256,190); x.fillStyle='#fff'; x.fillText(sub,256,190);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false,depthWrite:false})); sp.renderOrder=12; sp.position.set(0,3.1,0); player.root.add(sp); SP_FX.push({sp,life:3.2,t:0});
+  const cols=['#ff4fa8','#46d6ff','#c6ff3d','#ffcf3a','#9b6bff','#ff7a2f'], N=(LOW?50:110)*(big?1.5:1);
+  // two party poppers from left and right, crossing over the head
+  for(let i=0;i<N;i++){ const side=i%2?1:-1; part({x:pState.x+side*1.1,y:pState.y+1.2,z:pState.z,vx:-side*rand(.3,3.2),vy:rand(5,10),vz:rand(-2.2,2.2),g:7,col:pick(cols),op:.95,size:rand(.07,.11),life:rand(2.2,3),sq:true}); }
+  sfx(tt=>{ [[392,0,.12],[392,.14,.1],[392,.26,.1],[523,.38,.22],[659,.62,.2],[784,.84,.9]].forEach(([f,d,L])=>{ tone(master,tt+d,'sawtooth',f,.05,L); tone(master,tt+d,'square',f*1.5,.018,L); tone(master,tt+d,'triangle',f/2,.05,L); }); tone(master,tt+.84,'sawtooth',1047,.035,.9); });
+  cheer(); if(big) for(let k=0;k<3;k++) setTimeout(()=>{ launchFirework(); const f=fireworks[fireworks.length-1]; if(f){ const A=f.p.geometry.attributes.position.array; f.p.position.set(pState.x-A[0]+rand(-8,8),pState.y+28+rand(-4,6)-A[1],pState.z-A[2]+rand(-8,8)); } },k*450); }
+updaters.push((t,dt)=>{ for(let i=SP_FX.length-1;i>=0;i--){ const f=SP_FX[i]; f.life-=dt; f.t+=dt;
+  if(f.life<=0){ if(f.sp.parent) f.sp.parent.remove(f.sp); f.sp.material.map.dispose(); f.sp.material.dispose(); SP_FX.splice(i,1); continue; }
+  // pops in with a bounce, floats up a little, fades out
+  const k=f.t<.35?(.3+f.t/.35*.95):1+Math.max(0,.6-f.t)*.4+Math.sin(f.t*9)*.03; f.sp.scale.set(3.4*k,1.49*k,1); f.sp.position.y=3.1+Math.min(f.t,1)*.35; f.sp.material.opacity=Math.min(1,f.life/.7); } });
 updaters.push((t,dt)=>{ if(!STEPS.el) stepBuild(); const show=inGame&&!document.body.classList.contains('dressing'); if(STEPS.el.hidden===show) STEPS.el.hidden=!show; if(!show) return;
   { const vis=e=>!!e&&!e.hidden&&getComputedStyle(e).display!=='none', lu0=document.getElementById('lineupBtn'), lu=vis(lu0)?lu0:document.querySelector('.mapc'), r=vis(lu)?lu.getBoundingClientRect():null, top=r?Math.round(r.bottom+6):110, left=r?Math.round(r.left):12; if(top!==STEPS.top||left!==STEPS.left){ STEPS.top=top; STEPS.left=left; STEPS.el.style.top=top+'px'; STEPS.el.style.left=left+'px'; } }
   const dancing=pAct==='dance'&&!sleepS&&!pState.veh; STEPS.el.classList.toggle('on',dancing);
   // folded away until you dance, then it pops open; it folds again a few seconds after you stop
   STEPS.since=dancing?0:(STEPS.since??99)+dt; STEPS.el.classList.toggle('show',dancing||STEPS.since<3);
-  if(dancing){ STEPS.acc+=dt*(SHK.active?3:2.2); if(STEPS.acc>=1){ const k=Math.floor(STEPS.acc); STEPS.acc-=k; STEPS.n+=k; } STEPS.saveT+=dt; if(STEPS.saveT>3){ STEPS.saveT=0; try{ localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); }catch(e){} } }
+  if(dancing){ STEPS.acc+=dt*(SHK.active?3:2.2); if(STEPS.acc>=1){ const k=Math.floor(STEPS.acc); STEPS.acc-=k; STEPS.n+=k; const h=Math.floor(STEPS.n/100); if(h>Math.floor((STEPS.n-k)/100)) stepParty(h*100); } STEPS.saveT+=dt; if(STEPS.saveT>3){ STEPS.saveT=0; try{ localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); }catch(e){} } }
   // dancing opens the ranking; it folds again a few seconds after you stop (unless you opened it yourself)
   if(!STEP_RANK){} else if(dancing){ STEPS.idle=0; if(!STEPS.open) stepOpen(true); } else if(STEPS.open&&!STEPS.manual){ STEPS.idle=(STEPS.idle||0)+dt; if(STEPS.idle>4) stepOpen(false); }
   const v=Math.floor(STEPS.n); if(v!==STEPS.shown){ STEPS.shown=v; const s=stepFmt(v); $('#stepDig').innerHTML=[...s].map((c,i)=>`<i class='${i<s.length-String(v).length?'z':''}'>${c}</i>`).join(''); if(STEPS.open&&(v%5===0)) stepRender(); } });
