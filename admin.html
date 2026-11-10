@@ -545,7 +545,8 @@ function dFmt(sec){ sec=Math.round(sec||0); const h=Math.floor(sec/3600), m=Math
 function dBar(rows,max,fmt){ return rows.map((r,i)=>`<li><b>${i+1}</b><span class='dn'>${esc(r.name)}</span><span class='db'><i style='width:${Math.max(2,Math.round(r.v/max*100))}%'></i></span><em>${fmt(r)}</em></li>`).join('')||`<li class='muted small'>아직 기록이 없어요</li>`; }
 async function dashOpen(){ $('#dash').hidden=false; $('#dash').scrollIntoView({behavior:'smooth',block:'start'});
   try{ await dLoad('firebase-config.js?t='+Date.now()); }catch(e){}
-  const C=window.FB_CONFIG; if(!C||!C.databaseURL||!C.apiKey){ $('#dSetup').hidden=false; $('#dBody').hidden=true; $('#dLogin').hidden=true; $('#dRules').value=DASH_RULES; if(C&&C.databaseURL) $('#dSetupNote').hidden=false; return; }
+  let L=null; try{ L=JSON.parse(localStorage.getItem('playa-fb-cfg')||'null'); }catch(e){}
+  const C=Object.assign({},window.FB_CONFIG||{},L||{}); if(!C||!C.databaseURL||!C.apiKey){ $('#dSetup').hidden=false; $('#dBody').hidden=true; $('#dLogin').hidden=true; $('#dRules').value=DASH_RULES; if(C&&C.databaseURL) $('#dSetupNote').hidden=false; return; }
   $('#dSetup').hidden=true;
   if(!DASH.app){ await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');
     DASH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); DASH.db=DASH.app.database(); DASH.auth=DASH.app.auth();
@@ -578,7 +579,7 @@ $('#dReload').addEventListener('click',()=>dashLoad());
 $('#dSaveCfg').addEventListener('click',async()=>{ const raw=$('#dCfg').value; const pick=k=>{ const m=raw.match(new RegExp(k+'\\s*:\\s*["\\\']([^"\\\']+)')); return m?m[1]:''; };
   const cfg={apiKey:pick('apiKey'),authDomain:pick('authDomain'),databaseURL:pick('databaseURL')||(window.FB_CONFIG&&window.FB_CONFIG.databaseURL)||'',projectId:pick('projectId'),appId:pick('appId')};
   if(!cfg.databaseURL||!cfg.projectId){ $('#dCfgMsg').textContent='databaseURL과 projectId가 있어야 해요. Realtime Database를 만든 뒤 다시 복사해 주세요.'; return; }
-  if(!token){ $('#dCfgMsg').textContent='먼저 위의 GitHub 연결을 해 주세요.'; return; }
+  if(!token){ try{ localStorage.setItem('playa-fb-cfg',JSON.stringify(cfg)); }catch(e){} $('#dCfgMsg').textContent='이 브라우저에 저장했어요. 대시보드를 여는 중…'; $('#dCfg').value=''; DASH.app=null; setTimeout(dashOpen,400); return; }
   const url=`https://api.github.com/repos/${REPO}/contents/firebase-config.js`, H={Accept:'application/vnd.github+json',Authorization:'Bearer '+token};
   try{ let sha; const g=await fetch(url+'?ref=main&t='+Date.now(),{headers:H,cache:'no-store'}); if(g.ok) sha=(await g.json()).sha;
     const body='// Firebase web config for visitor stats (saved from the admin dashboard)\nwindow.FB_CONFIG='+JSON.stringify(cfg)+';\n';
