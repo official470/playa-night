@@ -5657,25 +5657,40 @@ luBtn(); schFetch().then(luBtn);
 updaters.push(t=>{ luPlace(); if(t-(LU.bt||0)>30){ LU.bt=t; luBtn(); } if(!$('#lineup').hidden&&t-(LU.rt||0)>20){ LU.rt=t; if(!LU.sel) luRender(); } });
 
 /* ================= DANCERS TALK ABOUT THE SOUND (only when the set has an intro) ================= */
-// mixes have no vocals to quote: people react to the sound, never name the DJ, and only speak when the set's intro gives them something to go on
+// people never quote the intro or name the DJ: they pick out what the set's info says about the sound (genre, mood, how it was recorded) and say it in their own words
 const DJT={t:0,key:'',f:null};
-const SND_FOCUS=['킥','베이스','하이햇','신스','패드','퍼커션','저음','빌드업','드롭','그루브','리듬'];
-function sndSentences(txt){ const out=[]; String(txt||'').split(/[.!?。\n]+/).forEach(x=>{ x=x.trim(); if(x.length>30) x.split(/[,，·]/).forEach(y=>{ y=y.trim(); if(y.length>=6&&y.length<=30) out.push(y); }); else if(x.length>=6) out.push(x); });
-  return out.filter(x=>!/https?:|www\.|@|\.com|트랙리스트|tracklist|구독|subscribe|follow|팔로우/i.test(x)); }
-function djFactsFor(c){ const f={key:c.key,S:sndSentences(c.musicIntro),tags:(c.tags||[]).map(t=>t.name).filter(x=>x&&x.length<16&&!/ra mix|mix$/i.test(x)).slice(0,3)};
-  if(!f.S.length){ // no admin intro: use the set's own description, in Korean
-    const use=ko=>{ const S=sndSentences(ko); if(S.length&&DJT.f===f) f.S=S; };
-    if(mcKo[c.key]) use(mcKo[c.key]);
-    else { const desc=c.sc?Promise.resolve(c.description||''):mcInfo(c.key).then(d=>d&&d.description||'');
-      desc.then(d=>{ d=mcTrunc(d,600); if(!d) return; if((d.match(/[가-힣]/g)||[]).length>d.length*.2) return use(d);
-        const paras=d.split(/\n+/).map(x=>x.trim()).filter(Boolean), ch=[]; paras.forEach(x=>mcChunks(x,450).forEach(y=>ch.push(y)));
-        mcTr(ch).then(out=>{ const ko=out.join('\n'); mcKo[c.key]=ko; use(ko); }).catch(()=>{}); }); } }
+const SND_G=[[/deep\s?house|딥\s?하우스/i,'딥하우스'],[/tech\s?house|테크\s?하우스/i,'테크하우스'],[/acid\s?house|애시드\s?하우스/i,'애시드 하우스'],[/dub\s?techno|덥\s?테크노/i,'덥 테크노'],[/italo|이탈로/i,'이탈로 디스코'],[/nu[\s-]?disco|누\s?디스코/i,'누디스코'],
+  [/drum\s?(and|&|n)\s?bass|\bdnb\b|드럼\s?앤\s?베이스/i,'드럼 앤 베이스'],[/break\s?beats?|\bbreaks\b|브레이크비트/i,'브레이크비트'],[/\bgarage\b|\bukg\b|개러지/i,'개러지'],[/dubstep|덥스텝/i,'덥스텝'],[/minimal|미니멀/i,'미니멀'],[/techno|테크노/i,'테크노'],[/\bhouse\b|하우스/i,'하우스'],
+  [/disco|디스코/i,'디스코'],[/\bacid\b|애시드/i,'애시드'],[/electro\b|일렉트로(?!닉)/i,'일렉트로'],[/trance|트랜스/i,'트랜스'],[/ambient|앰비언트/i,'앰비언트'],[/jungle|정글/i,'정글'],[/\bdub\b/i,'덥'],[/jazz|재즈/i,'재즈'],[/\bsoul(ful)?\b|소울/i,'소울'],[/\bfunk|펑크|훵크/i,'펑크'],
+  [/afro|아프로/i,'아프로'],[/latin|라틴/i,'라틴'],[/hip[\s-]?hop|힙합/i,'힙합'],[/reggae|레게/i,'레게'],[/balearic|발레아릭/i,'발레아릭'],[/downtempo|다운템포/i,'다운템포'],[/boogie|부기/i,'부기']];
+const SND_F=[[/vinyl|바이닐|레코드판/i,['바이닐로만 튼 세트래','바이닐이라 그런지 소리가 따뜻해']],[/b2b|back[\s-]to[\s-]back|백투백/i,['둘이 번갈아 가며 트는 세트래','주고받으면서 트는 게 재밌다']],[/closing|클로징/i,['클로징 때 튼 세트래, 마무리하는 느낌 난다']],
+  [/opening|warm[\s-]?up|오프닝|워밍업/i,['오프닝 세트래, 천천히 달궈지는 중이야']],[/sunrise|일출|해 뜰/i,['해 뜰 때 튼 세트래, 그 시간 공기가 느껴져']],[/festival|페스티벌|축제/i,['페스티벌 무대에서 튼 세트래','페스티벌 녹음이라 스케일이 다르네']],
+  [/\bclub\b|클럽|dance\s?floor|댄스\s?플로어/i,['클럽에서 녹음한 세트래, 플로어 열기가 느껴져']],[/radio|라디오/i,['라디오로 나간 믹스래, 집에서 듣던 걸 여기서 듣네']],[/\blive\b|recorded at|라이브/i,['현장에서 녹음한 라이브 세트래','라이브 녹음이라 현장감이 살아 있어']]];
+const SND_M=[[/hypnoti|최면|홀리/i,'계속 듣다 보면 홀리는 느낌이야'],[/dream|몽환/i,'몽환적이다, 눈 감고 듣고 싶어'],[/\bdark|어두운|어둡|다크/i,'어둑어둑한 분위기 너무 좋다'],[/\bwarm|따뜻/i,'소리가 따뜻해서 좋다'],[/\bdeep\b|깊은|깊이/i,'소리가 깊어서 점점 빠져든다'],
+  [/groov|그루브|그루비/i,'그루브가 계속 몸을 움직이게 하네'],[/uplifting|euphor|벅차|희열|고조/i,'들을수록 기분이 올라가는 세트야'],[/\braw\b|거친|거칠/i,'거칠게 밀어붙이는 게 매력이야'],[/emotion|감성|감정/i,'은근히 감성적이네, 뭉클하다'],[/energ|에너지|강렬/i,'에너지 장난 아니다'],
+  [/mellow|chill|laid[\s-]?back|잔잔|느긋|편안/i,'느긋하게 흘러가서 편하다'],[/sunset|sunny|노을|선셋|햇살/i,'노을 질 때 듣기 딱 좋은 소리야'],[/psychedel|trippy|사이키델릭|환각/i,'사이키델릭하다, 어디로 데려가는 거야'],[/melod|멜로디/i,'멜로디가 귀에 계속 남는다'],
+  [/percussi|tribal|퍼커션|트라이벌|타악/i,'퍼커션이 살아 있네, 발이 저절로 움직여'],[/sub[\s-]?bass|heavy bass|bass[\s-]?heavy|묵직|저음/i,'저음이 묵직하게 깔려서 좋다'],[/vocal|보컬/i,'중간중간 나오는 보컬이 좋다']];
+const SND_P=[[/berlin|베를린/i,'베를린'],[/detroit|디트로이트/i,'디트로이트'],[/chicago|시카고/i,'시카고'],[/london|런던/i,'런던'],[/ibiza|이비자/i,'이비자'],[/amsterdam|암스테르담/i,'암스테르담'],[/new york|\bnyc\b|뉴욕/i,'뉴욕'],[/tokyo|도쿄/i,'도쿄'],[/frankfurt|프랑크푸르트/i,'프랑크푸르트'],[/manchester|맨체스터/i,'맨체스터'],[/barcelona|바르셀로나/i,'바르셀로나'],[/seoul|서울/i,'서울']];
+function sndJo(w,a,b){ const c=String(w).charCodeAt(String(w).length-1), j=c>=0xAC00&&c<=0xD7A3?(c-0xAC00)%28:0; return a==='으로'?(j&&j!==8?a:b):(j?a:b); }
+// every line a dancer could say about this set, built only from what its info really says
+function sndLines(txt,skip){ let T=' '+String(txt||'')+' '; (skip||[]).forEach(n=>{ n=String(n||'').trim(); if(n.length>1) T=T.split(n).join(' ').split(n.toLowerCase()).join(' '); });
+  T=T.replace(/https?:\S+/g,' ').replace(/real\s?house(\s?club)?|리얼\s?하우스(\s?클럽)?|warehouse|웨어하우스/gi,' ');
+  const take=re=>{ const m=T.match(re); if(m) T=T.replace(re,' '); return m; }, L=[], G=[];
+  for(const [re,g] of SND_G) if(take(re)&&G.length<3) G.push(g);
+  for(const g of G){ const A=[`오늘 ${g} 쪽이네, 완전 내 취향이야`,`${g}${sndJo(g,'은','는')} 역시 큰 소리로 들어야 해`,`이 ${g} 그루브 뭐야, 못 멈추겠어`,`${g} 좋아하면 오늘 잘 온 거야`,`${g}${sndJo(g,'을','를')} 이렇게 이어 붙이다니 기가 막힌다`]; const i=Math.floor(Math.random()*A.length); L.push(A[i],A[(i+1+Math.floor(Math.random()*(A.length-1)))%A.length]); }
+  if(G.length>1) L.push(`${G[0]}에서 ${G[1]}${sndJo(G[1],'으로','로')} 넘어가는 흐름이 좋다`);
+  const h=take(/(\d{1,2})[\s-]?(hours?|hrs?|시간)/i); if(h&&+h[1]>=2&&+h[1]<=12) L.push(`${+h[1]}시간짜리 세트래, 오늘 길게 가 보자`);
+  const bp=take(/(\d{2,3})\s?bpm/i); if(bp&&+bp[1]>=60&&+bp[1]<=200) L.push(`BPM ${+bp[1]}이래, 춤추기 딱 좋은 속도야`);
+  for(const [re,A] of SND_F) if(take(re)) L.push(pick(A));
+  for(const [re,m] of SND_M) if(take(re)) L.push(m);
+  for(const [re,pl] of SND_P) if(take(re)){ L.push(pick([`${pl} 느낌 나지 않아? 나만 그래?`,`${pl} 바이브가 물씬 나네`])); break; }
+  return L; }
+function djFactsFor(c){ const f={key:c.key,L:[],Q:[]}, skip=[c.user&&c.user.name,c.name], tags=(c.tags||[]).map(t=>t.name).filter(Boolean).join(', ');
+  const use=d=>{ f.L=sndLines([c.musicIntro,d,tags].filter(Boolean).join('\n'),skip); f.Q=[]; };
+  use(c.description||''); if(!c.sc) mcInfo(c.key).then(d=>{ if(d&&d.description&&DJT.f===f) use(d.description+'\n'+((d.tags||[]).map(x=>x.name).join(', '))); }).catch(()=>{});
   return f; }
-const ga=w=>{ if(I18N.on) return ''; const c=String(w).charCodeAt(String(w).length-1); return c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28?'이':'가'; };
-function djLine(P){ const f=DJT.f, foc=P._sndF||(P._sndF=pick(SND_FOCUS)), q=pick(f.S), L=[
-    `“${q}” 소리가 딱 그래`, `${q}. 들어 보니 진짜네`, `소개에 ${q}라고 돼 있더라`, `${foc}${ga(foc)} 소개 그대로야`, `${foc} 소리 들어 봐, 딱 그 느낌이야`];
-  if(f.tags.length) L.push(`${pick(f.tags)} 사운드 제대로다`);
-  return pick(L); }
+// goes through every line once in a random order before any of them comes back
+function djLine(){ const f=DJT.f; if(!f.Q.length){ f.Q=f.L.slice().sort(()=>Math.random()-.5); f.fresh=true; } return f.Q.pop(); }
 function djSpeaker(t){ const near=[], r2=14*14, ok=P=>P&&P.root&&P.root.visible!==false&&!P.social&&(!P._djT||t-P._djT>14);
   const add=(P,x,z)=>{ const dx=x-pState.x, dz=z-pState.z; if(dx*dx+dz*dz<r2&&ok(P)) near.push(P); };
   for(const m of HY.mem) if(m.st==='dance') add(m.P,m.P.root.position.x,m.P.root.position.z);
@@ -5685,7 +5700,9 @@ function djSpeaker(t){ const near=[], r2=14*14, ok=P=>P&&P.root&&P.root.visible!
 updaters.push(t=>{ const c=MC.cur; if(!hearOn()||!c||!c.sched||!MC.playing||MC.paused||!MC.target) return;
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||T.key!==MC.target.key||mcLevel(T)<.35||t<DJT.t) return;
   if(DJT.key!==c.key){ DJT.key=c.key; DJT.f=djFactsFor(c); DJT.t=t+3; return; }
-  DJT.t=t+rand(5,9); if(!DJT.f||!DJT.f.S.length) return; const P=djSpeaker(t); if(!P) return; P._djT=t; say(P,djLine(P),3.6); });
+  if(!DJT.f||!DJT.f.L.length){ DJT.t=t+4; return; } const P=djSpeaker(t); if(!P){ DJT.t=t+3; return; } P._djT=t; say(P,djLine(),3.8);
+  // once everything has been said, the crowd just dances for a while before the talk comes round again
+  DJT.t=t+(DJT.f.Q.length?rand(8,14):rand(60,90)); });
 
 /* ================= SKY LASER LOGO: REAL HOUSE CLUB over every entrance ================= */
 // before you get in (desert road and gate, Nami pier, outside the Sphere) ground lasers sweep up and draw the neon logo in the sky
