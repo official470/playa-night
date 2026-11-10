@@ -260,7 +260,7 @@ details.setup li{margin:4px 0}
 (()=>{
 const REPO='official470/playa-night', FILE='schedule.json', API=`https://api.github.com/repos/${REPO}/contents/${FILE}`;
 const AREAS=[
-  ['🏜 사막점 (버닝맨)',[['booth:techno','테크노'],['booth:house','하우스'],['booth:afro','아프로테크'],['booth:hardstyle','딥테크노'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
+  ['🏜 사막점 (버닝맨)',[['booth:techno','테크노'],['booth:house','하우스'],['booth:afro','아프로테크'],['booth:hardstyle','딥테크노'],['booth:dubstep','덥스텝'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
   ['🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼'],['zone:teller','B1 텔러 (테크노)']]],
   ['🌲 남이섬',[['zone:nm-jandi','JANDI 스테이지'],['zone:nm-hanok','HANOK 스테이지'],['zone:nm-soop','SOOP 스테이지'],['zone:nm-exp','익스페리멘탈 사운드 존'],['zone:nm-hut','명상 오두막'],['zone:nm-aero','에어로빅 코너']]],
   ['🔮 라스베가스',[['zone:sphere','스피어']]]];
@@ -357,8 +357,8 @@ async function fetchMeta(){ const u=$('#url').value.trim(), k=srcOf(u); if(!k){ 
 $('#booths').addEventListener('click',e=>{ const b=e.target.closest('[data-k]'); if(!b) return; cur=b.dataset.k; resetForm(); render(); setTag(BOOTH_TAG[cur]||'techno'); });
 
 // ---- popular-set browser: Mixcloud's most-played mixes per genre (or a search), with an in-page preview
-const TAGS=[['techno','테크노'],['house','하우스'],['afro-house','아프로 하우스'],['melodic-techno','멜로딕 테크노'],['trance','트랜스'],['deep-house','딥하우스'],['tech-house','테크하우스'],['drum-and-bass','드럼앤베이스'],['dubstep','덥스텝'],['psytrance','사이키델릭 트랜스'],['hardstyle','하드스타일'],['deep-techno','딥테크노'],['disco','디스코'],['jazz','재즈'],['experimental','실험 음악'],['ambient','앰비언트'],['electronica','일렉트로니카']];
-const BOOTH_TAG={'booth:techno':'techno','booth:house':'house','booth:afro':'afro-house','booth:melodic':'melodic-techno','booth:trance':'trance','booth:dnb':'drum-and-bass','booth:psy':'psytrance','booth:dubstep':'dubstep','booth:hardstyle':'deep-techno','zone:jazz':'jazz','zone:disco':'disco','zone:potty':'house',club3:'techno',club4:'house','zone:teller':'techno','zone:nm-jandi':'house','zone:nm-hanok':'afro-house','zone:nm-soop':'techno','zone:nm-exp':'experimental','zone:nm-hut':'ambient','zone:nm-aero':'house','zone:sphere':'melodic-techno'};
+const TAGS=[['techno','테크노'],['house','하우스'],['afro-house','아프로 하우스'],['melodic-techno','멜로딕 테크노'],['trance','트랜스'],['deep-house','딥하우스'],['tech-house','테크하우스'],['drum-and-bass','드럼앤베이스'],['dubstep','덥스텝'],['psytrance','사이키델릭 트랜스'],['hardstyle','하드스타일'],['deep-techno','딥테크노'],['disco','디스코'],['hard-bop','재즈 (정통)'],['jazz','재즈 (넓게)'],['experimental','실험 음악'],['ambient','앰비언트'],['electronica','일렉트로니카']];
+const BOOTH_TAG={'booth:techno':'techno','booth:house':'house','booth:afro':'afro-house','booth:melodic':'melodic-techno','booth:trance':'trance','booth:dnb':'drum-and-bass','booth:psy':'psytrance','booth:dubstep':'dubstep','booth:hardstyle':'deep-techno','zone:jazz':'hard-bop','zone:disco':'disco','zone:potty':'house',club3:'techno',club4:'house','zone:teller':'techno','zone:nm-jandi':'house','zone:nm-hanok':'afro-house','zone:nm-soop':'techno','zone:nm-exp':'experimental','zone:nm-hut':'ambient','zone:nm-aero':'house','zone:sphere':'melodic-techno'};
 // same filter the game uses for auto-play
 const RADIO=/radio|\bshow\b|podcast|episode|\bep\.?\s*\d|edition|transitions|takeover|hosted by|interview|in conversation|q&a|\btalk|broadcast|global\b[\s\-–:#]*\d|sirius|\bfm\b|tatw|trance around the world|carl cox global|planet perfecto|\bsessions? \d+|presents unfold|^#\d{3,}|multi ?-?genre|state of trance|asot|presents next|group therapy|dance department|\bweek \d|on rotation|in session|discuss|\bchats?\b|conversation|documentary|lecture|masterclass|tutorial|\bpanel\b|in the studio|behind the|meet the|\bspeaks?\b|\btalks?\b|story of|history of|introducing|\bmini ?-?mix|\bin focus\b|profile/i;
 const JUNK=/non ?stop|viet|remix|mash ?-?up|bootleg|\b[5-9]0'?s\b|love ?song|bxh|zalo|private|commercial|snippet|promo|instagram|tik ?tok|\bhits\b|\btop \d|\bbpm \d|hands ?up|party blaster|throwdown|r&b|hip ?hop|dancehall|naija|afrobeats?|gengeton|bongo|\s[x×]\s.*\s[x×]\s|gym|workout|reggae|grime|apres|gambl|www\.|\.com\b|\bedm\b|quarantine|mega ?mix/i;
@@ -504,8 +504,8 @@ async function autoFill(mode){ mode=mode||'mix'; const keys=AREAS.flatMap(([a,L]
   const scLong=sc.filter(x=>x.sec>=1200), scShort=sc.filter(x=>x.sec<1200&&x.sec>=90);
   for(const k of keys){ $('#autoMsg').textContent=`${NAME[k].split(' · ')[0]} 채우는 중이에요 (${++done}/${keys.length})`;
     const mc=mode==='sc'?[]:shuffle(await poolFor(BOOTH_TAG[k]||'techno')).map(mcItem);
-    // Korean DJs play only in Itaewon, and in Itaewon they go first
-    const here=x=>!x.only||x.only.includes(k), kr=x=>x.only&&x.only.includes(k);
+    // Korean DJs play only in Itaewon, and in Itaewon they go first; the jazz club takes jazz mixes only (no club sets from SoundCloud)
+    const here=x=>k!=='zone:jazz'&&(!x.only||x.only.includes(k)), kr=x=>x.only&&x.only.includes(k);
     const scLongK=scLong.filter(here).sort((a,b)=>(kr(b)?1:0)-(kr(a)?1:0)), scLongH=ITAEWON.includes(k)?scLongK.filter(kr).concat(shuffle(scLongK.filter(x=>!kr(x)))):shuffle(scLongK);
     // the running order for this booth: long sets, with a SoundCloud track between sets when mixing
     const longs=mode==='mc'?mc:mode==='sc'?scLongH:(()=>{ const L=[], A=mc, Bl=scLongH; if(ITAEWON.includes(k)) Bl.filter(kr).forEach(x=>L.push(x)); for(let i=0;i<Math.max(A.length,Bl.length);i++){ if(A[i]) L.push(A[i]); if(i%2===1&&Bl[i>>1]) L.push(Bl[i>>1]); } return L; })();
