@@ -539,18 +539,21 @@ resetForm(); checkConn(); load(); setTag(BOOTH_TAG[cur]||'techno');
 /* ===== visitor stats dashboard (Firebase Realtime Database, free Spark plan) ===== */
 const DASH={app:null,db:null,auth:null,range:1,data:null};
 const DASH_ADMIN='official@realsnap.ai';
-const DASH_RULES=JSON.stringify({rules:{sessions:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["last"],"$sid":{".write":"!data.exists() || data.child('uid').val() == newData.child('uid').val()",".validate":"newData.hasChildren(['uid','start','last','dur']) && newData.child('dur').isNumber() && newData.child('dur').val() < 86400"}},steps:{".read":true,".indexOn":["n"],"$uid":{".write":true,".validate":"newData.child('n').isNumber()"}}}},null,2);
+const DASH_RULES=JSON.stringify({rules:{public:{webcfg:{".read":true,".write":`auth != null && auth.token.email == '${DASH_ADMIN}'`}},sessions:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["last"],"$sid":{".write":"!data.exists() || data.child('uid').val() == newData.child('uid').val()",".validate":"newData.hasChildren(['uid','start','last','dur']) && newData.child('dur').isNumber() && newData.child('dur').val() < 86400"}},steps:{".read":true,".indexOn":["n"],"$uid":{".write":true,".validate":"newData.child('n').isNumber()"}}}},null,2);
 function dLoad(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
 function dFmt(sec){ sec=Math.round(sec||0); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60; return h?`${h}시간 ${m}분`:m?`${m}분 ${s}초`:`${s}초`; }
 function dBar(rows,max,fmt){ return rows.map((r,i)=>`<li><b>${i+1}</b><span class='dn'>${esc(r.name)}</span><span class='db'><i style='width:${Math.max(2,Math.round(r.v/max*100))}%'></i></span><em>${fmt(r)}</em></li>`).join('')||`<li class='muted small'>아직 기록이 없어요</li>`; }
 async function dashOpen(){ $('#dash').hidden=false; $('#dash').scrollIntoView({behavior:'smooth',block:'start'});
   try{ await dLoad('firebase-config.js?t='+Date.now()); }catch(e){}
   let L=null; try{ L=JSON.parse(localStorage.getItem('playa-fb-cfg')||'null'); }catch(e){}
+  const base=window.FB_CONFIG&&window.FB_CONFIG.databaseURL;
+  if((!L||!L.apiKey)&&base){ try{ const r=await fetch(base.replace(/\/$/,'')+'/public/webcfg.json',{cache:'no-store'}); const j=r.ok?await r.json():null; if(j&&j.apiKey){ L=j; try{ localStorage.setItem('playa-fb-cfg',JSON.stringify(j)); }catch(e){} } }catch(e){} }
   const C=Object.assign({},window.FB_CONFIG||{},L||{}); if(!C||!C.databaseURL||!C.apiKey){ $('#dSetup').hidden=false; $('#dBody').hidden=true; $('#dLogin').hidden=true; $('#dRules').value=DASH_RULES; if(C&&C.databaseURL) $('#dSetupNote').hidden=false; return; }
   $('#dSetup').hidden=true;
   if(!DASH.app){ await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');
     DASH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); DASH.db=DASH.app.database(); DASH.auth=DASH.app.auth();
-    DASH.auth.onAuthStateChanged(u=>{ $('#dWho').textContent=u?u.email:''; $('#dLogin').hidden=!!u; $('#dBody').hidden=!u; if(u) dashLoad(); }); } else if(DASH.auth.currentUser) dashLoad(); }
+    DASH.auth.onAuthStateChanged(u=>{ $('#dWho').textContent=u?u.email:''; $('#dLogin').hidden=!!u; $('#dBody').hidden=!u; if(u){ dashLoad();
+      if(u.email===DASH_ADMIN){ const w={apiKey:C.apiKey,authDomain:C.authDomain||'',projectId:C.projectId||'',appId:C.appId||'',databaseURL:C.databaseURL}; DASH.db.ref('public/webcfg').set(w).catch(()=>{}); } } }); } else if(DASH.auth.currentUser) dashLoad(); }
 async function dashLoad(){ const since=Date.now()-(DASH.range===1?(Date.now()-new Date().setHours(0,0,0,0)):DASH.range*864e5); $('#dNote').textContent='불러오는 중…';
   try{ const snap=await DASH.db.ref('sessions').orderByChild('last').startAt(since).once('value'); const S=[]; snap.forEach(c=>{ S.push(c.val()); }); dashRender(S); $('#dNote').textContent=`세션 ${S.length}개 기준 · ${new Date().toLocaleTimeString('ko-KR')} 업데이트`; }
   catch(e){ $('#dNote').textContent='불러오지 못했어요: '+(e&&e.message||e)+' (Firebase 규칙과 로그인 계정을 확인해 주세요)'; } }
