@@ -52,6 +52,8 @@ h2{font-family:"Black Han Sans","Noto Sans KR",sans-serif;font-weight:400;font-s
 h3{font-size:16px;margin:26px 0 10px}
 .muted{color:var(--muted)} .small{font-size:13px}
 #dash{grid-column:1/-1;margin-bottom:14px}
+body.dashonly main>nav,body.dashonly main>section>*:not(#dash),body.dashonly #publish,body.dashonly #conn,body.dashonly #status{display:none!important}
+body.dashonly main{grid-template-columns:1fr}
 .dkpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
 .dkpi div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
 .dkpi small{display:block;color:var(--muted);font-size:12px}.dkpi b{font-size:20px}
@@ -573,8 +575,9 @@ function dashRender(S){ const users={}, reg={}, stg={}, day={}; let tot=0, mob=0
 $('#dashBtn').addEventListener('click',()=>{ const d=$('#dash'); if(!d.hidden){ d.hidden=true; return; } dashOpen(); });
 $('#dClose').addEventListener('click',()=>{ $('#dash').hidden=true; });
 // realhouse.club/admin.html#dash opens straight into the dashboard (handy as a link in Discord)
-if(location.hash==='#dash') setTimeout(dashOpen,300);
-addEventListener('hashchange',()=>{ if(location.hash==='#dash') dashOpen(); });
+if(location.hash==='#dash'){ document.body.classList.add('dashonly'); setTimeout(dashOpen,300); }
+addEventListener('hashchange',()=>{ document.body.classList.toggle('dashonly',location.hash==='#dash'); if(location.hash==='#dash') dashOpen(); });
+$('#dClose').addEventListener('click',()=>{ document.body.classList.remove('dashonly'); if(location.hash==='#dash') history.replaceState(null,'',location.pathname); });
 $('#dLogin').addEventListener('click',()=>{ if(!DASH.auth) return; DASH.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>{ $('#dNote').textContent='로그인 실패: '+e.message; $('#dBody').hidden=false; }); });
 document.querySelectorAll('#dash [data-range]').forEach(b=>b.addEventListener('click',()=>{ DASH.range=+b.dataset.range; document.querySelectorAll('#dash [data-range]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); dashLoad(); }));
 $('#dReload').addEventListener('click',()=>dashLoad());
