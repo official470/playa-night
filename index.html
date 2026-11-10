@@ -5422,7 +5422,41 @@ const SV_LIST=[
   {srcs:V2(['media/sv09-4k.mp4'],['media/sv09.mp4']),rx:-5,ox:1.75,loops:1},
   {srcs:V2(['media/sv10-4k.mp4'],['media/sv10.mp4']),rx:-5,ox:1.75,loops:1},
   {srcs:V2(['media/sv11-4k.mp4'],['media/sv11.mp4']),rx:-5,ox:1.75,loops:1}];
-const SVID={on:true,cur:0,count:0,tryT:-9,btn:null};
+// nature scenes for the dome (aurora, arctic ice, milky way, sunset over a sea of clouds): the show opens with these, then the videos roll, then nature again
+const GL_NAT=['uniform float uT; uniform float uB; uniform float uF; varying vec3 vP;',GL_COMMON,
+ 'float fb(vec2 p){ float a=.5, s=0.; for(int i=0;i<4;i++){ s+=a*n(p); p=p*2.03+17.; a*=.5; } return s; }',
+ 'float st(vec2 q, float dn){ vec2 g=q*dn; vec2 c=floor(g); vec2 f=fract(g)-.5; vec2 o=vec2(h(c),h(c+3.7))-.5; return smoothstep(.09,0.,length(f-o*.6))*step(.78,h(c+9.1))*(.6+.4*sin(uT*2.+h(c+1.3)*40.)); }',
+ 'vec3 aurora(vec3 d, float el, vec2 c, vec2 p){ vec3 col=mix(vec3(.01,.035,.09),vec3(0.,.008,.03),clamp(el*1.2,0.,1.)); col+=vec3(.9,.95,1.)*(st(p,45.)+st(p+5.,90.)*.6);',
+ '  float ray=.5+.5*n(c*42.+fb(c*3.+uT*.05)*5.+vec2(0.,uT*.15));',
+ '  for(int i=0;i<3;i++){ float fi=float(i); float base=.14+fi*.15+.3*(fb(c*1.7+fi*7.3+vec2(uT*.025,-uT*.018))-.5); float hg=el-base; float body=smoothstep(0.,.035,hg)*exp(-max(hg,0.)*(4.6-fi))*(.35+.65*ray);',
+ '    col+=mix(vec3(.1,1.,.45),vec3(.6,.2,.95),clamp(hg*3.,0.,1.))*body*(.8+.4*uB)*(.95-fi*.17); }',
+ '  float mh=-.03+.15*fb(c*2.6+1.)+.03*n(c*11.+4.); vec3 sn=mix(vec3(.015,.03,.06),vec3(.1,.34,.32),smoothstep(mh-.1,mh,el)); return mix(col,sn,smoothstep(mh+.004,mh-.004,el)); }',
+ 'vec3 arctic(vec3 d, float el, vec2 c, vec2 p){ float sa=acos(clamp(c.y,-1.,1.)); vec3 sky=mix(vec3(1.,.74,.58),vec3(.3,.5,.78),smoothstep(-.05,.5,el)); sky=mix(sky,vec3(.07,.14,.34),smoothstep(.4,1.25,el));',
+ '  sky+=vec3(1.,.6,.3)*exp(-length(vec2(sa,(el-.04)*2.5))*2.4)*.85; sky=mix(sky,vec3(1.,.92,.9),smoothstep(.5,.8,fb(p*3.+vec2(uT*.02,0.)))*.5*smoothstep(1.1,.2,el)); vec3 col=sky;',
+ '  float sh=n(vec2(c.x*30.+c.y*17.,el*40.)); float h1=.03+.2*pow(fb(c*3.+2.),1.5); col=mix(col,mix(vec3(.5,.66,.84),vec3(.96,.98,1.),smoothstep(0.,h1,el))*(.8+.2*sh),smoothstep(h1+.004,h1-.004,el));',
+ '  float h2=-.03+.3*pow(n(c*2.2+9.),3.); col=mix(col,mix(vec3(.2,.5,.72),vec3(.86,.96,1.),smoothstep(-.05,h2,el))*(.75+.25*sh),smoothstep(h2+.004,h2-.004,el));',
+ '  if(el<-.03){ vec2 w=d.xz/max(-d.y,.03)*.25; vec3 sea=mix(vec3(.03,.15,.26),vec3(.1,.3,.44),n(w*8.+uT*.2)); sea=mix(sea,vec3(.9,.96,1.),smoothstep(.52,.58,fb(w*3.+uT*.01))); col=mix(col,sea,smoothstep(-.03,-.06,el)); }',
+ '  float az=atan(d.x,d.z); for(int i=0;i<2;i++){ float fi=float(i); vec2 g=vec2(az*(12.+fi*9.),el*(12.+fi*9.)+uT*(.9+fi*.5)); g.x+=sin(g.y*.7+fi)*.3; vec2 ce=floor(g); vec2 f=fract(g)-.5; col+=vec3(1.)*smoothstep(.1,0.,length(f-(vec2(h(ce),h(ce+2.))-.5)*.6))*step(.6,h(ce+5.))*.75; }',
+ '  return col*.9; }',
+ 'vec3 galaxy(vec3 d, float el, vec2 c, vec2 p){ float a=uT*.012; vec2 r=mat2(cos(a),-sin(a),sin(a),cos(a))*p; vec3 col=mix(vec3(.02,.02,.075),vec3(0.,0.,.02),clamp(el,0.,1.));',
+ '  float bd=exp(-pow((r.x*.8+r.y*.6)*2.6,2.)); float du=fb(r*5.+3.); col+=bd*(vec3(.36,.3,.52)*du*1.4+vec3(.7,.4,.22)*du*du*du*1.6)*(1.-.75*smoothstep(.45,.7,fb(r*9.+11.)));',
+ '  col+=vec3(1.)*(st(r,40.)+st(r+3.,75.)*.7+st(r+7.,130.)*.5*(.4+bd));',
+ '  float k=floor(uT/3.), ph=fract(uT/3.); vec2 s0=vec2(h(vec2(k,1.)),h(vec2(k,2.)))*1.2-.6; vec2 dr=normalize(vec2(h(vec2(k,3.))-.5,-.4)); vec2 pp=p-s0-dr*ph*1.6; float al=dot(pp,dr); col+=vec3(.9,.95,1.)*smoothstep(.0045,0.,length(pp-dr*al))*smoothstep(-.3,0.,al)*step(al,0.)*step(ph,.5)*2.;',
+ '  float mh=.0+.08*fb(c*4.+5.); return mix(col,vec3(.004,.007,.014),smoothstep(mh+.004,mh-.004,el)); }',
+ 'vec3 sunset(vec3 d, float el, vec2 c, vec2 p){ float sa=acos(clamp(c.y,-1.,1.)); vec3 col=mix(vec3(1.,.5,.2),vec3(.58,.3,.56),smoothstep(0.,.45,el)); col=mix(col,vec3(.08,.1,.32),smoothstep(.3,1.2,el));',
+ '  float sd=length(vec2(sa,(el-.12)*1.6)); col+=vec3(1.,.7,.3)*exp(-sd*2.2)*.9; col=mix(col,vec3(1.,.96,.82),smoothstep(.1,.085,sd));',
+ '  col=mix(col,vec3(1.,.62,.52),smoothstep(.5,.85,fb(p*4.+vec2(uT*.015,0.)))*.55*smoothstep(.15,.5,el));',
+ '  vec2 w=d.xz/max(.2-d.y,.04); float cs=fb(w*1.4+vec2(0.,uT*.04)); vec3 cl=mix(vec3(.34,.2,.42),vec3(1.,.78,.62),cs)+vec3(1.,.5,.2)*exp(-sa*1.5)*.3; return mix(col,cl,smoothstep(.09,.03,el+(cs-.5)*.1)); }',
+ 'vec3 sc(float m, vec3 d){ float el=asin(clamp(d.y,-1.,1.)); vec2 c=normalize(d.xz+vec2(.00001)); vec2 p=d.xz/(1.+max(d.y,-.5)); if(m<.5) return aurora(d,el,c,p); if(m<1.5) return arctic(d,el,c,p); if(m<2.5) return galaxy(d,el,c,p); return sunset(d,el,c,p); }',
+ 'void main(){ float m=mod(uT/20.,4.); float f=fract(m), m0=floor(m); float k=smoothstep(.9,1.,f); vec3 col=sc(m0,vP); if(k>0.) col=mix(col,sc(mod(m0+1.,4.),vP),k); gl_FragColor=vec4(col*uF,1.); }'].join('\n');
+const NAT={mat:null,t:0,dur:78};
+function natMat(){ return NAT.mat||(NAT.mat=new THREE.ShaderMaterial({uniforms:{uT:{value:0},uB:{value:0},uF:{value:1}},vertexShader:GL_VERT,fragmentShader:GL_NAT,side:THREE.BackSide,fog:false})); }
+// 'nat': nature scenes play; 'vid': every video rolls once, then back to nature
+function svidPhase(ph){ SVID.phase=ph; SVID.count=0; const V=svidCurV();
+  if(ph==='nat'){ NAT.t=0; if(V&&V.el&&!V.el.paused) V.el.pause(); }
+  else { SVID.left=SV_LIST.filter(x=>!x.fail).length; if(V&&V.el){ try{ V.el.currentTime=0; }catch(e){} } svidPlay(); }
+  svidApply(); }
+const SVID={on:true,cur:0,count:0,tryT:-9,btn:null,phase:'nat',left:0,wasIn:false};
 function svidCurV(){ return SV_LIST[SVID.cur]; }
 function svidNextIdx(from){ let n=from; for(let k=0;k<SV_LIST.length;k++){ n=(n+1)%SV_LIST.length; if(!SV_LIST[n].fail) return n; } return from; }
 function svidMake(V){ if(V.el||V.fail) return; const v=document.createElement('video'); v.muted=true; v.loop=false; v.playsInline=true; v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline',''); v.preload='auto'; V.i=V.i||0;
@@ -5434,14 +5468,17 @@ function svidMake(V){ if(V.el||V.fail) return; const v=document.createElement('v
   try{ t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy()); }catch(e){} V.tex=t; V.mat=new THREE.MeshBasicMaterial({map:t,side:THREE.BackSide,fog:false}); }
 function svidRelease(V){ if(!V.el) return; try{ V.el.pause(); V.el.removeAttribute('src'); V.el.load(); }catch(e){} if(V.tex) V.tex.dispose(); if(V.mat) V.mat.dispose(); V.el=null; V.tex=null; V.mat=null; V.ok=false; }
 function svidEnsure(){ const c=SVID.cur, n=svidNextIdx(c); SV_LIST.forEach((V,i)=>{ if(i===c||i===n) svidMake(V); else svidRelease(V); }); }
-function svidPlay(){ const V=svidCurV(); if(!V||!V.el||V.fail) return; try{ const p=V.el.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} }
+function svidPlay(){ const V=svidCurV(); if(SVID.phase!=='vid'||!V||!V.el||V.fail) return; try{ const p=V.el.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} }
 function svidNext(){ const V=svidCurV(); SVID.count++; if(!V.fail&&SVID.count<V.loops&&V.el){ try{ V.el.currentTime=0; }catch(e){} svidPlay(); return; }
-  SVID.count=0; if(V.el&&!V.el.paused) V.el.pause(); SVID.cur=svidNextIdx(SVID.cur); svidEnsure(); const N=svidCurV(); if(N.el){ try{ N.el.currentTime=0; }catch(e){} } svidPlay(); svidApply(); }
-function svidApply(){ if(!SPH.dome) return; const V=svidCurV(); SPH.dome.material=(SVID.on&&V&&V.ok&&V.mat)?V.mat:SPH.int; if(SVID.btn) SVID.btn.textContent=SVID.on?'🎞 영상':'🎞 그래픽'; }
+  SVID.count=0; if(V.el&&!V.el.paused) V.el.pause(); SVID.cur=svidNextIdx(SVID.cur); svidEnsure(); if(SVID.phase==='vid'&&--SVID.left<=0){ svidPhase('nat'); return; } const N=svidCurV(); if(N.el){ try{ N.el.currentTime=0; }catch(e){} } svidPlay(); svidApply(); }
+function svidApply(){ if(!SPH.dome) return; const V=svidCurV(); SPH.dome.material=!SVID.on?SPH.int:(SVID.phase==='vid'&&V&&V.ok&&V.mat&&!V.el.paused)?V.mat:natMat(); if(SVID.btn) SVID.btn.textContent=SVID.on?'🎞 영상':'🎞 그래픽'; }
 updaters.push((t,dt)=>{ const inB=MAP==='sphere'&&SPH.inside;
   // the dome always shows the videos and the show is always watched from above your head (no seat-bar toggles)
-  if(inB){ svidEnsure(); const V=svidCurV(); if(SVID.on&&V&&!V.fail&&V.el&&V.el.paused&&t-SVID.tryT>2){ SVID.tryT=t; svidPlay(); } if(V&&V.mat){ const k=.82+(SPH.int.uniforms.uB.value||0)*.22; V.mat.color.setRGB(k,k,k); } }
-  else SV_LIST.forEach(V=>{ if(V.el) svidRelease(V); }); });
+  if(inB){ if(!SVID.wasIn){ SVID.wasIn=true; svidPhase('nat'); } svidEnsure(); const V=svidCurV();
+    // nature keeps playing until the first video is really running, so the dome never goes blank
+    if(NAT.mat&&SPH.dome.material===NAT.mat){ NAT.t+=dt; const u=NAT.mat.uniforms; u.uT.value=NAT.t; u.uB.value=SPH.int.uniforms.uB.value||0; u.uF.value=Math.min(1,NAT.t/1.5); }
+    if(SVID.phase==='nat'&&NAT.t>=NAT.dur) svidPhase('vid'); if(SVID.on&&V&&!V.fail&&V.el&&V.el.paused&&t-SVID.tryT>2){ SVID.tryT=t; svidPlay(); } if(V&&V.mat){ const k=.82+(SPH.int.uniforms.uB.value||0)*.22; V.mat.color.setRGB(k,k,k); } }
+  else { SVID.wasIn=false; SV_LIST.forEach(V=>{ if(V.el) svidRelease(V); }); } });
 document.addEventListener('pointerdown',()=>{ const V=svidCurV(); if(MAP==='sphere'&&SPH.inside&&V&&V.el&&V.el.paused&&SVID.on&&!V.fail) svidPlay(); },true);
 
 /* ================= MENU: CLOSE OTHER PANELS WHEN IT OPENS ================= */
