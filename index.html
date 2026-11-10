@@ -4753,17 +4753,16 @@ try{ RHA.uid=localStorage.getItem('playa-uid')||''; }catch(e){}
 if(!RHA.uid){ RHA.uid='u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); try{ localStorage.setItem('playa-uid',RHA.uid); }catch(e){} }
 RHA.sid=RHA.uid+'_'+Date.now().toString(36);
 function rhaLoad(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
+// writes go straight to the database's REST address (no SDK, no key needed; the database rules only allow writing your own visit)
 async function rhaInit(){ if(RHA.ok||RHA.busy) return; RHA.busy=true;
-  try{ await rhaLoad('firebase-config.js?v='+Math.floor(Date.now()/36e5)); if(!window.FB_CONFIG||!window.FB_CONFIG.databaseURL) return;
-    await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
-    const app=firebase.apps.length?firebase.app():firebase.initializeApp(window.FB_CONFIG); RHA.db=app.database(); RHA.ok=true; }catch(e){ } finally{ RHA.busy=false; } }
+  try{ await rhaLoad('firebase-config.js?v='+Math.floor(Date.now()/36e5)); const u=window.FB_CONFIG&&window.FB_CONFIG.databaseURL; if(u){ RHA.db=u.replace(/\/$/,''); RHA.ok=true; } }catch(e){ } finally{ RHA.busy=false; } }
 function rhaWhere(){ const o=typeof hyBest==='function'?hyBest():null; if(!o||!(o.target>.25)) return null;
   if(o.front) return {key:'booth:'+o.id,name:o.name+' 부스'}; const nz=(typeof NM!=='undefined'&&NM.zones||[]).find(z=>z.Z===o);
   return {key:djStageKey(o.id),name:nz?nz.name:(MC_ZN[o.id]||o.id)}; }
 const RHA_REG={playa:'사막점',itaewon:'이태원',nami:'동물원점',sphere:'지구본점'};
 function rhaSend(final){ if(!RHA.ok||!RHA.db||RHA.dur<5) return; const name=((($('#pname')&&$('#pname').value)||'').trim()||'버너').slice(0,12);
   const rec={uid:RHA.uid,name,start:RHA.start,last:Date.now(),dur:Math.round(RHA.dur),regions:RHA.regions,stages:RHA.stages,names:RHA.names,mob:isTouch?1:0,steps:Math.floor((typeof STEPS!=='undefined'&&STEPS.n)||0)};
-  try{ RHA.db.ref('sessions/'+RHA.sid).set(rec); }catch(e){} }
+  try{ fetch(`${RHA.db}/sessions/${encodeURIComponent(RHA.sid)}.json`,{method:'PUT',body:JSON.stringify(rec),keepalive:!!final,headers:{'Content-Type':'application/json'}}).catch(()=>{}); }catch(e){} }
 setTimeout(rhaInit,4000);
 updaters.push((t,dt)=>{ if(!inGame||document.visibilityState!=='visible') return; RHA.dur+=dt; RHA.acc+=dt;
   if(RHA.acc>=5){ const s=RHA.acc; RHA.acc=0; const r=MAP; RHA.regions[r]=Math.round((RHA.regions[r]||0)+s);

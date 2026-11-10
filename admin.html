@@ -147,6 +147,7 @@ details.setup li{margin:4px 0}
     <div class="row"><span class="small muted" id="dWho"></span><button class="btn" id="dLogin" hidden>Google로 로그인</button><button class="btn" id="dClose">닫기</button></div>
   </div>
   <div id="dSetup" hidden>
+    <p class="small" id="dSetupNote" hidden style="color:var(--ok)"><b>✅ 방문 기록은 이미 Firebase(realhouse-club)에 쌓이고 있어요.</b> 대시보드에서 보려면 아래 5번(웹 앱 설정값 붙여넣기)만 하면 돼요. 1~4번은 이미 끝났어요.</p>
     <p class="small">아직 통계 서버(Firebase, 무료 요금제)가 연결되지 않았어요. 아래 순서대로 한 번만 설정하면 게임 방문 기록이 쌓이기 시작해요. 카드 등록 없이 무료(Spark) 요금제로 돼요.</p>
     <ol class="small">
       <li><a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer">Firebase 콘솔</a>에서 <b>프로젝트 추가</b> → 이름(예: realhouse-club) → 애널리틱스는 꺼도 돼요.</li>
@@ -544,7 +545,7 @@ function dFmt(sec){ sec=Math.round(sec||0); const h=Math.floor(sec/3600), m=Math
 function dBar(rows,max,fmt){ return rows.map((r,i)=>`<li><b>${i+1}</b><span class='dn'>${esc(r.name)}</span><span class='db'><i style='width:${Math.max(2,Math.round(r.v/max*100))}%'></i></span><em>${fmt(r)}</em></li>`).join('')||`<li class='muted small'>아직 기록이 없어요</li>`; }
 async function dashOpen(){ $('#dash').hidden=false; $('#dash').scrollIntoView({behavior:'smooth',block:'start'});
   try{ await dLoad('firebase-config.js?t='+Date.now()); }catch(e){}
-  const C=window.FB_CONFIG; if(!C||!C.databaseURL){ $('#dSetup').hidden=false; $('#dBody').hidden=true; $('#dLogin').hidden=true; $('#dRules').value=DASH_RULES; return; }
+  const C=window.FB_CONFIG; if(!C||!C.databaseURL||!C.apiKey){ $('#dSetup').hidden=false; $('#dBody').hidden=true; $('#dLogin').hidden=true; $('#dRules').value=DASH_RULES; if(C&&C.databaseURL) $('#dSetupNote').hidden=false; return; }
   $('#dSetup').hidden=true;
   if(!DASH.app){ await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js'); await dLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');
     DASH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); DASH.db=DASH.app.database(); DASH.auth=DASH.app.auth();
@@ -575,7 +576,7 @@ document.querySelectorAll('#dash [data-range]').forEach(b=>b.addEventListener('c
 $('#dReload').addEventListener('click',()=>dashLoad());
 // the config pasted from Firebase console is saved as firebase-config.js in the game repo (same GitHub token as the schedule)
 $('#dSaveCfg').addEventListener('click',async()=>{ const raw=$('#dCfg').value; const pick=k=>{ const m=raw.match(new RegExp(k+'\\s*:\\s*["\\\']([^"\\\']+)')); return m?m[1]:''; };
-  const cfg={apiKey:pick('apiKey'),authDomain:pick('authDomain'),databaseURL:pick('databaseURL'),projectId:pick('projectId'),appId:pick('appId')};
+  const cfg={apiKey:pick('apiKey'),authDomain:pick('authDomain'),databaseURL:pick('databaseURL')||(window.FB_CONFIG&&window.FB_CONFIG.databaseURL)||'',projectId:pick('projectId'),appId:pick('appId')};
   if(!cfg.databaseURL||!cfg.projectId){ $('#dCfgMsg').textContent='databaseURL과 projectId가 있어야 해요. Realtime Database를 만든 뒤 다시 복사해 주세요.'; return; }
   if(!token){ $('#dCfgMsg').textContent='먼저 위의 GitHub 연결을 해 주세요.'; return; }
   const url=`https://api.github.com/repos/${REPO}/contents/firebase-config.js`, H={Accept:'application/vnd.github+json',Authorization:'Bearer '+token};
