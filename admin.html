@@ -567,6 +567,9 @@ function dashRender(S){ const users={}, reg={}, stg={}, day={}; let tot=0, mob=0
   const D=Object.values(day).sort((a,b)=>b.t-a.t).map(d=>({name:d.name,v:d.u.size,t:d.v})); const dm=Math.max(1,...D.map(d=>d.v)); $('#dDay').innerHTML=dBar(D,dm,r=>`${r.v}명 · ${dFmt(r.t)}`); }
 $('#dashBtn').addEventListener('click',()=>{ const d=$('#dash'); if(!d.hidden){ d.hidden=true; return; } dashOpen(); });
 $('#dClose').addEventListener('click',()=>{ $('#dash').hidden=true; });
+// realhouse.club/admin.html#dash opens straight into the dashboard (handy as a link in Discord)
+if(location.hash==='#dash') setTimeout(dashOpen,300);
+addEventListener('hashchange',()=>{ if(location.hash==='#dash') dashOpen(); });
 $('#dLogin').addEventListener('click',()=>{ if(!DASH.auth) return; DASH.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>{ $('#dNote').textContent='로그인 실패: '+e.message; $('#dBody').hidden=false; }); });
 document.querySelectorAll('#dash [data-range]').forEach(b=>b.addEventListener('click',()=>{ DASH.range=+b.dataset.range; document.querySelectorAll('#dash [data-range]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); dashLoad(); }));
 $('#dReload').addEventListener('click',()=>dashLoad());
