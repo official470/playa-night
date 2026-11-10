@@ -3292,12 +3292,20 @@ const PAPER_TR=[
  {name:'서울 야경 딥하우스',bpm:120,root:33,kick:K4,hat:OFF,clap:CL,shk:1,bass:'0.....0...3...5.',bt:'sub',prog:[[0,'min9'],[0,'min9'],[-4,'maj7'],[-2,'dom7']],chord:'x...............',ct:'pad'}];
 const IT_TR={3:SHELTER_TR,4:PAPER_TR}, IT_TI={3:0,4:0};
 function inBldg(x,z){ const lx=x-OX; return lx>8.2&&lx<21.8&&z>-8.8&&z<8.8; }
-function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTread(x,z); if(MAP==='itaewon'&&IT.floor>0&&inBldg(x,z)) return IT.floorY[IT.floor]; return floorAtBase(x,z); }
+function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTread(x,z); if(MAP==='itaewon'&&IT.floor>0&&inBldg(x,z)) return IT.floorY[IT.floor]; if(MAP==='itaewon'&&RING.st&&ringOnStairs(x,z)) return ringStairY(x-OX); return floorAtBase(x,z); }
 function clampMap(){ if(BM.mode){ bmClamp(); return; } if(pState.z>1500){ clampSphere(); return; } if(pState.x<-1500){ clampNami(); return; } if(pState.x<1500){ const dr=Math.hypot(pState.x,pState.z); if(dr>300){ pState.x*=300/dr; pState.z*=300/dr; } return; }
   let lx=pState.x-OX, z=pState.z;
   if(TEL.in){ lx=clamp(lx,TEL.X-9.8,TEL.X+7.8); z=clamp(z,-7.8,7.8); if(lx>TEL.X+1.6&&z>5.6) z=5.6; }
+  else if(RING.in){ lx=clamp(lx,RING.X-10.5,RING.X+7.9); z=clamp(z,-5,5); if(lx>RING.X-9.9&&lx<RING.X-.1&&z<-3.1) z=-3.1; }
   else if(IT.floor>0){ lx=clamp(lx,8.7,21.3); z=clamp(z,-8.3,8.3); }
-  else { if(lx>8.1){ lx=Math.min(lx,21.3); z=clamp(z,-8.3,8.3); } else if(Math.abs(z)<1.5) lx=clamp(lx,-6.6,21.3); else if(z>20.9&&z<27.1) lx=clamp(lx,-28.2,6.6); else lx=clamp(lx,-6.6,6.6); if(lx<-6.6) z=clamp(z,20.9,27.1); else z=clamp(z,-72,72); }
+  else { const band=z>-18.9&&z<-13.8, alley=RING.al&&lx>6.6;
+    if(alley){ // the Ring alley: ground on the open side, the stairs along the building wall (you get on at the bottom, past the bouncer)
+      z=clamp(z,-18.85,-13.85); lx=Math.min(lx,18.6);
+      if(RING.st){ lx=Math.max(lx,8.7); if(lx<9.6&&z>-17.55) RING.st=false; else z=Math.min(z,-17.6); if(lx>18.15) ringGo(true); }
+      else if(z<-17.5){ if(lx>8.5&&lx<9.7&&RING.admitted) RING.st=true; else if(lx>8.5){ z=-17.5; if(!RING.admitted&&lx<10.2&&clk.elapsedTime-RING.nagT>5){ RING.nagT=clk.elapsedTime; toast('계단은 경호원에게 신분증을 보여 준 뒤에 올라갈 수 있어요'); } } } }
+    else if(lx>8.1&&z>-9){ lx=Math.min(lx,21.3); z=clamp(z,-8.3,8.3); } else if(Math.abs(z)<1.5) lx=clamp(lx,-6.6,21.3); else if(z>20.9&&z<27.1) lx=clamp(lx,-28.2,6.6); else if(band) lx=clamp(lx,-6.6,18.6); else lx=clamp(lx,-6.6,6.6);
+    if(lx<-6.6) z=clamp(z,20.9,27.1); else if(!alley) z=clamp(z,-72,72);
+    RING.al=lx>6.6&&z<-9; }
   pState.x=OX+lx; pState.z=z; }
 function applyCut(f){ if(IT.cut===f) return; IT.cut=f; IT.levels.forEach((L,i)=>{ L.g.visible=f<0||i<=f; L.shell.forEach(m=>{ m.visible=!(f>=0&&i===f); }); }); }
 function vSign(text,col){ const c=document.createElement('canvas'); c.width=128; c.height=512; const x=c.getContext('2d'); x.fillStyle='#0c0a10'; x.fillRect(0,0,128,512); x.strokeStyle=col; x.lineWidth=6; x.strokeRect(5,5,118,502);
@@ -3348,7 +3356,10 @@ function buildItaewon(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sc
     const sf=B(.08,2.6,d*.86,M(pick(['#ffe2b8','#cfe8ff','#ffd0e8','#e8ffd0']),{glow:.55}),xc+face*(w/2+.04),1.45,zc,IG);
     const sg=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign(SHOPN[si++%SHOPN.length],col),transparent:true})); sg.scale.set(Math.min(d*.8,7),.95,1); sg.position.set(xc+face*(w/2+.06),3.05,zc); sg.rotation.y=face*Math.PI/2; IG.add(sg);
     if(Math.random()<.5){ const vs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:vSign(pick(['BAR','PUB','노래방','카페','LIVE','호프']),col)})); vs.scale.set(.8,3.2,1); vs.position.set(xc+face*(w/2+.5),6.2,zc+d/2-.8); vs.rotation.y=face*Math.PI/2; IG.add(vs); } };
-  [-1,1].forEach(side=>{ let z=-72; while(z<72){ const d=rand(8,14), zc=z+d/2; if(side>0&&zc>-15&&zc<15){ z=15; continue; } if(side<0&&z<28&&z+d>20){ if(20-z>=4){ const d2=20-z; bldg(side*13,z+d2/2,12,d2-.4,3+Math.floor(Math.random()*4),-side); } z=28; continue; } bldg(side*13,zc,12,d-.4,3+Math.floor(Math.random()*4),-side); z+=d; } });
+  [-1,1].forEach(side=>{ let z=-72; while(z<72){ const d=rand(8,14), zc=z+d/2;
+    // left side, just before Shelter: the Ring building (z -31..-19, built in buildRing) and its alley, then one narrow building closing the alley's far wall
+    if(side>0&&z<-13.4&&z+d>-31){ if(-31-z>=4){ const d2=-31-z; bldg(13,z+d2/2,12,d2-.4,3+Math.floor(Math.random()*4),-1); } bldg(13,-11.35,12,3.7,4,-1); z=15; continue; }
+    if(side>0&&zc>-15&&zc<15){ z=15; continue; } if(side<0&&z<28&&z+d>20){ if(20-z>=4){ const d2=20-z; bldg(side*13,z+d2/2,12,d2-.4,3+Math.floor(Math.random()*4),-side); } z=28; continue; } bldg(side*13,zc,12,d-.4,3+Math.floor(Math.random()*4),-side); z+=d; } });
   for(let i=0;i<(LOW?16:32);i++){ const a=Math.random()*Math.PI*2, r=rand(80,220), w=rand(10,22), h=rand(20,80), t=pick(WT).clone(); t.needsUpdate=true; t.repeat.set(Math.round(w/3),Math.round(h/3.4));
     const tw=new THREE.Mesh(G.box,new THREE.MeshLambertMaterial({map:t,emissive:0xffffff,emissiveMap:t,emissiveIntensity:.7})); tw.scale.set(w,h,w); tw.position.set(Math.cos(a)*r,h/2,Math.sin(a)*r); IG.add(tw); }
   mesh(G.cone,M('#1e2a22'),-150,30,-300,130,60,130,IG); mesh(G.cyl,M('#d8d8e0'),-150,80,-300,1.4,40,1.4,IG); mesh(G.cyl,M('#fff3d0',{glow:1.2}),-150,102,-300,4.5,5,4.5,IG); mesh(G.cyl,M('#ff2a2a',{glow:1.6}),-150,112,-300,.3,14,.3,IG);
@@ -3553,13 +3564,166 @@ function openMapSelOld(){ openSp('맵 이동','어디로 갈까요?',`<div class
 $('#mapBtn').addEventListener('click',()=>{ const l=$('#boothList'); l.hidden=false; $('#mapToggle').setAttribute('aria-expanded','true'); renderBoothList(); });
 document.querySelectorAll('.mapsel [data-map]').forEach(b=>b.addEventListener('click',()=>{ selMap=b.dataset.map; document.querySelectorAll('.mapsel [data-map]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); }));
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='itaewon'&&MAP!=='itaewon') setTimeout(()=>goMap('itaewon'),50); });
-const IT_SPOTS=[{n:'이태원 거리 입구',x:OX-1.5,z:-58},{n:'횡단보도 앞',x:OX-1,z:-35},{n:'클럽 건물 앞 (경호원)',x:OX+5,z:-4},{n:'4F 쉘터 (딥테크노)',fl:3},{n:'5F 페이퍼 (하우스 루프탑)',fl:4},{n:'B1 텔러 골목 (테크노)',x:OX-24,z:24},{n:'사막점으로 돌아가기',back:1}];
+const IT_SPOTS=[{n:'이태원 거리 입구',x:OX-1.5,z:-58},{n:'횡단보도 앞',x:OX-1,z:-35},{n:'클럽 건물 앞 (경호원)',x:OX+5,z:-4},{n:'4F 쉘터 (딥테크노)',fl:3},{n:'5F 페이퍼 (하우스 루프탑)',fl:4},{n:'B1 텔러 골목 (테크노)',x:OX-24,z:24},{n:'링 골목 (하우스 · LP)',x:OX+5.6,z:-16.3},{n:'사막점으로 돌아가기',back:1}];
 function renderBoothListIT(){ if(MAP!=='itaewon') return renderBoothListPlaya(); const ul=$('#boothList'); if(ul.hidden) return;
   ul.innerHTML=`<li class='cat'><button disabled>🇰🇷 이태원 · 한국 서울<small>${IT_SPOTS.filter(s=>!s.back).length}곳</small></button></li>`+IT_SPOTS.map((s,i)=>s.back?'':`<li><span class='dot' style='background:${s.fl===3?'#ff2a2a':s.fl===4?'#ffcf8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-it='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-it]'); if(!b) return; const s=IT_SPOTS[+b.dataset.it];
   if(s.back){ goMap('playa'); return; }
   if(s.fl){ if(!IT.stamped){ toast('먼저 경호원에게 신분증을 보여 주고 도장을 받아야 해요'); IT.floor=0; pState.x=OX+5; pState.z=-4; pState.y=0; return; } goFloor(s.fl); return; }
   IT.floor=0; pState.x=s.x; pState.z=s.z; pState.y=0; pState.face=0; yaw=Math.PI; });
+
+/* ================= RING: house club up the alley stairs, on the left of the street just before Shelter ================= */
+// street side: the whole dark building at z -31..-19 with the green neon R, the alley beside it (z -19..-13.5) where people stand vaping,
+// and real stairs you walk up. The room itself sits far off at x=OX+400 (the door at the top of the stairs takes you there).
+const RING={in:false,admitted:false,st:false,al:false,busy:false,X:400,walk:[],vape:[],plat:[],cur:null,tgt:null,colT:0,lit:null,nagT:-9};
+const RING_TR=[{name:'링 하우스',bpm:124,root:34,kick:K4,hat:OFF,oh:OFF,clap:CL,bass:'0.0..0.0..c.0.7.',bt:'pluck',prog:[[0,'min7'],[5,'min7'],[3,'maj7'],[-2,'dom7']],chord:'x..x..x.......x.',ct:'stab'}];
+const RING_RED=0xff2210, RING_GRN=0x22ff5a;
+// Ring's default sets: Korean DJs (Minkyu, Kyuchan, Oho.). They play whenever nothing else is scheduled there (see schSlot / schFill)
+const RING_DEF=[
+  ['djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025','Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025','Minkyu',11472,'artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png'],
+  ['djminkyu/minkyu_eos-radio_july_2024','EOS Radio - Minkyu 28.07.2024','Minkyu',3802,'artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg'],
+  ['postervoyage/here061226','@here June/12/2026','Kyuchan',7100,'artworks-YGf2c8hdyi8BI78A-RgR3yA-t500x500.jpg'],
+  ['postervoyage/journey_to_oases','JOURNEY_TO_OASES','Kyuchan',4574,'artworks-JtbOu0kYEFThI8ml-QrvyjQ-t500x500.jpg'],
+  ['oho990828/teller-seoul-26-07-16','Oho @Teller 26.07.16','Oho.',8912,'artworks-grA9JcbDWWI5SNLf-zEvC5Q-t500x500.jpg'],
+  ['oho990828/april-haze','April Haze','Oho.',5704,'artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg'],
+  ['oho990828/oho-nothing-in','Nothing in','Oho.',3216,'artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg']
+ ].map(([p,title,dj,sec,art])=>({start:0,dur:Math.ceil(sec/60),url:'https://soundcloud.com/'+p,title,dj,art:'https://i1.sndcdn.com/'+art,djIntro:'',musicIntro:'',auto:true,def:true}));
+const SCH_DEF={'zone:ring':RING_DEF};
+function ringLook(){ return {top:pick(['tee','long','tank','tee','long']),topColor:pick(['#101012','#141416','#1a1a1e']),outer:Math.random()<.25?'vest':'none',outerColor:'#121214',bottom:pick(['cargo','leggings','cargo']),bottomColor:'#101012',shoes:'boots',shoeColor:'#0e0e10',head:pick(['none','none','none','bucket']),headColor:'#101012',face:'none',extra:'none'}; }
+function ringStairY(lx){ return clamp((lx-9.6)/7.4,0,1)*3.6; }
+function ringOnStairs(x,z){ const lx=x-OX; return lx>8.4&&lx<19&&z<-17.4&&z>-19.1; }
+function ringInside(){ return Math.abs(pState.x-(OX+RING.X))<13&&Math.abs(pState.z)<7; }
+// the neon logo: one stroke, a slanted stem with a flat loop swinging out to the right
+function ringLogo(x,w,h,col){ x.lineCap='round'; x.lineJoin='round'; const path=()=>{ x.beginPath(); x.moveTo(w*.50,h*.86); x.lineTo(w*.34,h*.46); x.bezierCurveTo(w*.50,h*.24,w*.94,h*.04,w*.92,h*.20); x.bezierCurveTo(w*.90,h*.34,w*.60,h*.44,w*.40,h*.52); x.lineTo(w*.97,h*.42); };
+  x.strokeStyle=col; x.shadowColor=col; x.shadowBlur=w*.12; x.lineWidth=w*.06; path(); x.stroke(); x.shadowBlur=w*.04; x.strokeStyle='#eafff0'; x.lineWidth=w*.022; path(); x.stroke(); }
+function buildRing(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); scene.add(IG); RING.g=IG;
+  const dark=M('#151517'), steel=M('#2a2a2e'), neon=M('#3dff6a',{glow:2});
+  // ---------- the building: a black box, a patch of white tiles, one green neon R ----------
+  B(12,13,12,dark,13,6.5,-25,IG); B(.1,2.6,6.5,M('#0b0b0d'),6.95,1.3,-25,IG);
+  const tile=telCanvas(128,128,(x,w,h)=>{ x.fillStyle='#8a8a86'; x.fillRect(0,0,w,h); x.fillStyle='#e9e7e0'; for(let r=0;r<8;r++) for(let c=0;c<6;c++){ const o=r%2?13:0; x.fillRect(c*26-o+1,r*16+1,24,14); } }); tile.wrapS=tile.wrapT=THREE.RepeatWrapping;
+  const tp=(par,w,h,x,y,z,ry,rx,ryp)=>{ const t=tile.clone(); t.needsUpdate=true; t.repeat.set(rx,ryp); const p=new THREE.Mesh(G.plane,new THREE.MeshLambertMaterial({map:t})); p.scale.set(w,h,1); p.position.set(x,y,z); p.rotation.y=ry; par.add(p); return p; };
+  tp(IG,5,3.6,6.97,8.6,-26.5,-Math.PI/2,5,5);
+  const logoT=telCanvas(256,256,(x,w,h)=>{ x.fillStyle='#04140a'; x.fillRect(0,0,w,h); const g=x.createRadialGradient(w/2,h/2,10,w/2,h/2,w*.7); g.addColorStop(0,'rgba(40,255,110,.55)'); g.addColorStop(1,'rgba(40,255,110,0)'); x.fillStyle=g; x.fillRect(0,0,w,h); ringLogo(x,w,h,'#3dff6a'); });
+  const logo=(w,x,y,z,ry,par)=>{ const p=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:logoT})); p.scale.set(w,w,1); p.position.set(x,y,z); p.rotation.y=ry; (par||IG).add(p); return p; };
+  // the sign box hangs out over the pavement at the alley corner, readable from both ends of the street
+  B(2,2,.2,M('#0a120c'),5.9,5.4,-19.4,IG); B(.6,.1,.1,steel,6.85,6.2,-19.4,IG); logo(1.9,5.9,5.4,-19.29,0); logo(1.9,5.9,5.4,-19.51,Math.PI); logo(2.6,6.96,5.3,-24.5,-Math.PI/2);
+  B(.08,.08,5.3,neon,6.92,3.5,-16.25,IG);
+  // ---------- the alley ----------
+  B(13,.02,5.6,M('#1c1a1f'),12.9,.014,-16.25,IG); B(.4,13,5.8,M('#2c282e'),19.3,6.5,-16.25,IG);
+  B(.9,.6,.4,M('#55555a'),15,2.6,-13.45,IG); mesh(G.cyl,M('#4a4a50'),11.5,3,-13.3,.05,6,.05,IG); mesh(G.sph,M('#d8ffe0',{glow:1.2}),12.6,4.4,-13.35,.16,.1,.16,IG);
+  // ---------- the stairs up the side of the building: 12 steps, a green line on every edge ----------
+  const stepM=[M('#4a474c'),M('#413e43')], edge=M('#3dff6a',{glow:.8});
+  for(let i=0;i<12;i++){ const x0=9.6+i*.6167; B(.6167,.3*(i+1),1.4,stepM[i%2],x0+.308,.15*(i+1),-18.2,IG); B(.05,.025,1.4,edge,x0+.03,.3*(i+1)+.012,-18.2,IG); }
+  B(1.9,3.6,1.4,stepM[0],17.95,1.8,-18.2,IG);
+  const rail=B(8.25,.06,.06,steel,13.3,2.75,-17.48,IG); rail.rotation.z=Math.atan2(3.6,7.4); for(let i=0;i<=6;i++){ const lx=9.7+i*1.22; B(.05,.95,.05,steel,lx,ringStairY(lx)+.475,-17.48,IG); }
+  B(1.9,.06,.06,steel,17.95,4.55,-17.48,IG); B(.05,.95,.05,steel,18.85,4.075,-17.48,IG);
+  // halfway up, a mouse hole in the riser (nobody home) and a few crumbs on the step below it
+  const hole=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({transparent:true,map:telCanvas(64,64,(x,w,h)=>{ x.fillStyle='#8a8588'; x.beginPath(); x.moveTo(6,h); x.lineTo(6,30); x.quadraticCurveTo(32,-8,58,30); x.lineTo(58,h); x.fill(); x.fillStyle='#050505'; x.beginPath(); x.moveTo(12,h); x.lineTo(12,32); x.quadraticCurveTo(32,2,52,32); x.lineTo(52,h); x.fill(); })}));
+  hole.scale.set(.24,.24,1); hole.position.set(13.296,1.92,-18.45); hole.rotation.y=-Math.PI/2; IG.add(hole);
+  [[13.12,-18.4],[13.05,-18.52],[13.2,-18.33]].forEach(([x,z])=>B(.025,.02,.025,M('#d8c070'),x,1.81,z,IG));
+  // the door at the top
+  B(1.2,2.3,.1,M('#08080a'),17.95,4.75,-18.94,IG); [17.3,18.6].forEach(x=>B(.05,2.3,.05,neon,x,4.75,-18.9,IG)); B(1.35,.05,.05,neon,17.95,5.92,-18.9,IG);
+  // ---------- people outside: the bouncer, the crowd vaping in the alley, and a steady trickle up and down the stairs ----------
+  RING.bouncer=addNPC({top:'long',topColor:'#101012',outer:'none',bottom:'cargo',bottomColor:'#101012',shoes:'boots',shoeColor:'#101012',hairStyle:'buzz',hairColor:'#141210',head:'none',face:'none',extra:'none'},{x:OX+8.8,z:-17.05},-Math.PI/2,'idle',{talk:true}).P;
+  const mine=[RING.bouncer];
+  [[7.6,-15.1],[8.7,-14.5],[8.4,-15.9],[10.6,-14.5],[11.4,-15.4],[5.9,-14.6],[6.0,-20.6],[5.7,-21.6]].slice(0,LOW?5:8).forEach(([x,z],i)=>{ const cx=i<3?8.2:i<5?11:i<6?7:5.9, cz=i<3?-15.2:i<5?-15:i<6?-15:-21.1;
+    const S=addNPC(ringLook(),{x:OX+x,z},Math.atan2(cx-x,cz-z),'talk',{talk:true}); RING.vape.push({P:S.P,t:rand(0,6),n:0}); mine.push(S.P); });
+  for(let i=0;i<(LOW?4:7);i++){ const S=addNPC(ringLook(),{x:OX+8,z:-17},0,'walk',{}); RING.walk.push({P:S.P,lx:rand(7.4,17.8),dir:i%2?1:-1,spd:rand(.9,1.35),wait:rand(0,5)}); mine.push(S.P); }
+  // ---------- the room ----------
+  const X=RING.X, R=new THREE.Group(); R.position.x=X; IG.add(R); RING.room=R;
+  const wall=M('#1a1516'), wall2=M('#141012'), H=10.8;
+  B(22.4,.06,11.2,M('#141113'),0,0,0,R);
+  // low part (door + bar): an ordinary ceiling
+  B(14.2,.3,11.2,wall2,-4,3.65,0,R); [-5.55,5.55].forEach(z=>B(14.2,3.6,.25,wall,-4,1.8,z,R)); B(.25,3.6,11.2,wall,-11.1,1.8,0,R);
+  // stage end: three times the height, under a glass roof that shows the sky
+  B(.25,H-3.5,11.2,wall2,3.05,3.5+(H-3.5)/2,0,R); B(.25,H,11.2,wall,11.1,H/2,0,R); [-5.55,5.55].forEach(z=>B(8.2,H,.25,wall,7.05,H/2,z,R));
+  tp(R,8,H-3.3,7.05,3.4+(H-3.3)/2,5.41,Math.PI,9,9);   // white brick tiles all the way up one side
+  { const dots=telCanvas(64,64,(x,w,h)=>{ x.fillStyle='#1c1718'; x.fillRect(0,0,w,h); x.fillStyle='#0a0808'; for(let r=0;r<8;r++) for(let c=0;c<8;c++){ x.beginPath(); x.arc(c*8+4,r*8+4,1.6,0,6.3); x.fill(); } }); dots.wrapS=dots.wrapT=THREE.RepeatWrapping; dots.repeat.set(10,13);
+    const p=new THREE.Mesh(G.plane,new THREE.MeshLambertMaterial({map:dots})); p.scale.set(8,H-.2,1); p.position.set(7.05,H/2,-5.41); R.add(p); }
+  for(let i=0;i<=4;i++) B(.14,.22,11.2,steel,3.1+i*2,H+.05,0,R); for(let i=0;i<=5;i++) B(8.2,.22,.12,steel,7.05,H+.05,-5.5+i*2.2,R);
+  const glass=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({color:0x7aa8ff,transparent:true,opacity:.1,side:THREE.DoubleSide,fog:false,depthWrite:false})); glass.scale.set(8.2,11.2,1); glass.rotation.x=-Math.PI/2; glass.position.set(7.05,H+.02,0); R.add(glass);
+  [[5,-3.3],[9,2.2]].forEach(([u,z])=>B(1.9,.03,2.1,M('#cfcac0'),u,H-.12,z,R));
+  // every light line in the room is one material: it turns red or green together
+  const led=new THREE.MeshBasicMaterial({color:RING_RED,fog:false}); RING.led=led;
+  const LB=(w,h,d,x,y,z)=>{ const m=new THREE.Mesh(G.box,led); m.scale.set(w,h,d); m.position.set(x,y,z); R.add(m); return m; };
+  for(let i=0;i<(LOW?3:5);i++){ const u=3.9+i*(LOW?3.2:1.7); LB(.07,.07,10.7,u,H-.5,0); [-5.38,5.38].forEach(z=>LB(.07,H-4.2,.07,u,3.7+(H-4.2)/2,z)); }
+  [-5.38,5.38].forEach(z=>LB(13.8,.06,.06,-4,3.38,z)); for(let i=0;i<3;i++) LB(.06,.06,10.6,-9+i*4.4,3.46,0);
+  [-3.6,-1.2,1.2,3.6].forEach(z=>LB(.06,H-1.2,.06,10.93,H/2+.3,z));
+  // the long bar, straight to your left as you walk in
+  const wood=M('#4a3226');
+  B(9,1.08,.7,M('#221a18'),-5,.54,-3.9,R); B(9.1,.06,.8,wood,-5,1.11,-3.9,R);
+  B(9,.06,.35,wood,-5,1.5,-5.25,R); B(9,.06,.35,wood,-5,2.15,-5.25,R); B(9,2.2,.04,M('#b8894e',{glow:.45}),-5,1.9,-5.4,R);
+  for(let r=0;r<2;r++) for(let i=0;i<(LOW?9:16);i++) bottle(R,-9.2+i*(LOW?1.05:.56),1.53+r*.65,-5.25,pick(['#e8d8b0','#7a4a2a','#2a5a3a','#c8c8d0','#a83a2a']));
+  for(let i=0;i<6;i++){ const u=-8.6+i*1.45; mesh(G.cyl,M('#0c0c0e'),u,.78,-3.15,.17,.05,.17,R); mesh(G.cyl,steel,u,.39,-3.15,.025,.78,.025,R); mesh(G.cyl,steel,u,.02,-3.15,.16,.03,.16,R); }
+  // hanging speakers
+  [[2.4,-4.6,.5],[2.4,4.6,-.5],[10.3,-4.4,.4],[10.3,4.4,-.4]].forEach(([u,z,r],i)=>{ const s=B(.7,1,.6,M('#060606'),u,i<2?2.75:4.8,z,R); s.rotation.y=r; s.rotation.x=z>0?-.25:.25; });
+  // the booth: a plain pale table, two turntables with records on, a rotary mixer between them, crates of vinyl behind
+  B(2.6,.2,5,M('#1c1819'),9.6,.1,0,R); B(1,1,3.4,M('#b9aa98'),8.55,.7,0,R);
+  const TY=1.2, platM=new THREE.MeshLambertMaterial({color:0xc8c8cc}), vinyl=new THREE.MeshLambertMaterial({color:0x0a0a0a}), chrome=M('#d0d0d4');
+  [-1.05,1.05].forEach((z,k)=>{ B(.56,.07,.66,M('#2c2c30'),8.55,TY+.035,z,R);
+    const sp=new THREE.Group(); sp.position.set(8.53,TY+.085,z+.03); R.add(sp); RING.plat.push(sp);
+    mk(new THREE.CylinderGeometry(.22,.22,.025,28),platM,0,0,0,sp); mk(new THREE.CylinderGeometry(.205,.205,.012,28),vinyl,0,.02,0,sp); mk(new THREE.CylinderGeometry(.07,.07,.014,16),M(k?'#e8c23a':'#d8402a'),0,.022,0,sp); B(.03,.016,.05,M('#f4efe6'),.045,.026,0,sp);
+    const arm=B(.018,.018,.34,chrome,8.76,TY+.13,z+.06,R); arm.rotation.y=.35; mesh(G.cyl,chrome,8.8,TY+.11,z+.25,.03,.08,.03,R); B(.04,.03,.2,chrome,8.33,TY+.085,z-.2,R); });
+  B(.36,.1,.44,M('#151517'),8.55,TY+.05,0,R); for(let i=0;i<6;i++) mesh(G.cyl,chrome,8.45+(i%2)*.2,TY+.12,-.14+Math.floor(i/2)*.14,.022,.05,.022,R);
+  mesh(G.cyl,steel,8.95,TY+.2,.45,.012,.4,.012,R); { const lm=new THREE.Mesh(G.box,new THREE.MeshBasicMaterial({color:0xffe2b0,fog:false})); lm.scale.set(.1,.03,.06); lm.position.set(8.88,TY+.4,.45); R.add(lm); }
+  const SLV=['#e8402a','#f4efe6','#2a5ad8','#ffcf3a','#1a1a1a','#3d8a3a','#c040ff','#ff7a2f'];
+  [[10.5,-2.2],[10.5,2.2]].forEach(([u,z])=>{ B(.5,.36,.9,M('#3a2a20'),u,.38,z,R); for(let i=0;i<(LOW?8:14);i++){ const s=B(.34,.33,.02,M(pick(SLV)),u,.62,z-.4+i*(LOW?.1:.058),R); s.rotation.x=rand(-.12,.12); } });
+  { const s=B(.33,.33,.015,M('#e8402a'),8.2,TY+.17,1.55,R); s.rotation.x=-.3; }
+  // the way back out
+  B(.1,2.3,1.3,M('#08080a'),-10.95,1.15,2.6,R); B(.06,.2,.7,M('#3dff6a',{glow:1.6}),-10.92,2.55,2.6,R);
+  // ---------- music + people inside ----------
+  RING.zone=makeZone('ring',OX+X,0,30,RING_TR[0]);
+  [['민규',-.6],['규찬',.8]].forEach(([nm,z])=>{ const S=addNPC(Object.assign(ringLook(),{extra:'none',head:'none'}),{x:OX+X+9.55,z},-Math.PI/2,'dj',{zone:RING.zone,y:.2}); S.P.pname=nm; mine.push(S.P); });
+  const dn=['sway','pump','stomp','toprock','sway','pump'], n=LOW?12:22;
+  for(let i=0;i<n;i++){ const u=rand(-1.6,7.3), S=addNPC(ringLook(),{x:OX+X+u,z:u<1.8?rand(-2.2,4.3):rand(-4.3,4.3)},Math.PI/2+rand(-.5,.5),'dance',{dance:pick(dn),zone:RING.zone,talk:true}); mine.push(S.P); }
+  [-7.15,-5.7,-2.8].forEach(u=>mine.push(addNPC(ringLook(),{x:OX+X+u,z:-2.75},Math.PI,'talk',{talk:true}).P));
+  mine.push(addNPC({top:'tee',topColor:'#101012',outer:'none',bottom:'cargo',bottomColor:'#101012',head:'none',face:'none',extra:'none'},{x:OX+X-5,z:-4.75},0,'talk',{talk:true}).P);
+  [[-8.6,3.4,2.2],[-7.6,4.1,-2.2]].forEach(([u,z,ry])=>mine.push(addNPC(ringLook(),{x:OX+X+u,z},ry,'talk',{talk:true}).P));
+  mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); }); SNPC.forEach(S=>{ if(S.talk&&mine.includes(S.P)&&!TALKP.includes(S.P)) TALKP.push(S.P); });
+  RING.cur=new THREE.Color(RING_RED); RING.tgt=new THREE.Color(RING_RED);
+  // ---------- interactions ----------
+  INTER.push({pos:()=>(MAP==='itaewon'&&!RING.in&&!TEL.in&&IT.floor===0&&!RING.st)?{x:OX+8.6,z:-17.2}:FARV,r:2.6,get label(){ return RING.admitted?'링 계단 올라가기':'링 입장 (신분증 확인)'; },act:ringEntry});
+  INTER.push({pos:()=>(RING.st&&!RING.in)?{x:OX+13,z:-18.2}:FARV,r:1.3,label:'쥐구멍 들여다보기',act:()=>toast('계단에 난 작은 쥐구멍이에요. 안은 깜깜하고, 쥐는 안 살아요')});
+  INTER.push({pos:()=>RING.in?{x:OX+X-10.2,z:2.6}:FARV,r:2.2,label:'계단으로 나가기',act:()=>ringGo(false)});
+  INTER.push({pos:()=>RING.in?{x:OX+X-5,z:-3}:FARV,r:2.4,label:'링 바',act:()=>openShop({id:'ringbar',name:'링 바',sub:'맥주, 샷, 물',items:[ITEMS['플라야 라거'],ITEMS['데킬라 샷'],ITEMS['생수']]})});
+  updaters.push(ringTick); }
+function ringEntry(){ const B_=RING.bouncer;
+  if(RING.admitted){ say(B_,'스티커 확인. 올라가세요'); toast('계단으로 걸어 올라가면 링이에요'); return; }
+  say(B_,'신분증 보여 주세요');
+  if(!ageOk){ openSp('링 입구 경호원','성인만 입장할 수 있어요',`<p>링은 만 19세 이상만 들어갈 수 있어요.</p><div class='acts'><button data-act='no'>아니요</button><button data-act='yes' class='hot'>19세 이상이에요</button></div>`,a=>{ if(a==='yes'){ ageOk=true; ringEntry(); } else closeSp(); }); return; }
+  const name=(($('#pname').value||'버너').trim()||'버너').slice(0,12), yr=1990+Math.floor(Math.random()*12), mo=String(1+Math.floor(Math.random()*12)).padStart(2,'0'), dy=String(1+Math.floor(Math.random()*28)).padStart(2,'0');
+  openSp('링 입구 경호원','“신분증 보여 주세요.”',`<div class='idcard'><div class='idph'>${esc(name.slice(0,1))}</div><div><b>신분증</b><span>${esc(name)}</span><small>${yr}.${mo}.${dy}</small><small>서울특별시 용산구</small></div></div><p>계단 위 하우스 클럽이에요. 입장 기준은 블랙이에요. 안에서는 촬영할 수 없어서 폰 플래시에 초록 스티커를 붙여요.</p><div class='acts'><button data-act='no'>돌아가기</button><button data-act='id' class='hot'>신분증 건네기</button></div>`,a=>{
+    if(a==='no'){ closeSp(); return; }
+    if(a==='id'){ say(B_,'확인됐습니다. 폰 주세요'); chime(76,'sine',.06,.3);
+      $('#spBody').innerHTML=`<p class='quote'>경호원이 신분증을 확인하고 돌려줬어요. 이제 폰 플래시를 초록 링 스티커로 가려요.</p><div class='telphone'><div class='tph'><i class='lens'></i><i class='lens l2'></i><i class='flash'></i><b class='stk' id='ringStk' style='top:5px;left:25px;width:26px;height:26px;border-radius:50%;background:#1fd655;color:#04200c;font-size:7px'>RING</b></div></div><div class='acts' style='grid-template-columns:1fr'><button data-act='stk' class='hot'>폰 내밀기</button></div>`; }
+    if(a==='stk'&&!RING.admitted){ const s=document.getElementById('ringStk'); if(s) s.classList.add('on'); sfx(tt=>tone(master,tt,'sine',220,.08,.12,140)); RING.admitted=true; say(B_,'즐거운 시간 되세요. 계단으로 올라가세요');
+      setTimeout(()=>{ closeSp(); toast('플래시에 초록 스티커를 붙였어요. 계단으로 걸어 올라가세요'); },1200); } }); }
+function ringGo(up){ if(RING.busy) return; RING.busy=true; closeSp(); const fd=$('#fade'); fd.style.opacity='1'; sfx(tt=>{ tone(master,tt,'sine',up?440:660,.08,.4); tone(master,tt+.15,'sine',up?660:440,.08,.5); });
+  setTimeout(()=>{ RING.busy=false;
+    if(up){ RING.in=true; RING.st=false; RING.al=false; IT.floor=0; pState.x=OX+RING.X-5.4; pState.z=2.6; pState.y=0; pState.face=Math.PI/2; camDist=4.6; pitch=.2; toast('링. 왼쪽이 바, 안쪽 높은 천장 아래가 스테이지예요. 오늘도 LP로 틀어요'); }
+    else { ringLeave(); RING.st=true; RING.al=true; pState.x=OX+17.5; pState.z=-18.2; pState.y=3.6; pState.face=-Math.PI/2; camDist=LOW?8.5:7.5; pitch=.32; toast('계단 위로 나왔어요. 내려가면 골목이에요'); }
+    pState.vy=0; yaw=pState.face+Math.PI; fd.style.opacity='0'; },450); }
+function ringLeave(){ RING.in=false; const L=IT.lightS; if(L&&RING.lit){ L.position.copy(RING.lit.p); L.color.setHex(RING.lit.c); L.distance=RING.lit.d; L.intensity=1.4; RING.lit=null; } }
+function ringTick(t,dt){ if(RING.in&&!ringInside()) ringLeave();
+  if(RING.st&&!RING.in&&!ringOnStairs(pState.x,pState.z)) RING.st=false;
+  if(MAP!=='itaewon') return;
+  if(!RING.in){ if(Math.abs(pState.x-(OX+12))>70||Math.abs(pState.z+16)>70) return;
+    // people going up and coming down: up on the wall side, down on the rail side; at either end they are gone for a moment
+    for(const W of RING.walk){ if(W.wait>0){ W.wait-=dt; W.P.root.visible=false; continue; }
+      W.lx+=W.dir*W.spd*dt; if(W.dir>0&&W.lx>17.9){ W.dir=-1; W.wait=rand(2,9); } else if(W.dir<0&&W.lx<7.3){ W.dir=1; W.wait=rand(1,6); }
+      const k=clamp((W.lx-8.6)/1.2,0,1); W.P.root.position.set(OX+W.lx,ringStairY(W.lx),-16.9*(1-k)+(W.dir>0?-18.55:-17.9)*k); W.P.root.rotation.y=W.dir>0?Math.PI/2:-Math.PI/2; }
+    // the alley crowd: every few seconds someone breathes out a cloud
+    for(const V of RING.vape){ V.t-=dt; if(V.t<=0){ V.t=rand(4,9); V.n=5; }
+      if(V.n>0&&Math.random()<dt*9){ V.n--; const p=V.P.root.position, a=V.P.root.rotation.y; part({x:p.x+Math.sin(a)*.25,y:1.52,z:p.z+Math.cos(a)*.25,vx:Math.sin(a)*.5+rand(-.1,.1),vy:rand(.15,.4),vz:Math.cos(a)*.5+rand(-.1,.1),col:'#e6ecf2',op:.38,size:.22,grow:.55,life:2.4}); } }
+    return; }
+  // inside: the whole room is either red or green, and it flips at random
+  RING.colT-=dt; if(RING.colT<=0){ RING.colT=rand(8,20); RING.tgt.setHex(Math.random()<.5?RING_RED:RING_GRN); }
+  RING.cur.lerp(RING.tgt,Math.min(1,dt*2.5));
+  const b=boothBeat(RING.zone,t), p=Math.exp(-(((b%1)+1)%1)*5), c=RING.cur;
+  RING.led.color.copy(c).multiplyScalar(.75+.25*p);
+  scene.fog.color.copy(c).multiplyScalar(.1); scene.fog.near=8; scene.fog.far=LOW?40:52; renderer.setClearColor(scene.fog.color);
+  const L=IT.lightS; if(L){ if(!RING.lit){ RING.lit={p:L.position.clone(),c:L.color.getHex(),d:L.distance}; L.position.set(RING.X+4.5,4.2-IT.floorY[3],0); L.distance=42; } L.color.copy(c); L.intensity=1.7+1.5*p; }
+  for(const g of RING.plat) g.rotation.y-=dt*3.49; }
 
 /* ================= CLUB LOOKS + SHELTER MISE-EN-SCENE ================= */
 function shelterLook(){ const y2k=Math.random()<.35;
@@ -3823,7 +3987,7 @@ function musicTarget(){ let best=null, bv=.02;
   if(best.kind==='booth') return Object.assign(best,{name:best.b.name+' 부스',key:'booth:'+best.b.id});
   const Z=best.Z, nz=(typeof NM!=='undefined'&&NM.zones||[]).find(z=>z.Z===Z);
   return Object.assign(best,{name:nz?nz.name:(MC_ZN[Z.id]||Z.id),key:'zone:'+Z.id}); }
-const MC_ZN={teller:'B1 텔러',shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
+const MC_ZN={ring:'링',teller:'B1 텔러',shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
 // each genre pulls recent shows from official DJ / label channels
 // each genre: Korean name, official DJ / label channels, and the Mixcloud tag whose most-played mixes join the pool
 const MC_G={techno:['테크노',['residentadvisor','CarlCox'],'techno'],house:['하우스',['Defectedrecords'],'house'],afro:['아프로 하우스',['keinemusik'],'afro-house'],
@@ -3837,7 +4001,7 @@ function mcMusicOnly(c){ const n=c&&c.name||'', a=c&&c.audio_length||0; return !
 const MC_ORIGIN='https://player-widget.mixcloud.com';
 const MC_NOVOL=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
-const MC_DEF={teller:'techno',techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
+const MC_DEF={ring:'house',teller:'techno',techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
   shelter:'techno',paper:'house',sphere:'melodic',jazz:'jazz',disco:'house',potty:'house','nm-jandi':'house','nm-hanok':'afro','nm-soop':'techno','nm-exp':'eclectic','nm-hut':'deephouse','nm-aero':'house','bm-war':'techno','bm-bus':'house'};
 // every stage plays only its own genre
 function mcDefault(T){ return MC_DEF[T.kind==='booth'?T.b.id:T.Z.id]||'deephouse'; }
@@ -4897,7 +5061,7 @@ function hyAnchor(){ const src=hyBest(), st=hyStage(src); if(!st) return null; l
 function hySlot(i){ return {i,jl:rand(-.25,.25),jd:rand(-.2,.2)}; }
 function hyDense(){ return clamp(1-(HY.total-120)/360,.58,1); }
 function hyPos(sl){ const A=HY.anchor, k=hyDense(), row=Math.floor(sl.i/10), col=sl.i%10, lat=(col-4.5)*1.1*k+sl.jl*k, dep=Math.max(0,row*1.15*k+sl.jd*k); sl.x=A.x+A.dx*dep+A.dz*lat; sl.z=A.z+A.dz*dep-A.dx*lat; return sl; }
-function hySpawn(shirtless){ if(!HY.anchor) HY.anchor=hyAnchor(); if(!HY.anchor) return; const c=(typeof TEL!=='undefined'&&TEL.in)?Object.assign(randomConfig(),telLook()):MAP==='itaewon'?Object.assign(randomConfig(),shelterLook()):randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2, A=HY.anchor; P.root.position.set(A.x+Math.cos(a)*18,A.y,A.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
+function hySpawn(shirtless){ if(!HY.anchor) HY.anchor=hyAnchor(); if(!HY.anchor) return; const c=(typeof TEL!=='undefined'&&TEL.in)?Object.assign(randomConfig(),telLook()):(typeof RING!=='undefined'&&RING.in)?Object.assign(randomConfig(),ringLook()):MAP==='itaewon'?Object.assign(randomConfig(),shelterLook()):randomConfig(); if(shirtless) hyStrip(c); const P=buildCharacter(c), a=Math.random()*Math.PI*2, A=HY.anchor; P.root.position.set(A.x+Math.cos(a)*18,A.y,A.z+Math.sin(a)*18); P.dance=pick(['pump','hands','jack','raise','sway','stomp']); scene.add(P.root);
   const i=HY.mem.length; HY.mem.push({P,c,st:'in',slot:hySlot(i),away:{x:A.dx+rand(-.7,.7),z:A.dz+rand(-.7,.7)},shirtless,tw:rand(-.25,.25),ph:Math.random()*6,outT:0}); if(shirtless) say(P,'웃통 벗고 논다!',1.6); }
 function hyUndress(m){ if(m.dead||m.st==='out'||m.shirtless) return; const old=m.c.outer!=='none'?m.c.outerColor:m.c.topColor; hyStrip(m.c); const pos=m.P.root.position.clone(), ry=m.P.root.rotation.y, dn=m.P.dance; scene.remove(m.P.root); const P=buildCharacter(m.c); P.dance=dn; P.root.position.copy(pos); P.root.rotation.y=ry; scene.add(P.root); m.P=P; m.shirtless=true; say(P,'웃통 벗자!',1.6);
   const sh=new THREE.Mesh(G.box,M(old)); sh.scale.set(.42,.46,.06); sh.position.set(pos.x,pos.y+1.9,pos.z); scene.add(sh); HY.shirts.push({m:sh,v:new THREE.Vector3(rand(-1.5,1.5),rand(4.5,6.5),rand(-1.5,1.5)),w:new THREE.Vector3(rand(-8,8),rand(-8,8),rand(-8,8)),life:2}); }
@@ -5507,7 +5671,7 @@ async function schFetch(){ try{ const t0=Date.now(), r=await fetch(SCH.url+(SCH.
     const d=await r.json(); SCH.sched=d&&d.booths?d:null; SCH.fail=0; }catch(e){ SCH.fail++; } }
 // every set starts a minute in (past the slow intro); the same offset for everyone keeps the room in sync
 const SCH_SKIP=60, SCH_GAP=30*60000;
-function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]).slice().sort((a,b)=>a.start-b.start); const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } }
+function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]).concat(SCH_DEF[key]||[]).sort((a,b)=>a.start-b.start); const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } }
   if(s){ const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); if(t<end) return Object.assign({id:key+'@'+s.start+'@'+s.url},s); }
   return schFill(key,L,t,s); }
 // between scheduled sets the stage never goes quiet: it replays one of its own sets in 30-minute blocks, picked from the clock so every player hears the same one
@@ -5563,7 +5727,7 @@ const NPC={sig:'',t:0};
 const npEq="<span class='eq' aria-hidden='true'><i></i><i></i><i></i><i></i></span>";
 function npPic(c,big){ const P=c&&c.pictures; const u=P&&(big?(P['320wx320h']||P.large||P.extra_large||P.medium):(P.medium||P.small)); return u?`url("${String(u).replace(/["'()\\\s]/g,'')}")`:''; }
 function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][0],near:mcNear(T),mine:!!(MC.cur&&MC.target&&MC.target.key===T.key)}; }
-function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff'}[T.Z&&T.Z.id]||'#b06bff'); }
+function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff',ring:'#3dff6a'}[T.Z&&T.Z.id]||'#b06bff'); }
 function npRender(){ if(!inGame) return; const np=$('#np'); if(!np) return;
   const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null, open=!np.classList.contains('collapsed'), col=npColor(T);
   // the card waits until you reach a stage (or a set is playing); it stays out of the way on the desert drive and at the gate
@@ -5595,7 +5759,7 @@ updaters.push((t)=>{ if(t-NPC.t<.35) return; NPC.t=t; npRender(); });
 
 /* ================= DJ LINEUP BOARD (schedule.json → by map, booth, CD posters) ================= */
 const LU_AREAS=[['playa','🏜 사막점',[['booth:techno','테크노 부스'],['booth:house','하우스 부스'],['booth:afro','아프로테크 부스'],['booth:hardstyle','딥테크노 부스'],['booth:dubstep','덥스텝 부스'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
-  ['itaewon','🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼'],['zone:teller','B1 텔러']]],
+  ['itaewon','🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼'],['zone:teller','B1 텔러'],['zone:ring','링']]],
   ['nami','🌲 남이섬',[['zone:nm-jandi','JANDI 스테이지'],['zone:nm-hanok','HANOK 스테이지'],['zone:nm-soop','SOOP 스테이지'],['zone:nm-exp','익스페리멘탈 사운드 존'],['zone:nm-hut','명상 오두막'],['zone:nm-aero','에어로빅 코너']]],
   ['sphere','🔮 라스베가스',[['zone:sphere','스피어']]]];
 const LU_INFO={}; LU_AREAS.forEach(([m,a,L])=>L.forEach(([k,n])=>LU_INFO[k]={map:m,area:a,name:n}));
@@ -5739,7 +5903,7 @@ updaters.push((t,dt)=>{ const P=skyLogoSpot(); SKYL.on+=((P?1:0)-SKYL.on)*Math.m
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
   for(let i=BOOTHS.length-1;i>=0;i--) if(BOOTH_CUT.includes(BOOTHS[i].id)) BOOTHS.splice(i,1);
-  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
+  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }
