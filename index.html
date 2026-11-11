@@ -335,6 +335,12 @@ body.dressing #sp{display:none!important}
 #meCard .mx{position:absolute;right:10px;top:10px;border:0;background:var(--chip);color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer}
 #meCard .mh{display:flex;gap:12px;align-items:center;padding-right:30px}
 #meCard .mh i{width:56px;height:56px;border-radius:50%;flex:none;background:var(--chip) center/cover;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:24px;box-shadow:0 0 0 2px #ff4fa8}
+#meCard .ol{display:flex;flex-direction:column;gap:6px;margin-top:12px;max-height:50vh;overflow-y:auto}
+#meCard .olr{display:flex;align-items:center;gap:10px;background:var(--chip);border-radius:12px;padding:8px}
+#meCard .olr i{width:40px;height:40px;border-radius:50%;flex:none;background:var(--panel) center/cover;display:flex;align-items:center;justify-content:center;font-style:normal;box-shadow:0 0 0 2px #7dffb0}
+#meCard .olr span{flex:1;min-width:0} #meCard .olr b{display:block;font-size:14px} #meCard .olr small{color:var(--muted);font-size:11.5px}
+#meCard .olr button{border:0;border-radius:10px;padding:8px 10px;font:inherit;font-size:12px;font-weight:800;background:#7dffb0;color:#0c2a18;cursor:pointer;white-space:nowrap}
+#onlineBtn{border:0;border-radius:999px;background:rgba(125,255,176,.16);color:#7dffb0;font:inherit;font-size:12px;font-weight:800;padding:3px 9px;cursor:pointer;margin-left:2px}
 #meCard .mh b{display:block;font-size:16px} #meCard .live{color:#7dffb0;font-weight:800} #meCard .npc{color:#ffcf8a;font-weight:800} #meCard .mh small{color:var(--muted);font-size:12px;line-height:1.4}
 #meCard .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0 4px;max-height:220px;overflow-y:auto}
 #meCard .mg i{aspect-ratio:1;border-radius:9px;background:center/cover}
@@ -855,7 +861,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
   <header>
     <div>
       <img class="brandlogo neon" src="assets/logo.png" alt="REAL HOUSE CLUB">
-      <h1>리얼하우스클럽 입장</h1>
+      <h1>리얼하우스클럽</h1>
       <p>이름과 맵만 고르고 바로 입장해요. 옷은 입장한 뒤 👗 스타일룸 버튼에서 골라요.</p>
     </div>
     <select id="langSel" aria-label="Language"><option value="ko">🇰🇷 한국어</option><option value="ja">🇯🇵 日本語</option><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option><option value="es">🇪🇸 Español</option></select>
@@ -5299,6 +5305,36 @@ function presLook(){ const c={}; for(const k in cfg) if(!/^k/.test(k)) c[k]=cfg[
 function presListen(){ if(PRES.listening||!AUTH.db) return; PRES.listening=true; const R=AUTH.db.ref('presence');
   R.on('child_added',s=>presUpsert(s.key,s.val())); R.on('child_changed',s=>presUpsert(s.key,s.val())); R.on('child_removed',s=>presRemove(s.key)); }
 function presStart(){ if(!AUTH.db||!AUTH.user) return; presListen(); PRES.ref=AUTH.db.ref('presence/'+AUTH.user.uid); PRES.ref.onDisconnect().remove(); PRES.lookSig=''; PRES.lastSent=null; }
+
+function presInside(){ try{ if(MAP==='itaewon'){ if(TEL.in) return 'teller'; if(RING.in) return 'ring'; if(IT.floor===3) return 'shelter'; if(IT.floor===4) return 'paper'; } if(MAP==='sphere'&&SPH.inside) return 'sphere'; }catch(e){} return ''; }
+const IN_NAME={teller:'B1 텔러 안',ring:'링 안',shelter:'4F 쉘터 안',paper:'5F 페이퍼 안',sphere:'지구본점 공연장 안'};
+const MAP_NAME={playa:'🏜 사막점',itaewon:'🇰🇷 이태원',nami:'🌲 동물원점',sphere:'🔮 지구본점'};
+// who is online right now (fresh within 30s), me excluded
+function presOnline(){ const now=Date.now(), me=AUTH.user&&AUTH.user.uid; return Object.entries(PRES.others).filter(([u,v])=>u!==me&&v&&now-(v.t||0)<120000).map(([uid,v])=>({uid,...v})); }
+// nearest stage to someone's spot, so the list can say where they are
+function presNear(v){ let best=null,bd=40*40; const L=[...BOOTHS.map(b=>({x:b.front.x,z:b.front.z,n:b.name+' 부스'})),...ZONES.filter(Z=>Z.vol>0).map(Z=>({x:Z.x,z:Z.z,n:MC_ZN[Z.id]||''}))];
+  for(const o of L){ if(!o.n) continue; const d=(o.x-v.x)**2+(o.z-v.z)**2; if(d<bd){ bd=d; best=o.n; } } return best; }
+function presWhere(v){ return [MAP_NAME[v.m]||v.m, v.in?IN_NAME[v.in]:presNear(v)].filter(Boolean).join(' · '); }
+// "🟢 N명" pill in the top bar; tap for the list of everyone online
+function onlineRender(){ let b=document.getElementById('onlineBtn'); const hud=document.getElementById('coinHud'); if(!hud) return;
+  if(!b){ b=document.createElement('button'); b.id='onlineBtn'; b.type='button'; b.setAttribute('aria-label','지금 접속 중인 사람들'); hud.appendChild(b); b.addEventListener('click',e=>{ e.stopPropagation(); onlineList(); }); }
+  const n=presOnline().length+(AUTH.user?1:0), t=`🟢 ${n}`; if(b.textContent!==t) b.textContent=t; }
+async function onlineList(){ const L=presOnline(); const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`;
+  const head=`<div class='mh'><i>🟢</i><div><b>지금 접속 중 ${L.length+(AUTH.user?1:0)}명</b><small>${AUTH.user?'만나러 가기를 누르면 그 사람 곁으로 이동해요':'로그인하면 다른 사람들에게도 내가 보여요'}</small></div></div>`;
+  const rows=L.length?`<div class='ol'>${L.map(v=>`<div class='olr'><i data-olph='${esc(v.uid)}'>👤</i><span><b>${esc(v.n||'버너')}</b><small>${esc(presWhere(v))}${v.a==='dance'?' · 💃 춤추는 중':''}</small></span><button type='button' data-go='${esc(v.uid)}'>만나러 가기</button></div>`).join('')}</div>`:`<p class='me'>지금은 다른 접속자가 없어요. 친구에게 realhouse.club 링크를 보내 함께 들어와요!</p>`;
+  cardShow(X+head+rows+(AUTH.user?'':`<div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`));
+  if(AUTH.db) L.forEach(v=>AUTH.db.ref('profiles/'+v.uid+'/photo').once('value').then(s=>{ const u=s.val(), el=document.querySelector(`[data-olph="${v.uid}"]`); if(u&&el){ el.style.backgroundImage=`url('${u}')`; el.textContent=''; } }).catch(()=>{})); }
+// jump next to a friend: switch map if needed; inside spaces you land at the entrance and walk in yourself
+function friendGo(uid){ const v=PRES.others[uid]; if(!v){ toast('그 사람은 방금 나갔어요'); return; } const c=document.getElementById('meCard'); if(c) c.hidden=true;
+  const land=()=>{ let x=v.x+(Math.random()-.5)*2.4, z=v.z+1.4, y=0, msg=`${v.n||'버너'} 님 곁으로 왔어요 👋`;
+    if(v.in==='teller'){ x=OX-24; z=24; msg=`${v.n} 님은 B1 텔러 안에 있어요. 입장하면 만나요`; } else if(v.in==='ring'){ x=OX+5.5; z=-17.2; msg=`${v.n} 님은 링 안에 있어요. 입장하면 만나요`; }
+    else if(v.in==='shelter'||v.in==='paper'){ x=OX+5.4; z=0; msg=`${v.n} 님은 ${IN_NAME[v.in]}에 있어요. 경호원에게 입장하면 만나요`; } else if(v.in==='sphere'){ x=SPX-24; z=SPZ-34; msg=`${v.n} 님은 지구본점 공연장 안에 있어요. 입장권을 사면 만나요`; }
+    if(MAP==='itaewon'){ try{ if(TEL.in) telLeave(); IT.floor=0; }catch(e){} }
+    pState.x=x; pState.z=z; pState.y=y; pState.vy=0; pState.face=Math.atan2(v.x-x,v.z-z)||0; yaw=pState.face+Math.PI; if(player) player.root.position.set(x,y,z); toast(msg); };
+  if(v.m!==MAP){ if(v.m==='playa'){ BM.admit=true; if(BM.mode) bmAbort(); } goMap(v.m); setTimeout(land,700); } else land(); }
+document.addEventListener('click',e=>{ const g=e.target.closest('[data-go]'); if(g&&g.closest('#meCard')){ e.stopPropagation(); friendGo(g.dataset.go); } },true);
+updaters.push((t,dt)=>{ PRES.olT=(PRES.olT||0)+dt; if(PRES.olT>1){ PRES.olT=0; onlineRender(); } });
+setInterval(()=>{ if(AUTH.user&&PRES.ref&&inGame) PRES.ref.update({t:Date.now()}).catch(()=>{}); },15000);
 function presStop(){ if(PRES.ref){ PRES.ref.onDisconnect().cancel(); PRES.ref.remove().catch(()=>{}); PRES.ref=null; } }
 function tagTex(name){ const c=document.createElement('canvas'); c.width=256; c.height=64; const x=c.getContext('2d'); x.font='700 26px sans-serif'; const w=Math.min(240,x.measureText(name).width+44);
   x.fillStyle='rgba(12,10,20,.78)'; x.beginPath(); x.roundRect?x.roundRect((256-w)/2,10,w,44,22):x.rect((256-w)/2,10,w,44); x.fill(); x.fillStyle='#7dffb0'; x.beginPath(); x.arc((256-w)/2+20,32,6,0,7); x.fill();
@@ -5316,11 +5352,11 @@ function presRemove(uid){ const A=PRES.av[uid]; if(A){ scene.remove(A.P.root); d
 updaters.push((t,dt)=>{
   // send my own spot (logged in only): when I move, otherwise a heartbeat every 5s
   if(AUTH.user&&PRES.ref&&inGame){ PRES.sendT+=dt; const L=PRES.lastSent, moved=!L||Math.hypot(pState.x-L.x,pState.z-L.z)>.25||L.a!==pAct||L.m!==MAP;
-    if((moved&&PRES.sendT>.5)||PRES.sendT>5){ PRES.sendT=0; const rec={n:authName().slice(0,14),m:MAP,x:+pState.x.toFixed(2),z:+pState.z.toFixed(2),y:+(pState.y||0).toFixed(2),f:+(pState.face||0).toFixed(2),a:pAct,d:myDance,t:Date.now()};
+    if((moved&&PRES.sendT>.5)||PRES.sendT>5){ PRES.sendT=0; const rec={n:authName().slice(0,14),m:MAP,x:+pState.x.toFixed(2),z:+pState.z.toFixed(2),y:+(pState.y||0).toFixed(2),f:+(pState.face||0).toFixed(2),a:pAct,d:myDance,in:presInside(),t:Date.now()};
       const lk=presLook(); if(lk!==PRES.lookSig){ rec.lk=lk; PRES.lookSig=lk; } PRES.ref.update(rec).catch(()=>{}); PRES.lastSent=rec; } }
   // draw everyone else on my map; ease them toward their last reported spot
   const now=Date.now();
-  for(const uid in PRES.av){ const A=PRES.av[uid], v=A.v||{}, P=A.P; const here=v.m===MAP&&now-(v.t||0)<20000&&inGame; P.root.visible=here; if(!here) continue;
+  for(const uid in PRES.av){ const A=PRES.av[uid], v=A.v||{}, P=A.P; const here=v.m===MAP&&now-(v.t||0)<120000&&inGame; P.root.visible=here; if(!here) continue;
     const p=P.root.position, dx=(v.x||0)-p.x, dz=(v.z||0)-p.z, d=Math.hypot(dx,dz); if(d>30){ p.set(v.x,v.y||0,v.z); } else { const k=Math.min(1,dt*6); p.x+=dx*k; p.z+=dz*k; p.y+=((v.y||0)-p.y)*k; }
     let ry=v.f||0; P.root.rotation.y+=Math.atan2(Math.sin(ry-P.root.rotation.y),Math.cos(ry-P.root.rotation.y))*Math.min(1,dt*8);
     if(v.a==='dance'){ P.dance=v.d||'pump'; poseChar(P,'dance',t,t*2.07); } else if(d>.08||v.a==='walk'||v.a==='run') poseChar(P,v.a==='run'?'run':'walk',t,0); else poseChar(P,'idle',t,0); } });
