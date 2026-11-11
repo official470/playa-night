@@ -1718,6 +1718,7 @@ function rebuildPlayer(){
   if(player) scene.remove(player.root);
   player=buildCharacter(cfg); player.dance=myDance; player.seed=0; scene.add(player.root);
   player.root.position.set(pState.x,pState.y,pState.z); player.root.rotation.y=pState.face;
+  try{ backPrint(); }catch(e){} // AUTH may not exist yet during the first build
 }
 let yaw=0,pitch=.32,camDist=LOW?8.5:7.5,orb=Math.PI,inGame=false;
 // music keeps playing while you change clothes in the style room
@@ -5201,10 +5202,10 @@ async function kakaoReturn(){ const q=new URLSearchParams(location.search), code
     AUTH.kakao={id:String(me.id),name:p.nickname||'카카오 버너',pic:p.thumbnail_image_url||''}; try{ localStorage.setItem('playa-kakao',JSON.stringify(AUTH.kakao)); }catch(e){}
     if(!AUTH.user||!AUTH.user.isAnonymous){ const r=await AUTH.auth.signInAnonymously(); AUTH.user=r.user; }
     authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
-async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); }catch(e){} }
+async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
 function authAfterLogin(){ const n=authName();
   if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
-async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); toast('로그아웃했어요'); }
+async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); toast('로그아웃했어요'); }
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
     box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
@@ -5249,8 +5250,19 @@ async function profSave(){ const insta=($('#pdInsta').value||'').trim().replace(
   if(PROF_PHOTOS.length<PHOTO_MIN){ toast(`취향 사진을 최소 ${PHOTO_MIN}장 올려 주세요`); return; }
   const uid=AUTH.user.uid, card={name:authName().slice(0,20),photo:PROF_PHOTOS[0],photos:PROF_PHOTOS.length,provider:authProvider(),created:(AUTH.prof&&AUTH.prof.created)||Date.now(),updated:Date.now()};
   const btn=$('#pdSave'); btn.disabled=true; btn.textContent='저장 중…';
-  try{ await AUTH.db.ref('photos/'+uid).set(PROF_PHOTOS); await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); $('#profDlg').hidden=true; toast(`프로필을 저장했어요 (사진 ${PROF_PHOTOS.length}장)`); }
+  try{ await AUTH.db.ref('photos/'+uid).set(PROF_PHOTOS); await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); backPrint(); $('#profDlg').hidden=true; toast(`프로필을 저장했어요 (사진 ${PROF_PHOTOS.length}장)`); }
   catch(e){ console.warn('profile',e); toast('저장하지 못했어요. 잠시 후 다시 해 주세요'); profGrid(); } }
+// logged-in players wear their profile cover photo printed on the back of their top
+const BP_TEX={};
+function backPrint(){ if(!player||!player.torso) return; if(player.backPrint){ player.torso.remove(player.backPrint); player.backPrint=null; }
+  const url=AUTH.user&&AUTH.prof&&AUTH.prof.photo; if(!url) return;
+  let tex=BP_TEX[url]; if(!tex){ tex=new THREE.TextureLoader().load(url); tex.minFilter=THREE.LinearFilter; BP_TEX[url]=tex; }
+  const c=cfg||{}, z=c.outer==='fur'?-.175:(c.outer&&c.outer!=='none')?-.15:c.top==='harness'||c.top==='mesh'?-.135:-.126;
+  const g=new THREE.Group(); g.position.set(0,.27,z); g.rotation.y=Math.PI;
+  // unlit so the photo reads at night and inside dark clubs; a thin light frame like a printed patch
+  const frame=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({color:0xe8e2d8})); frame.scale.set(.35,.4,1); g.add(frame);
+  const pic=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:tex,color:0xeeeeee})); pic.scale.set(.32,.32,1); pic.position.set(0,.02,.002); g.add(pic);
+  player.torso.add(g); player.backPrint=g; }
 // tap / click your own character: your profile card pops up (photos, name; edit from there)
 const ME_RAY=new THREE.Raycaster(), ME_V=new THREE.Vector2(); let meDown=null;
 canvas.addEventListener('pointerdown',e=>{ meDown={x:e.clientX,y:e.clientY,t:performance.now()}; },true);
