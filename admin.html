@@ -54,6 +54,13 @@ h3{font-size:16px;margin:26px 0 10px}
 #dash{grid-column:1/-1;margin-bottom:14px}
 body.dashonly main>nav,body.dashonly main>section:not(#dash),body.dashonly #publish,body.dashonly #conn,body.dashonly #status{display:none!important}
 body.dashonly main{grid-template-columns:1fr}
+.mhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px}.mhead h3{margin:0}.mhead input{max-width:220px}
+.mlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.mcard{display:flex;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px}
+.mcard .ph{width:54px;height:54px;border-radius:50%;flex:none;background:var(--panel2) center/cover;display:flex;align-items:center;justify-content:center;font-size:22px}
+.mcard b{display:block;font-size:14px}.mcard small{display:block;color:var(--muted);font-size:11.5px;line-height:1.5}
+.mcard .pv{display:inline-block;border-radius:6px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:4px}.pv.kakao{background:#FEE500;color:#191600}.pv.google{background:#fff;color:#1f1f1f}
+.mcard .ig{color:var(--pink);font-weight:700}
 .dkpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
 .dkpi div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
 .dkpi small{display:block;color:var(--muted);font-size:12px}.dkpi b{font-size:20px}
@@ -171,6 +178,13 @@ details.setup li{margin:4px 0}
     </div>
     <h3>📅 날짜별 방문자</h3><ol class="dlist" id="dDay"></ol>
     <p class="small muted" id="dNote"></p>
+    <div class="mhead"><h3>👥 가입자</h3><input id="mQ" type="search" placeholder="이름·인스타 검색" aria-label="가입자 검색"></div>
+    <div class="dkpi" id="mKpi"></div>
+    <div class="mlist" id="mList"></div>
+    <details class="small" id="kakaoKeys" style="margin-top:14px"><summary>💬 카카오 로그인 키</summary>
+      <p class="muted">카카오 개발자 센터 → 내 애플리케이션 → 앱 키에서 복사해 붙여 넣어요. 게임의 ‘카카오로 시작’ 버튼이 이 키로 동작해요.</p>
+      <div class="row"><input id="kJs" autocomplete="off" placeholder="JavaScript 키" style="flex:1;min-width:200px"><input id="kRest" autocomplete="off" placeholder="REST API 키" style="flex:1;min-width:200px"><button class="btn" id="kSave">저장</button></div>
+      <p class="muted" id="kMsg"></p></details>
   </div>
 </section>
   <nav id="booths" aria-label="부스"></nav>
@@ -541,7 +555,7 @@ resetForm(); checkConn(); load(); setTag(BOOTH_TAG[cur]||'techno');
 /* ===== visitor stats dashboard (Firebase Realtime Database, free Spark plan) ===== */
 const DASH={app:null,db:null,auth:null,range:1,data:null};
 const DASH_ADMIN='official@realsnap.ai';
-const DASH_RULES=JSON.stringify({rules:{public:{webcfg:{".read":true,".write":`auth != null && auth.token.email == '${DASH_ADMIN}'`}},sessions:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["last"],"$sid":{".write":"!data.exists() || data.child('uid').val() == newData.child('uid').val()",".validate":"newData.hasChildren(['uid','start','last','dur']) && newData.child('dur').isNumber() && newData.child('dur').val() < 86400"}},steps:{".read":true,".indexOn":["n"],"$uid":{".write":true,".validate":"newData.child('n').isNumber()"}}}},null,2);
+const DASH_RULES=JSON.stringify({rules:{public:{webcfg:{".read":true,".write":`auth != null && auth.token.email == '${DASH_ADMIN}'`}},sessions:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["last"],"$sid":{".write":"!data.exists() || data.child('uid').val() == newData.child('uid').val()",".validate":"newData.hasChildren(['uid','start','last','dur']) && newData.child('dur').isNumber() && newData.child('dur').val() < 86400"}},steps:{".read":true,".indexOn":["n"],"$uid":{".write":true,".validate":"newData.child('n').isNumber()"}},profiles:{".read":true,".indexOn":["created"],"$uid":{".write":"auth != null && auth.uid == $uid"}},private:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,"$uid":{".read":"auth != null && auth.uid == $uid",".write":"auth != null && auth.uid == $uid"}}}},null,2);
 function dLoad(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
 function dFmt(sec){ sec=Math.round(sec||0); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60; return h?`${h}시간 ${m}분`:m?`${m}분 ${s}초`:`${s}초`; }
 function dBar(rows,max,fmt){ return rows.map((r,i)=>`<li><b>${i+1}</b><span class='dn'>${esc(r.name)}</span><span class='db'><i style='width:${Math.max(2,Math.round(r.v/max*100))}%'></i></span><em>${fmt(r)}</em></li>`).join('')||`<li class='muted small'>아직 기록이 없어요</li>`; }
@@ -557,7 +571,7 @@ async function dashOpen(){ $('#dash').hidden=false; $('#dash').scrollIntoView({b
     DASH.auth.onAuthStateChanged(u=>{ $('#dWho').textContent=u?u.email:''; $('#dLogin').hidden=!!u; $('#dBody').hidden=!u; if(u){ dashLoad();
       if(u.email===DASH_ADMIN){ const w={apiKey:C.apiKey,authDomain:C.authDomain||'',projectId:C.projectId||'',appId:C.appId||'',databaseURL:C.databaseURL}; DASH.db.ref('public/webcfg').set(w).catch(()=>{}); } } }); } else if(DASH.auth.currentUser) dashLoad(); }
 async function dashLoad(){ const since=Date.now()-(DASH.range===1?(Date.now()-new Date().setHours(0,0,0,0)):DASH.range*864e5); $('#dNote').textContent='불러오는 중…';
-  try{ const snap=await DASH.db.ref('sessions').orderByChild('last').startAt(since).once('value'); const S=[]; snap.forEach(c=>{ S.push(c.val()); }); dashRender(S); $('#dNote').textContent=`세션 ${S.length}개 기준 · ${new Date().toLocaleTimeString('ko-KR')} 업데이트`; }
+  try{ const snap=await DASH.db.ref('sessions').orderByChild('last').startAt(since).once('value'); const S=[]; snap.forEach(c=>{ S.push(c.val()); }); dashRender(S); memLoad(); $('#dNote').textContent=`세션 ${S.length}개 기준 · ${new Date().toLocaleTimeString('ko-KR')} 업데이트`; }
   catch(e){ $('#dNote').textContent='불러오지 못했어요: '+(e&&e.message||e)+' (Firebase 규칙과 로그인 계정을 확인해 주세요)'; } }
 function dashRender(S){ const users={}, reg={}, stg={}, day={}; let tot=0, mob=0;
   const RN={playa:'🏜 사막점',itaewon:'🇰🇷 이태원',nami:'🌲 동물원점',sphere:'🔮 지구본점'};
@@ -572,6 +586,20 @@ function dashRender(S){ const users={}, reg={}, stg={}, day={}; let tot=0, mob=0
   const G=Object.values(reg).sort((a,b)=>b.v-a.v); $('#dReg').innerHTML=dBar(G,G[0]?G[0].v:1,r=>`${dFmt(r.v)} · ${r.n}회`);
   const T=Object.values(stg).sort((a,b)=>b.v-a.v).slice(0,15); $('#dStage').innerHTML=dBar(T,T[0]?T[0].v:1,r=>`${dFmt(r.v)} · ${r.n}회`);
   const D=Object.values(day).sort((a,b)=>b.t-a.t).map(d=>({name:d.name,v:d.u.size,t:d.v})); const dm=Math.max(1,...D.map(d=>d.v)); $('#dDay').innerHTML=dBar(D,dm,r=>`${r.v}명 · ${dFmt(r.t)}`); }
+const MEM={list:[],ig:{}};
+async function memLoad(){ if(!DASH.db) return; try{ const [p,q]=await Promise.all([DASH.db.ref('profiles').once('value'),DASH.db.ref('private').once('value').catch(()=>null)]);
+    const L=[]; p.forEach(c=>{ L.push({uid:c.key,...c.val()}); }); MEM.list=L; MEM.ig={}; if(q) q.forEach(c=>{ const v=c.val(); if(v&&v.insta) MEM.ig[c.key]=v.insta; }); memRender();
+    try{ const w=(await DASH.db.ref('public/webcfg').once('value')).val()||{}; if(w.kakaoJsKey) $('#kJs').placeholder='JavaScript 키 (저장됨)'; if(w.kakaoRestKey) $('#kRest').placeholder='REST API 키 (저장됨)'; }catch(e){}
+  }catch(e){ $('#mList').innerHTML=`<p class='small muted'>가입자를 불러오지 못했어요: ${esc(e.message||e)}</p>`; } }
+function memRender(){ const L=MEM.list, now=Date.now(), day0=new Date().setHours(0,0,0,0), q=($('#mQ').value||'').trim().toLowerCase();
+  const created=x=>x.created||x.updated||0, kk=L.filter(x=>x.provider==='kakao').length;
+  $('#mKpi').innerHTML=[['전체 가입자',L.length+'명'],['오늘 가입',L.filter(x=>created(x)>=day0).length+'명'],['7일 가입',L.filter(x=>created(x)>=now-7*864e5).length+'명'],['카카오 / Google',`${kk} / ${L.length-kk}`],['사진 등록',L.length?Math.round(L.filter(x=>x.photo).length/L.length*100)+'%':'-'],['인스타 등록',Object.keys(MEM.ig).length+'명']].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join('');
+  const rows=L.filter(x=>!q||(x.name||'').toLowerCase().includes(q)||(MEM.ig[x.uid]||'').toLowerCase().includes(q)).sort((a,b)=>created(b)-created(a));
+  const when=t=>t?new Date(t).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'-';
+  $('#mList').innerHTML=rows.map(x=>`<div class='mcard'><span class='ph' style="${x.photo?`background-image:url('${x.photo}')`:''}">${x.photo?'':'👤'}</span><div><b>${esc(x.name||'버너')}</b><small><span class='pv ${x.provider==='kakao'?'kakao':'google'}'>${x.provider==='kakao'?'카카오':'Google'}</span>가입 ${when(created(x))}</small><small>${MEM.ig[x.uid]?`<span class='ig'>@${esc(MEM.ig[x.uid])}</span> 🔒`:'인스타 미등록'}</small></div></div>`).join('')||`<p class='small muted'>${q?'검색 결과가 없어요':'아직 가입자가 없어요'}</p>`; }
+$('#mQ').addEventListener('input',memRender);
+$('#kSave').addEventListener('click',async()=>{ const js=$('#kJs').value.trim(), rest=$('#kRest').value.trim(); if(!DASH.db){ $('#kMsg').textContent='먼저 Google로 로그인해 주세요.'; return; } if(!js&&!rest){ $('#kMsg').textContent='키를 붙여 넣어 주세요.'; return; }
+  try{ await DASH.db.ref('public/webcfg').update({...(js?{kakaoJsKey:js}:{}),...(rest?{kakaoRestKey:rest}:{})}); $('#kJs').value=''; $('#kRest').value=''; $('#kMsg').textContent='저장했어요. 게임의 카카오 로그인이 이 키를 써요.'; memLoad(); }catch(e){ $('#kMsg').textContent='저장 실패: '+e.message; } });
 $('#dashBtn').addEventListener('click',()=>{ const d=$('#dash'); if(!d.hidden){ d.hidden=true; return; } dashOpen(); });
 $('#dClose').addEventListener('click',()=>{ $('#dash').hidden=true; });
 // realhouse.club/admin.html#dash opens straight into the dashboard (handy as a link in Discord)

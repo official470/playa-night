@@ -5157,8 +5157,11 @@ addEventListener('pagehide',()=>rhaSend(true)); document.addEventListener('visib
 const AUTH={app:null,auth:null,db:null,user:null,prof:null,busy:false,kakao:null};
 try{ AUTH.kakao=JSON.parse(localStorage.getItem('playa-kakao')||'null'); }catch(e){}
 async function authInit(){ if(AUTH.auth) return true; if(AUTH.busy) return false; AUTH.busy=true;
-  try{ if(!window.FB_CONFIG) await rhaLoad('firebase-config.js?v='+Math.floor(Date.now()/36e5)); const C=window.FB_CONFIG||{};
+  try{ if(!window.FB_CONFIG) await rhaLoad('firebase-config.js?v='+Math.floor(Date.now()/36e5)); let C=Object.assign({},window.FB_CONFIG||{});
+    if(!C.apiKey&&C.databaseURL){ try{ const r=await fetch(C.databaseURL.replace(/\/$/,'')+'/public/webcfg.json',{cache:'no-store'}); const w=r.ok?await r.json():null;
+      if(w){ C=Object.assign(C,w); if(w.kakaoJsKey) window.LOGIN_CONFIG=Object.assign({},window.LOGIN_CONFIG||{},{kakaoJsKey:w.kakaoJsKey,kakaoRestKey:w.kakaoRestKey}); } }catch(e){} }
     if(!C.apiKey||!C.authDomain){ return false; }
+    ['kakaoJsKey','kakaoRestKey'].forEach(k=>delete C[k]);
     await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
     AUTH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); AUTH.auth=AUTH.app.auth(); AUTH.db=AUTH.app.database();
     AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); });
@@ -5181,7 +5184,8 @@ async function kakaoReturn(){ const q=new URLSearchParams(location.search), code
     if(!AUTH.user||!AUTH.user.isAnonymous){ const r=await AUTH.auth.signInAnonymously(); AUTH.user=r.user; }
     authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
 async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); }catch(e){} }
-function authAfterLogin(){ const n=authName(); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
+function authAfterLogin(){ const n=authName();
+  if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
 async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); toast('로그아웃했어요'); }
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
@@ -5214,7 +5218,7 @@ function profPhoto(file){ const img=new Image(), url=URL.createObjectURL(file); 
   img.onerror=()=>toast('사진을 불러오지 못했어요'); img.src=url; }
 async function profSave(){ const insta=($('#pdInsta').value||'').trim().replace(/^@+/,'').replace(/[^A-Za-z0-9._]/g,'').slice(0,30);
   if(!AUTH.db||!AUTH.user){ toast('로그인 후 저장할 수 있어요'); return; }
-  const uid=AUTH.user.uid, card={name:authName().slice(0,20),photo:PROF_PHOTO||'',provider:authProvider(),updated:Date.now()};
+  const uid=AUTH.user.uid, card={name:authName().slice(0,20),photo:PROF_PHOTO||'',provider:authProvider(),created:(AUTH.prof&&AUTH.prof.created)||Date.now(),updated:Date.now()};
   try{ await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); $('#profDlg').hidden=true; toast('프로필을 저장했어요'); }
   catch(e){ console.warn('profile',e); toast('저장하지 못했어요. 잠시 후 다시 해 주세요'); } }
 authBuild(); authInit().then(ok=>{ if(ok) kakaoReturn(); });
