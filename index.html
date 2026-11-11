@@ -310,6 +310,7 @@ body.dressing #sp{display:none!important}
 #authBox .authbtns button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:11px 10px;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
 #authBox .kakao{background:#FEE500;color:#191600} #authBox .google{background:#fff;color:#1f1f1f;border:1px solid #dadce0!important}
 #authBox .authbtns b{font-size:15px} #authBox .google b{color:#4285F4}
+#authBox .authlead{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.5} #authBox .authlead b{display:block;color:var(--text);font-size:14px;margin-bottom:2px}
 #authBox .authhint{display:block;margin-top:6px;color:var(--muted);font-size:11.5px;text-align:center}
 #authBox .authme{display:flex;align-items:center;gap:10px;background:var(--chip);border-radius:12px;padding:8px 10px}
 #authBox .authme img,#authBox .authme i{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-style:normal;background:var(--panel);font-weight:800}
@@ -318,10 +319,27 @@ body.dressing #sp{display:none!important}
 #profDlg{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1000;width:min(380px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow-y:auto;padding:18px 18px 14px;border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
 #profDlg[hidden]{display:none}
 #profDlg h2{margin:0 0 4px;font-size:19px} #profDlg .pd-sub{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
-#profDlg .pd-photo{display:grid;grid-template-columns:84px 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;cursor:pointer;margin-bottom:14px}
-#profDlg .pd-photo span{grid-row:1/3;width:84px;height:84px;border-radius:50%;background:var(--chip) center/cover;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px dashed var(--panel-line)}
-#profDlg .pd-photo span.has{border:2px solid #ff4fa8}
-#profDlg .pd-photo b{font-size:14px;align-self:end} #profDlg .pd-photo small{color:var(--muted);font-size:12px;line-height:1.45;align-self:start}
+#profDlg .pd-ph-head{display:flex;justify-content:space-between;align-items:baseline}
+#profDlg .pd-ph-head b{font-size:14px} #profDlg .pd-ph-head span{font-size:12px;font-weight:800} #profDlg .pd-ph-head .short{color:#ffcf8a} #profDlg .pd-ph-head .ok{color:#7dffb0}
+#profDlg .pd-ph-hint{display:block;color:var(--muted);font-size:12px;line-height:1.5;margin:3px 0 8px}
+#profDlg .pd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+#profDlg .pd-th{position:relative;aspect-ratio:1;border-radius:10px;background:var(--chip) center/cover;cursor:pointer}
+#profDlg .pd-th.cover{box-shadow:0 0 0 2px #ff4fa8}
+#profDlg .pd-th em{position:absolute;left:4px;bottom:4px;font-style:normal;font-size:10px;font-weight:800;background:#ff4fa8;color:#fff;border-radius:6px;padding:1px 5px}
+#profDlg .pd-th button{position:absolute;right:3px;top:3px;width:22px;height:22px;border:0;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:14px;line-height:1;cursor:pointer}
+#profDlg .pd-add{aspect-ratio:1;border:2px dashed var(--panel-line);border-radius:10px;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font:inherit}
+#profDlg .pd-add b{font-size:20px;line-height:1} #profDlg .pd-add small{font-size:10.5px}
+#profDlg .pd-acts .primary:disabled{opacity:.55;cursor:default}
+#meCard{position:fixed;left:50%;top:calc(70px + var(--sat));transform:translateX(-50%);z-index:900;width:min(360px,calc(100vw - 24px));padding:14px;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.5);animation:mePop .25s cubic-bezier(.2,1.4,.4,1)}
+#meCard[hidden]{display:none} @keyframes mePop{from{opacity:0;transform:translate(-50%,10px) scale(.95)}to{opacity:1;transform:translateX(-50%)}}
+#meCard .mx{position:absolute;right:10px;top:10px;border:0;background:var(--chip);color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer}
+#meCard .mh{display:flex;gap:12px;align-items:center;padding-right:30px}
+#meCard .mh i{width:56px;height:56px;border-radius:50%;flex:none;background:var(--chip) center/cover;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:24px;box-shadow:0 0 0 2px #ff4fa8}
+#meCard .mh b{display:block;font-size:16px} #meCard .mh small{color:var(--muted);font-size:12px;line-height:1.4}
+#meCard .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0 4px;max-height:220px;overflow-y:auto}
+#meCard .mg i{aspect-ratio:1;border-radius:9px;background:center/cover}
+#meCard .me{color:var(--muted);font-size:12.5px;margin:12px 0 4px} #meCard .mi{font-size:11.5px;color:#ffcf8a;margin:8px 0 10px}
+#meCard .ma button{width:100%;border:0;border-radius:12px;padding:11px;font:inherit;font-weight:800;background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff;cursor:pointer}
 #profDlg .pd-insta{display:block;font-size:13px;font-weight:700}
 #profDlg .pd-insta span{display:flex;align-items:center;margin-top:6px;background:var(--chip);border-radius:12px;padding:0 10px}
 #profDlg .pd-insta i{font-style:normal;color:var(--muted);font-weight:800}
@@ -5190,7 +5208,7 @@ async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=nul
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
     box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
-      :`<div class='authbtns one'><button type='button' class='google' data-auth='google'><b>G</b>Google로 시작</button></div><small class='authhint'>로그인 없이도 바로 입장할 수 있어요</small>`; }
+      :`<p class='authlead'><b>👥 함께 즐기기</b>로그인하면 다른 버너들과 프로필을 나누고, 같이 춤추고 어울릴 수 있어요</p><div class='authbtns one'><button type='button' class='google' data-auth='google'><b>G</b>Google로 로그인하고 함께 즐기기</button></div><small class='authhint'>🎧 로그인 없이 입장하면 혼자서 즐겨요</small>`; }
   const mb=document.getElementById('profBtn'); if(mb) setBtn(mb,AUTH.user?'내 프로필':'로그인','프로필'); }
 function authBuild(){ if(document.getElementById('authBox')) return; const nm=document.querySelector('#creator label.name'); if(!nm) return;
   const box=document.createElement('div'); box.id='authBox'; nm.after(box);
@@ -5200,27 +5218,59 @@ function authBuild(){ if(document.getElementById('authBox')) return; const nm=do
   authRender(); }
 function authChoose(){ loginGoogle(); }
 // profile popup: a photo that shows your taste + Instagram ID (kept private, shared only with people you choose)
-let PROF_PHOTO=null;
-function profOpen(first){ PROF_PHOTO=AUTH.prof&&AUTH.prof.photo||null; let d=document.getElementById('profDlg'); if(!d){ d=document.createElement('section'); d.id='profDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','프로필 등록'); document.body.appendChild(d); }
-  d.innerHTML=`<h2>프로필 등록</h2><p class='pd-sub'>${first?'반가워요! 다른 버너들에게 보여 줄 프로필을 만들어요. 지금 안 해도 괜찮아요.':'프로필을 바꿀 수 있어요.'}</p>
-   <label class='pd-photo'><input type='file' accept='image/*' id='pdFile' hidden><span id='pdPic' class='${PROF_PHOTO?'has':''}' style='${PROF_PHOTO?`background-image:url(${PROF_PHOTO})`:''}'>${PROF_PHOTO?'':'📷'}</span><b>나의 취향이 드러나는 사진</b><small>좋아하는 룩, 공연, 장소… 나를 잘 보여 주는 사진 한 장을 올려 주세요</small></label>
+// photos: 2 to 20 shots that show your taste. The first one is the cover on your public card (profiles/{uid}.photo);
+// the full set lives in photos/{uid} so member lists stay light.
+const PHOTO_MIN=2, PHOTO_MAX=20; let PROF_PHOTOS=[];
+async function profOpen(first){ PROF_PHOTOS=[]; let d=document.getElementById('profDlg'); if(!d){ d=document.createElement('section'); d.id='profDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','프로필 등록'); document.body.appendChild(d); }
+  d.innerHTML=`<h2>프로필 등록</h2><p class='pd-sub'>${first?'반가워요! 이제 다른 버너들과 함께 즐겨요. 나를 보여 줄 프로필을 만들어 두면 더 쉽게 어울릴 수 있어요. 지금 안 해도 괜찮아요.':'프로필을 바꿀 수 있어요.'}</p>
+   <div class='pd-ph-head'><b>나의 취향이 드러나는 사진</b><span id='pdCount'></span></div>
+   <small class='pd-ph-hint'>좋아하는 룩, 공연, 장소… 나를 잘 보여 주는 사진을 <b>최소 ${PHOTO_MIN}장</b>, 최대 ${PHOTO_MAX}장까지 올려 주세요. 첫 사진이 대표 사진이 돼요.</small>
+   <div class='pd-grid' id='pdGrid'></div><input type='file' accept='image/*' id='pdFile' multiple hidden>
    <label class='pd-insta'>인스타그램 아이디<span><i>@</i><input id='pdInsta' maxlength='30' autocomplete='off' placeholder='instagram_id' value=''></span></label>
    <p class='pd-note'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달할 수 있어요. 프로필에 바로 공개되지 않아요.</p>
    <div class='pd-acts'><button type='button' id='pdSkip' class='ghost'>건너뛰기</button><button type='button' id='pdSave' class='primary'>저장</button></div>`;
-  d.hidden=false;
-  if(AUTH.db&&AUTH.user) AUTH.db.ref('private/'+AUTH.user.uid+'/insta').once('value').then(s=>{ const i=document.getElementById('pdInsta'); if(i&&s.val()) i.value=s.val(); }).catch(()=>{});
-  $('#pdFile').addEventListener('change',e=>{ const f=e.target.files&&e.target.files[0]; if(f) profPhoto(f); });
+  d.hidden=false; profGrid();
+  if(AUTH.db&&AUTH.user){ const uid=AUTH.user.uid;
+    AUTH.db.ref('private/'+uid+'/insta').once('value').then(s=>{ const i=document.getElementById('pdInsta'); if(i&&s.val()) i.value=s.val(); }).catch(()=>{});
+    AUTH.db.ref('photos/'+uid).once('value').then(s=>{ const v=s.val(); if(Array.isArray(v)&&v.length) PROF_PHOTOS=v.filter(Boolean).slice(0,PHOTO_MAX); else if(AUTH.prof&&AUTH.prof.photo) PROF_PHOTOS=[AUTH.prof.photo]; profGrid(); }).catch(()=>{ if(AUTH.prof&&AUTH.prof.photo){ PROF_PHOTOS=[AUTH.prof.photo]; profGrid(); } }); }
+  $('#pdFile').addEventListener('change',async e=>{ const fs=[...(e.target.files||[])].slice(0,PHOTO_MAX-PROF_PHOTOS.length); e.target.value=''; for(const f of fs){ const u=await profShrink(f).catch(()=>null); if(u) PROF_PHOTOS.push(u); } if((e.target.files||[]).length>fs.length) toast(`사진은 최대 ${PHOTO_MAX}장까지예요`); profGrid(); });
+  $('#pdGrid').addEventListener('click',e=>{ const x=e.target.closest('[data-del]'); if(x){ PROF_PHOTOS.splice(+x.dataset.del,1); profGrid(); return; } const c=e.target.closest('[data-cover]'); if(c){ const k=+c.dataset.cover; if(k>0){ const [p]=PROF_PHOTOS.splice(k,1); PROF_PHOTOS.unshift(p); profGrid(); } return; } if(e.target.closest('.pd-add')) $('#pdFile').click(); });
   $('#pdSkip').addEventListener('click',()=>{ d.hidden=true; if(first) toast('나중에 메뉴 → 내 프로필에서 등록할 수 있어요'); });
   $('#pdSave').addEventListener('click',profSave); }
-// shrink the photo to a small square JPEG so it fits the free database
-function profPhoto(file){ const img=new Image(), url=URL.createObjectURL(file); img.onload=()=>{ const S=320, c=document.createElement('canvas'); c.width=c.height=S; const x=c.getContext('2d'), m=Math.min(img.width,img.height);
-    x.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S); PROF_PHOTO=c.toDataURL('image/jpeg',.82); URL.revokeObjectURL(url); const p=$('#pdPic'); p.style.backgroundImage=`url(${PROF_PHOTO})`; p.textContent=''; p.classList.add('has'); };
-  img.onerror=()=>toast('사진을 불러오지 못했어요'); img.src=url; }
+function profGrid(){ const g=document.getElementById('pdGrid'); if(!g) return; const n=PROF_PHOTOS.length;
+  g.innerHTML=PROF_PHOTOS.map((u,k)=>`<div class='pd-th${k===0?' cover':''}' style="background-image:url('${u}')" data-cover='${k}' title='${k===0?'대표 사진':'눌러서 대표 사진으로'}'>${k===0?'<em>대표</em>':''}<button type='button' data-del='${k}' aria-label='사진 빼기'>×</button></div>`).join('')+(n<PHOTO_MAX?`<button type='button' class='pd-add' aria-label='사진 추가'><b>＋</b><small>사진 추가</small></button>`:'');
+  const c=document.getElementById('pdCount'); if(c){ c.textContent=`${n} / ${PHOTO_MAX}`; c.className=n<PHOTO_MIN?'short':'ok'; }
+  const s=document.getElementById('pdSave'); if(s){ s.disabled=n<PHOTO_MIN; s.textContent=n<PHOTO_MIN?`사진 ${PHOTO_MIN-n}장 더 필요해요`:'저장'; } }
+// shrink each photo to a small square JPEG so 20 of them still fit the free database
+function profShrink(file){ return new Promise((ok,no)=>{ const img=new Image(), url=URL.createObjectURL(file); img.onload=()=>{ const S=256, c=document.createElement('canvas'); c.width=c.height=S; const x=c.getContext('2d'), m=Math.min(img.width,img.height);
+    x.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S); URL.revokeObjectURL(url); ok(c.toDataURL('image/jpeg',.78)); }; img.onerror=()=>{ URL.revokeObjectURL(url); no(new Error('img')); }; img.src=url; }); }
 async function profSave(){ const insta=($('#pdInsta').value||'').trim().replace(/^@+/,'').replace(/[^A-Za-z0-9._]/g,'').slice(0,30);
   if(!AUTH.db||!AUTH.user){ toast('로그인 후 저장할 수 있어요'); return; }
-  const uid=AUTH.user.uid, card={name:authName().slice(0,20),photo:PROF_PHOTO||'',provider:authProvider(),created:(AUTH.prof&&AUTH.prof.created)||Date.now(),updated:Date.now()};
-  try{ await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); $('#profDlg').hidden=true; toast('프로필을 저장했어요'); }
-  catch(e){ console.warn('profile',e); toast('저장하지 못했어요. 잠시 후 다시 해 주세요'); } }
+  if(PROF_PHOTOS.length<PHOTO_MIN){ toast(`취향 사진을 최소 ${PHOTO_MIN}장 올려 주세요`); return; }
+  const uid=AUTH.user.uid, card={name:authName().slice(0,20),photo:PROF_PHOTOS[0],photos:PROF_PHOTOS.length,provider:authProvider(),created:(AUTH.prof&&AUTH.prof.created)||Date.now(),updated:Date.now()};
+  const btn=$('#pdSave'); btn.disabled=true; btn.textContent='저장 중…';
+  try{ await AUTH.db.ref('photos/'+uid).set(PROF_PHOTOS); await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); $('#profDlg').hidden=true; toast(`프로필을 저장했어요 (사진 ${PROF_PHOTOS.length}장)`); }
+  catch(e){ console.warn('profile',e); toast('저장하지 못했어요. 잠시 후 다시 해 주세요'); profGrid(); } }
+// tap / click your own character: your profile card pops up (photos, name; edit from there)
+const ME_RAY=new THREE.Raycaster(), ME_V=new THREE.Vector2(); let meDown=null;
+canvas.addEventListener('pointerdown',e=>{ meDown={x:e.clientX,y:e.clientY,t:performance.now()}; },true);
+canvas.addEventListener('pointerup',e=>{ const d=meDown; meDown=null; if(!d||!inGame||!player) return; if(Math.hypot(e.clientX-d.x,e.clientY-d.y)>8||performance.now()-d.t>450) return;
+  const r=canvas.getBoundingClientRect(); ME_V.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1); ME_RAY.setFromCamera(ME_V,camera);
+  // a direct hit on the body, or a tap close to where your character stands on screen (gaps between legs count too)
+  let hit=ME_RAY.intersectObject(player.root,true).length>0;
+  if(!hit){ const P=new THREE.Vector3(); player.root.getWorldPosition(P); const lo=P.clone().project(camera), hi=P.clone().add(new THREE.Vector3(0,1.9,0)).project(camera);
+    const sx=x=>(x+1)/2*r.width+r.left, sy=y=>(1-y)/2*r.height+r.top, x0=sx(lo.x), yL=sy(lo.y), yH=sy(hi.y), hw=Math.max(18,(yL-yH)*.32);
+    hit=lo.z<1&&Math.abs(e.clientX-x0)<hw&&e.clientY>yH-10&&e.clientY<yL+10; }
+  if(hit) meCard(); },true);
+async function meCard(){ let c=document.getElementById('meCard'); if(!c){ c=document.createElement('section'); c.id='meCard'; c.className='card'; c.setAttribute('role','dialog'); c.setAttribute('aria-label','내 프로필'); document.body.appendChild(c);
+    c.addEventListener('click',e=>{ const b=e.target.closest('[data-me]'); if(!b) return; const a=b.dataset.me; if(a==='x'){ c.hidden=true; } else if(a==='edit'){ c.hidden=true; profOpen(false); } else if(a==='login'){ c.hidden=true; loginGoogle(); } }); }
+  const u=AUTH.user, nm=((($('#pname')&&$('#pname').value)||'').trim()||'버너');
+  if(!u){ c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'><i>👤</i><div><b>${esc(nm)}</b><small>지금은 혼자서 즐기는 중이에요. 로그인하면 프로필을 만들고 다른 버너들과 함께 즐길 수 있어요</small></div></div><div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`; c.hidden=false; return; }
+  let ph=[]; try{ if(AUTH.db){ const v=(await AUTH.db.ref('photos/'+u.uid).once('value')).val(); if(Array.isArray(v)) ph=v.filter(Boolean); } }catch(e){} if(!ph.length&&AUTH.prof&&AUTH.prof.photo) ph=[AUTH.prof.photo];
+  c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(AUTH.prof&&AUTH.prof.name||authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'} 로그인 · 취향 사진 ${ph.length}장</small></div></div>
+    ${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진이 없어요. 2장 이상 올려 프로필을 완성해요.</p>`}
+    <p class='mi'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달돼요</p><div class='ma'><button data-me='edit' class='primary'>프로필 편집</button></div>`;
+  c.hidden=false; }
 authBuild(); authInit().then(ok=>{ if(ok) kakaoReturn(); });
 
 /* ================= STAGE DANCE BONUS: 1 MIN = +3 COINS ================= */
