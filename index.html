@@ -339,6 +339,14 @@ body.dressing #sp{display:none!important}
 #meCard .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0 4px;max-height:220px;overflow-y:auto}
 #meCard .mg i{aspect-ratio:1;border-radius:9px;background:center/cover}
 #meCard .me{color:var(--muted);font-size:12.5px;margin:12px 0 4px} #meCard .mi{font-size:11.5px;color:#ffcf8a;margin:8px 0 10px}
+.npfav{font-size:17px!important;color:#ff4fa8!important} .npfav.on{color:#ff2a6a!important;animation:favPop .35s ease}
+@keyframes favPop{50%{transform:scale(1.35)}}
+#meCard .mfh{margin:12px 0 6px;font-size:13px;font-weight:800} #meCard .mfh small{color:var(--muted);font-weight:600;margin-left:4px}
+#meCard .mf{display:flex;flex-direction:column;gap:6px;max-height:230px;overflow-y:auto}
+#meCard .mf button{display:flex;align-items:center;gap:10px;border:0;background:var(--chip);color:var(--text);border-radius:12px;padding:7px;text-align:left;font:inherit;cursor:pointer}
+#meCard .mf i{width:42px;height:42px;border-radius:8px;flex:none;background:var(--panel) center/cover}
+#meCard .mf span{flex:1;min-width:0} #meCard .mf b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} #meCard .mf small{color:var(--muted);font-size:11px}
+#meCard .mf em{font-style:normal;font-size:10.5px;color:var(--muted);white-space:nowrap}
 #meCard .ma button{width:100%;border:0;border-radius:12px;padding:11px;font:inherit;font-weight:800;background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff;cursor:pointer}
 #profDlg .pd-insta{display:block;font-size:13px;font-weight:700}
 #profDlg .pd-insta span{display:flex;align-items:center;margin-top:6px;background:var(--chip);border-radius:12px;padding:0 10px}
@@ -900,7 +908,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
   <section class="np card" id="np" aria-label="DJ 세트">
     <div class="nprow">
       <button class="nphead" id="npToggle" aria-expanded="true"><span class="npart" id="npArt"></span><span class="nt"><b id="npName"></b><small id="npCamp"></small></span></button>
-      <button class="npbtn" id="npPlay" aria-label="재생">▶</button><span class="chev" id="npChev" hidden></span>
+      <button class="npbtn npfav" id="npFav" aria-label="이 세트 즐겨찾기" aria-pressed="false" hidden>♡</button><button class="npbtn" id="npPlay" aria-label="재생">▶</button><span class="chev" id="npChev" hidden></span>
     </div>
     <div class="npbody"><div id="npHero" class="nphero"></div><div id="npStory" class="mcstory npstory"></div></div>
   </section>
@@ -5202,7 +5210,7 @@ async function kakaoReturn(){ const q=new URLSearchParams(location.search), code
     AUTH.kakao={id:String(me.id),name:p.nickname||'카카오 버너',pic:p.thumbnail_image_url||''}; try{ localStorage.setItem('playa-kakao',JSON.stringify(AUTH.kakao)); }catch(e){}
     if(!AUTH.user||!AUTH.user.isAnonymous){ const r=await AUTH.auth.signInAnonymously(); AUTH.user=r.user; }
     authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
-async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
+async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; favLoad(); try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
 function authAfterLogin(){ const n=authName();
   if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
 async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); toast('로그아웃했어요'); }
@@ -5252,6 +5260,28 @@ async function profSave(){ const insta=($('#pdInsta').value||'').trim().replace(
   const btn=$('#pdSave'); btn.disabled=true; btn.textContent='저장 중…';
   try{ await AUTH.db.ref('photos/'+uid).set(PROF_PHOTOS); await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); backPrint(); $('#profDlg').hidden=true; toast(`프로필을 저장했어요 (사진 ${PROF_PHOTOS.length}장)`); }
   catch(e){ console.warn('profile',e); toast('저장하지 못했어요. 잠시 후 다시 해 주세요'); profGrid(); } }
+// ---------- favourite DJ sets: ♡ on the now-playing card; listed on your profile card; tap opens the original in a popup ----------
+const FAV={map:{},cur:null}; try{ FAV.map=JSON.parse(localStorage.getItem('playa-favs')||'{}')||{}; }catch(e){}
+function favUrl(c){ return c?(c.sc?c.key:'https://www.mixcloud.com'+c.key):''; }
+function favId(u){ return String(u).replace(/^https?:\/\/(www\.)?/,'').replace(/[.#$\[\]\/]/g,'_').slice(0,200); }
+function favArt(c){ const P=c&&c.pictures; return P&&(P['320wx320h']||P.large||P.medium||P.small)||c&&c.art||''; }
+function favSave(){ try{ localStorage.setItem('playa-favs',JSON.stringify(FAV.map)); }catch(e){} }
+function favSync(c,T){ const b=document.getElementById('npFav'); if(!b) return; FAV.cur=c?{c,T}:null; if(b.hidden===!!c) b.hidden=!c; if(!c) return;
+  const on=!!FAV.map[favId(favUrl(c))]; if(b.dataset.on!==String(on)){ b.dataset.on=String(on); b.textContent=on?'♥':'♡'; b.setAttribute('aria-pressed',String(on)); b.classList.toggle('on',on); } }
+function favToggle(){ const F=FAV.cur; if(!F) return; const u=favUrl(F.c), id=favId(u);
+  if(FAV.map[id]){ delete FAV.map[id]; toast('즐겨찾기에서 뺐어요'); if(AUTH.db&&AUTH.user) AUTH.db.ref('favs/'+AUTH.user.uid+'/'+id).remove().catch(()=>{}); }
+  else { const it={title:String(F.c.name||'').slice(0,120),dj:String(F.c.user&&F.c.user.name||'').slice(0,60),url:u,art:favArt(F.c),stage:String(F.T&&F.T.name||'').slice(0,40),t:Date.now()}; FAV.map[id]=it;
+    toast(AUTH.user?'❤️ 즐겨찾기에 담았어요. 내 프로필에서 볼 수 있어요':'❤️ 즐겨찾기에 담았어요. 로그인하면 다른 기기에서도 볼 수 있어요'); if(AUTH.db&&AUTH.user) AUTH.db.ref('favs/'+AUTH.user.uid+'/'+id).set(it).catch(()=>{}); }
+  favSave(); const b=document.getElementById('npFav'); if(b) b.dataset.on=''; favSync(F.c,F.T); }
+// after login: merge this device's favourites with the account's
+async function favLoad(){ if(!AUTH.db||!AUTH.user) return; try{ const v=(await AUTH.db.ref('favs/'+AUTH.user.uid).once('value')).val()||{};
+    const up={}; Object.entries(FAV.map).forEach(([k,x])=>{ if(!v[k]) up[k]=x; }); if(Object.keys(up).length) AUTH.db.ref('favs/'+AUTH.user.uid).update(up).catch(()=>{});
+    FAV.map=Object.assign({},v,FAV.map); favSave(); }catch(e){} }
+function favOpen(url){ const w=Math.min(520,screen.availWidth-40), h=Math.min(760,screen.availHeight-60);
+  const win=window.open(url,'rhc_original',`popup=yes,width=${w},height=${h},left=${Math.round((screen.availWidth-w)/2)},top=${Math.round((screen.availHeight-h)/2)}`); if(!win) location.href=url; }
+function favListHTML(){ const L=Object.values(FAV.map).sort((a,b)=>b.t-a.t); if(!L.length) return `<p class='me'>아직 즐겨찾기한 세트가 없어요. 마음에 드는 DJ 세트가 나오면 ♡를 눌러요.</p>`;
+  return `<div class='mfh'>❤️ 즐겨찾기한 DJ 세트 <small>${L.length}</small></div><div class='mf'>${L.map(x=>`<button type='button' data-fav='${esc(x.url)}'><i style="background-image:url('${esc(x.art)}')"></i><span><b>${esc(x.title||'DJ 세트')}</b><small>${esc([x.dj,x.stage].filter(Boolean).join(' · '))}</small></span><em>${/soundcloud/.test(x.url)?'SoundCloud':'Mixcloud'} ↗</em></button>`).join('')}</div>`; }
+document.addEventListener('click',e=>{ const f=e.target.closest('#npFav'); if(f){ e.stopPropagation(); favToggle(); return; } const o=e.target.closest('[data-fav]'); if(o){ favOpen(o.dataset.fav); } },true);
 // logged-in players wear their profile cover photo printed on the back of their top
 const BP_TEX={};
 function backPrint(){ if(!player||!player.torso) return; if(player.backPrint){ player.torso.remove(player.backPrint); player.backPrint=null; }
@@ -5277,11 +5307,11 @@ canvas.addEventListener('pointerup',e=>{ const d=meDown; meDown=null; if(!d||!in
 async function meCard(){ let c=document.getElementById('meCard'); if(!c){ c=document.createElement('section'); c.id='meCard'; c.className='card'; c.setAttribute('role','dialog'); c.setAttribute('aria-label','내 프로필'); document.body.appendChild(c);
     c.addEventListener('click',e=>{ const b=e.target.closest('[data-me]'); if(!b) return; const a=b.dataset.me; if(a==='x'){ c.hidden=true; } else if(a==='edit'){ c.hidden=true; profOpen(false); } else if(a==='login'){ c.hidden=true; loginGoogle(); } }); }
   const u=AUTH.user, nm=((($('#pname')&&$('#pname').value)||'').trim()||'버너');
-  if(!u){ c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'><i>👤</i><div><b>${esc(nm)}</b><small>지금은 혼자서 즐기는 중이에요. 로그인하면 프로필을 만들고 다른 버너들과 함께 즐길 수 있어요</small></div></div><div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`; c.hidden=false; return; }
+  if(!u){ c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'><i>👤</i><div><b>${esc(nm)}</b><small>지금은 혼자서 즐기는 중이에요. 로그인하면 프로필을 만들고 다른 버너들과 함께 즐길 수 있어요</small></div></div>${favListHTML()}<div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`; c.hidden=false; return; }
   let ph=[]; try{ if(AUTH.db){ const v=(await AUTH.db.ref('photos/'+u.uid).once('value')).val(); if(Array.isArray(v)) ph=v.filter(Boolean); } }catch(e){} if(!ph.length&&AUTH.prof&&AUTH.prof.photo) ph=[AUTH.prof.photo];
   c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(AUTH.prof&&AUTH.prof.name||authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'} 로그인 · 취향 사진 ${ph.length}장</small></div></div>
     ${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진이 없어요. 2장 이상 올려 프로필을 완성해요.</p>`}
-    <p class='mi'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달돼요</p><div class='ma'><button data-me='edit' class='primary'>프로필 편집</button></div>`;
+    ${favListHTML()}<p class='mi'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달돼요</p><div class='ma'><button data-me='edit' class='primary'>프로필 편집</button></div>`;
   c.hidden=false; }
 authBuild(); authInit().then(ok=>{ if(ok) kakaoReturn(); });
 
@@ -5995,7 +6025,7 @@ function npPic(c,big){ const P=c&&c.pictures; const u=P&&(big?(P['320wx320h']||P
 function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][0],near:mcNear(T),mine:!!(MC.cur&&MC.target&&MC.target.key===T.key)}; }
 function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff',ring:'#3dff6a'}[T.Z&&T.Z.id]||'#b06bff'); }
 function npRender(){ if(!inGame) return; const np=$('#np'); if(!np) return;
-  const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null, open=!np.classList.contains('collapsed'), col=npColor(T);
+  const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null; favSync(c,T); const open=!np.classList.contains('collapsed'), col=npColor(T);
   // the card waits until you reach a stage (or a set is playing); it stays out of the way on the desert drive and at the gate
   const off=(typeof BM!=='undefined'&&BM.mode)||!(c||near); if(np.classList.contains('np-off')!==off){ np.classList.toggle('np-off',off); NPC.sig=''; } if(off) return;
   const sk=schKey(T), sl=SCH.sched&&schSlot(sk), nx=sl?null:luNext(sk), sig=[T.key,near,c&&c.key,MC.paused,MC.playing,open,sl&&sl.id,nx&&nx.start].join('|'); if(sig===NPC.sig) return; NPC.sig=sig;
