@@ -1737,7 +1737,34 @@
 "📳 흔들어요": "📳 Shake it",
 "📻 운영자가 편성한 세트예요. 지금 모두 같은 부분을 듣고 있어요.": "📻 A set scheduled by the operators. Everyone is hearing the same part right now.",
 "🔥 2분 돌파! 사람들이 스테이지 앞으로 우르르 몰려와요": "🔥 2 minutes in! A crowd rushes to the front of the stage",
-"🗺️ 이동하기(MAP)": "🗺️ Travel (MAP)"
+"🗺️ 이동하기(MAP)": "🗺️ Travel (MAP)",
+"새 공간 안내": "New space guide",
+"클럽": "Club",
+"이태원에 링이 문을 열었어요": "Ring has opened in Itaewon",
+"쉘터 가기 전 왼쪽, 검은 건물 통째가 클럽이에요. 초록 네온 로고를 찾으세요.": "On the left just before Shelter: the whole black building is the club. Look for the green neon logo.",
+"계단으로 올라가요": "Take the stairs up",
+"골목의 경호원에게 신분증을 보여 주면 폰 플래시에 초록 스티커를 붙여 줘요. 그다음 계단을 걸어 올라가요.": "Show your ID to the bouncer in the alley and you get a green sticker over your phone flash. Then walk up the stairs.",
+"빨강 아니면 초록": "Red or green, nothing else",
+"스테이지 쪽은 천장이 세 배 높고 유리 지붕으로 밤하늘이 보여요. 조명은 빨강과 초록이 번갈아 켜져요.": "By the stage the ceiling is three times higher, with a glass roof open to the night sky. The lights switch between red and green.",
+"LP로 트는 부스": "A booth that plays vinyl",
+"턴테이블 두 대와 로터리 믹서가 놓여 있어요. 한국 DJ들의 세트가 기본으로 나와요.": "Two turntables and a rotary mixer. Sets by Korean DJs play by default.",
+"들어가면 바로 왼쪽이 바": "The bar is right on your left",
+"긴 바에서 한잔하고 플로어로 나가요. 입장은 무료, 드레스 코드는 블랙이에요.": "Have a drink at the long bar, then head to the floor. Entry is free and the dress code is black.",
+"거리 입구에서 앞으로 쭉 걸어요": "From the street entrance, walk straight ahead",
+"횡단보도를 지나면 왼쪽에 초록 네온 간판이 보여요": "Past the crosswalk, the green neon sign is on your left",
+"검은 건물 옆 골목으로 들어가요": "Turn into the alley beside the black building",
+"경호원에게 신분증을 보여 주고 초록 스티커를 받아요": "Show the bouncer your ID and get the green sticker",
+"계단을 끝까지 올라가면 링이에요": "Climb the stairs to the top and you are at Ring",
+"오늘 오픈": "Opened today",
+"가는 길 보기": "Show the way",
+"이 지점으로 가기": "Go to this location",
+"다음 ▸": "Next ▸",
+"쉘터 · 페이퍼": "Shelter · Paper",
+"계단": "Stairs",
+"횡단보도": "Crosswalk",
+"거리 입구": "Street entrance",
+"입구 앞으로 바로 가기": "Jump to the entrance",
+"나": "Me"
 },
 "patterns": {
 ". 코인 +{0}": ". Coins +{0}",
@@ -1874,6 +1901,10 @@
 "🕺 지금까지 춤으로 {0}걸음": "🕺 {0} steps danced so far",
 "{0} 채널이 세트예요.": "A set from the {0} channel.",
 "{0}에 올린 세트예요.": "A set uploaded on {0}.",
-"{0}분짜리 세트예요.": "A {0}-minute set."
+"{0}분짜리 세트예요.": "A {0}-minute set.",
+"오픈 {0}일째": "Day {0} since opening",
+"{0} 가는 길": "How to get to {0}",
+"{0} 입구 앞이에요": "You are in front of the {0} entrance",
+"{0} 지점을 골랐어요. 입장하면 {1} 가는 길을 보여 드려요": "{0} selected. Once you enter, you will see the way to {1}"
 }
 }

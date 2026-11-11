@@ -693,6 +693,37 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #lineup{position:fixed;inset:0;z-index:70;background:rgba(8,5,16,.38);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:calc(12px + var(--sat)) 12px calc(12px + var(--sab))}
 #lineup[hidden]{display:none}
 #lineup{overflow:hidden;overscroll-behavior:contain;touch-action:pan-y}
+/* new-space news: a card-news popup on the first screen and a how-to-get-there map when you arrive on that map (both for 3 days after opening) */
+#nsPop{position:fixed;inset:0;z-index:80;background:rgba(8,5,16,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:calc(12px + var(--sat)) 12px calc(12px + var(--sab))}
+#nsPop[hidden]{display:none}
+#nsPop .ns-in{width:min(380px,100%);max-height:100%;display:flex;flex-direction:column;background:#17101f;color:#f4efe6;border:1px solid rgba(255,255,255,.14);border-radius:22px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+#nsPop .ns-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px 10px}
+#nsPop .ns-head b{font-size:15px}
+#nsPop .ns-head .tag{display:inline-block;margin-right:6px;padding:3px 8px;border-radius:999px;background:#3dff6a;color:#04200c;font:900 11px sans-serif;letter-spacing:.06em}
+#nsPop .ns-x{border:0;border-radius:999px;padding:8px 14px;background:rgba(255,255,255,.12);color:inherit;font-size:13px;min-height:36px}
+#nsPop .ns-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#nsPop .ns-track::-webkit-scrollbar{display:none}
+#nsPop .ns-card{flex:0 0 100%;scroll-snap-align:center;display:flex;flex-direction:column}
+#nsPop .ns-card .im{position:relative;width:100%;aspect-ratio:1.25;background:#0a0710 center/cover no-repeat}
+#nsPop .ns-card .im .big{position:absolute;left:14px;bottom:12px;right:14px;font:900 30px/1.05 sans-serif;text-shadow:0 2px 14px #000}
+#nsPop .ns-card .im .big small{display:block;font:700 12px sans-serif;letter-spacing:.08em;color:#3dff6a;margin-bottom:4px}
+#nsPop .ns-card .im .pg{position:absolute;top:10px;right:12px;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.55);font-size:11px}
+#nsPop .ns-card h3{margin:12px 16px 4px;font-size:17px;line-height:1.3}
+#nsPop .ns-card p{margin:0 16px 12px;font-size:13.5px;line-height:1.55;opacity:.88}
+#nsPop .ns-dots{display:flex;justify-content:center;gap:6px;padding:2px 0 10px}
+#nsPop .ns-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}
+#nsPop .ns-dots i.on{background:#3dff6a}
+#nsPop .ns-acts{display:flex;gap:8px;padding:0 14px 14px}
+#nsPop .ns-acts button{flex:1;border:0;border-radius:14px;padding:12px 10px;min-height:44px;font-size:14px;font-weight:700;background:rgba(255,255,255,.12);color:inherit}
+#nsPop .ns-acts button.hot{background:#3dff6a;color:#04200c}
+#nsPop .ns-map{display:block;width:100%;height:auto;background:#0d0a13}
+#nsPop .ns-steps{list-style:none;margin:0;padding:10px 14px 6px;display:flex;flex-direction:column;gap:5px;overflow:auto}
+#nsPop .ns-steps li{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.4;opacity:.5;transition:opacity .25s}
+#nsPop .ns-steps li b{flex:0 0 20px;height:20px;border-radius:50%;background:rgba(255,255,255,.18);font:800 11px/20px sans-serif;text-align:center}
+#nsPop .ns-steps li.on{opacity:1}
+#nsPop .ns-steps li.on b{background:#3dff6a;color:#04200c}
+.mcard .cv .newb{position:absolute;top:6px;left:6px;padding:3px 7px;border-radius:999px;background:#3dff6a;color:#04200c;font:900 10px sans-serif;letter-spacing:.06em;font-style:normal;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+
 .lu-tabs{touch-action:pan-x}
 .lu-in>*{max-width:100%}
 /* translucent white sheet; its own dark-on-light tokens */
@@ -760,6 +791,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
 </style>
 </head>
 <body>
+<div id="nsPop" hidden role="dialog" aria-modal="true" aria-label="새 공간 안내"><div class="ns-in"></div></div>
 <section id="lineup" hidden aria-label="DJ 편성표" role="dialog" aria-modal="true"><div class="lu-in"><div class="lu-head"><div><img class="lulogo neon" src="assets/logo.png" alt="REAL HOUSE CLUB"><b>DJ 편성표</b><small id="luToday">LINEUP · 지점별 클럽·부스 DJ 타임테이블</small></div><button id="luClose">닫기</button></div><div class="lu-tabs" id="luTabs" role="tablist"></div><div id="luBody"></div></div></section>
 <canvas id="c" aria-label="버닝맨 3D 월드"></canvas>
 <div id="loading"><div class="ld"><img src="assets/logo.png" alt="REAL HOUSE CLUB" class="ldlogo neon"><span class="ldtx">플라야로 가는 중</span></div></div>
@@ -5928,6 +5960,83 @@ updaters.push((t,dt)=>{ const P=skyLogoSpot(); SKYL.on+=((P?1:0)-SKYL.on)*Math.m
     const tx=Q.x+Math.sin(t*1.3+B.ph)*w*.42, ty=Q.y+Math.cos(t*1.7+B.ph*1.3)*h*.32, tz=Q.z;
     _sl.set(tx-B.src.x,ty-B.src.y,tz-B.src.z); const L=_sl.length(); B.m.position.copy(B.src); B.m.scale.set(1,L,1); B.m.quaternion.setFromUnitVectors(_su,_sl.normalize());
     B.m.material.color.setHSL((hue+i*.04)%1,1,.6); B.m.material.opacity=SKYL.on*(.35+.25*Math.sin(t*9+B.ph))*fl; }); });
+
+/* ================= NEW SPACES: card news for 3 days after a place opens + a route map when you arrive on its map ================= */
+// add an entry here whenever a new club, experience zone or shop opens. opened = when it went live; everything below shows for 3 days from then.
+// route points are map-local [x,z]; steps are [index of the route point where the step starts, text].
+const NEW_SPACES=[
+ {id:'ring',map:'itaewon',mapName:'이태원',name:'링',kind:'클럽',opened:Date.parse('2026-11-10T15:45:00Z'),
+  cards:[{img:'assets/news/ring-1.jpg',h:'이태원에 링이 문을 열었어요',p:'쉘터 가기 전 왼쪽, 검은 건물 통째가 클럽이에요. 초록 네온 로고를 찾으세요.'},
+    {img:'assets/news/ring-2.jpg',h:'계단으로 올라가요',p:'골목의 경호원에게 신분증을 보여 주면 폰 플래시에 초록 스티커를 붙여 줘요. 그다음 계단을 걸어 올라가요.'},
+    {img:'assets/news/ring-3.jpg',h:'빨강 아니면 초록',p:'스테이지 쪽은 천장이 세 배 높고 유리 지붕으로 밤하늘이 보여요. 조명은 빨강과 초록이 번갈아 켜져요.'},
+    {img:'assets/news/ring-4.jpg',h:'LP로 트는 부스',p:'턴테이블 두 대와 로터리 믹서가 놓여 있어요. 한국 DJ들의 세트가 기본으로 나와요.'},
+    {img:'assets/news/ring-5.jpg',h:'들어가면 바로 왼쪽이 바',p:'긴 바에서 한잔하고 플로어로 나가요. 입장은 무료, 드레스 코드는 블랙이에요.'}],
+  route:{pts:[[-1.5,-58],[-1.5,-34],[2,-23],[5.6,-16.6],[8.6,-17.3],[9.6,-18.2],[17.8,-18.2]],spot:[5.6,-16.3],
+    steps:[[0,'거리 입구에서 앞으로 쭉 걸어요'],[1,'횡단보도를 지나면 왼쪽에 초록 네온 간판이 보여요'],[3,'검은 건물 옆 골목으로 들어가요'],[4,'경호원에게 신분증을 보여 주고 초록 스티커를 받아요'],[5,'계단을 끝까지 올라가면 링이에요']]}}];
+const NS={cur:null,mode:'',raf:0,t0:0,arr:0};
+const NS_DAYS=3;
+function nsActive(){ const now=schNow(); return NEW_SPACES.filter(s=>now>=s.opened&&now<s.opened+NS_DAYS*864e5); }
+function nsAge(s){ const h=(schNow()-s.opened)/36e5; return h<24?'오늘 오픈':`오픈 ${Math.floor(h/24)+1}일째`; }
+function nsSeen(k){ try{ return sessionStorage.getItem('playa-ns-'+k)==='1'; }catch(e){ return !!NS['_'+k]; } }
+function nsMark(k){ NS['_'+k]=1; try{ sessionStorage.setItem('playa-ns-'+k,'1'); }catch(e){} }
+function nsClose(){ const el=$('#nsPop'); if(el) el.hidden=true; cancelAnimationFrame(NS.raf); NS.cur=null; NS.mode=''; }
+// card news: one picture card per point, swipe sideways
+function nsNews(s){ const el=$('#nsPop'); NS.cur=s; NS.mode='news'; const n=s.cards.length;
+  el.querySelector('.ns-in').innerHTML=`<div class='ns-head'><b><span class='tag'>NEW OPEN</span>${esc(s.mapName)} · ${esc(s.kind)}</b><button class='ns-x' data-ns='x'>닫기</button></div>
+   <div class='ns-track'>${s.cards.map((c,i)=>`<div class='ns-card'><div class='im' style='background-image:url(${c.img})'><span class='pg'>${i+1} / ${n}</span>${i?'':`<div class='big'><small>${esc(nsAge(s))}</small>${esc(s.name)}</div>`}</div><h3>${esc(c.h)}</h3><p>${esc(c.p)}</p></div>`).join('')}</div>
+   <div class='ns-dots'>${s.cards.map((c,i)=>`<i class='${i?'':'on'}'></i>`).join('')}</div>
+   <div class='ns-acts'><button data-ns='next'>다음 ▸</button><button class='hot' data-ns='go'>${inGame&&MAP===s.map?'가는 길 보기':'이 지점으로 가기'}</button></div>`;
+  const tr_=el.querySelector('.ns-track'); tr_.addEventListener('scroll',()=>{ const i=Math.round(tr_.scrollLeft/Math.max(1,tr_.clientWidth)); el.querySelectorAll('.ns-dots i').forEach((d,k)=>d.classList.toggle('on',k===i)); },{passive:true});
+  el.hidden=false; }
+// top-down sketch of a map for the route popup (x grows to the LEFT, the way you see the street walking in)
+const NS_DRAW={itaewon(x,P,k){ const R=(x0,z0,x1,z1,c)=>{ const a=P(x0,z0), b=P(x1,z1); x.fillStyle=c; x.fillRect(Math.min(a[0],b[0]),Math.min(a[1],b[1]),Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1])); };
+    const T=(s,lx,z,c,f,al)=>{ const p=P(lx,z); x.fillStyle=c; x.font=f||'600 24px sans-serif'; x.textAlign=al||'center'; x.textBaseline='middle'; x.fillText(s,p[0],p[1]); };
+    R(-7,-64,7,34,'#3b3944'); R(-4,-64,4,34,'#24232b'); x.setLineDash([6,6]); x.strokeStyle='#c9a53a'; x.lineWidth=3; x.beginPath(); x.moveTo(...P(0,-64)); x.lineTo(...P(0,34)); x.stroke(); x.setLineDash([]);
+    for(let i=0;i<7;i++) R(-3.4+i*1,-30.9,-2.8+i*1,-29.1,'#e9e6df');
+    [[-64,-51],[-50,-41],[-40,-32]].forEach(([a,b])=>R(7,a,19,b,'#4a4852')); R(7,-13.2,19,-9.6,'#4a4852'); [[10,22],[23,34]].forEach(([a,b])=>R(7,a,19,b,'#4a4852'));
+    [[-64,-52],[-51,-40],[-39,-27],[-26,-14],[-13,-2],[-1,9],[10,19.6],[28.4,34]].forEach(([a,b])=>R(-19,a,-7,b,'#4a4852'));
+    R(8.2,-8.8,21.8,8.8,'#5a3340'); T('쉘터 · 페이퍼',15,0,'#ffd0d8'); R(-29,20.4,-7,27.6,'#2a2630'); T('B1 텔러',-18,24,'#ff9a8a');
+    R(7,-19,19.4,-13.5,'#211d27'); R(7,-31,19,-19,'#0b0b0d'); x.strokeStyle='#3dff6a'; x.lineWidth=5; { const a=P(19,-31), b=P(7,-19); x.strokeRect(a[0],b[1],b[0]-a[0],a[1]-b[1]); }
+    for(let i=0;i<12;i++) R(9.6+i*.75,-18.9,9.6+i*.75+.5,-17.5,i%2?'#5a5760':'#77747e');
+    T('링',13,-25,'#3dff6a','900 50px sans-serif'); T('계단',14,-16.2,'#cfd0d8','600 22px sans-serif'); T('횡단보도',-10.5,-30,'#e9e6df','600 22px sans-serif'); T('거리 입구',0,-61.6,'#cfd0d8','600 22px sans-serif'); }};
+const NS_ORG={itaewon:()=>OX,nami:()=>NX,sphere:()=>SPX,playa:()=>0};
+function nsRoute(s){ const el=$('#nsPop'); NS.cur=s; NS.mode='route'; const R=s.route;
+  el.querySelector('.ns-in').innerHTML=`<div class='ns-head'><b><span class='tag'>NEW</span>${esc(s.name)} 가는 길</b><button class='ns-x' data-ns='x'>닫기</button></div>
+   <canvas class='ns-map' width='720' height='720'></canvas>
+   <ol class='ns-steps'>${R.steps.map(([i,t],k)=>`<li><b>${k+1}</b><span>${esc(t)}</span></li>`).join('')}</ol>
+   <div class='ns-acts'><button data-ns='x'>닫기</button><button class='hot' data-ns='tp'>입구 앞으로 바로 가기</button></div>`;
+  el.hidden=false; const cv=el.querySelector('canvas'), x=cv.getContext('2d'), W=cv.width, H=cv.height, pts=R.pts;
+  // fit the whole route (plus a margin) into the picture
+  let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9; pts.forEach(([a,b])=>{ x0=Math.min(x0,a); x1=Math.max(x1,a); z0=Math.min(z0,b); z1=Math.max(z1,b); }); x0-=14; x1+=8; z0-=5; z1+=14;
+  const k=Math.min(W/(x1-x0),H/(z1-z0)), cx=W/2+(x0+x1)/2*k, cz=H/2+(z0+z1)/2*k, P=(lx,z)=>[cx-lx*k,cz-z*k];
+  const seg=[]; let tot=0; for(let i=1;i<pts.length;i++){ const d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]); seg.push(d); tot+=d; }
+  const at=u=>{ let d=u*tot; for(let i=0;i<seg.length;i++){ if(d<=seg[i]||i===seg.length-1){ const f=Math.min(1,d/seg[i]); return {i,p:[pts[i][0]+(pts[i+1][0]-pts[i][0])*f,pts[i][1]+(pts[i+1][1]-pts[i][1])*f]}; } d-=seg[i]; } };
+  const lis=[...el.querySelectorAll('.ns-steps li')]; NS.t0=performance.now();
+  const draw=()=>{ if(NS.mode!=='route'||NS.cur!==s) return; const tt=((performance.now()-NS.t0)/1000)%9, u=Math.min(1,tt/7), a=at(u);
+    x.setTransform(1,0,0,1,0,0); x.fillStyle='#0d0a13'; x.fillRect(0,0,W,H); if(NS_DRAW[s.map]) NS_DRAW[s.map](x,P,k);
+    x.lineJoin='round'; x.lineCap='round'; x.strokeStyle='rgba(61,255,106,.4)'; x.lineWidth=9; x.setLineDash([3,18]); x.beginPath(); pts.forEach((q,i)=>{ const p=P(q[0],q[1]); i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]); }); x.stroke(); x.setLineDash([]);
+    x.strokeStyle='#3dff6a'; x.lineWidth=9; x.beginPath(); for(let i=0;i<=a.i;i++){ const p=P(pts[i][0],pts[i][1]); i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]); } { const p=P(a.p[0],a.p[1]); x.lineTo(p[0],p[1]); } x.stroke();
+    { const e=P(pts[pts.length-1][0],pts[pts.length-1][1]), pu=15+Math.sin(performance.now()/180)*4; x.fillStyle='#3dff6a'; x.beginPath(); x.arc(e[0],e[1],pu,0,6.3); x.fill(); x.fillStyle='#04200c'; x.font='900 22px sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('★',e[0],e[1]+1); }
+    { const p=P(a.p[0],a.p[1]); x.fillStyle='rgba(255,255,255,.25)'; x.beginPath(); x.arc(p[0],p[1],32,0,6.3); x.fill(); x.fillStyle='#fff'; x.beginPath(); x.arc(p[0],p[1],19,0,6.3); x.fill(); x.fillStyle='#17101f'; x.font='800 22px sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('나',p[0],p[1]+1); }
+    let on=0; R.steps.forEach(([i],j)=>{ if(a.i>=i) on=j; }); if(u>=1) on=R.steps.length-1; lis.forEach((li,j)=>li.classList.toggle('on',j===on));
+    NS.raf=requestAnimationFrame(draw); };
+  cancelAnimationFrame(NS.raf); draw(); }
+function nsTeleport(s){ const o=(NS_ORG[s.map]||(()=>0))(), p=s.route.spot; nsClose(); if(MAP!==s.map) return; if(s.map==='itaewon'){ IT.floor=0; if(TEL.in) telLeave(); if(RING.in) ringLeave(); } pState.x=o+p[0]; pState.z=p[1]; pState.y=0; pState.vy=0; pState.face=Math.PI/2; yaw=pState.face+Math.PI; toast(`${s.name} 입구 앞이에요`); }
+$('#nsPop').addEventListener('click',e=>{ if(e.target.id==='nsPop'){ nsClose(); return; } const b=e.target.closest('[data-ns]'); if(!b) return; const s=NS.cur, a=b.dataset.ns;
+  if(a==='x') nsClose();
+  else if(a==='next'){ const t=$('#nsPop .ns-track'); if(t){ const i=Math.round(t.scrollLeft/Math.max(1,t.clientWidth)), n=s.cards.length; t.scrollTo({left:((i+1)%n)*t.clientWidth,behavior:'smooth'}); } }
+  else if(a==='tp'&&s) nsTeleport(s);
+  else if(a==='go'&&s){ nsClose(); if(inGame){ if(MAP===s.map){ nsRoute(s); } else goMap(s.map); } else { const c=document.querySelector(`.mapsel [data-map="${s.map}"]`); if(c){ c.click(); c.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'}); } toast(`${s.mapName} 지점을 골랐어요. 입장하면 ${s.name} 가는 길을 보여 드려요`); } } });
+addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('#nsPop').hidden) nsClose(); });
+updaters.push(t=>{ if(t-(NS.ck||0)<.5) return; NS.ck=t; const A=nsActive();
+  // NEW badge on the map cards of the first screen
+  if(!NS.badged&&A.length){ NS.badged=true; A.forEach(s=>{ const c=document.querySelector(`.mapsel [data-map="${s.map}"] .cv`); if(c&&!c.querySelector('.newb')){ const b=document.createElement('em'); b.className='newb'; b.textContent='NEW'; c.appendChild(b); } }); }
+  if(!$('#nsPop').hidden||!A.length) return;
+  // first screen: the card news, once per visit
+  if(!inGame){ if(t>1.2&&!$('#creator').hidden&&!document.body.classList.contains('dressing')){ const s=A.find(s=>!nsSeen('news-'+s.id)); if(s){ nsMark('news-'+s.id); nsNews(s); } } return; }
+  // arriving on a map that has a new place: how to get there, once per visit
+  const s=A.find(s=>s.map===MAP&&!nsSeen('route-'+s.id)); if(!s){ NS.arr=0; return; } if(!NS.arr){ NS.arr=t; return; } if(t-NS.arr<1.4||BM.mode||!$('#sp').hidden) return;
+  nsMark('route-'+s.id); nsRoute(s); });
 
 /* ================= BOOT ================= */
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);

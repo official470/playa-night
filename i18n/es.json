@@ -1737,7 +1737,34 @@
 "📳 흔들어요": "📳 Agita",
 "📻 운영자가 편성한 세트예요. 지금 모두 같은 부분을 듣고 있어요.": "📻 Es un set programado por el equipo. Ahora todos escuchan la misma parte.",
 "🔥 2분 돌파! 사람들이 스테이지 앞으로 우르르 몰려와요": "🔥 ¡Más de 2 minutos! La gente llega en tropel delante del escenario",
-"🗺️ 이동하기(MAP)": "🗺️ Moverse (MAPA)"
+"🗺️ 이동하기(MAP)": "🗺️ Moverse (MAPA)",
+"새 공간 안내": "Nuevo espacio",
+"클럽": "Club",
+"이태원에 링이 문을 열었어요": "Ring ha abierto en Itaewon",
+"쉘터 가기 전 왼쪽, 검은 건물 통째가 클럽이에요. 초록 네온 로고를 찾으세요.": "A la izquierda, justo antes de Shelter: todo el edificio negro es el club. Busca el logo de neón verde.",
+"계단으로 올라가요": "Sube por las escaleras",
+"골목의 경호원에게 신분증을 보여 주면 폰 플래시에 초록 스티커를 붙여 줘요. 그다음 계단을 걸어 올라가요.": "Enseña tu identificación al guardia del callejón y te pondrá una pegatina verde en el flash del teléfono. Luego sube las escaleras andando.",
+"빨강 아니면 초록": "Rojo o verde",
+"스테이지 쪽은 천장이 세 배 높고 유리 지붕으로 밤하늘이 보여요. 조명은 빨강과 초록이 번갈아 켜져요.": "Junto al escenario el techo es tres veces más alto y el tejado de cristal deja ver el cielo nocturno. Las luces alternan entre rojo y verde.",
+"LP로 트는 부스": "Una cabina de vinilos",
+"턴테이블 두 대와 로터리 믹서가 놓여 있어요. 한국 DJ들의 세트가 기본으로 나와요.": "Dos tocadiscos y un mezclador rotary. Por defecto suenan sets de DJ coreanos.",
+"들어가면 바로 왼쪽이 바": "La barra está justo a la izquierda",
+"긴 바에서 한잔하고 플로어로 나가요. 입장은 무료, 드레스 코드는 블랙이에요.": "Tómate algo en la barra larga y sal a la pista. La entrada es gratis y el código de vestimenta es negro.",
+"거리 입구에서 앞으로 쭉 걸어요": "Desde la entrada de la calle, camina todo recto",
+"횡단보도를 지나면 왼쪽에 초록 네온 간판이 보여요": "Pasado el paso de peatones verás el cartel de neón verde a la izquierda",
+"검은 건물 옆 골목으로 들어가요": "Entra en el callejón junto al edificio negro",
+"경호원에게 신분증을 보여 주고 초록 스티커를 받아요": "Enseña tu identificación al guardia y recibe la pegatina verde",
+"계단을 끝까지 올라가면 링이에요": "Sube las escaleras hasta arriba y ya estás en Ring",
+"오늘 오픈": "Abierto hoy",
+"가는 길 보기": "Ver cómo llegar",
+"이 지점으로 가기": "Ir a este lugar",
+"다음 ▸": "Siguiente ▸",
+"쉘터 · 페이퍼": "Shelter · Paper",
+"계단": "Escaleras",
+"횡단보도": "Paso de peatones",
+"거리 입구": "Entrada de la calle",
+"입구 앞으로 바로 가기": "Ir directo a la entrada",
+"나": "Yo"
 },
 "patterns": {
 ". 코인 +{0}": ". +{0} monedas",
@@ -1874,6 +1901,10 @@
 "🕺 지금까지 춤으로 {0}걸음": "🕺 Llevas {0} pasos bailando",
 "{0} 채널이 세트예요.": "Un set del canal {0}.",
 "{0}에 올린 세트예요.": "Un set subido el {0}.",
-"{0}분짜리 세트예요.": "Un set de {0} minutos."
+"{0}분짜리 세트예요.": "Un set de {0} minutos.",
+"오픈 {0}일째": "Día {0} desde la apertura",
+"{0} 가는 길": "Cómo llegar a {0}",
+"{0} 입구 앞이에요": "Estás frente a la entrada de {0}",
+"{0} 지점을 골랐어요. 입장하면 {1} 가는 길을 보여 드려요": "Has elegido {0}. Al entrar verás cómo llegar a {1}"
 }
 }

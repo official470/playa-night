@@ -1737,7 +1737,34 @@
 "📳 흔들어요": "📳 Schütteln",
 "📻 운영자가 편성한 세트예요. 지금 모두 같은 부분을 듣고 있어요.": "📻 Ein vom Betreiber geplantes Set. Gerade hören alle dieselbe Stelle.",
 "🔥 2분 돌파! 사람들이 스테이지 앞으로 우르르 몰려와요": "🔥 2 Minuten geknackt! Die Leute strömen vor die Bühne",
-"🗺️ 이동하기(MAP)": "🗺️ Reisen (MAP)"
+"🗺️ 이동하기(MAP)": "🗺️ Reisen (MAP)",
+"새 공간 안내": "Neuer Ort",
+"클럽": "Club",
+"이태원에 링이 문을 열었어요": "Das Ring hat in Itaewon eröffnet",
+"쉘터 가기 전 왼쪽, 검은 건물 통째가 클럽이에요. 초록 네온 로고를 찾으세요.": "Links kurz vor dem Shelter: Das ganze schwarze Gebäude ist der Club. Halte nach dem grünen Neonlogo Ausschau.",
+"계단으로 올라가요": "Über die Treppe nach oben",
+"골목의 경호원에게 신분증을 보여 주면 폰 플래시에 초록 스티커를 붙여 줘요. 그다음 계단을 걸어 올라가요.": "Zeig der Security in der Gasse deinen Ausweis, dann kommt ein grüner Sticker auf deinen Handyblitz. Danach gehst du die Treppe hoch.",
+"빨강 아니면 초록": "Rot oder Grün",
+"스테이지 쪽은 천장이 세 배 높고 유리 지붕으로 밤하늘이 보여요. 조명은 빨강과 초록이 번갈아 켜져요.": "An der Bühne ist die Decke dreimal so hoch, durch das Glasdach siehst du den Nachthimmel. Das Licht wechselt zwischen Rot und Grün.",
+"LP로 트는 부스": "Ein Booth mit Vinyl",
+"턴테이블 두 대와 로터리 믹서가 놓여 있어요. 한국 DJ들의 세트가 기본으로 나와요.": "Zwei Plattenspieler und ein Rotary-Mixer. Standardmäßig laufen Sets koreanischer DJs.",
+"들어가면 바로 왼쪽이 바": "Die Bar ist gleich links",
+"긴 바에서 한잔하고 플로어로 나가요. 입장은 무료, 드레스 코드는 블랙이에요.": "Trink etwas an der langen Bar und geh dann auf den Floor. Der Eintritt ist frei, der Dresscode ist Schwarz.",
+"거리 입구에서 앞으로 쭉 걸어요": "Geh vom Straßeneingang geradeaus",
+"횡단보도를 지나면 왼쪽에 초록 네온 간판이 보여요": "Hinter dem Zebrastreifen siehst du links das grüne Neonschild",
+"검은 건물 옆 골목으로 들어가요": "Geh in die Gasse neben dem schwarzen Gebäude",
+"경호원에게 신분증을 보여 주고 초록 스티커를 받아요": "Zeig der Security deinen Ausweis und hol dir den grünen Sticker",
+"계단을 끝까지 올라가면 링이에요": "Geh die Treppe ganz hoch, dann bist du im Ring",
+"오늘 오픈": "Heute eröffnet",
+"가는 길 보기": "Weg zeigen",
+"이 지점으로 가기": "Zu diesem Ort",
+"다음 ▸": "Weiter ▸",
+"쉘터 · 페이퍼": "Shelter · Paper",
+"계단": "Treppe",
+"횡단보도": "Zebrastreifen",
+"거리 입구": "Straßeneingang",
+"입구 앞으로 바로 가기": "Direkt zum Eingang",
+"나": "Ich"
 },
 "patterns": {
 ". 코인 +{0}": ". Münzen +{0}",
@@ -1874,6 +1901,10 @@
 "🕺 지금까지 춤으로 {0}걸음": "🕺 Bisher {0} Schritte getanzt",
 "{0} 채널이 세트예요.": "Ein Set vom Kanal {0}.",
 "{0}에 올린 세트예요.": "Ein Set, hochgeladen am {0}.",
-"{0}분짜리 세트예요.": "Ein {0}-Minuten-Set."
+"{0}분짜리 세트예요.": "Ein {0}-Minuten-Set.",
+"오픈 {0}일째": "Tag {0} seit Eröffnung",
+"{0} 가는 길": "So kommst du zu: {0}",
+"{0} 입구 앞이에요": "Du stehst vor dem Eingang: {0}",
+"{0} 지점을 골랐어요. 입장하면 {1} 가는 길을 보여 드려요": "{0} gewählt. Nach dem Eintritt siehst du den Weg zu: {1}"
 }
 }
