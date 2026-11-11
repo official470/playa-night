@@ -335,7 +335,7 @@ body.dressing #sp{display:none!important}
 #meCard .mx{position:absolute;right:10px;top:10px;border:0;background:var(--chip);color:var(--text);width:28px;height:28px;border-radius:50%;cursor:pointer}
 #meCard .mh{display:flex;gap:12px;align-items:center;padding-right:30px}
 #meCard .mh i{width:56px;height:56px;border-radius:50%;flex:none;background:var(--chip) center/cover;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:24px;box-shadow:0 0 0 2px #ff4fa8}
-#meCard .mh b{display:block;font-size:16px} #meCard .mh small{color:var(--muted);font-size:12px;line-height:1.4}
+#meCard .mh b{display:block;font-size:16px} #meCard .live{color:#7dffb0;font-weight:800} #meCard .npc{color:#ffcf8a;font-weight:800} #meCard .mh small{color:var(--muted);font-size:12px;line-height:1.4}
 #meCard .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0 4px;max-height:220px;overflow-y:auto}
 #meCard .mg i{aspect-ratio:1;border-radius:9px;background:center/cover}
 #meCard .me{color:var(--muted);font-size:12.5px;margin:12px 0 4px} #meCard .mi{font-size:11.5px;color:#ffcf8a;margin:8px 0 10px}
@@ -4682,7 +4682,7 @@ const KREAM=[
   {c:'액세서리',b:'Chrome Hearts',n:'실버 체인 목걸이',set:{kAcc:'chain'}}];
 const KCATS=['전체','신발','아우터','상의','하의','모자','액세서리']; let kCat='전체';
 function kreamOn(it){ return Object.entries(it.set).every(([k,v])=>cfg[k]===v); }
-function buildCharacter(c){ const P=buildCharacterBase(c); try{ kreamGear(P,c); }catch(e){} if(c&&c.ringG) P.ringG=c.ringG; return P; }
+function buildCharacter(c){ const P=buildCharacterBase(c); P.cfg=c; try{ kreamGear(P,c); }catch(e){} if(c&&c.ringG) P.ringG=c.ringG; return P; }
 function kreamGear(P,c){ const T=P.torso, H=P.head;
   if(c.kOuter){ const k=c.kOuter, col=M(c.kOuterColor||'#141414');
     if(k==='puffer'){ for(let i=0;i<4;i++) mk(new THREE.CylinderGeometry(.26,.26,.14,12),col,0,.1+i*.135,0,T); mk(new THREE.CylinderGeometry(.17,.2,.1,12),col,0,.6,0,T); P.sh.forEach(s=>{ mesh(G.sph,col,0,-.08,0,.11,.12,.11,s); mesh(G.sph,col,0,-.21,0,.1,.11,.1,s); }); }
@@ -5191,7 +5191,7 @@ async function authInit(){ if(AUTH.auth) return true; if(AUTH.busy) return false
     ['kakaoJsKey','kakaoRestKey'].forEach(k=>delete C[k]);
     await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
     AUTH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); AUTH.auth=AUTH.app.auth(); AUTH.db=AUTH.app.database();
-    AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); });
+    AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); }); presListen();
     return true; }catch(e){ console.warn('auth init',e); return false; } finally{ AUTH.busy=false; } }
 function authName(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous&&AUTH.kakao) return AUTH.kakao.name||'카카오 버너'; return u.displayName||(u.email||'').split('@')[0]||'버너'; }
 function authProvider(){ const u=AUTH.user; return !u?'':u.isAnonymous?'kakao':'google'; }
@@ -5210,10 +5210,10 @@ async function kakaoReturn(){ const q=new URLSearchParams(location.search), code
     AUTH.kakao={id:String(me.id),name:p.nickname||'카카오 버너',pic:p.thumbnail_image_url||''}; try{ localStorage.setItem('playa-kakao',JSON.stringify(AUTH.kakao)); }catch(e){}
     if(!AUTH.user||!AUTH.user.isAnonymous){ const r=await AUTH.auth.signInAnonymously(); AUTH.user=r.user; }
     authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
-async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; favLoad(); try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
+async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; favLoad(); presStart(); try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
 function authAfterLogin(){ const n=authName();
   if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
-async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); toast('로그아웃했어요'); }
+async function logout(){ presStop(); if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); toast('로그아웃했어요'); }
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
     box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
@@ -5293,6 +5293,63 @@ function backPrint(){ if(!player||!player.torso) return; if(player.backPrint){ p
   const frame=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({color:0xe8e2d8})); frame.scale.set(.35,.4,1); g.add(frame);
   const pic=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:tex,color:0xeeeeee})); pic.scale.set(.32,.32,1); pic.position.set(0,.02,.002); g.add(pic);
   player.torso.add(g); player.backPrint=g; }
+// ---------- meet real players: logged-in players share where they are and how they look (presence/{uid}) ----------
+const PRES={others:{},ref:null,listening:false,sendT:0,lastSent:null,lookSig:'',av:{}};
+function presLook(){ const c={}; for(const k in cfg) if(!/^k/.test(k)) c[k]=cfg[k]; return JSON.stringify(c); }
+function presListen(){ if(PRES.listening||!AUTH.db) return; PRES.listening=true; const R=AUTH.db.ref('presence');
+  R.on('child_added',s=>presUpsert(s.key,s.val())); R.on('child_changed',s=>presUpsert(s.key,s.val())); R.on('child_removed',s=>presRemove(s.key)); }
+function presStart(){ if(!AUTH.db||!AUTH.user) return; presListen(); PRES.ref=AUTH.db.ref('presence/'+AUTH.user.uid); PRES.ref.onDisconnect().remove(); PRES.lookSig=''; PRES.lastSent=null; }
+function presStop(){ if(PRES.ref){ PRES.ref.onDisconnect().cancel(); PRES.ref.remove().catch(()=>{}); PRES.ref=null; } }
+function tagTex(name){ const c=document.createElement('canvas'); c.width=256; c.height=64; const x=c.getContext('2d'); x.font='700 26px sans-serif'; const w=Math.min(240,x.measureText(name).width+44);
+  x.fillStyle='rgba(12,10,20,.78)'; x.beginPath(); x.roundRect?x.roundRect((256-w)/2,10,w,44,22):x.rect((256-w)/2,10,w,44); x.fill(); x.fillStyle='#7dffb0'; x.beginPath(); x.arc((256-w)/2+20,32,6,0,7); x.fill();
+  x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(name,128+8,33); const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter; return t; }
+function presUpsert(uid,v){ if(!v||(AUTH.user&&uid===AUTH.user.uid)) return; PRES.others[uid]=v; let A=PRES.av[uid];
+  if(v.lk&&(!A||A.lk!==v.lk)){ if(A) scene.remove(A.P.root); let c={}; try{ c=JSON.parse(v.lk); }catch(e){}
+    const P=buildCharacter(Object.assign(randomConfig(),c)); P.seed=Math.random()*9; scene.add(P.root); P.root.position.set(v.x||0,v.y||0,v.z||0);
+    const tag=new THREE.Sprite(new THREE.SpriteMaterial({map:tagTex(String(v.n||'버너').slice(0,12)),depthTest:false,transparent:true})); tag.scale.set(1.6,.4,1); tag.position.y=2.35; tag.renderOrder=7; P.root.add(tag);
+    A=PRES.av[uid]={P,lk:v.lk,uid,photo:null}; P.realUid=uid;
+    AUTH.db.ref('profiles/'+uid+'/photo').once('value').then(s=>{ const u=s.val(); if(u&&PRES.av[uid]===A) presBack(A,u); }).catch(()=>{}); }
+  if(A){ A.v=v; } }
+function presBack(A,url){ const tex=BP_TEX[url]||(BP_TEX[url]=new THREE.TextureLoader().load(url)); const g=new THREE.Group(); g.position.set(0,.27,-.13); g.rotation.y=Math.PI;
+  const fr=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({color:0xe8e2d8})); fr.scale.set(.35,.4,1); g.add(fr); const pic=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:tex,color:0xeeeeee})); pic.scale.set(.32,.32,1); pic.position.set(0,.02,.002); g.add(pic); A.P.torso.add(g); }
+function presRemove(uid){ const A=PRES.av[uid]; if(A){ scene.remove(A.P.root); delete PRES.av[uid]; } delete PRES.others[uid]; }
+updaters.push((t,dt)=>{
+  // send my own spot (logged in only): when I move, otherwise a heartbeat every 5s
+  if(AUTH.user&&PRES.ref&&inGame){ PRES.sendT+=dt; const L=PRES.lastSent, moved=!L||Math.hypot(pState.x-L.x,pState.z-L.z)>.25||L.a!==pAct||L.m!==MAP;
+    if((moved&&PRES.sendT>.5)||PRES.sendT>5){ PRES.sendT=0; const rec={n:authName().slice(0,14),m:MAP,x:+pState.x.toFixed(2),z:+pState.z.toFixed(2),y:+(pState.y||0).toFixed(2),f:+(pState.face||0).toFixed(2),a:pAct,d:myDance,t:Date.now()};
+      const lk=presLook(); if(lk!==PRES.lookSig){ rec.lk=lk; PRES.lookSig=lk; } PRES.ref.update(rec).catch(()=>{}); PRES.lastSent=rec; } }
+  // draw everyone else on my map; ease them toward their last reported spot
+  const now=Date.now();
+  for(const uid in PRES.av){ const A=PRES.av[uid], v=A.v||{}, P=A.P; const here=v.m===MAP&&now-(v.t||0)<20000&&inGame; P.root.visible=here; if(!here) continue;
+    const p=P.root.position, dx=(v.x||0)-p.x, dz=(v.z||0)-p.z, d=Math.hypot(dx,dz); if(d>30){ p.set(v.x,v.y||0,v.z); } else { const k=Math.min(1,dt*6); p.x+=dx*k; p.z+=dz*k; p.y+=((v.y||0)-p.y)*k; }
+    let ry=v.f||0; P.root.rotation.y+=Math.atan2(Math.sin(ry-P.root.rotation.y),Math.cos(ry-P.root.rotation.y))*Math.min(1,dt*8);
+    if(v.a==='dance'){ P.dance=v.d||'pump'; poseChar(P,'dance',t,t*2.07); } else if(d>.08||v.a==='walk'||v.a==='run') poseChar(P,v.a==='run'?'run':'walk',t,0); else poseChar(P,'idle',t,0); } });
+
+// ---------- tap anyone: real players show their real profile, NPCs show a labeled made-up one (30% of them) ----------
+const PROF_R={R:null,scene:null,cam:null};
+function npcShots(c){ const out=[]; try{ if(!PROF_R.R){ PROF_R.R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); PROF_R.R.setPixelRatio(1); PROF_R.R.setSize(200,200,false);
+      PROF_R.scene=new THREE.Scene(); PROF_R.scene.add(new THREE.HemisphereLight(0xfff4e8,0x5a4a6a,1.1)); const dl=new THREE.DirectionalLight(0xffffff,.8); dl.position.set(2,4,3); PROF_R.scene.add(dl); PROF_R.cam=new THREE.PerspectiveCamera(30,1,.05,50); }
+    const bgs=['#2a1840','#3a1a2e','#16283a','#2e2a16']; const P=buildCharacter(c); P.dance=pick(['pump','hands','sway','afro','jack']); PROF_R.scene.add(P.root);
+    [[.3,1.4,2.2,.6],[-.5,1.0,3.6,1.2],[.9,1.55,1.6,2.1]].forEach(([ry,cy,cd,tt],i)=>{ P.root.rotation.y=ry; poseChar(P,'dance',tt,tt*2); PROF_R.R.setClearColor(new THREE.Color(bgs[i%4]),1);
+      PROF_R.cam.position.set(0,cy+.1,cd); PROF_R.cam.lookAt(0,cy-.15,0); PROF_R.R.render(PROF_R.scene,PROF_R.cam); out.push(PROF_R.R.domElement.toDataURL('image/jpeg',.8)); });
+    PROF_R.scene.remove(P.root); }catch(e){} return out; }
+function npcProfile(P){ if(P.fakeProf!==undefined) return P.fakeProf; if(Math.random()>=.3){ P.fakeProf=null; return null; }
+  const name=pick(PN_A)+' '+pick(PN_B), sets=(typeof luAll==='function'?luAll(true):[]).filter(s=>s.url).sort(()=>Math.random()-.5).slice(0,2+Math.floor(Math.random()*2));
+  P.fakeProf={name,photos:npcShots(P.cfg||randomConfig()),favs:sets.map(s=>({title:s.title||s.dj||'DJ 세트',dj:s.dj||'',url:s.url,art:s.art||'',stage:s.name||''}))}; return P.fakeProf; }
+function cardShow(html){ const c=meEl(); c.innerHTML=html; c.hidden=false; }
+function favRows(L){ return L.length?`<div class='mfh'>❤️ 즐겨찾는 DJ 세트 <small>${L.length}</small></div><div class='mf'>${L.map(x=>`<button type='button' data-fav='${esc(x.url)}'><i style="background-image:url('${esc(x.art)}')"></i><span><b>${esc(x.title)}</b><small>${esc([x.dj,x.stage].filter(Boolean).join(' · '))}</small></span><em>${/soundcloud/.test(x.url)?'SoundCloud':'Mixcloud'} ↗</em></button>`).join('')}</div>`:''; }
+async function personCard(P){ const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`;
+  if(P.realUid){ const uid=P.realUid, v=PRES.others[uid]||{}; let prof={}, ph=[]; try{ prof=(await AUTH.db.ref('profiles/'+uid).once('value')).val()||{}; const p=(await AUTH.db.ref('photos/'+uid).once('value')).val(); if(Array.isArray(p)) ph=p.filter(Boolean); }catch(e){}
+    if(!ph.length&&prof.photo) ph=[prof.photo];
+    cardShow(`${X}<div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(prof.name||v.n||'버너')}</b><small><span class='live'>🟢 지금 접속 중</span> · 실제 버너</small></div></div>${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진을 올리지 않았어요</p>`}<p class='mi'>🔒 인스타그램은 본인이 원할 때만 전달돼요</p>`); return; }
+  const F=npcProfile(P);
+  if(!F){ cardShow(`${X}<div class='mh'><i>🙂</i><div><b>플라야 주민</b><small><span class='npc'>🎮 NPC</span> · 프로필을 만들지 않았어요</small></div></div>`); return; }
+  cardShow(`${X}<div class='mh'>${F.photos[0]?`<i style="background-image:url('${F.photos[0]}')"></i>`:'<i>🙂</i>'}<div><b>${esc(F.name)}</b><small><span class='npc'>🎮 플라야 주민 (NPC)</span></small></div></div>${F.photos.length?`<div class='mg'>${F.photos.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:''}${favRows(F.favs)}`); }
+// which character did the tap land on? (other players first, then NPCs nearby)
+function tapWho(){ const cand=[]; for(const uid in PRES.av){ const A=PRES.av[uid]; if(A.P.root.visible) cand.push(A.P); }
+  const seen=new Set(); const add=P=>{ if(!P||!P.root||!P.root.visible||seen.has(P)) return; const dx=P.root.position.x-pState.x, dz=P.root.position.z-pState.z; if(dx*dx+dz*dz<1600){ seen.add(P); cand.push(P); } };
+  npcs.forEach(add); SNPC.forEach(S=>add(S.P));
+  let best=null, bd=1e9; for(const P of cand){ const h=ME_RAY.intersectObject(P.root,true); if(h.length&&h[0].distance<bd){ bd=h[0].distance; best=P; } } return best; }
 // tap / click your own character: your profile card pops up (photos, name; edit from there)
 const ME_RAY=new THREE.Raycaster(), ME_V=new THREE.Vector2(); let meDown=null;
 canvas.addEventListener('pointerdown',e=>{ meDown={x:e.clientX,y:e.clientY,t:performance.now()}; },true);
@@ -5303,9 +5360,10 @@ canvas.addEventListener('pointerup',e=>{ const d=meDown; meDown=null; if(!d||!in
   if(!hit){ const P=new THREE.Vector3(); player.root.getWorldPosition(P); const lo=P.clone().project(camera), hi=P.clone().add(new THREE.Vector3(0,1.9,0)).project(camera);
     const sx=x=>(x+1)/2*r.width+r.left, sy=y=>(1-y)/2*r.height+r.top, x0=sx(lo.x), yL=sy(lo.y), yH=sy(hi.y), hw=Math.max(18,(yL-yH)*.32);
     hit=lo.z<1&&Math.abs(e.clientX-x0)<hw&&e.clientY>yH-10&&e.clientY<yL+10; }
-  if(hit) meCard(); },true);
-async function meCard(){ let c=document.getElementById('meCard'); if(!c){ c=document.createElement('section'); c.id='meCard'; c.className='card'; c.setAttribute('role','dialog'); c.setAttribute('aria-label','내 프로필'); document.body.appendChild(c);
-    c.addEventListener('click',e=>{ const b=e.target.closest('[data-me]'); if(!b) return; const a=b.dataset.me; if(a==='x'){ c.hidden=true; } else if(a==='edit'){ c.hidden=true; profOpen(false); } else if(a==='login'){ c.hidden=true; loginGoogle(); } }); }
+  if(hit){ meCard(); return; } const who=tapWho(); if(who) personCard(who); },true);
+function meEl(){ let c=document.getElementById('meCard'); if(!c){ c=document.createElement('section'); c.id='meCard'; c.className='card'; c.setAttribute('role','dialog'); c.setAttribute('aria-label','내 프로필'); document.body.appendChild(c);
+    c.addEventListener('click',e=>{ const b=e.target.closest('[data-me]'); if(!b) return; const a=b.dataset.me; if(a==='x'){ c.hidden=true; } else if(a==='edit'){ c.hidden=true; profOpen(false); } else if(a==='login'){ c.hidden=true; loginGoogle(); } }); } return c; }
+async function meCard(){ const c=meEl();
   const u=AUTH.user, nm=((($('#pname')&&$('#pname').value)||'').trim()||'버너');
   if(!u){ c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'><i>👤</i><div><b>${esc(nm)}</b><small>지금은 혼자서 즐기는 중이에요. 로그인하면 프로필을 만들고 다른 버너들과 함께 즐길 수 있어요</small></div></div>${favListHTML()}<div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`; c.hidden=false; return; }
   let ph=[]; try{ if(AUTH.db){ const v=(await AUTH.db.ref('photos/'+u.uid).once('value')).val(); if(Array.isArray(v)) ph=v.filter(Boolean); } }catch(e){} if(!ph.length&&AUTH.prof&&AUTH.prof.photo) ph=[AUTH.prof.photo];
