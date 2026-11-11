@@ -1766,7 +1766,8 @@
 "입구 앞으로 바로 가기": "Direkt zum Eingang",
 "나": "Ich",
 "다시 안 보기": "Nicht mehr anzeigen",
-"이 안내는 다시 띄우지 않을게요": "Dieser Hinweis wird nicht mehr angezeigt"
+"이 안내는 다시 띄우지 않을게요": "Dieser Hinweis wird nicht mehr angezeigt",
+"계단에 올라섰어요. 앞으로 쭉 걸어 올라가면 링이에요": "Du stehst auf der Treppe. Geh einfach geradeaus nach oben, dann bist du im Ring"
 },
 "patterns": {
 ". 코인 +{0}": ". Münzen +{0}",

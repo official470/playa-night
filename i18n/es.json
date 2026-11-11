@@ -1766,7 +1766,8 @@
 "입구 앞으로 바로 가기": "Ir directo a la entrada",
 "나": "Yo",
 "다시 안 보기": "No volver a mostrar",
-"이 안내는 다시 띄우지 않을게요": "Este aviso no se mostrará más"
+"이 안내는 다시 띄우지 않을게요": "Este aviso no se mostrará más",
+"계단에 올라섰어요. 앞으로 쭉 걸어 올라가면 링이에요": "Ya estás en las escaleras. Sigue recto hacia arriba y llegarás a Ring"
 },
 "patterns": {
 ". 코인 +{0}": ". +{0} monedas",

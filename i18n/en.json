@@ -1766,7 +1766,8 @@
 "입구 앞으로 바로 가기": "Jump to the entrance",
 "나": "Me",
 "다시 안 보기": "Don't show again",
-"이 안내는 다시 띄우지 않을게요": "This notice won't be shown again"
+"이 안내는 다시 띄우지 않을게요": "This notice won't be shown again",
+"계단에 올라섰어요. 앞으로 쭉 걸어 올라가면 링이에요": "You're on the stairs. Keep walking forward and up to reach Ring"
 },
 "patterns": {
 ". 코인 +{0}": ". Coins +{0}",
