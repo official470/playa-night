@@ -303,6 +303,34 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 #optNav button.on{background:var(--chip-on)!important;color:var(--chip-on-text)!important;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 #opts .sec[hidden]{display:none!important}
 body.dressing #sp{display:none!important}
+/* social login + profile */
+#authBox{padding:2px 22px 10px}
+@media (max-width:760px),(pointer:coarse){ #authBox{padding:2px 16px 8px} }
+#authBox .authbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#authBox .authbtns button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:11px 10px;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+#authBox .kakao{background:#FEE500;color:#191600} #authBox .google{background:#fff;color:#1f1f1f;border:1px solid #dadce0!important}
+#authBox .authbtns b{font-size:15px} #authBox .google b{color:#4285F4}
+#authBox .authhint{display:block;margin-top:6px;color:var(--muted);font-size:11.5px;text-align:center}
+#authBox .authme{display:flex;align-items:center;gap:10px;background:var(--chip);border-radius:12px;padding:8px 10px}
+#authBox .authme img,#authBox .authme i{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-style:normal;background:var(--panel);font-weight:800}
+#authBox .authme span{flex:1;min-width:0} #authBox .authme b{display:block;font-size:14px} #authBox .authme small{color:var(--muted);font-size:11px}
+#authBox .authme button{border:0;border-radius:9px;padding:7px 10px;font:inherit;font-size:12px;font-weight:700;background:var(--chip-on);color:var(--chip-on-text);cursor:pointer} #authBox .authme button.ghost{background:transparent;color:var(--muted)}
+#profDlg{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1000;width:min(380px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow-y:auto;padding:18px 18px 14px;border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+#profDlg[hidden]{display:none}
+#profDlg h2{margin:0 0 4px;font-size:19px} #profDlg .pd-sub{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
+#profDlg .pd-photo{display:grid;grid-template-columns:84px 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;cursor:pointer;margin-bottom:14px}
+#profDlg .pd-photo span{grid-row:1/3;width:84px;height:84px;border-radius:50%;background:var(--chip) center/cover;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px dashed var(--panel-line)}
+#profDlg .pd-photo span.has{border:2px solid #ff4fa8}
+#profDlg .pd-photo b{font-size:14px;align-self:end} #profDlg .pd-photo small{color:var(--muted);font-size:12px;line-height:1.45;align-self:start}
+#profDlg .pd-insta{display:block;font-size:13px;font-weight:700}
+#profDlg .pd-insta span{display:flex;align-items:center;margin-top:6px;background:var(--chip);border-radius:12px;padding:0 10px}
+#profDlg .pd-insta i{font-style:normal;color:var(--muted);font-weight:800}
+#profDlg .pd-insta input{flex:1;border:0;background:transparent;color:var(--text);font:inherit;font-size:15px;padding:11px 6px;outline:none}
+#profDlg .pd-note{margin:8px 0 14px;font-size:12px;color:#ffcf8a;line-height:1.5}
+#profDlg .pd-acts{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+#profDlg .pd-acts button{border:0;border-radius:12px;padding:12px;font:inherit;font-weight:800;cursor:pointer}
+#profDlg .pd-acts .ghost{background:var(--chip);color:var(--text)} #profDlg .pd-acts .primary{background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff}
+.tools.open #profBtn .l::before{content:'👤  '!important}
 /* the 1-minute stage timer bar is hidden; the coin bonus itself still pays out */
 #stageBonus{display:none!important}
 /* dance pedometer: odometer digits on the left, ranking opens while dancing */
@@ -5121,6 +5149,75 @@ updaters.push((t,dt)=>{ if(!inGame||document.visibilityState!=='visible') return
     const w=rhaWhere(); if(w){ const k=w.key.replace(/[.#$\[\]\/:]/g,'_'); RHA.stages[k]=Math.round((RHA.stages[k]||0)+s); RHA.names[k]=w.name; } }
   RHA.sendT+=dt; if(RHA.sendT>=30){ RHA.sendT=0; if(!RHA.ok) rhaInit(); rhaSend(); } });
 addEventListener('pagehide',()=>rhaSend(true)); document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') rhaSend(true); });
+
+/* ================= SOCIAL LOGIN (Kakao, Google) + PROFILE ================= */
+// Google: Firebase Auth popup. Kakao: Kakao login (redirect), then a Firebase anonymous session holds the profile.
+// Needs firebase-config.js to carry the web-app config (apiKey/authDomain/appId) and, for Kakao, window.LOGIN_CONFIG={kakaoJsKey,kakaoRestKey}.
+// Profiles: profiles/{uid} = public card (name, photo); private/{uid} = Instagram ID, only shared when the user chooses.
+const AUTH={app:null,auth:null,db:null,user:null,prof:null,busy:false,kakao:null};
+try{ AUTH.kakao=JSON.parse(localStorage.getItem('playa-kakao')||'null'); }catch(e){}
+async function authInit(){ if(AUTH.auth) return true; if(AUTH.busy) return false; AUTH.busy=true;
+  try{ if(!window.FB_CONFIG) await rhaLoad('firebase-config.js?v='+Math.floor(Date.now()/36e5)); const C=window.FB_CONFIG||{};
+    if(!C.apiKey||!C.authDomain){ return false; }
+    await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
+    AUTH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); AUTH.auth=AUTH.app.auth(); AUTH.db=AUTH.app.database();
+    AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); });
+    return true; }catch(e){ console.warn('auth init',e); return false; } finally{ AUTH.busy=false; } }
+function authName(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous&&AUTH.kakao) return AUTH.kakao.name||'카카오 버너'; return u.displayName||(u.email||'').split('@')[0]||'버너'; }
+function authProvider(){ const u=AUTH.user; return !u?'':u.isAnonymous?'kakao':'google'; }
+async function loginGoogle(){ if(!(await authInit())){ toast('Google 로그인은 준비 중이에요'); return; }
+  try{ const r=await AUTH.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); AUTH.user=r.user; authAfterLogin(); }
+  catch(e){ if(e&&e.code!=='auth/popup-closed-by-user') toast('Google 로그인에 실패했어요'); } }
+async function kakaoSDK(){ const K=window.LOGIN_CONFIG||{}; if(!K.kakaoJsKey) return null; if(!window.Kakao) await rhaLoad('https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js'); if(!Kakao.isInitialized()) Kakao.init(K.kakaoJsKey); return Kakao; }
+async function loginKakao(){ await authInit(); const K=await kakaoSDK().catch(()=>null); if(!K||!AUTH.auth){ toast('카카오 로그인은 준비 중이에요'); return; }
+  try{ sessionStorage.setItem('playa-kakao-back','1'); }catch(e){} K.Auth.authorize({redirectUri:location.origin+location.pathname,scope:'profile_nickname,profile_image'}); }
+// back from Kakao with ?code=…: trade it for a token, read the nickname, then keep the profile under a Firebase session
+async function kakaoReturn(){ const q=new URLSearchParams(location.search), code=q.get('code'); let back=false; try{ back=sessionStorage.getItem('playa-kakao-back')==='1'; sessionStorage.removeItem('playa-kakao-back'); }catch(e){}
+  if(!code||!back) return; history.replaceState(null,'',location.pathname); const L=window.LOGIN_CONFIG||{};
+  try{ await authInit(); const K=await kakaoSDK(); const body=new URLSearchParams({grant_type:'authorization_code',client_id:L.kakaoRestKey,redirect_uri:location.origin+location.pathname,code});
+    const tk=await (await fetch('https://kauth.kakao.com/oauth/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'},body})).json(); if(!tk.access_token) throw new Error('token');
+    K.Auth.setAccessToken(tk.access_token); const me=await K.API.request({url:'/v2/user/me'}); const p=(me.kakao_account&&me.kakao_account.profile)||{};
+    AUTH.kakao={id:String(me.id),name:p.nickname||'카카오 버너',pic:p.thumbnail_image_url||''}; try{ localStorage.setItem('playa-kakao',JSON.stringify(AUTH.kakao)); }catch(e){}
+    if(!AUTH.user||!AUTH.user.isAnonymous){ const r=await AUTH.auth.signInAnonymously(); AUTH.user=r.user; }
+    authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
+async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); }catch(e){} }
+function authAfterLogin(){ const n=authName(); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
+async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); toast('로그아웃했어요'); }
+// login row on the start screen + "내 프로필" in the menu
+function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
+    box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
+      :`<div class='authbtns'><button type='button' class='kakao' data-auth='kakao'><b>💬</b>카카오로 시작</button><button type='button' class='google' data-auth='google'><b>G</b>Google로 시작</button></div><small class='authhint'>로그인 없이도 바로 입장할 수 있어요</small>`; }
+  const mb=document.getElementById('profBtn'); if(mb) setBtn(mb,AUTH.user?'내 프로필':'로그인','프로필'); }
+function authBuild(){ if(document.getElementById('authBox')) return; const nm=document.querySelector('#creator label.name'); if(!nm) return;
+  const box=document.createElement('div'); box.id='authBox'; nm.after(box);
+  box.addEventListener('click',e=>{ const b=e.target.closest('[data-auth]'); if(!b) return; const a=b.dataset.auth; if(a==='google') loginGoogle(); else if(a==='kakao') loginKakao(); else if(a==='prof') profOpen(false); else if(a==='out') logout(); });
+  const tools=document.querySelector('.tools'), help=document.getElementById('helpBtn'); if(tools&&help&&!document.getElementById('profBtn')){ const b=document.createElement('button'); b.id='profBtn'; b.innerHTML="<span class='l'>로그인</span><span class='s'>프로필</span>"; help.before(b);
+    b.addEventListener('click',()=>{ if(AUTH.user) profOpen(false); else authChoose(); }); }
+  authRender(); }
+function authChoose(){ openSp('로그인','카카오나 Google로 로그인해요',`<div class='acts' style='grid-template-columns:1fr'><button data-act='kakao' class='hot'>💬 카카오로 시작</button><button data-act='google'>G  Google로 시작</button></div>`,a=>{ closeSp(); if(a==='kakao') loginKakao(); else loginGoogle(); }); }
+// profile popup: a photo that shows your taste + Instagram ID (kept private, shared only with people you choose)
+let PROF_PHOTO=null;
+function profOpen(first){ PROF_PHOTO=AUTH.prof&&AUTH.prof.photo||null; let d=document.getElementById('profDlg'); if(!d){ d=document.createElement('section'); d.id='profDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','프로필 등록'); document.body.appendChild(d); }
+  d.innerHTML=`<h2>프로필 등록</h2><p class='pd-sub'>${first?'반가워요! 다른 버너들에게 보여 줄 프로필을 만들어요. 지금 안 해도 괜찮아요.':'프로필을 바꿀 수 있어요.'}</p>
+   <label class='pd-photo'><input type='file' accept='image/*' id='pdFile' hidden><span id='pdPic' class='${PROF_PHOTO?'has':''}' style='${PROF_PHOTO?`background-image:url(${PROF_PHOTO})`:''}'>${PROF_PHOTO?'':'📷'}</span><b>나의 취향이 드러나는 사진</b><small>좋아하는 룩, 공연, 장소… 나를 잘 보여 주는 사진 한 장을 올려 주세요</small></label>
+   <label class='pd-insta'>인스타그램 아이디<span><i>@</i><input id='pdInsta' maxlength='30' autocomplete='off' placeholder='instagram_id' value=''></span></label>
+   <p class='pd-note'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달할 수 있어요. 프로필에 바로 공개되지 않아요.</p>
+   <div class='pd-acts'><button type='button' id='pdSkip' class='ghost'>건너뛰기</button><button type='button' id='pdSave' class='primary'>저장</button></div>`;
+  d.hidden=false;
+  if(AUTH.db&&AUTH.user) AUTH.db.ref('private/'+AUTH.user.uid+'/insta').once('value').then(s=>{ const i=document.getElementById('pdInsta'); if(i&&s.val()) i.value=s.val(); }).catch(()=>{});
+  $('#pdFile').addEventListener('change',e=>{ const f=e.target.files&&e.target.files[0]; if(f) profPhoto(f); });
+  $('#pdSkip').addEventListener('click',()=>{ d.hidden=true; if(first) toast('나중에 메뉴 → 내 프로필에서 등록할 수 있어요'); });
+  $('#pdSave').addEventListener('click',profSave); }
+// shrink the photo to a small square JPEG so it fits the free database
+function profPhoto(file){ const img=new Image(), url=URL.createObjectURL(file); img.onload=()=>{ const S=320, c=document.createElement('canvas'); c.width=c.height=S; const x=c.getContext('2d'), m=Math.min(img.width,img.height);
+    x.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S); PROF_PHOTO=c.toDataURL('image/jpeg',.82); URL.revokeObjectURL(url); const p=$('#pdPic'); p.style.backgroundImage=`url(${PROF_PHOTO})`; p.textContent=''; p.classList.add('has'); };
+  img.onerror=()=>toast('사진을 불러오지 못했어요'); img.src=url; }
+async function profSave(){ const insta=($('#pdInsta').value||'').trim().replace(/^@+/,'').replace(/[^A-Za-z0-9._]/g,'').slice(0,30);
+  if(!AUTH.db||!AUTH.user){ toast('로그인 후 저장할 수 있어요'); return; }
+  const uid=AUTH.user.uid, card={name:authName().slice(0,20),photo:PROF_PHOTO||'',provider:authProvider(),updated:Date.now()};
+  try{ await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); $('#profDlg').hidden=true; toast('프로필을 저장했어요'); }
+  catch(e){ console.warn('profile',e); toast('저장하지 못했어요. 잠시 후 다시 해 주세요'); } }
+authBuild(); authInit().then(ok=>{ if(ok) kakaoReturn(); });
 
 /* ================= STAGE DANCE BONUS: 1 MIN = +3 COINS ================= */
 const STG={t:0,grace:0,el:null};
