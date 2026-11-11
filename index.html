@@ -716,6 +716,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #nsPop .ns-acts{display:flex;gap:8px;padding:0 14px 14px}
 #nsPop .ns-acts button{flex:1;border:0;border-radius:14px;padding:12px 10px;min-height:44px;font-size:14px;font-weight:700;background:rgba(255,255,255,.12);color:inherit}
 #nsPop .ns-acts button.hot{background:#3dff6a;color:#04200c}
+#nsPop .ns-never{display:block;margin:-4px auto 12px;padding:8px 14px;border:0;background:none;color:inherit;opacity:.65;font-size:12.5px;text-decoration:underline;min-height:36px}
 #nsPop .ns-map{display:block;width:100%;height:auto;background:#0d0a13}
 #nsPop .ns-steps{list-style:none;margin:0;padding:10px 14px 6px;display:flex;flex-direction:column;gap:5px;overflow:auto}
 #nsPop .ns-steps li{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.4;opacity:.5;transition:opacity .25s}
@@ -3474,8 +3475,8 @@ function buildItaewon(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sc
   club(4,IT.zP,['jack','twostep','sway','vogue','cutting','charleston','tstep','discopoint','amapiano'],LOW?12:22);
   const bnc={top:'long',topColor:'#141414',outer:'none',bottom:'cargo',bottomColor:'#141414',shoes:'boots',shoeColor:'#141414',hairStyle:'buzz',hairColor:'#1b1412',head:'none',face:'shades',extra:'none'};
   IT.bouncer=addNPC(bnc,W_(6.7,-2.1),-Math.PI/2,'idle',{talk:true}).P; addNPC(bnc,W_(6.7,2.1),-Math.PI/2,'idle',{talk:true});
-  for(let i=0;i<4;i++) addNPC(null,W_(6.3,-3.6-i*.9),0,'talk',{talk:true});
-  for(let i=0;i<(LOW?7:14);i++){ const s=i%2?1:-1, S=addNPC(null,W_(s*5.6+rand(-.4,.4),rand(-68,68)),0,'walk',{talk:true}); S.itw={dir:Math.random()<.5?1:-1,spd:rand(1.1,1.6)}; IT.walkers.push(S); }
+  for(let i=0;i<6;i++) addNPC(avantLook(),W_(6.3+(i%2?.12:-.1),-3.6-i*.85),0,'talk',{talk:true});
+  for(let i=0;i<(LOW?7:14);i++){ const s=i%2?1:-1, S=addNPC(avantLook(),W_(s*5.6+rand(-.4,.4),rand(-68,68)),0,'walk',{talk:true}); S.itw={dir:Math.random()<.5?1:-1,spd:rand(1.1,1.6)}; IT.walkers.push(S); }
   for(let i=0;i<4;i++){ const dir=i%2?1:-1, g=new THREE.Group(); g.position.set(OX+dir*2,0,rand(-70,70)); scene.add(g);
     B(1.8,.7,4.2,M('#ff8a1a'),0,.6,0,g); B(1.6,.6,2.2,M('#1e1e26'),0,1.2,-.2,g); B(.6,.22,.3,M('#fff3d0',{glow:1.5}),0,1.6,-.2,g); [-.6,.6].forEach(x=>{ B(.3,.14,.05,M('#fff3d0',{glow:1.8}),x,.65,2.12,g); B(.3,.12,.05,M('#ff2a2a',{glow:1.6}),x,.7,-2.12,g); });
     [[-.85,1.3],[.85,1.3],[-.85,-1.3],[.85,-1.3]].forEach(([x,z])=>{ const w=mesh(G.cyl,M('#111111'),x,.32,z,.32,.24,.32,g); w.rotation.z=Math.PI/2; });
@@ -3484,7 +3485,7 @@ function buildItaewon(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sc
   INTER.push({pos:()=>(MAP==='itaewon'&&inBldg(pState.x,pState.z))?{x:OX+19.2,z:7}:FARV,r:2.2,label:'엘리베이터',act:openElevator});
   INTER.push({pos:()=>(MAP==='itaewon'&&IT.floor===3)?{x:OX+12.4,z:6.6}:FARV,r:2.2,label:'쉘터 바',act:()=>openShop({id:'shelterbar',name:'쉘터 바',sub:'맥주, 샷, 물',items:[ITEMS['플라야 라거'],ITEMS['데킬라 샷'],ITEMS['생수']]})});
   INTER.push({pos:()=>(MAP==='itaewon'&&IT.floor===4)?{x:OX+17.4,z:-5.2}:FARV,r:2.2,label:'페이퍼 바',act:()=>openShop({id:'paperbar',name:'페이퍼 루프탑 바',sub:'칵테일, 맥주, 버블티',items:[ITEMS['선셋 칵테일'],ITEMS['플라야 라거'],ITEMS['버블티'],ITEMS['생수']]})});
-  const it2=SNPC.slice(-(IT.npcs.length+6+IT.walkers.length)); it2.forEach(S=>{ ALLP.push(S.P); if(S.talk) TALKP.push(S.P); });
+  const it2=SNPC.slice(-(IT.npcs.length+8+IT.walkers.length)); it2.forEach(S=>{ ALLP.push(S.P); if(S.talk) TALKP.push(S.P); });
   applyCut(-1); updaters.push(itTick); }
 /* ================= B1 TELLER: techno basement down the right-hand alley past Shelter ================= */
 // alley at street z 20..28 on the -x side; the club room itself sits far off at x=OX-400 (you teleport down the stairs)
@@ -3521,7 +3522,7 @@ function buildTeller(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sce
   // bouncer at the door
   const bnc={top:'long',topColor:'#141414',outer:'none',bottom:'cargo',bottomColor:'#141414',shoes:'boots',shoeColor:'#141414',hairStyle:'buzz',hairColor:'#1b1412',head:'bucket',headColor:'#7a1414',face:'none',extra:'none'};
   TEL.bouncer=addNPC(bnc,{x:OX-27.9,z:21.1},Math.PI/2+.5,'idle',{talk:true}).P;
-  const S2=addNPC(null,{x:OX-21.5,z:27.1},Math.PI,'talk',{talk:true});
+  const S2=addNPC(avantLook(),{x:OX-21.5,z:27.1},Math.PI,'talk',{talk:true});
   // ---------- B1 room ----------
   const X=TEL.X, R=new THREE.Group(); R.position.x=X; IG.add(R); TEL.room=R;
   const shell=new THREE.Mesh(new THREE.BoxGeometry(60,24,50),new THREE.MeshBasicMaterial({color:0x0a0102,side:THREE.BackSide})); shell.position.y=8; R.add(shell);
@@ -3732,6 +3733,8 @@ function buildRing(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); scene
   [['민규',-.6],['규찬',.8]].forEach(([nm,z])=>{ const S=addNPC(Object.assign(ringLook(),{extra:'none',head:'none',ringG:'m',hairStyle:'buzz'}),{x:OX+X+9.55,z},-Math.PI/2,'dj',{zone:RING.zone,y:.2}); S.P.pname=nm; mine.push(S.P); });
   const dn=['sway','pump','stomp','toprock','sway','pump'], n=LOW?12:22;
   for(let i=0;i<n;i++){ const u=rand(-1.6,7.3), S=addNPC(ringLook(),{x:OX+X+u,z:u<1.8?rand(-2.2,4.3):rand(-4.3,4.3)},Math.PI/2+rand(-.5,.5),'dance',{dance:pick(dn),zone:RING.zone,talk:true}); mine.push(S.P); }
+  // five regulars who are always dancing in the corner left of the booth
+  [[8.4,-3.5],[9.3,-3.3],[10.15,-3.7],[8.8,-4.5],[9.8,-4.6]].forEach(([u,z],i)=>mine.push(addNPC(Object.assign(ringLook(),{ringG:i%2?'f':'m'},i%2?{hairStyle:pick(['long','bob','buns','braids'])}:{hairStyle:pick(['buzz','bald','mohawk'])}),{x:OX+X+u,z},Math.atan2(7.2-u,-1-z),'dance',{dance:dn[i%dn.length],zone:RING.zone,talk:true}).P));
   [-7.15,-5.7,-2.8].forEach(u=>mine.push(addNPC(ringLook(),{x:OX+X+u,z:-2.75},Math.PI,'talk',{talk:true}).P));
   mine.push(addNPC(Object.assign(ringLook(),{head:'none'}),{x:OX+X-5,z:-4.75},0,'talk',{talk:true}).P);
   [[-8.6,3.4,2.2],[-7.6,4.1,-2.2]].forEach(([u,z,ry])=>mine.push(addNPC(ringLook(),{x:OX+X+u,z},ry,'talk',{talk:true}).P));
@@ -3784,6 +3787,42 @@ function ringTick(t,dt){ if(RING.in&&!ringInside()) ringLeave();
   scene.fog.color.copy(c).multiplyScalar(.1); scene.fog.near=8; scene.fog.far=LOW?40:52; renderer.setClearColor(scene.fog.color);
   const L=IT.lightS; if(L){ if(!RING.lit){ RING.lit={p:L.position.clone(),c:L.color.getHex(),d:L.distance}; L.position.set(RING.X+4.5,4.2-IT.floorY[3],0); L.distance=42; } L.color.copy(c); L.intensity=1.7+1.5*p; }
   for(const g of RING.plat) g.rotation.y-=dt*3.49; }
+
+/* ================= ITAEWON STREET LIFE: the look of the street, people smoking and drinking outside Teller, neon blade signs for every club ================= */
+// chic avant-garde black: draped coats, wrap skirts, wide trousers, bleached or jet hair. Never wings.
+function avantLook(){ const blk=()=>pick(['#0c0c0e','#101012','#141416','#1a1a1e']), acc=Math.random()<.18;
+  return {top:pick(['long','long','mesh','harness','tee','tank']),topColor:acc?'#e8e4dc':blk(),outer:pick(['kimono','kimono','vest','none','none']),outerColor:blk(),bottom:pick(['flare','flare','kilt','cargo','leggings']),bottomColor:blk(),
+    shoes:'boots',shoeColor:'#0c0c0e',hairStyle:pick(['buzz','bob','long','bald','buns','braids']),hairColor:pick(['#0e0c0c','#0e0c0c','#1b1412','#f2ead8','#c0c4cc']),head:pick(['none','none','none','bucket']),headColor:'#0c0c0e',
+    face:pick(['none','none','shades','shades','visor']),extra:Math.random()<.12?'cape':'none',extraColor:'#0e0e10'}; }
+const ITSM=[];
+// something small in the hand: a cigarette, a beer bottle or a can
+function handProp(P,kind,side){ const E=P.el&&P.el[side||0]; if(!E) return;
+  if(kind==='cig'){ B(.012,.012,.075,M('#f4efe6'),0,-.33,.07,E); B(.014,.014,.012,M('#ff5a1a',{glow:2.2}),0,-.33,.112,E); }
+  else if(kind==='bottle'){ mesh(G.cyl,M('#3d7a3a',{op:.9}),0,-.36,.05,.028,.14,.028,E); mesh(G.cyl,M('#3d7a3a',{op:.9}),0,-.26,.05,.012,.07,.012,E); }
+  else mesh(G.cyl,M('#c8ccd4'),0,-.35,.05,.032,.11,.032,E); }
+function neonTex(col,draw){ return telCanvas(256,256,(x,w,h)=>{ x.fillStyle='#08080a'; x.fillRect(0,0,w,h); const g=x.createRadialGradient(w/2,h/2,10,w/2,h/2,w*.7); g.addColorStop(0,col+'66'); g.addColorStop(1,col+'00'); x.fillStyle=g; x.fillRect(0,0,w,h);
+  x.lineCap='round'; x.lineJoin='round'; const neon=path=>{ x.strokeStyle=col; x.shadowColor=col; x.shadowBlur=26; x.lineWidth=13; path(); x.stroke(); x.shadowBlur=8; x.strokeStyle='#fff6f0'; x.lineWidth=4.5; path(); x.stroke(); };
+  const word=(t,y,f)=>{ x.font=f; x.textAlign='center'; x.textBaseline='middle'; x.shadowColor=col; x.shadowBlur=22; x.fillStyle=col; x.fillText(t,w/2,y); x.shadowBlur=6; x.fillStyle='#fff6f0'; x.fillText(t,w/2,y); };
+  draw(x,w,h,neon,word); }); }
+// a sign box that hangs out over the pavement, lit on both faces so it reads from either end of the street
+function neonBlade(par,x,y,z,tex,size){ B(size+.1,size+.1,.2,M('#0a0a0c'),x,y,z,par); [1,-1].forEach(sd=>{ const p=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:tex})); p.scale.set(size,size,1); p.position.set(x,y,z+sd*.11); p.rotation.y=sd>0?0:Math.PI; par.add(p); }); }
+function buildItaewonExtras(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); scene.add(IG); const steel=M('#2a2a2e');
+  // SHELTER: a red arch with one light under it. PAPER: a folded paper plane in warm yellow. teller: the three red heads from its door
+  const shel=neonTex('#ff3d4e',(x,w,h,neon,word)=>{ neon(()=>{ x.beginPath(); x.moveTo(w*.22,h*.6); x.lineTo(w*.22,h*.4); x.bezierCurveTo(w*.22,h*.06,w*.78,h*.06,w*.78,h*.4); x.lineTo(w*.78,h*.6); }); neon(()=>{ x.beginPath(); x.arc(w*.5,h*.42,w*.05,0,6.3); }); word('SHELTER',h*.82,'900 38px sans-serif'); });
+  const pap=neonTex('#ffd23d',(x,w,h,neon,word)=>{ neon(()=>{ x.beginPath(); x.moveTo(w*.14,h*.44); x.lineTo(w*.86,h*.14); x.lineTo(w*.6,h*.66); x.lineTo(w*.47,h*.5); x.closePath(); x.moveTo(w*.47,h*.5); x.lineTo(w*.86,h*.14); }); word('PAPER',h*.84,'900 44px sans-serif'); });
+  const tel=telCanvas(256,256,(x,w,h)=>{ x.fillStyle='#0a0606'; x.fillRect(0,0,w,h); const g=x.createRadialGradient(w/2,h/2,10,w/2,h/2,w*.7); g.addColorStop(0,'rgba(255,42,42,.4)'); g.addColorStop(1,'rgba(255,42,42,0)'); x.fillStyle=g; x.fillRect(0,0,w,h);
+    x.save(); x.translate(w*.1,h*.02); x.scale(.72,.72); telHeads(x,w,h,'#ff2a2a'); x.restore(); x.shadowColor='#ff2a2a'; x.shadowBlur=20; x.fillStyle='#ff4a3a'; x.font='italic 900 50px sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('teller',w/2,h*.84); });
+  neonBlade(IG,6.95,5.6,-8.7,shel,2); B(.5,.1,.1,steel,7.95,6.4,-8.7,IG);
+  neonBlade(IG,6.95,5.6,8.7,pap,2); B(.5,.1,.1,steel,7.95,6.4,8.7,IG);
+  neonBlade(IG,-5.9,5.4,20.05,tel,2); B(.6,.1,.1,steel,-6.85,6.2,20.05,IG);
+  // outside Teller: people who came up for air, a cigarette or a beer in hand
+  const mine=[]; [[-25.6,21.3,'cig'],[-24.7,21.9,'bottle'],[-26.0,26.6,'cig'],[-24.9,27.0,'can'],[-23.7,26.5,'cig'],[-19.6,21.2,'bottle'],[-18.7,21.9,'cig'],[-17.6,21.3,'can'],[-12.2,26.8,'cig'],[-11.2,26.4,'bottle']].slice(0,LOW?6:10).forEach(([x,z,k],i)=>{
+    const g=[[-25.2,21.6],[-25.2,21.6],[-24.8,26.7],[-24.8,26.7],[-24.8,26.7],[-18.6,21.5],[-18.6,21.5],[-18.6,21.5],[-11.7,26.6],[-11.7,26.6]][i];
+    const S=addNPC(avantLook(),{x:OX+x,z},Math.atan2(g[0]-x,g[1]-z),'talk',{talk:true}); handProp(S.P,k,i%2); if(k==='cig') ITSM.push({P:S.P,t:rand(0,5),n:0}); mine.push(S.P); });
+  mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); if(!TALKP.includes(P)) TALKP.push(P); });
+  // thin grey smoke from whoever is holding a cigarette
+  updaters.push((t,dt)=>{ if(MAP!=='itaewon'||TEL.in||RING.in) return; for(const V of ITSM){ const p=V.P.root.position; if(Math.abs(p.x-pState.x)>45||Math.abs(p.z-pState.z)>45) continue; V.t-=dt; if(V.t<=0){ V.t=rand(5,10); V.n=3; }
+    if(V.n>0&&Math.random()<dt*6){ V.n--; const a=V.P.root.rotation.y; part({x:p.x+Math.sin(a)*.22,y:1.5,z:p.z+Math.cos(a)*.22,vx:Math.sin(a)*.25+rand(-.08,.08),vy:rand(.2,.45),vz:Math.cos(a)*.25+rand(-.08,.08),col:'#b9bcc4',op:.3,size:.14,grow:.4,life:2.6}); } } }); }
 
 /* ================= CLUB LOOKS + SHELTER MISE-EN-SCENE ================= */
 function shelterLook(){ const y2k=Math.random()<.35;
@@ -5597,7 +5636,7 @@ function buildITStreet(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); s
     const pl=new THREE.PointLight(0xffb070,.9,9); pl.position.set(fx*.6,2.6,0); g.add(pl);
     const sp=[]; const sm=[]; for(let i=0;i<24;i++){ sm.push({y:Math.random()*2.2,ph:Math.random()*6,z:rand(-.9,.3)}); sp.push(0,0,0); } const sgeo=new THREE.BufferGeometry(); sgeo.setAttribute('position',new THREE.Float32BufferAttribute(sp,3)); const smoke=new THREE.Points(sgeo,new THREE.PointsMaterial({color:0xd8d4dc,size:.35,transparent:true,opacity:.35,depthWrite:false})); smoke.position.set(OX+S.x,1.4,S.z); scene.add(smoke);
     addNPC({top:'tee',topColor:'#f4efe6',outer:'none',head:'bucket',headColor:S.col,extra:'none'},{x:OX+S.x+s*1.0,z:S.z},s>0?-Math.PI/2:Math.PI/2,'talk',{talk:true});
-    for(let i=0;i<2;i++) addNPC(randomConfig(),{x:OX+S.x-s*(1.9+i*.2),z:S.z+(i?1.6:-1.2)},s>0?Math.PI/2:-Math.PI/2,'talk',{talk:true});
+    for(let i=0;i<2;i++) addNPC(avantLook(),{x:OX+S.x-s*(1.9+i*.2),z:S.z+(i?1.6:-1.2)},s>0?Math.PI/2:-Math.PI/2,'talk',{talk:true});
     colliders.push({x:OX+S.x,z:S.z,r:1.1}); ITS.carts.push({S,smoke,sm});
     INTER.push({pos:()=>MAP==='itaewon'&&inGame&&IT.floor===0?{x:OX+S.x-s*1.6,z:S.z}:FARV,r:2.8,prio:3,label:`${S.name} (${S.sub})`,act:()=>{ openShop(S); }}); });
   IT_SPOTS.splice(3,0,{n:'엉클버거 노상',x:OX-3.4,z:-47},{n:'이태원타코',x:OX+3.4,z:-52},{n:'닭꼬치 노상',x:OX-3.4,z:30});
@@ -5977,15 +6016,18 @@ const NS={cur:null,mode:'',raf:0,t0:0,arr:0};
 const NS_DAYS=3;
 function nsActive(){ const now=schNow(); return NEW_SPACES.filter(s=>now>=s.opened&&now<s.opened+NS_DAYS*864e5); }
 function nsAge(s){ const h=(schNow()-s.opened)/36e5; return h<24?'오늘 오픈':`오픈 ${Math.floor(h/24)+1}일째`; }
-function nsSeen(k){ try{ return sessionStorage.getItem('playa-ns-'+k)==='1'; }catch(e){ return !!NS['_'+k]; } }
-function nsMark(k){ NS['_'+k]=1; try{ sessionStorage.setItem('playa-ns-'+k,'1'); }catch(e){} }
+// each popup comes back on every visit for the 3 days, until the player taps "다시 안 보기" (remembered on this device)
+function nsOff(k){ try{ return localStorage.getItem('playa-ns-off-'+k)==='1'; }catch(e){ return false; } }
+function nsSeen(k){ return !!NS['_'+k]||nsOff(k); }
+function nsMark(k){ NS['_'+k]=1; }
+function nsNever(k){ NS['_'+k]=1; try{ localStorage.setItem('playa-ns-off-'+k,'1'); }catch(e){} }
 function nsClose(){ const el=$('#nsPop'); if(el) el.hidden=true; cancelAnimationFrame(NS.raf); NS.cur=null; NS.mode=''; }
 // card news: one picture card per point, swipe sideways
 function nsNews(s){ const el=$('#nsPop'); NS.cur=s; NS.mode='news'; const n=s.cards.length;
   el.querySelector('.ns-in').innerHTML=`<div class='ns-head'><b><span class='tag'>NEW OPEN</span>${esc(s.mapName)} · ${esc(s.kind)}</b><button class='ns-x' data-ns='x'>닫기</button></div>
    <div class='ns-track'>${s.cards.map((c,i)=>`<div class='ns-card'><div class='im' style='background-image:url(${c.img})'><span class='pg'>${i+1} / ${n}</span>${i?'':`<div class='big'><small>${esc(nsAge(s))}</small>${esc(s.name)}</div>`}</div><h3>${esc(c.h)}</h3><p>${esc(c.p)}</p></div>`).join('')}</div>
    <div class='ns-dots'>${s.cards.map((c,i)=>`<i class='${i?'':'on'}'></i>`).join('')}</div>
-   <div class='ns-acts'><button data-ns='next'>다음 ▸</button><button class='hot' data-ns='go'>${inGame&&MAP===s.map?'가는 길 보기':'이 지점으로 가기'}</button></div>`;
+   <div class='ns-acts'><button data-ns='next'>다음 ▸</button><button class='hot' data-ns='go'>${inGame&&MAP===s.map?'가는 길 보기':'이 지점으로 가기'}</button></div><button class='ns-never' data-ns='never'>다시 안 보기</button>`;
   const tr_=el.querySelector('.ns-track'); tr_.addEventListener('scroll',()=>{ const i=Math.round(tr_.scrollLeft/Math.max(1,tr_.clientWidth)); el.querySelectorAll('.ns-dots i').forEach((d,k)=>d.classList.toggle('on',k===i)); },{passive:true});
   el.hidden=false; }
 // top-down sketch of a map for the route popup (x grows to the LEFT, the way you see the street walking in)
@@ -6004,7 +6046,7 @@ function nsRoute(s){ const el=$('#nsPop'); NS.cur=s; NS.mode='route'; const R=s.
   el.querySelector('.ns-in').innerHTML=`<div class='ns-head'><b><span class='tag'>NEW</span>${esc(s.name)} 가는 길</b><button class='ns-x' data-ns='x'>닫기</button></div>
    <canvas class='ns-map' width='720' height='720'></canvas>
    <ol class='ns-steps'>${R.steps.map(([i,t],k)=>`<li><b>${k+1}</b><span>${esc(t)}</span></li>`).join('')}</ol>
-   <div class='ns-acts'><button data-ns='x'>닫기</button><button class='hot' data-ns='tp'>입구 앞으로 바로 가기</button></div>`;
+   <div class='ns-acts'><button data-ns='x'>닫기</button><button class='hot' data-ns='tp'>입구 앞으로 바로 가기</button></div><button class='ns-never' data-ns='never'>다시 안 보기</button>`;
   el.hidden=false; const cv=el.querySelector('canvas'), x=cv.getContext('2d'), W=cv.width, H=cv.height, pts=R.pts;
   // fit the whole route (plus a margin) into the picture
   let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9; pts.forEach(([a,b])=>{ x0=Math.min(x0,a); x1=Math.max(x1,a); z0=Math.min(z0,b); z1=Math.max(z1,b); }); x0-=14; x1+=8; z0-=5; z1+=14;
@@ -6024,6 +6066,7 @@ function nsRoute(s){ const el=$('#nsPop'); NS.cur=s; NS.mode='route'; const R=s.
 function nsTeleport(s){ const o=(NS_ORG[s.map]||(()=>0))(), p=s.route.spot; nsClose(); if(MAP!==s.map) return; if(s.map==='itaewon'){ IT.floor=0; if(TEL.in) telLeave(); if(RING.in) ringLeave(); } pState.x=o+p[0]; pState.z=p[1]; pState.y=0; pState.vy=0; pState.face=Math.PI/2; yaw=pState.face+Math.PI; toast(`${s.name} 입구 앞이에요`); }
 $('#nsPop').addEventListener('click',e=>{ if(e.target.id==='nsPop'){ nsClose(); return; } const b=e.target.closest('[data-ns]'); if(!b) return; const s=NS.cur, a=b.dataset.ns;
   if(a==='x') nsClose();
+  else if(a==='never'&&s){ nsNever((NS.mode==='route'?'route-':'news-')+s.id); nsClose(); toast('이 안내는 다시 띄우지 않을게요'); }
   else if(a==='next'){ const t=$('#nsPop .ns-track'); if(t){ const i=Math.round(t.scrollLeft/Math.max(1,t.clientWidth)), n=s.cards.length; t.scrollTo({left:((i+1)%n)*t.clientWidth,behavior:'smooth'}); } }
   else if(a==='tp'&&s) nsTeleport(s);
   else if(a==='go'&&s){ nsClose(); if(inGame){ if(MAP===s.map){ nsRoute(s); } else goMap(s.map); } else { const c=document.querySelector(`.mapsel [data-map="${s.map}"]`); if(c){ c.click(); c.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'}); } toast(`${s.mapName} 지점을 골랐어요. 입장하면 ${s.name} 가는 길을 보여 드려요`); } } });
@@ -6042,7 +6085,7 @@ updaters.push(t=>{ if(t-(NS.ck||0)<.5) return; NS.ck=t; const A=nsActive();
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
   for(let i=BOOTHS.length-1;i>=0;i--) if(BOOTH_CUT.includes(BOOTHS[i].id)) BOOTHS.splice(i,1);
-  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
+  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }

@@ -1764,7 +1764,9 @@
 "횡단보도": "Zebrastreifen",
 "거리 입구": "Straßeneingang",
 "입구 앞으로 바로 가기": "Direkt zum Eingang",
-"나": "Ich"
+"나": "Ich",
+"다시 안 보기": "Nicht mehr anzeigen",
+"이 안내는 다시 띄우지 않을게요": "Dieser Hinweis wird nicht mehr angezeigt"
 },
 "patterns": {
 ". 코인 +{0}": ". Münzen +{0}",

@@ -1764,7 +1764,9 @@
 "횡단보도": "Crosswalk",
 "거리 입구": "Street entrance",
 "입구 앞으로 바로 가기": "Jump to the entrance",
-"나": "Me"
+"나": "Me",
+"다시 안 보기": "Don't show again",
+"이 안내는 다시 띄우지 않을게요": "This notice won't be shown again"
 },
 "patterns": {
 ". 코인 +{0}": ". Coins +{0}",
