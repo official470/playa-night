@@ -306,7 +306,7 @@ body.dressing #sp{display:none!important}
 /* social login + profile */
 #authBox{padding:2px 22px 10px}
 @media (max-width:760px),(pointer:coarse){ #authBox{padding:2px 16px 8px} }
-#authBox .authbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#authBox .authbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px} #authBox .authbtns.one{grid-template-columns:1fr}
 #authBox .authbtns button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:11px 10px;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
 #authBox .kakao{background:#FEE500;color:#191600} #authBox .google{background:#fff;color:#1f1f1f;border:1px solid #dadce0!important}
 #authBox .authbtns b{font-size:15px} #authBox .google b{color:#4285F4}
@@ -5190,7 +5190,7 @@ async function logout(){ if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=nul
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
     box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
-      :`<div class='authbtns'><button type='button' class='kakao' data-auth='kakao'><b>💬</b>카카오로 시작</button><button type='button' class='google' data-auth='google'><b>G</b>Google로 시작</button></div><small class='authhint'>로그인 없이도 바로 입장할 수 있어요</small>`; }
+      :`<div class='authbtns one'><button type='button' class='google' data-auth='google'><b>G</b>Google로 시작</button></div><small class='authhint'>로그인 없이도 바로 입장할 수 있어요</small>`; }
   const mb=document.getElementById('profBtn'); if(mb) setBtn(mb,AUTH.user?'내 프로필':'로그인','프로필'); }
 function authBuild(){ if(document.getElementById('authBox')) return; const nm=document.querySelector('#creator label.name'); if(!nm) return;
   const box=document.createElement('div'); box.id='authBox'; nm.after(box);
@@ -5198,7 +5198,7 @@ function authBuild(){ if(document.getElementById('authBox')) return; const nm=do
   const tools=document.querySelector('.tools'), help=document.getElementById('helpBtn'); if(tools&&help&&!document.getElementById('profBtn')){ const b=document.createElement('button'); b.id='profBtn'; b.innerHTML="<span class='l'>로그인</span><span class='s'>프로필</span>"; help.before(b);
     b.addEventListener('click',()=>{ if(AUTH.user) profOpen(false); else authChoose(); }); }
   authRender(); }
-function authChoose(){ openSp('로그인','카카오나 Google로 로그인해요',`<div class='acts' style='grid-template-columns:1fr'><button data-act='kakao' class='hot'>💬 카카오로 시작</button><button data-act='google'>G  Google로 시작</button></div>`,a=>{ closeSp(); if(a==='kakao') loginKakao(); else loginGoogle(); }); }
+function authChoose(){ loginGoogle(); }
 // profile popup: a photo that shows your taste + Instagram ID (kept private, shared only with people you choose)
 let PROF_PHOTO=null;
 function profOpen(first){ PROF_PHOTO=AUTH.prof&&AUTH.prof.photo||null; let d=document.getElementById('profDlg'); if(!d){ d=document.createElement('section'); d.id='profDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','프로필 등록'); document.body.appendChild(d); }
