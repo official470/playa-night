@@ -354,6 +354,26 @@ body.dressing #sp{display:none!important}
 #meCard .mf span{flex:1;min-width:0} #meCard .mf b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} #meCard .mf small{color:var(--muted);font-size:11px}
 #meCard .mf em{font-style:normal;font-size:10.5px;color:var(--muted);white-space:nowrap}
 #meCard .ma button{width:100%;border:0;border-radius:12px;padding:11px;font:inherit;font-weight:800;background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff;cursor:pointer}
+/* friends + chat */
+#onlineBtn{white-space:nowrap}
+#meCard .frs{margin:12px 0 6px;font-size:13px;font-weight:800} #meCard .frs small{color:var(--muted);font-weight:600;margin-left:4px}
+#meCard .olr.off i{box-shadow:0 0 0 2px var(--panel-line);filter:grayscale(.6)} #meCard .olr.off b{opacity:.75}
+#meCard .olr button.g2{background:var(--panel);color:var(--text)} #meCard .olr button.chat{background:#ff4fa8;color:#fff;position:relative}
+#meCard .olr button.chat.new::after{content:'';position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#ffcf3a;box-shadow:0 0 0 2px var(--chip)}
+#meCard .olr .bs{display:flex;gap:5px;flex:none}
+#meCard .fra{display:flex;gap:8px;margin-top:6px} #meCard .fra button{flex:1;border:0;border-radius:12px;padding:11px;font:inherit;font-weight:800;cursor:pointer;background:var(--chip);color:var(--text)}
+#meCard .fra button.primary{background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff}
+#chatDlg{position:fixed;left:50%;bottom:calc(84px + var(--sab));transform:translateX(-50%);z-index:910;width:min(380px,calc(100vw - 20px));height:min(460px,calc(100vh - 190px));height:min(460px,calc(100dvh - 190px));display:flex;flex-direction:column;padding:0;border-radius:18px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+#chatDlg[hidden]{display:none}
+#chatDlg .ch-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--panel-line)} #chatDlg .ch-h b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#chatDlg .ch-h button{border:0;border-radius:999px;padding:7px 12px;background:var(--chip);color:var(--text);font:inherit;font-size:12.5px;cursor:pointer;flex:none}
+#chatDlg .ch-l{flex:1;min-height:0;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;overscroll-behavior:contain}
+#chatDlg .ch-m{max-width:78%;align-self:flex-start;display:flex;flex-direction:column;gap:2px} #chatDlg .ch-m span{background:var(--chip);border-radius:14px 14px 14px 4px;padding:8px 11px;font-size:14px;line-height:1.4;overflow-wrap:anywhere;white-space:pre-wrap}
+#chatDlg .ch-m small{font-size:10px;color:var(--muted);padding:0 4px} #chatDlg .ch-m.me{align-self:flex-end;align-items:flex-end} #chatDlg .ch-m.me span{background:#ff4fa8;color:#fff;border-radius:14px 14px 4px 14px}
+#chatDlg .ch-e{color:var(--muted);font-size:12.5px;text-align:center;margin:auto 0}
+#chatDlg .ch-f{display:flex;gap:6px;padding:8px 10px calc(8px);border-top:1px solid var(--panel-line)} #chatDlg .ch-f input{flex:1;min-width:0;font:inherit;font-size:16px;color:var(--text);background:var(--chip);border:0;border-radius:12px;padding:10px 12px}
+#chatDlg .ch-f button{border:0;border-radius:12px;padding:0 14px;font:inherit;font-weight:800;background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff;cursor:pointer}
+
 #profDlg .pd-insta{display:block;font-size:13px;font-weight:700}
 #profDlg .pd-insta span{display:flex;align-items:center;margin-top:6px;background:var(--chip);border-radius:12px;padding:0 10px}
 #profDlg .pd-insta i{font-style:normal;color:var(--muted);font-weight:800}
@@ -5335,12 +5355,8 @@ function presWhere(v){ return [MAP_NAME[v.m]||v.m, v.in?IN_NAME[v.in]:presNear(v
 // "🟢 N명" pill in the top bar; tap for the list of everyone online
 function onlineRender(){ let b=document.getElementById('onlineBtn'); const hud=document.getElementById('coinHud'); if(!hud) return;
   if(!b){ b=document.createElement('button'); b.id='onlineBtn'; b.type='button'; b.setAttribute('aria-label','지금 접속 중인 사람들'); hud.appendChild(b); b.addEventListener('click',e=>{ e.stopPropagation(); onlineList(); }); }
-  const n=presOnline().length+(AUTH.user?1:0), t=`🟢 ${n}`; if(b.textContent!==t) b.textContent=t; }
-async function onlineList(){ const L=presOnline(); const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`;
-  const head=`<div class='mh'><i>🟢</i><div><b>지금 접속 중 ${L.length+(AUTH.user?1:0)}명</b><small>${AUTH.user?'만나러 가기를 누르면 그 사람 곁으로 이동해요':'로그인하면 다른 사람들에게도 내가 보여요'}</small></div></div>`;
-  const rows=L.length?`<div class='ol'>${L.map(v=>`<div class='olr'><i data-olph='${esc(v.uid)}'>👤</i><span><b>${esc(v.n||'버너')}</b><small>${esc(presWhere(v))}${v.a==='dance'?' · 💃 춤추는 중':''}</small></span><button type='button' data-go='${esc(v.uid)}'>만나러 가기</button></div>`).join('')}</div>`:`<p class='me'>지금은 다른 접속자가 없어요. 친구에게 realhouse.club 링크를 보내 함께 들어와요!</p>`;
-  cardShow(X+head+rows+(AUTH.user?'':`<div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`));
-  if(AUTH.db) L.forEach(v=>AUTH.db.ref('profiles/'+v.uid+'/photo').once('value').then(s=>{ const u=s.val(), el=document.querySelector(`[data-olph="${v.uid}"]`); if(u&&el){ el.style.backgroundImage=`url('${u}')`; el.textContent=''; } }).catch(()=>{})); }
+  const n=frOnline().length, w=frList('in').length+Object.keys(FR.unread).length, t=`🟢 ${n}`+(w?' 🔔':''); if(b.textContent!==t) b.textContent=t; b.setAttribute('aria-label',tr('친구'));  }
+function onlineList(){ frPanel(); }
 // jump next to a friend: switch map if needed; inside spaces you land at the entrance and walk in yourself
 function friendGo(uid){ const v=PRES.others[uid]; if(!v){ toast('그 사람은 방금 나갔어요'); return; } const c=document.getElementById('meCard'); if(c) c.hidden=true;
   const land=()=>{ let x=v.x+(Math.random()-.5)*2.4, z=v.z+1.4, y=0, msg=`${v.n||'버너'} 님 곁으로 왔어요 👋`;
@@ -5394,7 +5410,7 @@ function favRows(L){ return L.length?`<div class='mfh'>❤️ 즐겨찾는 DJ �
 async function personCard(P){ const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`;
   if(P.realUid){ const uid=P.realUid, v=PRES.others[uid]||{}; let prof={}, ph=[]; try{ prof=(await AUTH.db.ref('profiles/'+uid).once('value')).val()||{}; const p=(await AUTH.db.ref('photos/'+uid).once('value')).val(); if(Array.isArray(p)) ph=p.filter(Boolean); }catch(e){}
     if(!ph.length&&prof.photo) ph=[prof.photo];
-    cardShow(`${X}<div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(prof.name||v.n||'버너')}</b><small><span class='live'>🟢 지금 접속 중</span> · 실제 버너</small></div></div>${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진을 올리지 않았어요</p>`}<p class='mi'>🔒 인스타그램은 본인이 원할 때만 전달돼요</p>`); return; }
+    cardShow(`${X}<div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(prof.name||v.n||'버너')}</b><small><span class='live'>🟢 지금 접속 중</span> · 실제 버너</small></div></div>${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진을 올리지 않았어요</p>`}<p class='mi'>🔒 인스타그램은 본인이 원할 때만 전달돼요</p>${frActions(uid,prof.name||v.n)}`); FR.view='person'; return; }
   const F=npcProfile(P);
   if(!F){ cardShow(`${X}<div class='mh'><i>🙂</i><div><b>플라야 주민</b><small><span class='npc'>🎮 NPC</span> · 프로필을 만들지 않았어요</small></div></div>`); return; }
   cardShow(`${X}<div class='mh'>${F.photos[0]?`<i style="background-image:url('${F.photos[0]}')"></i>`:'<i>🙂</i>'}<div><b>${esc(F.name)}</b><small><span class='npc'>🎮 플라야 주민 (NPC)</span></small></div></div>${F.photos.length?`<div class='mg'>${F.photos.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:''}${favRows(F.favs)}`); }
@@ -5424,6 +5440,75 @@ async function meCard(){ const c=meEl();
     ${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진이 없어요. 2장 이상 올려 프로필을 완성해요.</p>`}
     ${favListHTML()}<p class='mi'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달돼요</p><div class='ma'><button data-me='edit' class='primary'>프로필 편집</button></div>`;
   c.hidden=false; }
+// ---------- friends + chat ----------
+// friends/{me}/{other} = {s:'out'|'in'|'ok', n:their name, t}. A request writes 'out' on my side and 'in' on theirs; accepting turns both into 'ok'.
+// chats/{a}/{b}/{id} = {f:from uid, m:text, t} with a<b: the database rules let only two accepted friends read or write it.
+// The online list shows friends only; strangers you meet in the world can be sent a request from their profile card.
+const FR={map:{},ref:null,uid:null,chat:null,chatRef:null,unread:{},watch:{},view:'',seen:{}};
+try{ FR.seen=JSON.parse(localStorage.getItem('playa-chat-seen')||'{}')||{}; }catch(e){ FR.seen={}; }
+function frState(uid){ const x=FR.map[uid]; return x?x.s:''; }
+function frList(s){ return Object.entries(FR.map).filter(([u,x])=>x&&x.s===s).map(([uid,x])=>Object.assign({uid},x)).sort((a,b)=>(b.t||0)-(a.t||0)); }
+function frOnline(){ return presOnline().filter(v=>frState(v.uid)==='ok'); }
+function frMyName(){ return String(AUTH.prof&&AUTH.prof.name||authName()||'버너').slice(0,20); }
+function frFail(e){ console.warn('friends',e); toast(e&&/permission/i.test(String(e.code||e.message||e))?'친구 기능이 아직 서버에 켜지지 않았어요. 운영자에게 알려 주세요':'지금은 처리하지 못했어요. 잠시 후 다시 해 주세요'); }
+function frListen(){ const me=AUTH.user&&AUTH.user.uid||null; if(FR.uid===me) return; if(FR.ref) FR.ref.off(); FR.ref=null; frChatClose(); Object.values(FR.watch).forEach(r=>r.off()); FR.watch={}; FR.unread={}; FR.map={}; FR.uid=me; if(!me||!AUTH.db){ onlineRender(); return; }
+  FR.ref=AUTH.db.ref('friends/'+me); let first=true;
+  FR.ref.on('value',s=>{ const old=FR.map; FR.map=s.val()||{};
+    if(!first) for(const u in FR.map){ const a=FR.map[u], b=old[u]; if(a.s==='in'&&(!b||b.s!=='in')) toast(`👋 ${a.n||'버너'} 님이 친구 신청을 보냈어요`); else if(a.s==='ok'&&b&&b.s==='out') toast(`🎉 ${a.n||'버너'} 님과 친구가 됐어요. 이제 채팅할 수 있어요`); }
+    first=false; if(FR.chat&&frState(FR.chat)!=='ok') frChatClose(); frWatch(); onlineRender(); frRefresh(); },()=>{}); }
+async function frRequest(uid,name){ const me=AUTH.user; if(!me||!AUTH.db){ toast('로그인하면 친구를 맺을 수 있어요'); return; } const s=frState(uid); if(s==='ok'||s==='out') return; if(s==='in') return frAccept(uid);
+  const up={}, t=Date.now(); up[`friends/${me.uid}/${uid}`]={s:'out',n:String(name||'버너').slice(0,20),t}; up[`friends/${uid}/${me.uid}`]={s:'in',n:frMyName(),t};
+  try{ await AUTH.db.ref().update(up); toast(`${name||'버너'} 님에게 친구 신청을 보냈어요`); }catch(e){ frFail(e); } }
+async function frAccept(uid){ const me=AUTH.user; if(!me||frState(uid)!=='in') return; const up={}, t=Date.now(); up[`friends/${me.uid}/${uid}`]={s:'ok',n:String((FR.map[uid]&&FR.map[uid].n)||'버너').slice(0,20),t}; up[`friends/${uid}/${me.uid}`]={s:'ok',n:frMyName(),t};
+  try{ await AUTH.db.ref().update(up); toast(`🎉 ${(FR.map[uid]&&FR.map[uid].n)||'버너'} 님과 친구가 됐어요. 이제 채팅할 수 있어요`); }catch(e){ frFail(e); } }
+async function frRemove(uid){ const me=AUTH.user; if(!me) return; const up={}; up[`friends/${me.uid}/${uid}`]=null; up[`friends/${uid}/${me.uid}`]=null; try{ await AUTH.db.ref().update(up); }catch(e){ frFail(e); } }
+// ----- chat (friends only) -----
+function frChatPath(uid){ const a=AUTH.user.uid; return a<uid?`chats/${a}/${uid}`:`chats/${uid}/${a}`; }
+function frMarkSeen(uid,t){ FR.seen[uid]=Math.max(FR.seen[uid]||0,t||Date.now()); delete FR.unread[uid]; try{ localStorage.setItem('playa-chat-seen',JSON.stringify(FR.seen)); }catch(e){} }
+// one light listener per friend for the newest message: unread dots, a toast, and a speech bubble over them if they are standing near
+function frWatch(){ if(!AUTH.db||!AUTH.user) return; const ok=new Set(frList('ok').map(f=>f.uid)); for(const u in FR.watch) if(!ok.has(u)){ FR.watch[u].off(); delete FR.watch[u]; delete FR.unread[u]; }
+  ok.forEach(u=>{ if(FR.watch[u]) return; const r=AUTH.db.ref(frChatPath(u)).limitToLast(1); FR.watch[u]=r;
+    r.on('child_added',s=>{ const m=s.val()||{}; if(m.f!==u||!(m.t>(FR.seen[u]||0))) return; if(FR.chat===u){ frMarkSeen(u,m.t); return; } FR.unread[u]=1;
+      if(Date.now()-m.t<20000){ toast(`💬 ${(FR.map[u]&&FR.map[u].n)||'친구'}: ${String(m.m||'').slice(0,60)}`); const A=PRES.av[u]; if(A&&A.P.root.visible) try{ say(A.P,String(m.m||'').slice(0,40),4); }catch(e){} }
+      onlineRender(); frRefresh(); },()=>{}); }); }
+function frChatClose(){ if(FR.chatRef){ FR.chatRef.off(); FR.chatRef=null; } FR.chat=null; const d=document.getElementById('chatDlg'); if(d) d.hidden=true; }
+function frChatOpen(uid){ if(!AUTH.user||frState(uid)!=='ok'){ toast('친구가 된 뒤에 채팅할 수 있어요'); return; } frChatClose(); const mc=document.getElementById('meCard'); if(mc) mc.hidden=true; FR.view='';
+  let d=document.getElementById('chatDlg'); if(!d){ d=document.createElement('section'); d.id='chatDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','채팅'); document.body.appendChild(d);
+    d.addEventListener('click',e=>{ if(e.target.closest('[data-ch="x"]')) frChatClose(); }); d.addEventListener('submit',e=>{ e.preventDefault(); frSend(); }); }
+  const nm=(FR.map[uid]&&FR.map[uid].n)||'친구';
+  d.innerHTML=`<div class='ch-h'><b>💬 ${esc(nm)}</b><button type='button' data-ch='x'>닫기</button></div><div class='ch-l' id='chList'><p class='ch-e'>친구끼리만 볼 수 있는 대화예요. 먼저 인사해 보세요!</p></div><form class='ch-f'><input id='chIn' maxlength='300' autocomplete='off' enterkeyhint='send' placeholder='메시지 보내기'><button type='submit'>보내기</button></form>`; d.hidden=false; FR.chat=uid; frMarkSeen(uid,Date.now());
+  const L=d.querySelector('#chList'), r=AUTH.db.ref(frChatPath(uid)).limitToLast(60); FR.chatRef=r;
+  r.on('child_added',s=>{ const m=s.val()||{}, mine=m.f===AUTH.user.uid, e0=L.querySelector('.ch-e'); if(e0) e0.remove(); const row=document.createElement('div'); row.className='ch-m'+(mine?' me':''); const sp=document.createElement('span'); sp.textContent=String(m.m||''); const tm=document.createElement('small'); tm.textContent=luHM(m.t||Date.now()); row.appendChild(sp); row.appendChild(tm); L.appendChild(row); L.scrollTop=L.scrollHeight; if(!mine) frMarkSeen(uid,m.t); },
+    e=>{ L.innerHTML=`<p class='ch-e'>대화를 불러오지 못했어요. 친구 사이가 맞는지 확인해 주세요.</p>`; });
+  onlineRender(); if(!isTouch) setTimeout(()=>{ const i=document.getElementById('chIn'); if(i) i.focus(); },50); }
+async function frSend(){ const i=document.getElementById('chIn'); if(!i||!FR.chat||!AUTH.user) return; const t=i.value.trim(); if(!t) return; i.value='';
+  try{ await AUTH.db.ref(frChatPath(FR.chat)).push({f:AUTH.user.uid,m:t.slice(0,300),t:Date.now()}); }catch(e){ i.value=t; toast('메시지를 보내지 못했어요'); } }
+// ----- friend buttons on someone's profile card -----
+function frActions(uid,name){ const n=esc(String(name||'버너').slice(0,20)), s=frState(uid), a=`data-uid='${esc(uid)}' data-n='${n}'`;
+  const body=!AUTH.user?`<div class='ma'><button data-me='login' class='primary'>G  로그인하고 친구 신청하기</button></div>`
+    :s==='ok'?`<div class='fra'><button class='primary' data-fr='chat' ${a}>💬 채팅하기</button><button data-fr='del' ${a}>친구 끊기</button></div>`
+    :s==='in'?`<p class='me'>${n} 님이 친구 신청을 보냈어요.</p><div class='fra'><button class='primary' data-fr='acc' ${a}>수락</button><button data-fr='del' ${a}>거절</button></div>`
+    :s==='out'?`<p class='me'>친구 신청을 보냈어요. 상대가 수락하면 채팅할 수 있어요.</p><div class='fra'><button data-fr='del' ${a}>신청 취소</button></div>`
+    :`<div class='fra'><button class='primary' data-fr='add' ${a}>🤝 친구 신청</button></div><p class='me'>친구가 되면 채팅하고, 접속 중인지도 볼 수 있어요.</p>`;
+  return `<div id='frAct' ${a}>${body}</div>`; }
+// ----- the friends panel (the 🟢 pill in the top bar) -----
+function frPanel(){ FR.view='panel'; const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`;
+  if(!AUTH.user){ cardShow(`${X}<div class='mh'><i>👥</i><div><b>친구</b><small>로그인하면 만난 사람과 친구를 맺고, 친구가 접속 중인지 보고, 채팅할 수 있어요</small></div></div><div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`); return; }
+  const on=frOnline(), onU=new Set(on.map(v=>v.uid)), ok=frList('ok'), inn=frList('in'), out=frList('out');
+  const row=(f,v)=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr${v?'':' off'}'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>${v?esc(presWhere(v))+(v.a==='dance'?' · 💃 춤추는 중':''):'지금은 접속해 있지 않아요'}</small></span><span class='bs'>${v?`<button type='button' data-go='${esc(f.uid)}'>만나러 가기</button>`:''}<button type='button' class='chat${FR.unread[f.uid]?' new':''}' data-fr='chat' ${a}>채팅</button></span></div>`; };
+  const head=`<div class='mh'><i>👥</i><div><b>친구</b><small>지금 접속 중인 친구 ${on.length}명 · 전체 ${ok.length}명</small></div></div>`;
+  const reqs=inn.length?`<div class='frs'>받은 친구 신청 <small>${inn.length}</small></div><div class='ol'>${inn.map(f=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>친구가 되고 싶어 해요</small></span><span class='bs'><button type='button' data-fr='acc' ${a}>수락</button><button type='button' class='g2' data-fr='del' ${a}>거절</button></span></div>`; }).join('')}</div>`:'';
+  const fl=ok.length?`<div class='frs'>내 친구 <small>${ok.length}</small></div><div class='ol'>${ok.filter(f=>onU.has(f.uid)).map(f=>row(f,on.find(v=>v.uid===f.uid))).join('')}${ok.filter(f=>!onU.has(f.uid)).map(f=>row(f,null)).join('')}</div>`:`<p class='me'>아직 친구가 없어요. 게임에서 만난 사람을 눌러 프로필을 열고 친구 신청을 보내 보세요.</p>`;
+  const sent=out.length?`<div class='frs'>보낸 신청 <small>${out.length}</small></div><div class='ol'>${out.map(f=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr off'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>수락을 기다리는 중이에요</small></span><span class='bs'><button type='button' class='g2' data-fr='del' ${a}>취소</button></span></div>`; }).join('')}</div>`:'';
+  cardShow(X+head+reqs+fl+sent);
+  if(AUTH.db) [...inn,...ok,...out].forEach(f=>AUTH.db.ref('profiles/'+f.uid+'/photo').once('value').then(s=>{ const u=s.val(); if(u) document.querySelectorAll(`#meCard [data-olph="${f.uid}"]`).forEach(el=>{ el.style.backgroundImage=`url('${u}')`; el.textContent=''; }); }).catch(()=>{})); }
+// keep whatever is open in step with the latest friend state
+function frRefresh(){ const c=document.getElementById('meCard'); if(!c||c.hidden){ FR.view=''; return; } if(FR.view==='panel'){ frPanel(); return; } const a=c.querySelector('#frAct'); if(a){ const t=document.createElement('div'); t.innerHTML=frActions(a.dataset.uid,a.dataset.n); a.replaceWith(t.firstChild); } }
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-fr]'); if(!b||!b.closest('#meCard')) return; e.stopPropagation(); const uid=b.dataset.uid, n=b.dataset.n, a=b.dataset.fr;
+  if(a==='add') frRequest(uid,n); else if(a==='acc') frAccept(uid); else if(a==='chat') frChatOpen(uid); else if(a==='del'){ if(frState(uid)!=='ok'||confirm(tr('친구를 끊을까요? 대화도 더는 볼 수 없어요.'))) frRemove(uid); } },true);
+document.addEventListener('click',e=>{ if(e.target.closest('#meCard [data-me="x"]')) FR.view=''; },true);
+addEventListener('keydown',e=>{ if(e.key==='Escape'&&FR.chat) frChatClose(); });
+updaters.push((t,dt)=>{ FR.ck=(FR.ck||0)+dt; if(FR.ck<1) return; FR.ck=0; if((AUTH.user&&AUTH.user.uid||null)!==FR.uid) frListen(); else if(FR.view==='panel'){ const c=document.getElementById('meCard'); if(c&&!c.hidden){ const sig=frOnline().map(v=>v.uid+presWhere(v)+v.a).join('|'); if(sig!==FR.sig){ FR.sig=sig; frPanel(); } } } });
 authBuild(); authInit().then(ok=>{ if(ok) kakaoReturn(); });
 
 /* ================= STAGE DANCE BONUS: 1 MIN = +3 COINS ================= */
