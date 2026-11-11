@@ -784,6 +784,23 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #nsPop .ns-steps li.on{opacity:1}
 #nsPop .ns-steps li.on b{background:#3dff6a;color:#04200c}
 .mcard .cv .newb{position:absolute;top:6px;left:6px;padding:3px 7px;border-radius:999px;background:#3dff6a;color:#04200c;font:900 10px sans-serif;letter-spacing:.06em;font-style:normal;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+/* first screen on phones: the sheet never grows past the screen (it scrolls inside, the two buttons stay in view) and every block shares the same left and right edges */
+body:not(.dressing) .creator{max-height:calc(100vh - var(--sat) - var(--sab) - 20px);max-height:calc(100dvh - var(--sat) - var(--sab) - 20px);overflow-y:auto;overscroll-behavior:contain}
+body:not(.dressing) .creator .actions{position:sticky;bottom:0;z-index:2;background:var(--panel)}
+body:not(.dressing) .creator .name,body:not(.dressing) .creator.min .name{display:flex!important;flex-direction:column;align-items:stretch;gap:5px;font-weight:700;font-size:13px}
+body:not(.dressing) .creator .name input{font-weight:400;width:100%;box-sizing:border-box;flex:none}
+.mapsel>span{font-size:13px}
+@media (max-width:760px),(pointer:coarse){ .mapsel{padding:8px 16px} }
+/* phone polish: rows under the (now taller) status bar, long labels in the round buttons and the action button, and the style room keeps to the screen width */
+@media (max-width:760px),(pointer:coarse){ .mapc{top:calc(68px + var(--sat))!important} body .tools{top:calc(68px + var(--sat))!important} #lineupBtn{top:calc(116px + var(--sat))!important}
+  #actBtn{max-width:calc(100vw - 132px);white-space:normal;line-height:1.25;text-align:center} }
+.rbtn{overflow:visible} #danceMain span,#danceRand span,#styleMain span,#bagMain span{display:block;max-width:60px;text-align:center;line-height:1.05;overflow-wrap:anywhere;white-space:normal!important;word-break:break-word}
+#optNav{grid-template-columns:repeat(5,minmax(0,1fr))!important} #optNav button{min-width:0;white-space:normal;overflow-wrap:break-word;hyphens:auto;line-height:1.15}
+@media (max-width:760px),(pointer:coarse){ #optNav button{font-size:11.5px;padding-left:4px;padding-right:4px} #sp{max-height:calc(100vh - 240px);max-height:calc(100dvh - 240px)} }
+body.dressing #authBox{display:none!important}
+body.dressing .creator>*{min-width:0}
+body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch} body.dressing #optNav::-webkit-scrollbar{display:none}
+@media (max-height:700px){ body:not(.dressing) .creator header p,body:not(.dressing) .creator.min header p{display:none!important} body:not(.dressing) .creator h1{font-size:24px} .mapsel button.mcard{flex-basis:104px} #authBox .authlead{margin-bottom:6px} }
 
 .lu-tabs{touch-action:pan-x}
 .lu-in>*{max-width:100%}
