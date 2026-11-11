@@ -3352,7 +3352,7 @@ function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTrea
 function clampMap(){ if(BM.mode){ bmClamp(); return; } if(pState.z>1500){ clampSphere(); return; } if(pState.x<-1500){ clampNami(); return; } if(pState.x<1500){ const dr=Math.hypot(pState.x,pState.z); if(dr>300){ pState.x*=300/dr; pState.z*=300/dr; } return; }
   let lx=pState.x-OX, z=pState.z;
   if(TEL.in){ lx=clamp(lx,TEL.X-9.8,TEL.X+7.8); z=clamp(z,-7.8,7.8); if(lx>TEL.X+1.6&&z>5.6) z=5.6; }
-  else if(RING.in){ lx=clamp(lx,RING.X-10.5,RING.X+7.9); z=clamp(z,-5,5); if(lx>RING.X-9.9&&lx<RING.X-.1&&z<-3.1) z=-3.1; }
+  else if(RING.in){ lx=clamp(lx,RING.X-10.5,RING.X+7.9); z=clamp(z,-5,5); if(lx>RING.X-9.9&&lx<RING.X+7.3&&z<-3.1) z=-3.1; }
   else if(IT.floor>0){ lx=clamp(lx,8.7,21.3); z=clamp(z,-8.3,8.3); }
   else { const band=z>-18.9&&z<-13.8, alley=RING.al&&lx>6.6;
     if(alley){ // the Ring alley: ground on the open side, the stairs along the building wall (you get on at the bottom, past the bouncer)
@@ -3706,12 +3706,12 @@ function buildRing(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); scene
   for(let i=0;i<(LOW?3:5);i++){ const u=3.9+i*(LOW?3.2:1.7); LB(.07,.07,10.7,u,H-.5,0); [-5.38,5.38].forEach(z=>LB(.07,H-4.2,.07,u,3.7+(H-4.2)/2,z)); }
   [-5.38,5.38].forEach(z=>LB(13.8,.06,.06,-4,3.38,z)); for(let i=0;i<3;i++) LB(.06,.06,10.6,-9+i*4.4,3.46,0);
   [-3.6,-1.2,1.2,3.6].forEach(z=>LB(.06,H-1.2,.06,10.93,H/2+.3,z));
-  // the long bar, straight to your left as you walk in
-  const wood=M('#4a3226');
-  B(9,1.08,.7,M('#221a18'),-5,.54,-3.9,R); B(9.1,.06,.8,wood,-5,1.11,-3.9,R);
-  B(9,.06,.35,wood,-5,1.5,-5.25,R); B(9,.06,.35,wood,-5,2.15,-5.25,R); B(9,2.2,.04,M('#b8894e',{glow:.45}),-5,1.9,-5.4,R);
-  for(let r=0;r<2;r++) for(let i=0;i<(LOW?9:16);i++) bottle(R,-9.2+i*(LOW?1.05:.56),1.53+r*.65,-5.25,pick(['#e8d8b0','#7a4a2a','#2a5a3a','#c8c8d0','#a83a2a']));
-  for(let i=0;i<6;i++){ const u=-8.6+i*1.45; mesh(G.cyl,M('#0c0c0e'),u,.78,-3.15,.17,.05,.17,R); mesh(G.cyl,steel,u,.39,-3.15,.025,.78,.025,R); mesh(G.cyl,steel,u,.02,-3.15,.16,.03,.16,R); }
+  // the long bar: it starts straight to your left as you walk in and runs all the way down the wall to just before the stage
+  const wood=M('#4a3226'), BL=16.6, BC=-1.3; // from u=-9.6 to u=7
+  B(BL,1.08,.7,M('#221a18'),BC,.54,-3.9,R); B(BL+.1,.06,.8,wood,BC,1.11,-3.9,R);
+  B(BL,.06,.35,wood,BC,1.5,-5.25,R); B(BL,.06,.35,wood,BC,2.15,-5.25,R); B(BL,2.2,.04,M('#b8894e',{glow:.45}),BC,1.9,-5.4,R);
+  for(let r=0;r<2;r++) for(let i=0;i<(LOW?15:29);i++) bottle(R,-9.2+i*(LOW?1.1:.57),1.53+r*.65,-5.25,pick(['#e8d8b0','#7a4a2a','#2a5a3a','#c8c8d0','#a83a2a']));
+  for(let i=0;i<11;i++){ const u=-8.6+i*1.5; mesh(G.cyl,M('#0c0c0e'),u,.78,-3.15,.17,.05,.17,R); mesh(G.cyl,steel,u,.39,-3.15,.025,.78,.025,R); mesh(G.cyl,steel,u,.02,-3.15,.16,.03,.16,R); }
   // hanging speakers
   [[2.4,-4.6,.5],[2.4,4.6,-.5],[10.3,-4.4,.4],[10.3,4.4,-.4]].forEach(([u,z,r],i)=>{ const s=B(.7,1,.6,M('#060606'),u,i<2?2.75:4.8,z,R); s.rotation.y=r; s.rotation.x=z>0?-.25:.25; });
   // the booth: a plain pale table, two turntables with records on, a rotary mixer between them, crates of vinyl behind
@@ -3732,11 +3732,11 @@ function buildRing(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); scene
   RING.zone=makeZone('ring',OX+X,0,30,RING_TR[0]);
   [['민규',-.6],['규찬',.8]].forEach(([nm,z])=>{ const S=addNPC(Object.assign(ringLook(),{extra:'none',head:'none',ringG:'m',hairStyle:'buzz'}),{x:OX+X+9.55,z},-Math.PI/2,'dj',{zone:RING.zone,y:.2}); S.P.pname=nm; mine.push(S.P); });
   const dn=['sway','pump','stomp','toprock','sway','pump'], n=LOW?12:22;
-  for(let i=0;i<n;i++){ const u=rand(-1.6,7.3), S=addNPC(ringLook(),{x:OX+X+u,z:u<1.8?rand(-2.2,4.3):rand(-4.3,4.3)},Math.PI/2+rand(-.5,.5),'dance',{dance:pick(dn),zone:RING.zone,talk:true}); mine.push(S.P); }
+  for(let i=0;i<n;i++){ const u=rand(-1.6,7.3), S=addNPC(ringLook(),{x:OX+X+u,z:rand(-2.2,4.3)},Math.PI/2+rand(-.5,.5),'dance',{dance:pick(dn),zone:RING.zone,talk:true}); mine.push(S.P); }
   // five regulars who are always dancing in the corner left of the booth
   [[8.4,-3.5],[9.3,-3.3],[10.15,-3.7],[8.8,-4.5],[9.8,-4.6]].forEach(([u,z],i)=>mine.push(addNPC(Object.assign(ringLook(),{ringG:i%2?'f':'m'},i%2?{hairStyle:pick(['long','bob','buns','braids'])}:{hairStyle:pick(['buzz','bald','mohawk'])}),{x:OX+X+u,z},Math.atan2(7.2-u,-1-z),'dance',{dance:dn[i%dn.length],zone:RING.zone,talk:true}).P));
-  [-7.15,-5.7,-2.8].forEach(u=>mine.push(addNPC(ringLook(),{x:OX+X+u,z:-2.75},Math.PI,'talk',{talk:true}).P));
-  mine.push(addNPC(Object.assign(ringLook(),{head:'none'}),{x:OX+X-5,z:-4.75},0,'talk',{talk:true}).P);
+  [-7.15,-5.7,-2.8,.4,3.3,5.0].forEach(u=>mine.push(addNPC(ringLook(),{x:OX+X+u,z:-2.75},Math.PI,'talk',{talk:true}).P));
+  [-5,2.4].forEach(u=>mine.push(addNPC(Object.assign(ringLook(),{head:'none'}),{x:OX+X+u,z:-4.75},0,'talk',{talk:true}).P));
   [[-8.6,3.4,2.2],[-7.6,4.1,-2.2]].forEach(([u,z,ry])=>mine.push(addNPC(ringLook(),{x:OX+X+u,z},ry,'talk',{talk:true}).P));
   mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); }); SNPC.forEach(S=>{ if(S.talk&&mine.includes(S.P)&&!TALKP.includes(S.P)) TALKP.push(S.P); });
   RING.cur=new THREE.Color(RING_RED); RING.tgt=new THREE.Color(RING_RED);
@@ -4123,10 +4123,10 @@ function scUrl(u){ try{ const p=new URL(String(u).trim()), h=p.hostname.toLowerC
 function scInfo(w,c){ try{ w.getCurrentSound(s=>{ if(!s||MC.cur!==c) return; if(!c.titled) c.name=s.title||c.name; if(!(c.user&&c.user.name)) c.user={name:s.user&&s.user.username||''};
     const art=(s.artwork_url||(s.user&&s.user.avatar_url)||''); if(art&&!c.pictures) c.pictures={medium:art.replace('-large','-t300x300'),'320wx320h':art.replace('-large','-t500x500')};
     c.audio_length=Math.round((s.full_duration||s.duration||0)/1000)||c.audio_length; if(s.description&&!c.description) c.description=s.description; NPC.sig=''; mcUi(); }); }catch(e){} }
-function scCreate(c){ const f=document.createElement('iframe'); f.allow='autoplay'; f.title='SoundCloud player';
-  f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(c.key)+'&auto_play=true&visual=false&show_comments=false&hide_related=true&show_teaser=false'; MC.iframe=f; mcShow(false); document.body.appendChild(f);
+function scCreate(c){ const f=document.createElement('iframe'); f.allow='autoplay'; f.title='SoundCloud player'; const q=!!MC.quiet; // q: loaded ahead of time while you are far from the stage, so it must start silent
+  f.src='https://w.soundcloud.com/player/?url='+encodeURIComponent(c.key)+'&auto_play='+(q?'false':'true')+'&visual=false&show_comments=false&hide_related=true&show_teaser=false'; MC.iframe=f; mcShow(false); document.body.appendChild(f);
   scApi().then(()=>{ if(MC.iframe!==f) return; const w=SC.Widget(f), E=SC.Widget.Events, on=fn=>(e)=>{ if(MC.w===w) fn(e); }; MC.w=w;
-    w.bind(E.READY,on(()=>{ scInfo(w,MC.cur); try{ w.play(); }catch(e){} })); w.bind(E.PLAY,on(()=>{ mcEv('play'); scInfo(w,MC.cur); })); w.bind(E.PAUSE,on(()=>mcEv('pause'))); w.bind(E.FINISH,on(()=>mcEv('ended')));
+    w.bind(E.READY,on(()=>{ scInfo(w,MC.cur); try{ if(q){ w.setVolume(0); MC.vol=0; if(MC_NOVOL){ MC.autoPaused=true; MC.live=true; } else w.play(); } else w.play(); }catch(e){} })); w.bind(E.PLAY,on(()=>{ mcEv('play'); scInfo(w,MC.cur); })); w.bind(E.PAUSE,on(()=>mcEv('pause'))); w.bind(E.FINISH,on(()=>mcEv('ended')));
     w.bind(E.PLAY_PROGRESS,on(e=>mcEv('progress',e&&e.currentPosition/1000))); w.bind(E.ERROR,on(()=>mcEv('error'))); }).catch(()=>{ if(MC.iframe===f) mcEv('error'); }); }
 function mcShow(on){ if(!MC.iframe) return; const h=MC.kind==='sc'?120:60; MC.iframe.style.cssText=on?`position:fixed;left:10px;right:10px;bottom:calc(84px + var(--sab));width:calc(100% - 20px);max-width:420px;height:${h}px;border:0;border-radius:10px;z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.4)`:`position:fixed;left:-9999px;top:0;width:300px;height:${h}px;border:0`; }
 // pool = the genre's official channels + the tag's most-played mixes, filtered to music-first sets, the 40 most popular, shuffled
@@ -4145,7 +4145,7 @@ async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g;
 function mcNext(){ if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null; MC.autoPaused=false;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
   const kind=c.sc?'sc':'mc';
-  if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; const go=!MC.quiet||!MC_NOVOL; if(!go) MC.autoPaused=true; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:go,visual:false,show_comments:false,hide_related:true,callback:()=>scInfo(w,c)}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,go); mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); return; }
+  if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; const go=!MC.quiet||!MC_NOVOL; if(!go) MC.autoPaused=true; const q=!!MC.quiet; MC.vol=-1; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:go&&!q,visual:false,show_comments:false,hide_related:true,callback:()=>{ scInfo(w,c); if(q){ try{ w.setVolume(0); MC.vol=0; if(go) w.play(); }catch(e){} } }}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,go); mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); return; }
   if(MC.iframe) MC.iframe.remove(); clearTimeout(MC.showT); MC.playing=false; MC.live=false; MC.paused=false; MC.vol=-1; MC.kind=kind; MC.w=null;
   if(kind==='sc'){ scCreate(c); const f=MC.iframe; MC.showT=setTimeout(()=>{ if(MC.iframe===f&&!MC.playing){ if(MC.target&&mcLevel(MC.target)>=.35){ mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); } else MC.needTap=true; } },6000); mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); return; }
   const f=document.createElement('iframe'); f.allow='autoplay'; f.title='Mixcloud player';
@@ -5794,7 +5794,7 @@ updaters.push(t=>{ if(MCA.onClaude) return;
   // warm the player before you get there: the nearest live scheduled stage loads silently, so moving to any booth only swaps the set inside a ready player
   // keep the player loaded with the nearest live stage's set while you are not listening to anything: walking up to any booth only fades in a set that is already playing in sync
   if(t-(SCH.warmT||-99)>(MC.iframe?3:8)){ SCH.warmT=t; const hearing=MC.iframe&&MC.target&&mcLevel(MC.target)>.05;
-    if(!hearing){ const w=schWarm(); if(w&&w.slot.id!==MC.schId){ MC.quiet=true; mcPlayItem(w.it,w.T); MC.quiet=false; MC.schId=w.slot.id; SCH.synced=false; SCH.lastSync=t; } } }
+    if(!hearing){ const w=schWarm(); if(w&&w.it.sc&&w.slot.id!==MC.schId){ MC.quiet=true; mcPlayItem(w.it,w.T); MC.quiet=false; MC.schId=w.slot.id; SCH.synced=false; SCH.lastSync=t; } } }
   let T; try{ T=musicTarget(); }catch(e){ return; } if(!T||mcLevel(T)<.35) return;
   const slot=schSlot(schKey(T)), mine=MC.target&&MC.target.key===T.key;
   if(mine&&MC.needTap&&MC.iframe&&!MC.playing){ MC.needTap=false; mcShow(true); toast('플레이어의 재생 버튼을 한 번 눌러 주세요'); }
