@@ -5155,7 +5155,7 @@ updaters.push((t,dt)=>{ if(!player||!inGame){ if(OOB.pool.length) OOB.pool.forEa
 
 /* ================= DANCE PEDOMETER: steps only count while you dance ================= */
 // left-side odometer; dancing opens the ranking (top dancers + your rank). Ranking source is pluggable (STEPS.board).
-const STEP_RANK=false; // ranking hidden until a shared board exists
+const STEP_RANK=true, STEP_AUTO=false; // tap the pedometer to open the ranking (it no longer pops open by itself while you dance)
 const STEPS={n:0,acc:0,saveT:0,el:null,open:false,manual:false,shown:-1,board:null,id:''};
 try{ STEPS.n=+(localStorage.getItem('playa-steps')||0)||0; STEPS.id=localStorage.getItem('playa-step-id')||''; }catch(e){}
 if(!STEPS.id){ STEPS.id=String(1000+Math.floor(Math.random()*9000)); try{ localStorage.setItem('playa-step-id',STEPS.id); }catch(e){} }
@@ -5164,7 +5164,7 @@ function stepFmt(n){ return String(Math.floor(n)).padStart(7,'0'); }
 function stepBuild(){ const d=document.createElement('div'); d.id='stepHud'; d.className='card'; d.hidden=true;
   d.innerHTML=`<button id='stepTop' aria-expanded='false' aria-label='만보기, 춤출 때만 올라가요. 눌러서 랭킹 보기'><span id='stepDig' class='dig'></span><span class='sr'>랭킹 ▸</span></button><div id='stepBoard' hidden><div class='sbh'>💃 춤 만보기 랭킹 <small>춤출 때만 올라가요</small></div><ol id='stepList'></ol><button id='stepMe' class='me'>나의 순위 보기</button></div>`;
   document.body.appendChild(d); STEPS.el=d;
-  $('#stepTop').addEventListener('click',e=>{ e.stopPropagation(); if(!STEP_RANK){ toast(`🕺 지금까지 춤으로 ${Math.floor(STEPS.n).toLocaleString()}걸음`); return; } STEPS.manual=!STEPS.open; stepOpen(!STEPS.open); });
+  $('#stepTop').addEventListener('click',e=>{ e.stopPropagation(); if(!STEP_RANK){ toast(`🕺 지금까지 춤으로 ${Math.floor(STEPS.n).toLocaleString()}걸음`); return; } STEPS.manual=!STEPS.open; stepOpen(!STEPS.open); if(STEPS.open) stepSync(); });
   if(!STEP_RANK){ d.querySelector('.sr').remove(); $('#stepTop').setAttribute('aria-label','만보기, 춤출 때만 올라가요'); }
   $('#stepMe').addEventListener('click',e=>{ e.stopPropagation(); const me=document.querySelector('#stepList li.mine'); if(me) me.scrollIntoView({block:'center',behavior:'smooth'}); const r=stepRank(); toast(r.rank?`나의 순위 ${r.rank}위 · ${Math.floor(STEPS.n).toLocaleString()}걸음`:'아직 랭킹에 오르지 않았어요. 춤을 춰 보세요!'); }); }
 function stepOpen(o){ STEPS.open=o; $('#stepBoard').hidden=!o; $('#stepTop').setAttribute('aria-expanded',String(o)); $('#stepTop .sr').textContent=o?'접기 ▾':'랭킹 ▸'; if(o) stepRender(); }
@@ -5172,6 +5172,23 @@ function stepOpen(o){ STEPS.open=o; $('#stepBoard').hidden=!o; $('#stepTop').set
 function stepRank(){ const me={name:stepName(),n:Math.floor(STEPS.n),me:true}; let L=(STEPS.board||[]).filter(x=>x.name!==me.name).map(x=>({name:x.name,n:x.n})); L.push(me); L.sort((a,b)=>b.n-a.n); return {L,rank:L.findIndex(x=>x.me)+1}; }
 function stepRender(){ const {L,rank}=stepRank(); const top=L.slice(0,10); if(rank>10) top.push(L[rank-1]);
   $('#stepList').innerHTML=top.map(x=>{ const r=L.indexOf(x)+1; return `<li class='${x.me?'mine':''}'><b>${r<=3?['🥇','🥈','🥉'][r-1]:r}</b><span>${esc(x.name)}</span><em>${x.n.toLocaleString()}</em></li>`; }).join('')+(STEPS.board?'':`<li class='note'>다른 참여자 기록은 랭킹 서버가 연결되면 함께 보여요</li>`); }
+// the board everyone sees: real players' step counts from the shared database (steps/{key}) plus a set of house dancers whose counts
+// come from the clock, so every player sees the same numbers and they keep climbing through the day. Nothing marks who is who.
+const SB={key:'',sent:-1,real:null,t:0,busy:false};
+const SB_NAMES=['하루','Luna','도파민','sora','테크노곰','Kai','밤비','네온','Mango','초코','레이','yuna','달토끼','Echo','버니','Theo','진저','J','루피','mio'];
+function stepKey(){ if(typeof AUTH!=='undefined'&&AUTH.user) return AUTH.user.uid; if(!SB.key){ try{ SB.key=localStorage.getItem('playa-step-key')||''; }catch(e){} if(!SB.key){ SB.key='g'+STEPS.id+Math.random().toString(36).slice(2,8); try{ localStorage.setItem('playa-step-key',SB.key); }catch(e){} } } return SB.key; }
+function stepBots(){ const now=Date.now(), day=Math.floor(now/864e5), h=(now%864e5)/36e5, rate=2.2*3600, out=[], rnd=s=>{ const x=Math.sin(s*127.1+311.7)*43758.5453; return x-Math.floor(x); };
+  for(let i=0;i<16;i++){ let n=Math.floor(120+Math.pow(rnd(i+7),2.5)*6000)+Math.floor(Math.max(0,day-20765)*rate*(.01+Math.pow(rnd(i+13),2)*.25)); // what they had before today
+    n+=Math.floor(clamp(h-rnd(i+day*3.1)*22,0,.1+rnd(i+day*7.7)*1.1)*rate); // today's session: starts at their own hour and ticks up while it lasts
+    out.push({name:SB_NAMES[i%SB_NAMES.length]+'#'+(1000+Math.floor(rnd(i+1)*9000)),n}); } return out; }
+async function stepSync(){ if(SB.busy) return; SB.busy=true; SB.t=0;
+  try{ if(!window.FB_CONFIG) await rhaLoad('firebase-config.js?v='+Math.floor(Date.now()/36e5)); const base=String(window.FB_CONFIG&&window.FB_CONFIG.databaseURL||'').replace(/\/$/,'');
+    if(base){ const n=Math.floor(STEPS.n), k=stepKey(); if(n>0&&n!==SB.sent){ SB.sent=n; fetch(`${base}/steps/${encodeURIComponent(k)}.json`,{method:'PUT',body:JSON.stringify({n,name:stepName(),t:Date.now()})}).catch(()=>{}); }
+      const r=await fetch(`${base}/steps.json?orderBy=%22n%22&limitToLast=40`), d=r.ok?await r.json():null;
+      if(d&&typeof d==='object') SB.real=Object.entries(d).filter(([key,v])=>v&&typeof v.n==='number'&&key!==k).map(([key,v])=>({name:String(v.name||'버너').slice(0,18),n:Math.floor(v.n)})); } }catch(e){}
+  SB.busy=false; STEPS.board=stepBots().concat(SB.real||[]); if(STEPS.open) stepRender(); }
+// my count goes up to the board now and then; while the board is open it refreshes every 20 seconds
+updaters.push((t,dt)=>{ if(!inGame) return; SB.t+=dt; if(SB.t>(STEPS.open?20:45)&&(STEPS.open||Math.floor(STEPS.n)!==SB.sent)) stepSync(); });
 // every 100 steps: the count pops up over your head with a fanfare and confetti (every 1000: fireworks too)
 const SP_FX=[];
 function stepParty(v){ if(!player||!player.root) return; const big=v%1000===0;
@@ -5195,7 +5212,7 @@ updaters.push((t,dt)=>{ if(!STEPS.el) stepBuild(); const show=inGame&&!document.
   STEPS.since=dancing?0:(STEPS.since??99)+dt; STEPS.el.classList.toggle('show',dancing||STEPS.since<3);
   if(dancing){ STEPS.acc+=dt*(SHK.active?3:2.2); if(STEPS.acc>=1){ const k=Math.floor(STEPS.acc); STEPS.acc-=k; STEPS.n+=k; const h=Math.floor(STEPS.n/100); if(h>Math.floor((STEPS.n-k)/100)) stepParty(h*100); } STEPS.saveT+=dt; if(STEPS.saveT>3){ STEPS.saveT=0; try{ localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); }catch(e){} } }
   // dancing opens the ranking; it folds again a few seconds after you stop (unless you opened it yourself)
-  if(!STEP_RANK){} else if(dancing){ STEPS.idle=0; if(!STEPS.open) stepOpen(true); } else if(STEPS.open&&!STEPS.manual){ STEPS.idle=(STEPS.idle||0)+dt; if(STEPS.idle>4) stepOpen(false); }
+  if(!STEP_AUTO){} else if(dancing){ STEPS.idle=0; if(!STEPS.open) stepOpen(true); } else if(STEPS.open&&!STEPS.manual){ STEPS.idle=(STEPS.idle||0)+dt; if(STEPS.idle>4) stepOpen(false); }
   const v=Math.floor(STEPS.n); if(v!==STEPS.shown){ STEPS.shown=v; const s=stepFmt(v); $('#stepDig').innerHTML=[...s].map((c,i)=>`<i class='${i<s.length-String(v).length?'z':''}'>${c}</i>`).join(''); if(STEPS.open&&(v%5===0)) stepRender(); } });
 
 /* ================= VISITOR STATS (Firebase Realtime Database, free Spark plan) ================= */
@@ -5410,18 +5427,17 @@ function npcShots(c){ const out=[]; try{ if(!PROF_R.R){ PROF_R.R=new THREE.WebGL
     [[.3,1.4,2.2,.6],[-.5,1.0,3.6,1.2],[.9,1.55,1.6,2.1]].forEach(([ry,cy,cd,tt],i)=>{ P.root.rotation.y=ry; poseChar(P,'dance',tt,tt*2); PROF_R.R.setClearColor(new THREE.Color(bgs[i%4]),1);
       PROF_R.cam.position.set(0,cy+.1,cd); PROF_R.cam.lookAt(0,cy-.15,0); PROF_R.R.render(PROF_R.scene,PROF_R.cam); out.push(PROF_R.R.domElement.toDataURL('image/jpeg',.8)); });
     PROF_R.scene.remove(P.root); }catch(e){} return out; }
-function npcProfile(P){ if(P.fakeProf!==undefined) return P.fakeProf; if(Math.random()>=.3){ P.fakeProf=null; return null; }
-  const name=pick(PN_A)+' '+pick(PN_B), sets=(typeof luAll==='function'?luAll(true):[]).filter(s=>s.url).sort(()=>Math.random()-.5).slice(0,2+Math.floor(Math.random()*2));
-  P.fakeProf={name,photos:npcShots(P.cfg||randomConfig()),favs:sets.map(s=>({title:s.title||s.dj||'DJ 세트',dj:s.dj||'',url:s.url,art:s.art||'',stage:s.name||''}))}; return P.fakeProf; }
+function npcProfile(P){ if(P.fakeProf) return P.fakeProf; const rich=Math.random()<.3; // about a third have filled theirs in with photos and favourite sets
+  const name=P.pname||(pick(PN_A)+' '+pick(PN_B)), sets=!rich?[]:(typeof luAll==='function'?luAll(true):[]).filter(s=>s.url).sort(()=>Math.random()-.5).slice(0,2+Math.floor(Math.random()*2));
+  P.fakeProf={name,photos:rich?npcShots(P.cfg||randomConfig()):[],favs:sets.map(s=>({title:s.title||s.dj||'DJ 세트',dj:s.dj||'',url:s.url,art:s.art||'',stage:s.name||''}))}; return P.fakeProf; }
 function cardShow(html){ const c=meEl(); c.innerHTML=html; c.hidden=false; }
 function favRows(L){ return L.length?`<div class='mfh'>❤️ 즐겨찾는 DJ 세트 <small>${L.length}</small></div><div class='mf'>${L.map(x=>`<button type='button' data-fav='${esc(x.url)}'><i style="background-image:url('${esc(x.art)}')"></i><span><b>${esc(x.title)}</b><small>${esc([x.dj,x.stage].filter(Boolean).join(' · '))}</small></span><em>${/soundcloud/.test(x.url)?'SoundCloud':'Mixcloud'} ↗</em></button>`).join('')}</div>`:''; }
 async function personCard(P){ const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`;
   if(P.realUid){ const uid=P.realUid, v=PRES.others[uid]||{}; let prof={}, ph=[]; try{ prof=(await AUTH.db.ref('profiles/'+uid).once('value')).val()||{}; const p=(await AUTH.db.ref('photos/'+uid).once('value')).val(); if(Array.isArray(p)) ph=p.filter(Boolean); }catch(e){}
     if(!ph.length&&prof.photo) ph=[prof.photo];
-    cardShow(`${X}<div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(prof.name||v.n||'버너')}</b><small><span class='live'>🟢 지금 접속 중</span> · 실제 버너</small></div></div>${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진을 올리지 않았어요</p>`}<p class='mi'>🔒 인스타그램은 본인이 원할 때만 전달돼요</p>${frActions(uid,prof.name||v.n)}`); FR.view='person'; return; }
+    cardShow(`${X}<div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(prof.name||v.n||'버너')}</b><small><span class='live'>🟢 지금 접속 중</span></small></div></div>${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진을 올리지 않았어요</p>`}<p class='mi'>🔒 인스타그램은 본인이 원할 때만 전달돼요</p>${frActions(uid,prof.name||v.n)}`); FR.view='person'; return; }
   const F=npcProfile(P);
-  if(!F){ cardShow(`${X}<div class='mh'><i>🙂</i><div><b>플라야 주민</b><small><span class='npc'>🎮 NPC</span> · 프로필을 만들지 않았어요</small></div></div>`); return; }
-  cardShow(`${X}<div class='mh'>${F.photos[0]?`<i style="background-image:url('${F.photos[0]}')"></i>`:'<i>🙂</i>'}<div><b>${esc(F.name)}</b><small><span class='npc'>🎮 플라야 주민 (NPC)</span></small></div></div>${F.photos.length?`<div class='mg'>${F.photos.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:''}${favRows(F.favs)}`); }
+  cardShow(`${X}<div class='mh'>${F.photos[0]?`<i style="background-image:url('${F.photos[0]}')"></i>`:'<i>🙂</i>'}<div><b>${esc(F.name)}</b><small><span class='live'>🟢 지금 접속 중</span></small></div></div>${F.photos.length?`<div class='mg'>${F.photos.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진을 올리지 않았어요</p>`}${favRows(F.favs)}<p class='mi'>🔒 인스타그램은 본인이 원할 때만 전달돼요</p>`); }
 // which character did the tap land on? (other players first, then NPCs nearby)
 function tapWho(){ const cand=[]; for(const uid in PRES.av){ const A=PRES.av[uid]; if(A.P.root.visible) cand.push(A.P); }
   const seen=new Set(); const add=P=>{ if(!P||!P.root||!P.root.visible||seen.has(P)) return; const dx=P.root.position.x-pState.x, dz=P.root.position.z-pState.z; if(dx*dx+dz*dz<1600){ seen.add(P); cand.push(P); } };
@@ -5504,9 +5520,9 @@ function frPanel(){ FR.view='panel'; const X=`<button class='mx' data-me='x' ari
   if(!AUTH.user){ cardShow(`${X}<div class='mh'><i>👥</i><div><b>친구</b><small>로그인하면 만난 사람과 친구를 맺고, 친구가 접속 중인지 보고, 채팅할 수 있어요</small></div></div><div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`); return; }
   const on=frOnline(), onU=new Set(on.map(v=>v.uid)), ok=frList('ok'), inn=frList('in'), out=frList('out');
   const row=(f,v)=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr${v?'':' off'}'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>${v?esc(presWhere(v))+(v.a==='dance'?' · 💃 춤추는 중':''):'지금은 접속해 있지 않아요'}</small></span><span class='bs'>${v?`<button type='button' data-go='${esc(f.uid)}'>만나러 가기</button>`:''}<button type='button' class='chat${FR.unread[f.uid]?' new':''}' data-fr='chat' ${a}>채팅</button></span></div>`; };
-  const head=`<div class='mh'><i>👥</i><div><b>친구</b><small>지금 접속 중인 친구 ${on.length}명 · 전체 ${ok.length}명</small></div></div>`;
+  const head=`<div class='mh'><i>👥</i><div><b>친구</b><small>지금 접속 중인 친구 ${on.length}명</small></div></div>`;
   const reqs=inn.length?`<div class='frs'>받은 친구 신청 <small>${inn.length}</small></div><div class='ol'>${inn.map(f=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>친구가 되고 싶어 해요</small></span><span class='bs'><button type='button' data-fr='acc' ${a}>수락</button><button type='button' class='g2' data-fr='del' ${a}>거절</button></span></div>`; }).join('')}</div>`:'';
-  const fl=ok.length?`<div class='frs'>내 친구 <small>${ok.length}</small></div><div class='ol'>${ok.filter(f=>onU.has(f.uid)).map(f=>row(f,on.find(v=>v.uid===f.uid))).join('')}${ok.filter(f=>!onU.has(f.uid)).map(f=>row(f,null)).join('')}</div>`:`<p class='me'>아직 친구가 없어요. 게임에서 만난 사람을 눌러 프로필을 열고 친구 신청을 보내 보세요.</p>`;
+  const fl=ok.length?`<div class='frs'>내 친구</div><div class='ol'>${ok.filter(f=>onU.has(f.uid)).map(f=>row(f,on.find(v=>v.uid===f.uid))).join('')}${ok.filter(f=>!onU.has(f.uid)).map(f=>row(f,null)).join('')}</div>`:`<p class='me'>아직 친구가 없어요. 게임에서 만난 사람을 눌러 프로필을 열고 친구 신청을 보내 보세요.</p>`;
   const sent=out.length?`<div class='frs'>보낸 신청 <small>${out.length}</small></div><div class='ol'>${out.map(f=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr off'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>수락을 기다리는 중이에요</small></span><span class='bs'><button type='button' class='g2' data-fr='del' ${a}>취소</button></span></div>`; }).join('')}</div>`:'';
   cardShow(X+head+reqs+fl+sent);
   if(AUTH.db) [...inn,...ok,...out].forEach(f=>AUTH.db.ref('profiles/'+f.uid+'/photo').once('value').then(s=>{ const u=s.val(); if(u) document.querySelectorAll(`#meCard [data-olph="${f.uid}"]`).forEach(el=>{ el.style.backgroundImage=`url('${u}')`; el.textContent=''; }); }).catch(()=>{})); }
