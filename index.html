@@ -4248,7 +4248,7 @@ const MC_ORIGIN='https://player-widget.mixcloud.com';
 const MC_NOVOL=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
 const MC_DEF={edm:'edm',ring:'house',teller:'techno',techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
-  shelter:'techno',paper:'house',sphere:'melodic',jazz:'jazz',disco:'house',potty:'house','nm-jandi':'house','nm-hanok':'afro','nm-soop':'techno','nm-exp':'eclectic','nm-hut':'deephouse','nm-aero':'house','bm-war':'techno','bm-bus':'house'};
+  shelter:'techno',paper:'house',sphere:'edm',jazz:'jazz',disco:'house',potty:'house','nm-jandi':'house','nm-hanok':'afro','nm-soop':'techno','nm-exp':'eclectic','nm-hut':'deephouse','nm-aero':'house','bm-war':'techno','bm-bus':'house'};
 // every stage plays only its own genre
 function mcDefault(T){ return MC_DEF[T.kind==='booth'?T.b.id:T.Z.id]||'deephouse'; }
 // the widget speaks a small postMessage protocol; talking to it directly avoids loading Mixcloud's helper script
