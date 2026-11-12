@@ -5367,7 +5367,12 @@ function friendGo(uid){ const v=PRES.others[uid]; if(!v){ toast('그 사람은 �
     else if(v.in==='shelter'||v.in==='paper'){ x=OX+5.4; z=0; msg=`${v.n} 님은 ${IN_NAME[v.in]}에 있어요. 경호원에게 입장하면 만나요`; } else if(v.in==='sphere'){ x=SPX-24; z=SPZ-34; msg=`${v.n} 님은 지구본점 공연장 안에 있어요. 입장권을 사면 만나요`; }
     if(MAP==='itaewon'){ try{ if(TEL.in) telLeave(); IT.floor=0; }catch(e){} }
     pState.x=x; pState.z=z; pState.y=y; pState.vy=0; pState.face=Math.atan2(v.x-x,v.z-z)||0; yaw=pState.face+Math.PI; if(player) player.root.position.set(x,y,z); toast(msg); };
-  if(v.m!==MAP){ if(v.m==='playa'){ BM.admit=true; if(BM.mode) bmAbort(); } goMap(v.m); setTimeout(land,700); } else land(); }
+  // no shortcut past the door: without admission you arrive at the step before it (the desert gate run, the Nami ticket booth) and meet once you are in
+  const nm=v.n||'버너', dock=v.m==='nami'&&v.x<NX-100;
+  if(v.m==='playa'&&!BM.admit){ if(!BM.mode) goMap('playa'); toast(`${nm} 님은 사막점 안에 있어요. 입장하면 만나요`); return; }
+  if(v.m==='nami'&&!NM.admit&&!dock){ if(MAP!=='nami') goMap('nami'); toast(`${nm} 님은 동물원점 안에 있어요. 매표소에서 티켓을 사고 입장하면 만나요`); return; }
+  const go=()=>{ if(v.m==='nami'){ NM.boat=null; NM.side=dock?'main':'island'; } land(); };
+  if(v.m!==MAP){ goMap(v.m); setTimeout(go,700); } else go(); }
 document.addEventListener('click',e=>{ const g=e.target.closest('[data-go]'); if(g&&g.closest('#meCard')){ e.stopPropagation(); friendGo(g.dataset.go); } },true);
 updaters.push((t,dt)=>{ PRES.olT=(PRES.olT||0)+dt; if(PRES.olT>1){ PRES.olT=0; onlineRender(); } });
 setInterval(()=>{ if(AUTH.user&&PRES.ref&&inGame) PRES.ref.update({t:Date.now()}).catch(()=>{}); },15000);

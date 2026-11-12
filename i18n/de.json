@@ -1948,6 +1948,8 @@
 "🎉 {0} 님과 친구가 됐어요. 이제 채팅할 수 있어요": "🎉 Du und {0} seid jetzt befreundet. Ihr könnt jetzt chatten",
 "{0} 님에게 친구 신청을 보냈어요": "Freundschaftsanfrage an {0} gesendet",
 "{0} 님이 친구 신청을 보냈어요.": "{0} hat dir eine Freundschaftsanfrage geschickt.",
-"지금 접속 중인 친구 {0}명 · 전체 {1}명": "{0} Freunde online · {1} insgesamt"
+"지금 접속 중인 친구 {0}명 · 전체 {1}명": "{0} Freunde online · {1} insgesamt",
+"{0} 님은 사막점 안에 있어요. 입장하면 만나요": "{0} ist in der Wüste. Ihr trefft euch, sobald du drin bist",
+"{0} 님은 동물원점 안에 있어요. 매표소에서 티켓을 사고 입장하면 만나요": "{0} ist im Zoo. Kauf am Ticketschalter ein Ticket und geh rein, dann trefft ihr euch"
 }
 }
