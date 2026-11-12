@@ -6195,8 +6195,15 @@ function schFill(key,L,t,prev){ let pool=[]; const seen=new Set(); for(const x o
   const long=pool.filter(x=>(x.dur||60)>=30); if(long.length) pool=long; // a 3-minute track cannot cover a 30-minute block
   const prevEnd=prev?(prev.dur?prev.start+prev.dur*60000:t):-Infinity, nx=L.find(x=>x.start>t), b=Math.floor(t/SCH_GAP);
   let st=Math.max(b*SCH_GAP,prevEnd); const end=Math.min((b+1)*SCH_GAP,nx?nx.start:Infinity); if(!(st<=t&&t<end)) return null;
-  let h=b; for(const c of key) h=(h*31+c.charCodeAt(0))>>>0; const x=pool[h%pool.length];
+  let h=b; for(const c of key) h=(h*31+c.charCodeAt(0))>>>0;
+  // one DJ never plays two stages of the same branch at once: skip DJs already on at another stage there (stages earlier in the list pick first)
+  const taken=schItTaken(key,t); let x=pool[h%pool.length]; for(let n=0;n<pool.length;n++){ const y=pool[(h+n)%pool.length]; if(!taken.has(djN(y.dj))){ x=y; break; } }
   return Object.assign({},x,{start:st,dur:(end-st)/60000,id:key+'@fill'+st+'@'+x.url,fill:true}); }
+const djN=d=>String(d||'').trim().toLowerCase();
+function schItTaken(key,t){ const S=new Set(), A=LU_AREAS.find(a=>a[2].some(([k])=>k===key)), KEYS=A?A[2].map(([k])=>k):[], me=KEYS.indexOf(key); if(me<0) return S;
+  KEYS.forEach((o,i)=>{ if(o===key) return; const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[o])||[]).concat(SCH_DEF[o]||[]);
+    const live=L.find(x=>x.start<=t&&t<(x.dur?x.start+x.dur*60000:Infinity)); if(live){ S.add(djN(live.dj)); return; }
+    if(i<me){ const f=schSlot(o); if(f) S.add(djN(f.dj)); } }); S.delete(''); return S; }
 function schItem(sl){ const base={name:sl.title||'',titled:!!sl.title,user:{name:sl.dj||''},djIntro:sl.djIntro||'',musicIntro:sl.musicIntro||'',sched:true,pictures:sl.art?{medium:sl.art,'320wx320h':sl.art}:null};
   const su=scUrl(sl.url); if(su) return Object.assign(base,{sc:true,key:su,name:sl.title||'SoundCloud 세트'});
   const mk=mcKey(sl.url); if(!mk) return null; const it=Object.assign(base,{key:mk,name:sl.title||decodeURIComponent(mk.split('/').filter(Boolean).pop()||'').split('-').join(' ')});

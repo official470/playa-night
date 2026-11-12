@@ -517,16 +517,23 @@ async function scPool(){ if(SCPOOL&&SCPOOL.length) return SCPOOL.concat(scLoaded
 function scLoaded(){ return (SCL.items||[]).filter(x=>x&&x.permalink_url&&!x._cat&&(x.full_duration||x.duration)&&!(x.duration<x.full_duration)).map(x=>({src:'sc',url:x.permalink_url,title:x.title,dj:x.user&&x.user.username||'',art:(x.artwork_url||'').replace('-large','-t500x500'),sec:Math.round((x.full_duration||x.duration)/1000),plays:x.playback_count||0})); }
 const mcItem=c=>({src:'mc',url:'https://www.mixcloud.com'+c.key,title:c.name,dj:c.user&&c.user.name||'',art:c.pictures&&(c.pictures['320wx320h']||c.pictures.large||c.pictures.medium)||'',sec:c.audio_length||0});
 const AUTO_NAME={mix:'Mixcloud와 SoundCloud를 섞어서',mc:'Mixcloud 인기 세트로',sc:'SoundCloud 세트와 트랙으로'};
+const djNorm=d=>String(d||'').trim().toLowerCase();
+// the other stages of the same branch as stage k (desert, Itaewon, Nami, Las Vegas)
+function djSiblings(k){ const A=AREAS.find(([n,L])=>L.some(([x])=>x===k)); return A?A[1].map(([x])=>x).filter(x=>x!==k):[]; }
+// before filling: take out upcoming auto-made slots whose DJ is on at another stage of the same branch at the same time (hand-made slots are never touched)
+function autoDeclash(now){ let n=0; for(const [an,L] of AREAS) for(const [k] of L){ const S=data.booths[k]; if(!S) continue; for(let q=S.length-1;q>=0;q--){ const s=S[q]; if(s.auto&&s.start>now&&djClash(s.dj,k,s.start,endOf(s))){ S.splice(q,1); n++; } } } return n; }
+function djClash(dj,k,a,b){ const n=djNorm(dj); if(!n) return false; return djSiblings(k).some(o=>(data.booths[o]||[]).some(s=>djNorm(s.dj)===n&&s.start<b&&endOf(s)>a)); }
 async function autoFill(mode){ mode=mode||'mix'; const keys=AREAS.flatMap(([a,L])=>L.map(([k])=>k));
-  if(!confirm(`모든 부스(${keys.length}곳)의 지금부터 24시간 빈 시간을 ${AUTO_NAME[mode]} 채울까요? 이미 편성한 시간은 그대로 둬요.`)) return;
+  if(!confirm(`모든 부스(${keys.length}곳)의 지금부터 24시간 빈 시간을 ${AUTO_NAME[mode]} 채울까요? 이미 편성한 시간은 그대로 둬요. (같은 지점에서 같은 DJ가 같은 시간에 겹친 자동 편성은 빼고 다시 채워요)`)) return;
   const btns=[...document.querySelectorAll('[data-auto]')]; btns.forEach(b=>b.disabled=true); const now=Date.now(), from=Math.ceil(now/300000)*300000, to=now+24*3600000; let added=0, done=0, noSrc=0;
+  const fixed=autoDeclash(now);
   let sc=[]; if(mode!=='mc'){ $('#autoMsg').textContent='SoundCloud 목록을 준비하는 중이에요'; sc=await scPool(); }
   const scLong=sc.filter(x=>x.sec>=1200), scShort=sc.filter(x=>x.sec<1200&&x.sec>=90);
   for(const k of keys){ $('#autoMsg').textContent=`${NAME[k].split(' · ')[0]} 채우는 중이에요 (${++done}/${keys.length})`;
     const mc=mode==='sc'?[]:shuffle(await poolFor(BOOTH_TAG[k]||'techno')).map(mcItem);
     // Korean DJs play only in Itaewon, and in Itaewon they go first; the jazz club takes jazz mixes only (no club sets from SoundCloud)
     const here=x=>k!=='zone:jazz'&&(!x.only||x.only.includes(k)), kr=x=>x.only&&x.only.includes(k);
-    const scLongK=scLong.filter(here).sort((a,b)=>(kr(b)?1:0)-(kr(a)?1:0)), scLongH=ITAEWON.includes(k)?scLongK.filter(kr).concat(shuffle(scLongK.filter(x=>!kr(x)))):shuffle(scLongK);
+    const scLongK=scLong.filter(here).sort((a,b)=>(kr(b)?1:0)-(kr(a)?1:0)), scLongH=ITAEWON.includes(k)?shuffle(scLongK.filter(kr)).concat(shuffle(scLongK.filter(x=>!kr(x)))):shuffle(scLongK);
     // the running order for this booth: long sets, with a SoundCloud track between sets when mixing
     const longs=mode==='mc'?mc:mode==='sc'?scLongH:(()=>{ const L=[], A=mc, Bl=scLongH; if(ITAEWON.includes(k)) Bl.filter(kr).forEach(x=>L.push(x)); for(let i=0;i<Math.max(A.length,Bl.length);i++){ if(A[i]) L.push(A[i]); if(i%2===1&&Bl[i>>1]) L.push(Bl[i>>1]); } return L; })();
     const shorts=mode==='mc'?[]:shuffle(scShort.filter(here));
@@ -534,17 +541,19 @@ async function autoFill(mode){ mode=mode||'mix'; const keys=AREAS.flatMap(([a,L]
     const S=slotsOf(k), busy=S.map(s=>[s.start,endOf(s)]).filter(([a,b])=>b>from).sort((a,b)=>a[0]-b[0]);
     let t=from, i=0, j=0, guard=0, sinceShort=0;
     const put=x=>{ const dur=Math.max(1,Math.ceil(x.sec/60)), slot={start:t,dur,url:x.url,title:x.title,dj:x.dj,art:x.art,djIntro:'',musicIntro:'',auto:true}; S.push(slot); busy.push([slot.start,endOf(slot)]); busy.sort((a,b)=>a[0]-b[0]); t=endOf(slot); added++; };
-    const fitShort=gap=>{ for(let n=0;n<shorts.length;n++){ const x=shorts[(j+n)%shorts.length]; if(x.sec*1000<=gap){ j=(j+n+1)%shorts.length; return x; } } return null; };
+    // one DJ never plays two stages of the same branch at once: skip a set whose DJ is on at another stage of this branch during that time
+    const clash=x=>djClash(x.dj,k,t,t+Math.max(1,Math.ceil(x.sec/60))*60000);
+    const fitShort=gap=>{ for(let n=0;n<shorts.length;n++){ const x=shorts[(j+n)%shorts.length]; if(x.sec*1000<=gap&&!clash(x)){ j=(j+n+1)%shorts.length; return x; } } return null; };
     while(t<to&&guard++<400){ const block=busy.find(([a,b])=>t>=a&&t<b); if(block){ t=block[1]; continue; }
       const nextStart=(busy.find(([a])=>a>t)||[Infinity])[0], gap=Math.min(nextStart,to+4*3600000)-t;
       // mixing: a SoundCloud track between sets; SoundCloud-only or small gaps: short tracks fill in
       if(shorts.length&&(gap<30*60000||(mode==='mix'&&sinceShort>=1)||!longs.length)){ const x=fitShort(gap); if(x){ put(x); sinceShort=0; continue; } }
-      let c=null; for(let n=0;n<longs.length;n++){ const x=longs[(i+n)%longs.length]; if(x.sec*1000<=gap){ c=x; i=(i+n+1)%longs.length; break; } }
-      if(!c){ t=nextStart===Infinity?to:nextStart; continue; }
+      let c=null; for(let n=0;n<longs.length;n++){ const x=longs[(i+n)%longs.length]; if(x.sec*1000<=gap&&!clash(x)){ c=x; i=(i+n+1)%longs.length; break; } }
+      if(!c){ t=nextStart===Infinity?to:(longs.some(x=>x.sec*1000<=gap)?t+5*60000:nextStart); continue; } // only clashes fit: try again 5 minutes later
       put(c); sinceShort++; } }
-  dirty=dirty||added>0; btns.forEach(b=>b.disabled=false); render();
+  dirty=dirty||added>0||fixed>0; btns.forEach(b=>b.disabled=false); render();
   if(!added&&noSrc===keys.length){ $('#autoMsg').textContent=mode==='sc'?'SoundCloud 목록을 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.':'Mixcloud에서 인기 세트를 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.'; status('세트를 불러오지 못했어요','err'); return; }
-  $('#autoMsg').textContent=added?`${AUTO_NAME[mode]} ${added}개를 자동으로 편성했어요. 위의 ‘게임에 게시하기’를 눌러야 게임에 반영돼요.`:'채울 빈 시간이 없어요.';
+  $('#autoMsg').textContent=(added?`${AUTO_NAME[mode]} ${added}개를 자동으로 편성했어요. 위의 ‘게임에 게시하기’를 눌러야 게임에 반영돼요.`:'채울 빈 시간이 없어요.')+(fixed?` 같은 지점에서 같은 DJ가 겹치던 자동 편성 ${fixed}개는 빼고 다시 배치했어요.`:'');
   status(added?`자동 편성 ${added}개 완료. 게시해야 반영돼요`:'채울 빈 시간이 없어요',added?'ok':''); }
 document.querySelectorAll('[data-auto]').forEach(b=>b.addEventListener('click',()=>autoFill(b.dataset.auto)));
 $('#autoClear').addEventListener('click',()=>{ const now=Date.now(), del=[]; for(const k in data.booths) data.booths[k].forEach(x=>{ if(x.auto&&x.start>now) del.push([k,x]); });
