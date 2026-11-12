@@ -9070,11 +9070,22 @@
    },
    {
     "start": 1794491160000,
-    "dur": 192,
+    "dur": 103,
     "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
     "title": "Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025",
     "dj": "Minkyu",
     "art": "https://i1.sndcdn.com/artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true
+   },
+   {
+    "start": 1794497340000,
+    "dur": 89,
+    "url": "https://soundcloud.com/cerclelive/the-blaze-cercle-odyssey",
+    "title": "The Blaze live at Cercle Odyssey, Mexico City, Mexico",
+    "dj": "The Blaze",
+    "art": "https://i1.sndcdn.com/artworks-G6Fy6JxoDpyuBUWC-MrZE5A-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true
@@ -16446,11 +16457,22 @@
    },
    {
     "start": 1794491160000,
-    "dur": 192,
+    "dur": 103,
     "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
     "title": "Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025",
     "dj": "Minkyu",
     "art": "https://i1.sndcdn.com/artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true
+   },
+   {
+    "start": 1794497340000,
+    "dur": 89,
+    "url": "https://soundcloud.com/oho990828/april-haze",
+    "title": "April Haze",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true
@@ -17042,11 +17064,22 @@
    },
    {
     "start": 1794488040000,
-    "dur": 346,
+    "dur": 155,
     "url": "https://soundcloud.com/nicolaslutz/womb_250322_nicolas-lutz",
     "title": "Nicolas Lutz - Live at WOMBTOKYO 22/03/2025",
     "dj": "Nicolas Lutz",
     "art": "https://i1.sndcdn.com/artworks-yw81kfmVFs9OPYGy-WDz41Q-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true
+   },
+   {
+    "start": 1794497340000,
+    "dur": 89,
+    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
+    "title": "Up The Stuss Radio 02 By Chris Stussy",
+    "dj": "Chris Stussy",
+    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true
@@ -17341,11 +17374,22 @@
    },
    {
     "start": 1794491160000,
-    "dur": 192,
+    "dur": 103,
     "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
     "title": "Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025",
     "dj": "Minkyu",
     "art": "https://i1.sndcdn.com/artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true
+   },
+   {
+    "start": 1794497340000,
+    "dur": 89,
+    "url": "https://soundcloud.com/dau_ra/ring_seoul",
+    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true
@@ -17695,5 +17739,5 @@
    }
   ]
  },
- "updated": "2026-11-12T14:16:35.256Z"
+ "updated": "2026-11-12T15:29:27.000Z"
 }

@@ -523,10 +523,12 @@ const AUTO_NAME={mix:'Mixcloud와 SoundCloud를 섞어서',mc:'Mixcloud 인기 �
 const djNorm=d=>String(d||'').trim().toLowerCase();
 // the other stages of the same branch as stage k (desert, Itaewon, Nami, Las Vegas)
 function djSiblings(k){ const A=AREAS.find(([n,L])=>L.some(([x])=>x===k)); return A?A[1].map(([x])=>x).filter(x=>x!==k):[]; }
-// before filling: take out upcoming auto-made slots whose DJ is on at another stage of the same branch at the same time (hand-made slots are never touched)
+// before filling: take out auto-made slots (on now or still to come) whose DJ is on at another stage of the same branch at the same time (hand-made slots are never touched)
 function autoDeclash(now){ let n=0;
   // the EDM stages start clean: upcoming auto-made slots that were not placed as EDM are taken out so EDM sets fill the time
-  for(const k of EDM_ST){ const S=data.booths[k]; if(!S) continue; for(let q=S.length-1;q>=0;q--){ const s=S[q]; if(s.auto&&s.start>now&&s.g!=='edm'){ S.splice(q,1); n++; } } } for(const [an,L] of AREAS) for(const [k] of L){ const S=data.booths[k]; if(!S) continue; for(let q=S.length-1;q>=0;q--){ const s=S[q]; if(s.auto&&s.start>now&&djClash(s.dj,k,s.start,endOf(s))){ S.splice(q,1); n++; } } } return n; }
+  for(const k of EDM_ST){ const S=data.booths[k]; if(!S) continue; for(let q=S.length-1;q>=0;q--){ const s=S[q]; if(s.auto&&s.start>now&&s.g!=='edm'){ S.splice(q,1); n++; } } } for(const [an,L] of AREAS) for(const [k] of L){ const S=data.booths[k]; if(!S) continue; for(let q=S.length-1;q>=0;q--){ const s=S[q]; if(!s.auto||endOf(s)<=now||!djClash(s.dj,k,Math.max(s.start,now),endOf(s))) continue;
+      // a set that is on right now is cut off at this minute (the part already played stays); one still to come is simply removed
+      if(s.start<=now){ s.dur=Math.max(1,Math.round((now-s.start)/60000)); if(endOf(s)>now) s.dur=Math.max(1,s.dur-1); } else S.splice(q,1); n++; } } return n; }
 function djClash(dj,k,a,b){ const n=djNorm(dj); if(!n) return false; return djSiblings(k).some(o=>(data.booths[o]||[]).some(s=>djNorm(s.dj)===n&&s.start<b&&endOf(s)>a)); }
 async function autoFill(mode){ mode=mode||'mix'; const keys=AREAS.flatMap(([a,L])=>L.map(([k])=>k));
   if(!confirm(`모든 부스(${keys.length}곳)의 지금부터 24시간 빈 시간을 ${AUTO_NAME[mode]} 채울까요? 이미 편성한 시간은 그대로 둬요. (같은 지점에서 같은 DJ가 겹친 자동 편성과, EDM 스테이지의 EDM이 아닌 자동 편성은 빼고 다시 채워요)`)) return;
