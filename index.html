@@ -3622,7 +3622,8 @@ function buildItaewon(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sc
   [-1,1].forEach(side=>{ let z=-72; while(z<72){ const d=rand(8,14), zc=z+d/2;
     // left side, just before Shelter: the Ring building (z -31..-19, built in buildRing) and its alley, then one narrow building closing the alley's far wall
     if(side>0&&z<-13.4&&z+d>-31){ if(-31-z>=4){ const d2=-31-z; bldg(13,z+d2/2,12,d2-.4,3+Math.floor(Math.random()*4),-1); } bldg(13,-11.35,12,3.7,4,-1); z=15; continue; }
-    if(side>0&&zc>-15&&zc<15){ z=15; continue; } if(side<0&&z<28&&z+d>20){ if(20-z>=4){ const d2=20-z; bldg(side*13,z+d2/2,12,d2-.4,3+Math.floor(Math.random()*4),-side); } z=28; continue; } bldg(side*13,zc,12,d-.4,3+Math.floor(Math.random()*4),-side); z+=d; } });
+    if(side>0&&zc>-15&&zc<15){ z=15; continue; } if(side<0&&z<-17&&z+d>-25){ if(-25-z>=4){ const d2=-25-z; bldg(side*13,z+d2/2,12,d2-.4,3+Math.floor(Math.random()*4),-side); } z=-17; continue; } // Extended Studio's plot (built in buildStudio)
+    if(side<0&&z<28&&z+d>20){ if(20-z>=4){ const d2=20-z; bldg(side*13,z+d2/2,12,d2-.4,3+Math.floor(Math.random()*4),-side); } z=28; continue; } bldg(side*13,zc,12,d-.4,3+Math.floor(Math.random()*4),-side); z+=d; } });
   for(let i=0;i<(LOW?16:32);i++){ const a=Math.random()*Math.PI*2, r=rand(80,220), w=rand(10,22), h=rand(20,80), t=pick(WT).clone(); t.needsUpdate=true; t.repeat.set(Math.round(w/3),Math.round(h/3.4));
     const tw=new THREE.Mesh(G.box,new THREE.MeshLambertMaterial({map:t,emissive:0xffffff,emissiveMap:t,emissiveIntensity:.7})); tw.scale.set(w,h,w); tw.position.set(Math.cos(a)*r,h/2,Math.sin(a)*r); IG.add(tw); }
   mesh(G.cone,M('#1e2a22'),-150,30,-300,130,60,130,IG); mesh(G.cyl,M('#d8d8e0'),-150,80,-300,1.4,40,1.4,IG); mesh(G.cyl,M('#fff3d0',{glow:1.2}),-150,102,-300,4.5,5,4.5,IG); mesh(G.cyl,M('#ff2a2a',{glow:1.6}),-150,112,-300,.3,14,.3,IG);
@@ -3830,7 +3831,7 @@ function openMapSelOld(){ openSp('맵 이동','어디로 갈까요?',`<div class
 $('#mapBtn').addEventListener('click',()=>{ const l=$('#boothList'); l.hidden=false; $('#mapToggle').setAttribute('aria-expanded','true'); renderBoothList(); });
 document.querySelectorAll('.mapsel [data-map]').forEach(b=>b.addEventListener('click',()=>{ selMap=b.dataset.map; document.querySelectorAll('.mapsel [data-map]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); }));
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='itaewon'&&MAP!=='itaewon') setTimeout(()=>goMap('itaewon'),50); });
-const IT_SPOTS=[{n:'이태원 거리 입구',x:OX-1.5,z:-58},{n:'횡단보도 앞',x:OX-1,z:-35},{n:'클럽 건물 앞 (경호원)',x:OX+5,z:-4},{n:'4F 쉘터 (딥테크노)',fl:3},{n:'5F 페이퍼 (하우스 루프탑)',fl:4},{n:'B1 텔러 골목 (테크노)',x:OX-24,z:24},{n:'링 골목 (하우스 · LP)',x:OX+5.6,z:-16.3},{n:'사막점으로 돌아가기',back:1}];
+const IT_SPOTS=[{n:'이태원 거리 입구',x:OX-1.5,z:-58},{n:'횡단보도 앞',x:OX-1,z:-35},{n:'클럽 건물 앞 (경호원)',x:OX+5,z:-4},{n:'4F 쉘터 (딥테크노)',fl:3},{n:'5F 페이퍼 (하우스 루프탑)',fl:4},{n:'B1 텔러 골목 (테크노)',x:OX-24,z:24},{n:'링 골목 (하우스 · LP)',x:OX+5.6,z:-16.3},{n:'익스텐디드 스튜디오 (길거리 DJ)',x:OX-3.6,z:-19.6},{n:'사막점으로 돌아가기',back:1}];
 function renderBoothListIT(){ if(MAP!=='itaewon') return renderBoothListPlaya(); const ul=$('#boothList'); if(ul.hidden) return;
   ul.innerHTML=`<li class='cat'><button disabled>🇰🇷 이태원 · 한국 서울<small>${IT_SPOTS.filter(s=>!s.back).length}곳</small></button></li>`+IT_SPOTS.map((s,i)=>s.back?'':`<li><span class='dot' style='background:${s.fl===3?'#ff2a2a':s.fl===4?'#ffcf8a':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-it='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-it]'); if(!b) return; const s=IT_SPOTS[+b.dataset.it];
@@ -3854,7 +3855,16 @@ const RING_DEF=[
   ['oho990828/april-haze','April Haze','Oho.',5704,'artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg'],
   ['oho990828/oho-nothing-in','Nothing in','Oho.',3216,'artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg']
  ].map(([p,title,dj,sec,art])=>({start:0,dur:Math.ceil(sec/60),url:'https://soundcloud.com/'+p,title,dj,art:'https://i1.sndcdn.com/'+art,djIntro:'',musicIntro:'',auto:true,def:true}));
-const SCH_DEF={'zone:ring':RING_DEF};
+// Extended Studio's default sets (house and disco): they play in the shop window whenever nothing else is scheduled there
+const STUDIO_DEF=[
+  ['platform/folamour-sugar-mountain-2024','Folamour | Boiler Room x Sugar Mountain 2024','Folamour',3585,'artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg'],
+  ['platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set','Honey Dijon Boiler Room Sugar Mountain Melbourne DJ Set','Honey Dijon',3570,'artworks-000312169044-um407k-t500x500.jpg'],
+  ['mallgrab/br-set-melbourne-22',"Boiler Room Set Melbourne '22",'Mall Grab',5402,'artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg'],
+  ['platform/peggy-gou','Peggy Gou Boiler Room x Dekmantel Festival DJ Set','Peggy Gou',3504,'artworks-000241463822-16r29o-t500x500.jpg'],
+  ['platform/jayda-g','Jayda G Boiler Room London Studio DJ Set','Jayda G',7201,'artworks-000172160688-npyep4-t500x500.jpg'],
+  ['upthestuss/up-the-stuss-radio-02-by-chris-stussy','Up The Stuss Radio 02 By Chris Stussy','Chris Stussy',5284,'artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg']
+ ].map(([p,title,dj,sec,art])=>({start:0,dur:Math.ceil(sec/60),url:'https://soundcloud.com/'+p,title,dj,art:'https://i1.sndcdn.com/'+art,djIntro:'',musicIntro:'',auto:true,def:true}));
+const SCH_DEF={'zone:ring':RING_DEF,'zone:studio':STUDIO_DEF};
 // everyone at Ring is a 링돌이 (m) or a 링순이 (f): it picks the hair and the name of the talk button
 function ringLook(){ const f=Math.random()<.5; return {ringG:f?'f':'m',hairStyle:f?pick(['long','bob','buns','braids']):pick(['buzz','buzz','bald','mohawk','afro']),top:pick(['tee','long','tank','tee','long']),topColor:pick(['#101012','#141416','#1a1a1e']),outer:Math.random()<.25?'vest':'none',outerColor:'#121214',bottom:pick(['cargo','leggings','cargo']),bottomColor:'#101012',shoes:'boots',shoeColor:'#0e0e10',head:pick(['none','none','none','bucket']),headColor:'#101012',face:'none',extra:'none'}; }
 function ringStairY(lx){ return clamp((lx-9.6)/7.4,0,1)*3.6; }
@@ -4035,6 +4045,62 @@ function buildItaewonExtras(){ const IG=new THREE.Group(); IG.position.set(OX,0,
   // thin grey smoke from whoever is holding a cigarette
   updaters.push((t,dt)=>{ if(MAP!=='itaewon'||TEL.in||RING.in) return; for(const V of ITSM){ const p=V.P.root.position; if(Math.abs(p.x-pState.x)>45||Math.abs(p.z-pState.z)>45) continue; V.t-=dt; if(V.t<=0){ V.t=rand(5,10); V.n=3; }
     if(V.n>0&&Math.random()<dt*6){ V.n--; const a=V.P.root.rotation.y; part({x:p.x+Math.sin(a)*.22,y:1.5,z:p.z+Math.cos(a)*.22,vx:Math.sin(a)*.25+rand(-.08,.08),vy:rand(.2,.45),vz:Math.cos(a)*.25+rand(-.08,.08),col:'#b9bcc4',op:.3,size:.14,grow:.4,life:2.6}); } } }); }
+
+/* ================= EXTENDED STUDIO (Itaewon street) =================
+   A shop you cannot enter: clothes and a DJ booth behind the window, the set plays out on the street for whoever stands outside. */
+const STUDIO={z:-21,zone:null};
+const STUDIO_TR=[{name:'스튜디오 하우스',bpm:122,root:36,kick:K4,hat:OFF,oh:OFF,clap:CL,bass:'0.0..0.0..c.0.7.',bt:'pluck',prog:[[0,'min7'],[5,'min7'],[3,'maj7'],[-2,'dom7']],chord:'x..x..x.......x.',ct:'stab'}];
+function studioLogoTex(){ const c=document.createElement('canvas'); c.width=c.height=512; const x=c.getContext('2d');
+  const g=x.createRadialGradient(256,256,150,256,256,256); g.addColorStop(0,'rgba(200,215,255,.9)'); g.addColorStop(1,'rgba(120,150,255,0)'); x.fillStyle=g; x.fillRect(0,0,512,512);
+  x.beginPath(); x.arc(256,256,196,0,7); x.fillStyle='#0d1030'; x.fill(); x.lineWidth=14; x.strokeStyle='#f4f7ff'; x.shadowColor='#bcd0ff'; x.shadowBlur=24; x.stroke();
+  x.fillStyle='#f4f7ff'; x.textAlign='center'; x.textBaseline='middle'; x.translate(256,256); x.rotate(-.14);
+  x.font='italic 900 78px "Arial Black",Impact,sans-serif'; x.fillText('EXTENDED',0,-48,330); x.font='italic 900 104px "Arial Black",Impact,sans-serif'; x.fillText('STUDIO',0,50,330);
+  return new THREE.CanvasTexture(c); }
+function studioHoodieTex(col){ const c=document.createElement('canvas'); c.width=c.height=128; const x=c.getContext('2d'); x.fillStyle=col; x.beginPath(); x.moveTo(40,20); x.quadraticCurveTo(64,4,88,20); x.lineTo(124,50); x.lineTo(108,74); x.lineTo(96,62); x.lineTo(96,122); x.lineTo(32,122); x.lineTo(32,62); x.lineTo(20,74); x.lineTo(4,50); x.closePath(); x.fill();
+  x.strokeStyle='rgba(255,255,255,.25)'; x.lineWidth=2; x.beginPath(); x.arc(64,24,14,.3,2.84); x.stroke(); x.beginPath(); x.arc(64,78,22,0,7); x.fillStyle='#f4f7ff'; x.fill(); x.fillStyle='#0d1030'; x.font='900 11px sans-serif'; x.textAlign='center'; x.fillText('EXTENDED',64,76); x.fillText('STUDIO',64,88); return new THREE.CanvasTexture(c); }
+function studioScreenTex(){ const c=document.createElement('canvas'); c.width=384; c.height=128; const x=c.getContext('2d'); const g=x.createLinearGradient(0,0,384,128); g.addColorStop(0,'#3a1aa8'); g.addColorStop(.5,'#6a3cff'); g.addColorStop(1,'#1a2a9a'); x.fillStyle=g; x.fillRect(0,0,384,128);
+  for(let i=0;i<26;i++){ x.fillStyle=pick(['#ff5ad0','#ffd23d','#46d6ff','#9fffc0','#ffffff','#ff7a2f']); x.globalAlpha=rand(.5,.95); x.fillRect(rand(0,150),rand(8,110),rand(8,22),rand(8,26)); } x.globalAlpha=1;
+  x.fillStyle='#1a1a2a'; x.fillRect(200,58,150,60); x.fillStyle='#46d6ff'; x.fillRect(214,40,34,22); x.fillRect(256,40,34,22); x.fillRect(298,40,34,22);
+  [[176,62,'#2a2a3a'],[205,66,'#3a5ad0']].forEach(([px,py,col])=>{ x.fillStyle=col; x.fillRect(px,py,22,52); x.beginPath(); x.arc(px+11,py-9,10,0,7); x.fill(); });
+  x.fillStyle='#ff3b3b'; x.beginPath(); x.arc(16,16,6,0,7); x.fill(); x.fillStyle='#fff'; x.font='700 14px sans-serif'; x.fillText('LIVE',28,21); return new THREE.CanvasTexture(c); }
+function buildStudio(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); scene.add(IG); STUDIO.g=IG; const Z0=STUDIO.z, blk=M('#0b0b0e'), brick=M('#dcd8d0'), wall=M('#d8d2c6'), mine=[];
+  const face=(tex,w,h,x,y,z,o)=>{ const m=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial(Object.assign({map:tex,transparent:true},o||{}))); m.scale.set(w,h,1); m.position.set(x,y,z); m.rotation.y=Math.PI/2; IG.add(m); return m; };
+  // upper floors: pale brick, three dark windows a floor
+  B(12,10.2,8,M('#cfcac0'),-13,8.5,Z0,IG);
+  for(let f=0;f<3;f++) [-2.6,0,2.6].forEach(dz=>{ B(.06,1.9,1.7,M('#16161c'),-6.98,5.1+f*3.4,Z0+dz,IG); B(.1,.12,1.95,M('#f4f1ea'),-6.96,4.1+f*3.4,Z0+dz,IG); });
+  // ground floor: a small room behind the shopfront (x -11..-7), the rest of the block is solid
+  B(4.2,.1,8,M('#4a4038'),-9,.05,Z0,IG); B(.2,3.4,8,wall,-11.1,1.7,Z0,IG); [-1,1].forEach(s=>B(4.2,3.4,.2,wall,-9,1.7,Z0+s*3.9,IG)); B(4.2,.1,8,M('#efeae0'),-9,3.35,Z0,IG); B(7.8,3.4,8,M('#55505a'),-15.1,1.7,Z0,IG);
+  // shopfront: black sign band with the round glowing logo, big window (the +z half), white door (the -z half)
+  B(.5,1,8.2,blk,-6.8,3,Z0,IG); face(studioLogoTex(),2.3,2.3,-6.5,3.2,Z0+.6); const lg=new THREE.PointLight(0xcfd8ff,1.5,13); lg.position.set(-5.2,3.1,Z0+.6); IG.add(lg);
+  B(.2,2.5,1.4,brick,-7,1.25,Z0+3.3,IG); B(.2,2.5,1.4,brick,-7,1.25,Z0-3.3,IG); B(.2,2.5,.6,blk,-7,1.25,Z0-.9,IG);
+  B(.2,.45,3.2,blk,-7,.225,Z0+1,IG); B(.2,.15,3.2,blk,-7,2.425,Z0+1,IG);
+  [[.47,1.03],[2.33,1.03]].forEach(([y])=>B(.26,.07,3.3,blk,-6.98,y,Z0+1,IG)); [-.6,2.6].forEach(dz=>B(.26,1.95,.09,blk,-6.98,1.4,Z0+dz,IG));
+  const glass=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({color:0x9fc0ff,transparent:true,opacity:.08,depthWrite:false})); glass.scale.set(3.2,1.9,1); glass.position.set(-6.93,1.4,Z0+1); glass.rotation.y=Math.PI/2; IG.add(glass);
+  B(.12,2.2,1.36,M('#f1eee8'),-6.96,1.1,Z0-1.9,IG); B(.2,.3,1.4,blk,-7,2.35,Z0-1.9,IG); B(.02,1.9,.5,blk,-6.89,1.15,Z0-2.3,IG);
+  [[1.75,.2],[1.25,.17],[.75,.13]].forEach(([y,r])=>{ const c=mesh(G.cyl,M('#1a1a22'),-6.88,y,Z0-1.75,r,.02,r,IG); c.rotation.z=Math.PI/2; const c2=mesh(G.cyl,M('#f1eee8'),-6.87,y,Z0-1.75,r*.7,.02,r*.7,IG); c2.rotation.z=Math.PI/2; });
+  B(.05,.3,.05,M('#2a2a30'),-6.86,1.05,Z0-1.3,IG);
+  // inside: a screen across the lower window, the DJ on a riser right behind the glass, hoodies and racks on the walls
+  face(studioScreenTex(),3.1,.84,-7.14,.92,Z0+1,{transparent:false}); B(.12,.9,3.2,blk,-7.22,.9,Z0+1,IG);
+  B(1.5,.55,3.3,M('#2a2622'),-8.1,.275,Z0+1,IG); B(.62,.07,2.5,M('#17171b'),-7.72,1.5,Z0+1,IG); [-.9,.9].forEach(dz=>B(.05,.95,.05,M('#2a2a30'),-7.72,1.02,Z0+1+dz,IG));
+  [-.75,.75].forEach(dz=>{ B(.42,.08,.42,M('#101014'),-7.72,1.575,Z0+1+dz,IG); const j=mesh(G.cyl,M('#3a3a44'),-7.72,1.625,Z0+1+dz,.15,.015,.15,IG); mesh(G.sph,M('#9fffc0',{glow:1.6}),-7.58,1.625,Z0+1+dz+.12,.018,.018,.018,IG); });
+  B(.4,.09,.36,M('#1c1c22'),-7.72,1.58,Z0+1,IG); for(let k=0;k<4;k++) mesh(G.cyl,M('#c8c8d0'),-7.8+(k>>1)*.14,1.64,Z0+.93+(k%2)*.14,.02,.03,.02,IG);
+  const dj=addNPC(Object.assign(avantLook(),{extra:'none',head:'none',face:'none',topColor:'#7f9fc8',top:'long',hairStyle:'buns',hairColor:'#e8c890'}),{x:OX-8.4,z:Z0+1},Math.PI/2,'dj',{zone:null,y:.55}); STUDIO.dj=dj; mine.push(dj.P);
+  [['#0b0b0e',-.3],['#0b0b0e',.75],['#f4f4f0',1.8],['#3a3aa8',2.85]].forEach(([c,dz])=>face(studioHoodieTex(c),.95,.95,-10.98,2.45,Z0+dz));
+  B(.04,.04,3.6,M('#b8b8c0'),-10.6,1.75,Z0+1.2,IG); for(let i=0;i<12;i++) B(.5,.85,.06,M(pick(['#0b0b0e','#f4f4f0','#3a3aa8','#ff4fa8','#c6ff3d','#2a2a30','#ff7a2f'])),-10.6,1.3,Z0-.4+i*.29,IG);
+  B(3,.04,.04,M('#b8b8c0'),-9.2,1.75,Z0+3.5,IG); for(let i=0;i<9;i++) B(.06,.85,.5,M(pick(['#0b0b0e','#f4f4f0','#3a3aa8','#ffd23d','#2a2a30','#9b6bff'])),-10.4+i*.3,1.3,Z0+3.5,IG);
+  B(.5,.9,1.6,M('#8a6a4a'),-10.7,.5,Z0-2.6,IG); for(let i=0;i<6;i++) B(.34,.07,.3,M(pick(['#f4f4f0','#0b0b0e','#ff4fa8','#46d6ff'])),-10.7,.99+(i>>1)*.075,Z0-3.1+(i%2)*.9+rand(-.05,.05),IG);
+  face(studioHoodieTex('#0b0b0e'),.6,.6,-10.98,1.2,Z0-1.2); [[-1.9,'#ff4fa8'],[-2.6,'#46d6ff'],[-3.3,'#ffd23d']].forEach(([dz,c])=>B(.02,.7,.5,M(c,{glow:.25}),-10.98,2.3,Z0+dz,IG));
+  const il=new THREE.PointLight(0xffd9a8,1.5,10); il.position.set(-9,2.9,Z0+.5); IG.add(il); B(.5,.04,.5,M('#fff3d0',{glow:1.6}),-9,3.28,Z0+.5,IG);
+  const shopper=addNPC(avantLook(),{x:OX-10,z:Z0-1.6},-Math.PI/2+.4,'talk',{}); mine.push(shopper.P);
+  // out on the pavement: a monitor speaker aimed at the street, and people who stopped to listen
+  const sp=B(.55,.6,.75,M('#1a1a1e'),-6.45,.3,Z0+3.3,IG); sp.rotation.y=-.35; const gr=B(.02,.5,.65,M('#3a3a42'),-6.16,.3,Z0+3.2,IG); gr.rotation.y=-.35; colliders.push({x:OX-6.45,z:Z0+3.3,r:.6});
+  const Z=makeZone('studio',OX-6.2,Z0+1,24,STUDIO_TR[0]); Z.vol=.8; STUDIO.zone=Z; dj.zone=Z;
+  [[-5.6,2.3,'sway'],[-5.1,1.2,'pump'],[-5.7,.2,'sway'],[-4.6,2.6,'toprock'],[-4.4,.6,'sway'],[-5.2,-.7,'pump'],[-3.6,1.5,'sway'],[-4.9,3.6,'stomp']].forEach(([x,dz,d],i)=>{ if(LOW&&i>4) return; const z=Z0+dz;
+    const S=addNPC(avantLook(),{x:OX+x,z},Math.atan2(-7.2-x,Z0+1-z),i%3===2?'talk':'dance',i%3===2?{talk:true}:{dance:d,zone:Z,talk:true}); if(i%3===2) handProp(S.P,i%2?'beer':'cig',i%2); mine.push(S.P); });
+  mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); if(!TALKP.includes(P)) TALKP.push(P); });
+  // the logo breathes, the screen flickers a little with the beat
+  const scr=IG.children.find(m=>m.material&&m.material.map&&m.material.map.image&&m.material.map.image.width===384);
+  updaters.push(t=>{ if(MAP!=='itaewon') return; lg.intensity=1.3+.35*Math.sin(t*1.7); if(scr){ const b=boothBeat(Z,t), ph=((b%1)+1)%1; scr.material.color.setScalar(.82+.18*Math.exp(-ph*4)); } }); }
 
 /* ================= CLUB LOOKS + SHELTER MISE-EN-SCENE ================= */
 function shelterLook(){ const y2k=Math.random()<.35;
@@ -4347,7 +4413,7 @@ function musicTarget(){ let best=null, bv=.02;
   if(best.kind==='booth') return Object.assign(best,{name:best.b.name+' 부스',key:'booth:'+best.b.id});
   const Z=best.Z, nz=(typeof NM!=='undefined'&&NM.zones||[]).find(z=>z.Z===Z);
   return Object.assign(best,{name:nz?nz.name:(MC_ZN[Z.id]||Z.id),key:'zone:'+Z.id}); }
-const MC_ZN={ring:'링',teller:'B1 텔러',shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
+const MC_ZN={studio:'익스텐디드 스튜디오',ring:'링',teller:'B1 텔러',shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
 // each genre pulls recent shows from official DJ / label channels
 // each genre: Korean name, official DJ / label channels, and the Mixcloud tag whose most-played mixes join the pool
 const MC_G={techno:['테크노',['residentadvisor','CarlCox'],'techno'],house:['하우스',['Defectedrecords'],'house'],afro:['아프로 하우스',['keinemusik'],'afro-house'],
@@ -4361,7 +4427,7 @@ function mcMusicOnly(c){ const n=c&&c.name||'', a=c&&c.audio_length||0; return !
 const MC_ORIGIN='https://player-widget.mixcloud.com';
 const MC_NOVOL=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
-const MC_DEF={edm:'edm',ring:'house',teller:'techno',techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
+const MC_DEF={edm:'edm',studio:'house',ring:'house',teller:'techno',techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
   shelter:'techno',paper:'house',sphere:'edm',jazz:'jazz',disco:'house',potty:'house','nm-jandi':'house','nm-hanok':'afro','nm-soop':'techno','nm-exp':'eclectic','nm-hut':'deephouse','nm-aero':'house','bm-war':'techno','bm-bus':'house'};
 // every stage plays only its own genre
 function mcDefault(T){ return MC_DEF[T.kind==='booth'?T.b.id:T.Z.id]||'deephouse'; }
@@ -6411,7 +6477,7 @@ const NPC={sig:'',t:0};
 const npEq="<span class='eq' aria-hidden='true'><i></i><i></i><i></i><i></i></span>";
 function npPic(c,big){ const P=c&&c.pictures; const u=P&&(big?(P['320wx320h']||P.large||P.extra_large||P.medium):(P.medium||P.small)); return u?`url("${String(u).replace(/["'()\\\s]/g,'')}")`:''; }
 function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][0],near:mcNear(T),mine:!!(MC.cur&&MC.target&&MC.target.key===T.key)}; }
-function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff',ring:'#3dff6a'}[T.Z&&T.Z.id]||'#b06bff'); }
+function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff',ring:'#3dff6a',studio:'#bcd0ff'}[T.Z&&T.Z.id]||'#b06bff'); }
 function npRender(){ if(!inGame) return; const np=$('#np'); if(!np) return;
   const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null; favSync(c,T); const open=!np.classList.contains('collapsed'), col=npColor(T);
   // the card waits until you reach a stage (or a set is playing); it stays out of the way on the desert drive and at the gate
@@ -6443,7 +6509,7 @@ updaters.push((t)=>{ if(t-NPC.t<.35) return; NPC.t=t; npRender(); });
 
 /* ================= DJ LINEUP BOARD (schedule.json → by map, booth, CD posters) ================= */
 const LU_AREAS=[['playa','🏜 사막점',[['booth:techno','테크노 부스'],['booth:house','하우스 부스'],['booth:afro','아프로테크 부스'],['booth:hardstyle','딥테크노 부스'],['booth:dubstep','덥스텝 부스'],['booth:edm','EDM 메인 스테이지'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
-  ['itaewon','🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼'],['zone:teller','B1 텔러'],['zone:ring','링']]],
+  ['itaewon','🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼'],['zone:teller','B1 텔러'],['zone:ring','링'],['zone:studio','익스텐디드 스튜디오']]],
   ['nami','🌲 남이섬',[['zone:nm-jandi','JANDI 스테이지'],['zone:nm-hanok','HANOK 스테이지'],['zone:nm-soop','SOOP 스테이지'],['zone:nm-exp','익스페리멘탈 사운드 존'],['zone:nm-hut','명상 오두막'],['zone:nm-aero','에어로빅 코너']]],
   ['sphere','🔮 라스베가스',[['zone:sphere','스피어']]]];
 const LU_INFO={}; LU_AREAS.forEach(([m,a,L])=>L.forEach(([k,n])=>LU_INFO[k]={map:m,area:a,name:n}));
@@ -6593,6 +6659,12 @@ const NEW_SPACES=[
     {img:'assets/news/edm-3.jpg',h:'드롭에는 컨페티와 불꽃',p:'8박마다 CO2가 뿜어져 나오고, 큰 드롭에는 컨페티가 터져요. 밤에는 불꽃놀이도 올라가요.'}],
   route:{pts:[[0,136],[38,166],[93,200]],spot:[90,196],pad:[70,45,45,40],
     steps:[[0,'도착 게이트에서 뒤로 돌아요'],[1,'하늘로 솟은 무지개 빛기둥 쪽으로 걸어가요'],[2,'가장 크고 화려한 무대가 EDM 메인 스테이지예요']]}},
+ {id:'studio',map:'itaewon',mapName:'이태원',name:'익스텐디드 스튜디오',kind:'매장',opened:Date.parse('2026-11-13T18:45:00Z'),
+  cards:[{img:'assets/news/studio-1.jpg',h:'이태원 길목에 익스텐디드 스튜디오가 생겼어요',p:'횡단보도를 지나면 오른쪽, 링 맞은편에 하얗게 빛나는 둥근 간판이 보여요.'},
+    {img:'assets/news/studio-2.jpg',h:'창문 너머 DJ 부스',p:'매장 안에는 들어갈 수 없어요. 창문 바로 뒤에서 DJ가 틀고, 벽에는 후디와 옷이 걸려 있어요.'},
+    {img:'assets/news/studio-3.jpg',h:'길에 서서 듣는 세트',p:'입장도 줄도 없어요. 창문 앞에 서면 스피커로 세트가 흘러나와요. 사람들과 같이 길에서 들어요.'}],
+  route:{pts:[[-1.5,-58],[-1.5,-34],[-1.5,-24],[-4.2,-20]],spot:[-4.6,-20],
+    steps:[[0,'거리 입구에서 앞으로 쭉 걸어요'],[1,'횡단보도를 지나면 오른쪽에 하얗게 빛나는 둥근 간판이 보여요'],[3,'창문 앞에 서면 DJ 세트가 들려요. 안에는 들어갈 수 없어요']]}},
  {id:'ring',map:'itaewon',mapName:'이태원',name:'링',kind:'클럽',opened:Date.parse('2026-11-10T15:45:00Z'),
   cards:[{img:'assets/news/ring-1.jpg',h:'이태원에 링이 문을 열었어요',p:'쉘터 가기 전 왼쪽, 검은 건물 통째가 클럽이에요. 초록 네온 로고를 찾으세요.'},
     {img:'assets/news/ring-2.jpg',h:'계단으로 올라가요',p:'골목의 경호원에게 신분증을 보여 주면 폰 플래시에 초록 스티커를 붙여 줘요. 그다음 계단을 걸어 올라가요.'},
@@ -6625,7 +6697,8 @@ const NS_DRAW={itaewon(x,P,k){ const R=(x0,z0,x1,z1,c)=>{ const a=P(x0,z0), b=P(
     R(-7,-64,7,34,'#3b3944'); R(-4,-64,4,34,'#24232b'); x.setLineDash([6,6]); x.strokeStyle='#c9a53a'; x.lineWidth=3; x.beginPath(); x.moveTo(...P(0,-64)); x.lineTo(...P(0,34)); x.stroke(); x.setLineDash([]);
     for(let i=0;i<7;i++) R(-3.4+i*1,-30.9,-2.8+i*1,-29.1,'#e9e6df');
     [[-64,-51],[-50,-41],[-40,-32]].forEach(([a,b])=>R(7,a,19,b,'#4a4852')); R(7,-13.2,19,-9.6,'#4a4852'); [[10,22],[23,34]].forEach(([a,b])=>R(7,a,19,b,'#4a4852'));
-    [[-64,-52],[-51,-40],[-39,-27],[-26,-14],[-13,-2],[-1,9],[10,19.6],[28.4,34]].forEach(([a,b])=>R(-19,a,-7,b,'#4a4852'));
+    [[-64,-52],[-51,-40],[-39,-27],[-16.6,-14],[-13,-2],[-1,9],[10,19.6],[28.4,34]].forEach(([a,b])=>R(-19,a,-7,b,'#4a4852'));
+    R(-19,-25,-7,-17,'#14162e'); x.strokeStyle='#bcd0ff'; x.lineWidth=4; { const a=P(-7,-25), b=P(-19,-17); x.strokeRect(a[0],a[1],b[0]-a[0],b[1]-a[1]); } T('EXTENDED',-13,-19.8,'#dfe8ff','800 22px sans-serif'); T('STUDIO',-13,-22.2,'#dfe8ff','800 22px sans-serif');
     R(8.2,-8.8,21.8,8.8,'#5a3340'); T('쉘터 · 페이퍼',15,0,'#ffd0d8'); R(-29,20.4,-7,27.6,'#2a2630'); T('B1 텔러',-18,24,'#ff9a8a');
     R(7,-19,19.4,-13.5,'#211d27'); R(7,-31,19,-19,'#0b0b0d'); x.strokeStyle='#3dff6a'; x.lineWidth=5; { const a=P(19,-31), b=P(7,-19); x.strokeRect(a[0],b[1],b[0]-a[0],a[1]-b[1]); }
     for(let i=0;i<12;i++) R(9.6+i*.75,-18.9,9.6+i*.75+.5,-17.5,i%2?'#5a5760':'#77747e');
@@ -6678,7 +6751,7 @@ updaters.push(t=>{ if(t-(NS.ck||0)<.5) return; NS.ck=t; const A=nsActive();
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
   for(let i=BOOTHS.length-1;i>=0;i--) if(BOOTH_CUT.includes(BOOTHS[i].id)) BOOTHS.splice(i,1);
-  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
+  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildStudio(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }

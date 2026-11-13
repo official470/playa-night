@@ -1818,7 +1818,19 @@
 "하늘로 솟은 무지개 빛기둥 쪽으로 걸어가요": "Geh auf die Regenbogen-Lichtsäulen am Himmel zu",
 "가장 크고 화려한 무대가 EDM 메인 스테이지예요": "Die größte und bunteste Bühne ist die EDM-Mainstage",
 "도착 게이트": "Ankunftstor",
-"사막점에 입장한 뒤에 갈 수 있어요": "Das geht erst, wenn du in der Wüste bist"
+"사막점에 입장한 뒤에 갈 수 있어요": "Das geht erst, wenn du in der Wüste bist",
+"익스텐디드 스튜디오": "Extended Studio",
+"익스텐디드 스튜디오 (길거리 DJ)": "Extended Studio (Straßen-DJ)",
+"매장": "Laden",
+"스튜디오 하우스": "Studio House",
+"이태원 길목에 익스텐디드 스튜디오가 생겼어요": "Extended Studio hat an der Straße in Itaewon eröffnet",
+"횡단보도를 지나면 오른쪽, 링 맞은편에 하얗게 빛나는 둥근 간판이 보여요.": "Hinter dem Zebrastreifen siehst du rechts, gegenüber vom Ring, ein rundes, weiß leuchtendes Schild.",
+"창문 너머 DJ 부스": "DJ-Pult hinter dem Schaufenster",
+"매장 안에는 들어갈 수 없어요. 창문 바로 뒤에서 DJ가 틀고, 벽에는 후디와 옷이 걸려 있어요.": "Den Laden kann man nicht betreten. Direkt hinter dem Fenster legt der DJ auf, an den Wänden hängen Hoodies und Kleidung.",
+"길에 서서 듣는 세트": "Ein Set zum Zuhören auf der Straße",
+"입장도 줄도 없어요. 창문 앞에 서면 스피커로 세트가 흘러나와요. 사람들과 같이 길에서 들어요.": "Kein Einlass, keine Schlange. Stell dich vor das Fenster, das Set läuft über den Lautsprecher. Hör mit den anderen auf der Straße zu.",
+"횡단보도를 지나면 오른쪽에 하얗게 빛나는 둥근 간판이 보여요": "Hinter dem Zebrastreifen erscheint rechts ein rundes, weiß leuchtendes Schild",
+"창문 앞에 서면 DJ 세트가 들려요. 안에는 들어갈 수 없어요": "Stell dich vor das Fenster, um das DJ-Set zu hören. Hinein kann man nicht"
 },
 "patterns": {
 ". 코인 +{0}": ". Münzen +{0}",
