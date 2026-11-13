@@ -896,6 +896,13 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
   #coinHud .st{gap:2px} #coinHud .st>span{font-size:16px} #coinHud .st i{width:22px;height:8px}
 }
 @media (max-width:380px){ #coinHud .meter{display:none} #coinHud .st i{width:20px} }
+/* outlines so each gauge reads clearly on light and dark themes: the pill, and every bar in its own colour */
+#coinHud{border:1.5px solid rgba(128,128,128,.6)}
+#coinHud .st i,#coinHud .meter{box-sizing:content-box;border:1.5px solid var(--gc,#e0a800);background:rgba(120,120,120,.22)}
+#coinHud .st:has(#stE){--gc:#e0a800} #coinHud .st:has(#stF){--gc:#e8701a} #coinHud .st:has(#stW){--gc:#1ea7e0} #coinHud .st:has(#stD){--gc:#e0308a}
+#coinHud #stE{background:#ffc400} #coinHud #stF{background:#ff7f1f} #coinHud #stW{background:#22b8ff} #coinHud #stD{background:#ff2f95}
+#coinHud .coin{border:1.5px solid #b07a10;box-sizing:border-box}
+#coinHud .sep{width:1.5px;background:rgba(128,128,128,.6)}
 #clubNow{display:none!important}
 .np.np-off{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
