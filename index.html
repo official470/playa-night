@@ -919,6 +919,15 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
   body.uirow #stepHud:not(:has(#stepBoard[hidden])){top:calc(110px + var(--sat))!important}
   body.uirow .tools{top:calc(64px + var(--sat))!important}
 }
+/* no broken lines: the start-screen title stays on one line (language picker sits in the corner, not beside the title), and the logged-in row keeps each label on one line */
+.creator header{position:relative}
+.creator header #langSel{position:absolute;top:22px;right:22px;margin:0}
+.creator h1{white-space:nowrap;font-size:min(44px,11.5vw)}
+.creator header p{word-break:keep-all}
+@media (max-width:760px){ .creator header #langSel{top:12px;right:14px} .creator h1{font-size:min(28px,9vw)} }
+#authBox .authme{gap:8px}
+#authBox .authme b,#authBox .authme small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#authBox .authme button{flex:none;white-space:nowrap;min-width:0!important;width:auto!important}
 #clubNow{display:none!important}
 .np.np-off{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
