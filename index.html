@@ -910,9 +910,9 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
   body.uirow .mapc:has(#boothList[hidden]) .maphead::before{content:'🗺️';font-size:20px;line-height:40px}
   body.uirow #lineupBtn{left:60px!important;top:calc(64px + var(--sat))!important;height:40px;padding:0 10px!important;gap:5px;border-radius:12px}
   body.uirow #lineupBtn .lud,body.uirow #lineupBtn b{display:none}
-  body.uirow #lineupBtn::before{content:'📅';font-size:18px;line-height:1}
+  body.uirow #lineupBtn::before{content:'📅 DJ';font-size:15px;font-weight:800;line-height:1;color:#ff7a2f}
   body.uirow #lineupBtn em{font-size:12px;padding:2px 7px}
-  body.uirow #stepHud:has(#stepBoard[hidden]){left:140px!important;top:calc(64px + var(--sat))!important;height:40px;display:flex;align-items:center}
+  body.uirow #stepHud:has(#stepBoard[hidden]){left:164px!important;top:calc(64px + var(--sat))!important;height:40px;display:flex;align-items:center}
   body.uirow #stepHud:has(#stepBoard[hidden]) .sr,body.uirow #stepHud:has(#stepBoard[hidden]) .dig i.z{display:none}
   body.uirow #stepHud:has(#stepBoard[hidden]) .dig::before{content:'👟';font-size:15px;margin-right:4px;line-height:1.2}
   body.uirow #stepHud:has(#stepBoard[hidden]) .dig i{font-size:14px!important;padding:4px 3px!important}
@@ -928,6 +928,11 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
 #authBox .authme{gap:8px}
 #authBox .authme b,#authBox .authme small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #authBox .authme button{flex:none;white-space:nowrap;min-width:0!important;width:auto!important}
+/* friends chip in the status bar: people icon with a small dot (green when a friend is online, grey when none) */
+#onlineBtn{display:inline-flex;align-items:center;gap:5px;font-size:14px;padding:4px 10px}
+#onlineBtn .fi{position:relative;display:inline-flex;line-height:1}
+#onlineBtn .fi::after{content:'';position:absolute;right:-4px;top:-3px;width:7px;height:7px;border-radius:50%;background:#8a8a8a;border:1.5px solid #1c1024}
+#onlineBtn .fi.on::after{background:#2bff7a;box-shadow:0 0 6px #2bff7a}
 #clubNow{display:none!important}
 .np.np-off{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
@@ -5471,7 +5476,7 @@ function presWhere(v){ return [MAP_NAME[v.m]||v.m, v.in?IN_NAME[v.in]:presNear(v
 // "🟢 N명" pill in the top bar; tap for the list of everyone online
 function onlineRender(){ let b=document.getElementById('onlineBtn'); const hud=document.getElementById('coinHud'); if(!hud) return;
   if(!b){ b=document.createElement('button'); b.id='onlineBtn'; b.type='button'; b.setAttribute('aria-label','지금 접속 중인 사람들'); hud.appendChild(b); b.addEventListener('click',e=>{ e.stopPropagation(); onlineList(); }); }
-  const n=frOnline().length, w=frList('in').length+Object.keys(FR.unread).length, t=`🟢 ${n}`+(w?' 🔔':''); if(b.textContent!==t) b.textContent=t; b.setAttribute('aria-label',tr('친구'));  }
+  const n=frOnline().length, w=frList('in').length+Object.keys(FR.unread).length, t=`${n}`+(w?' 🔔':''); if(b.dataset.t!==t){ b.dataset.t=t; b.innerHTML=`<span class='fi${n?' on':''}' aria-hidden='true'><svg viewBox='0 0 24 24' width='20' height='20' fill='currentColor'><circle cx='9' cy='8' r='4'/><path d='M1 21c0-4.4 3.6-7 8-7s8 2.600 8 7z'/><circle cx='17.500' cy='8.500' r='3.200' opacity='.75'/><path d='M18.500 13.200c3 .500 5 2.800 5 6.300V21h-4.200c0-3-.900-5.600-2.800-7.300.600-.300 1.300-.500 2-.500z' opacity='.75'/></svg></span>${t}`; } b.setAttribute('aria-label',tr('친구'));  }
 function onlineList(){ frPanel(); }
 // jump next to a friend: switch map if needed; inside spaces you land at the entrance and walk in yourself
 function friendGo(uid){ const v=PRES.others[uid]; if(!v){ toast('그 사람은 방금 나갔어요'); return; } const c=document.getElementById('meCard'); if(c) c.hidden=true;
