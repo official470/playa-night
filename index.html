@@ -3818,7 +3818,7 @@ function itTick(t,dt){ const was=MAP; MAP=pState.z>1500?'sphere':(pState.x>1500?
   IT.roofT-=dt; if(IT.roofT<=0){ IT.roofT=30; IT.roofTarget=IT.roofTarget?0:1; if(IT.floor===4){ toast(IT.roofTarget?'루프탑 천장이 열려요. 서울 밤하늘이 보여요':'천장이 천천히 닫혀요'); sfx(tt=>tone(master,tt,'sawtooth',55,.05,3,45)); } }
   IT.roofOpen+=(IT.roofTarget-IT.roofOpen)*Math.min(1,dt*.35); IT.panels.forEach(h=>{ h.scale.z=1-.88*IT.roofOpen; });
   const bS=boothBeat(IT.zS,t), pS=Math.exp(-(((bS%1)+1)%1)*5), bP=boothBeat(IT.zP,t), pP=Math.exp(-(((bP%1)+1)%1)*5);
-  IT.lightS.intensity=1.1+pS*1.2; IT.laserM.opacity=.25+pS*.45; IT.lasers.forEach((L,k)=>{ L.rotation.y=-Math.PI/2+Math.sin(t*.6+k*1.4)*.6; L.rotation.x=.08+Math.sin(t*.4+k)*.06; });
+  IT.lightS.intensity=1.1+pS*1.2; IT.laserM.opacity=.25+pS*.45; IT.lasers.forEach((L,k)=>{ L.rotation.y=-Math.PI/2+Math.sin(t*.6+k*1.4)*.6; L.rotation.x=0; });
   IT.strobe.visible=IT.floor===3&&(Math.floor(bS*2)%8===0)&&(((bS%1)+1)%1)<.15;
   if(IT.floor===3&&Math.random()<dt*4) part({x:OX+rand(9.5,18),y:10.9,z:rand(-7,7),vx:rand(-.2,.2),vy:rand(.05,.2),vz:rand(-.2,.2),col:'#8fd8a4',op:.22,size:1.6,grow:.3,life:7});
   IT.lightP.intensity=.8+pP*.7; IT.ball.rotation.y=t*.6;
@@ -4058,7 +4058,7 @@ function upgradeShelter(){ const g3=IT.levels[3]&&IT.levels[3].g; if(!g3) return
   const ctex=concreteTex(); ctex.repeat.set(4,1); const wallMat=new THREE.MeshLambertMaterial({map:ctex,color:0x8fa894}), darkM=M('#0c0c0e');
   g3.children.forEach(m=>{ if(m.isMesh&&m.geometry===G.plane&&m.material===darkM) m.material=wallMat; if(Math.abs(m.position.x-19.4)<.05) m.visible=false; if(Math.abs(m.position.x-20)<.05&&Math.abs(m.position.y-.15)<.02) m.visible=false; });
   const ftex=concreteTex(); ftex.repeat.set(5,6); const fl=new THREE.Mesh(G.plane,new THREE.MeshLambertMaterial({map:ftex,color:0x3e4a42})); fl.scale.set(13.3,17.3,1); fl.rotation.x=-Math.PI/2; fl.position.set(15,.02,0); g3.add(fl);
-  const neon=M('#a8ffbe',{glow:2}); for(let i=0;i<(LOW?12:22);i++){ const len=rand(1.6,3.4), m=mesh(G.cyl,neon,rand(9.5,20),3.36,rand(-7.6,7.6),.025,len,.025,g3); m.rotation.set(rand(-.08,.08),Math.random()*Math.PI,Math.PI/2); }
+  const neon=new THREE.MeshBasicMaterial({color:0x22e85a}); for(let i=0;i<(LOW?12:22);i++){ const len=rand(1.6,3.4), m=mesh(G.cyl,neon,rand(9.5,20),3.36,rand(-7.6,7.6),.025,len,.025,g3); m.rotation.set(rand(-.08,.08),Math.random()*Math.PI,Math.PI/2); }
   [-3.6,3.8].forEach(z=>{ const d=mesh(G.cyl,M('#141816'),15,2.95,z,.42,13,.42,g3); d.rotation.z=Math.PI/2; }); mesh(G.cyl,M('#141816'),9.2,3.1,-3.6,.42,.9,.42,g3);
   const bm=new THREE.MeshLambertMaterial({map:ctex,color:0xb8ccbc}); B(2.6,.3,5,M('#1a1c1a'),20.7,.15,0,g3); const booth=new THREE.Mesh(G.box,bm); booth.scale.set(1.4,1.15,4.4); booth.position.set(19,.575,0); g3.add(booth);
   const wireM=new THREE.MeshBasicMaterial({map:wireTex(),transparent:true,color:0x202620});
@@ -4074,7 +4074,55 @@ function upgradeShelter(){ const g3=IT.levels[3]&&IT.levels[3].g; if(!g3) return
   B(.06,1.2,.9,M('#c8ccc8'),8.38,1.7,-6,g3); for(let r=0;r<4;r++) B(.04,.06,.6,M('#e8ece8'),8.42,1.4+r*.18,-6,g3); B(.05,.3,.2,M('#f4f4f0'),8.43,2.05,-6,g3);
   [-6.3,-6,-5.7].forEach(z=>B(.02,1.3,.02,M('#111111'),8.4,2.85,z,g3)); B(.04,.25,.14,M('#d8dcd8'),8.4,2.6,-7.6,g3); mesh(G.sph,M('#ff2a2a',{glow:2}),8.42,3,-4.8,.08,.08,.08,g3);
   mesh(G.cyl,M('#2a2a2a'),17,.55,-6.5,.05,1.1,.05,g3); mesh(G.cyl,M('#3a3a3a'),17,1.1,-6.5,.35,.04,.35,g3);
-  const fill=new THREE.PointLight(0x40ff80,.9,22); fill.position.set(12,2.8,-2); g3.add(fill); }
+  const fill=new THREE.PointLight(0x40ff80,.9,22); fill.position.set(12,2.8,-2); g3.add(fill);
+  // walls covered in stickers and marker tags (hand height is the busiest), like the real room
+  const SP=LOW?70:115; g3.children.filter(m=>m.isMesh&&m.material===wallMat).forEach((w,i)=>{ const tx=stickerWallTex(Math.min(2048,Math.round(w.scale.x*SP)),Math.round(w.scale.y*SP),w.scale.x,w.scale.y);
+    const pl=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:tx,transparent:true,depthWrite:false,color:0xa8e8b8})); pl.scale.copy(w.scale); pl.rotation.copy(w.rotation); pl.position.copy(w.position);
+    const n=new THREE.Vector3(0,0,1).applyEuler(w.rotation), toC=new THREE.Vector3(15-w.position.x,0,-w.position.z); if(n.dot(toC)<0) n.negate(); pl.position.addScaledVector(n,.02); pl.renderOrder=1; g3.add(pl); });
+  // lasers: green only, lying flat right under the ceiling, plus fixed green lines across the ceiling that flicker
+  IT.laserM.color.set(0x3dff6a); IT.lasers.forEach(L=>{ L.position.y=3.3; L.scale.set(.6,.6,1); });
+  const clM=new THREE.MeshBasicMaterial({color:0x3dff6a,transparent:true,opacity:.7,blending:THREE.AdditiveBlending,depthWrite:false}), cl=[];
+  for(let i=0;i<(LOW?5:9);i++){ const L=new THREE.Mesh(G.box,clM.clone()); L.scale.set(rand(4,9),.02,.03); L.position.set(rand(11,18.5),3.37,rand(-6,6)); L.rotation.y=rand(-.9,.9); g3.add(L); cl.push(L); }
+  // the round lamp above the DJ: a white-green disc split in three, flashing hard on the beat
+  const lampG=new THREE.Group(); lampG.position.set(21.2,2.72,0); lampG.rotation.y=-Math.PI/2; g3.add(lampG);
+  const discM=new THREE.MeshBasicMaterial({color:0xeafff0}), haloM=new THREE.MeshBasicMaterial({color:0x2bff6a,transparent:true,opacity:.5,blending:THREE.AdditiveBlending,depthWrite:false});
+  const halo2M=haloM.clone(); const cg=new THREE.CircleGeometry(1,40);
+  const disc=new THREE.Mesh(cg,discM); disc.scale.set(.5,.5,1); lampG.add(disc);
+  const halo=new THREE.Mesh(cg,haloM); halo.scale.set(1.1,1.1,1); halo.position.z=-.02; lampG.add(halo); const halo2=new THREE.Mesh(cg,halo2M); halo2.scale.set(2.4,2.4,1); halo2.position.z=-.04; lampG.add(halo2);
+  for(let k=0;k<3;k++){ const sp=new THREE.Mesh(G.box,new THREE.MeshBasicMaterial({color:0x0a3a1a})); sp.scale.set(.025,.5,.01); sp.rotation.z=k*Math.PI*2/3; sp.position.set(-Math.sin(k*Math.PI*2/3)*.25,Math.cos(k*Math.PI*2/3)*.25,.01); lampG.add(sp); }
+  const hub=new THREE.Mesh(cg,new THREE.MeshBasicMaterial({color:0x0a3a1a})); hub.scale.set(.035,.035,1); hub.position.z=.012; lampG.add(hub);
+  const rim=new THREE.Mesh(new THREE.RingGeometry(.5,.56,40),new THREE.MeshBasicMaterial({color:0x101410})); lampG.add(rim);
+  const lampL=new THREE.PointLight(0x2bff6a,0,20); lampL.position.set(20.4,2.7,0); g3.add(lampL);
+  updaters.push((t,dt)=>{ if(MAP!=='itaewon'||IT.floor!==3){ lampL.intensity=0; return; }
+    const b=(ac&&ac.state!=='running')?t*2.15:boothBeat(IT.zS,t), ph=((b%1)+1)%1, bar=Math.floor(b/4), fast=bar%4===3; // sound not started yet: keep time on the clock so the lamp still flashes // three bars of hard on/off, then a bar of fast flashes
+    const on=fast?(((b*4)%1+1)%1)<.5:(Math.floor(b)%2===0), k=on?(fast?1:.55+.45*Math.exp(-ph*3)):0;
+    discM.color.setRGB(.04+.9*k,.1+.9*k,.05+.9*k); haloM.opacity=.55*k; halo2M.opacity=.22*k; lampL.intensity=4.2*k;
+    cl.forEach((L,i)=>{ L.material.opacity=(Math.sin(t*(1.3+i*.37)+i*2.1)>.2?.75:.08)*(.6+.4*Math.exp(-ph*4)); }); }); }
+// a see-through wall layer of stickers and marker tags; w,h in pixels, mw,mh in metres
+function stickerWallTex(w,h,mw,mh){ const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'), u=h/mh; // u = pixels per metre
+  const WORDS=['WAH WAH WAH','SHELTER','DIMZ GOER','BAY AREA','NOPE','이코쟁','PLASTIC PEOPLE','unolab','ZAWA','NO SLEEP','4F','RAVE','딥테크노','TRUNKSEA','MILKY','이태원','LOVE','ACID','303','909','KEEP OUT','서울','GOOD SAVE','FRAGILE','HANDLE WITH CARE','CASH ONLY','AFTER','7AM'];
+  const INK=['#c8ffd8','#eafff0','#ff9a9a','#ffe27a','#9fd0ff','#ffffff','#7dffb0'];
+  const tag=(px,py,sz,col)=>{ x.save(); x.translate(px,py); x.rotate(rand(-.5,.5)); x.strokeStyle=col; x.lineWidth=Math.max(1.5,sz*.07); x.lineCap='round'; x.lineJoin='round'; x.beginPath(); let a=-sz, b=rand(-sz*.3,sz*.3); x.moveTo(a,b);
+    const n=5+(Math.random()*6|0); for(let i=0;i<n;i++){ const nx=a+sz*2/n+rand(-sz*.15,sz*.15), ny=rand(-sz*.55,sz*.55); x.bezierCurveTo(a+rand(-sz*.4,sz*.5),b+rand(-sz*.9,sz*.9),nx+rand(-sz*.5,sz*.3),ny+rand(-sz*.9,sz*.9),nx,ny); a=nx; b=ny; }
+    x.stroke(); if(Math.random()<.5){ x.beginPath(); x.moveTo(-sz,sz*.7); x.lineTo(sz*rand(.2,1),sz*rand(.6,.9)); x.stroke(); } x.restore(); };
+  const scrawl=(px,py,sz,col)=>{ x.save(); x.translate(px,py); x.rotate(rand(-.25,.25)); x.fillStyle=col; x.font=`italic 700 ${sz}px "Comic Sans MS","Marker Felt",cursive`; x.textAlign='center'; x.fillText(pick(['I ♥ U','BAY AREA','4EVER','XOXO','꺼져','ㅋㅋㅋ','R.I.P','★','WAS HERE','♥♥','2026','GO HOME']),0,0); x.restore(); };
+  const sticker=(px,py,sz)=>{ x.save(); x.translate(px,py); x.rotate(rand(-.35,.35)); const kind=Math.random(), bg=pick(['#0c0c0c','#f4f4f0','#f4f4f0','#c6ff3d','#ff3b3b','#111111','#ffe27a','#2a6cff','#ff4fa8']), fg=(bg==='#0c0c0c'||bg==='#111111'||bg==='#2a6cff'||bg==='#ff3b3b')?'#f4f4f0':'#0c0c0c';
+    if(kind<.16){ // warning sign, like the ones on the lift doors
+      const sw=sz*1.5, sh=sz*1.9; x.fillStyle='#f4f4f0'; x.fillRect(-sw/2,-sh/2,sw,sh); x.fillStyle='#b01818'; x.fillRect(-sw/2,-sh/2,sw,sh*.2); x.fillStyle='#fff'; x.font=`700 ${sh*.13}px sans-serif`; x.textAlign='center'; x.fillText(pick(['위험','경고','주의']),0,-sh*.36);
+      x.strokeStyle='#0c0c0c'; x.lineWidth=sz*.09; x.beginPath(); x.arc(0,sh*.1,sw*.3,0,7); x.stroke(); x.beginPath(); x.moveTo(-sw*.21,sh*.1-sw*.21); x.lineTo(sw*.21,sh*.1+sw*.21); x.stroke(); x.fillStyle='#0c0c0c'; x.fillRect(-sw*.08,sh*.02,sw*.16,sw*.2); }
+    else if(kind<.4){ const r=sz*rand(.45,.8); x.fillStyle=bg; x.beginPath(); x.arc(0,0,r,0,7); x.fill(); x.fillStyle=fg; if(Math.random()<.4){ x.beginPath(); x.arc(-r*.3,-r*.15,r*.1,0,7); x.arc(r*.3,-r*.15,r*.1,0,7); x.fill(); x.strokeStyle=fg; x.lineWidth=r*.1; x.beginPath(); x.arc(0,r*.05,r*.5,.3,2.84); x.stroke(); }
+      else { x.font=`900 ${r*.42}px sans-serif`; x.textAlign='center'; x.textBaseline='middle'; x.fillText(pick(WORDS).split(' ')[0].slice(0,6),0,0,r*1.6); } }
+    else { const t=pick(WORDS), lines=t.includes(' ')&&Math.random()<.6?t.split(' '):[t], fs=sz*rand(.32,.5); x.font=`900 ${fs}px "Arial Black",Impact,sans-serif`; const tw=Math.max(...lines.map(l=>x.measureText(l).width))+fs*.6, th=lines.length*fs*1.05+fs*.4;
+      x.fillStyle=bg; x.fillRect(-tw/2,-th/2,tw,th); if(Math.random()<.4){ x.strokeStyle=fg; x.lineWidth=fs*.07; x.strokeRect(-tw/2+fs*.1,-th/2+fs*.1,tw-fs*.2,th-fs*.2); } x.fillStyle=fg; x.textAlign='center'; x.textBaseline='middle'; lines.forEach((l,i)=>x.fillText(l,0,(i-(lines.length-1)/2)*fs*1.05)); }
+    x.restore(); };
+  // busiest between knee and head height; a few strays higher up
+  const yAt=()=>{ const m=Math.random()<.82?rand(.55,2.15):rand(.2,mh-.25); return h-m*u; };
+  for(let i=0;i<mw*1.3;i++) tag(rand(.3,mw-.3)*u,yAt(),rand(.22,.6)*u,pick(INK));
+  for(let i=0;i<mw*.6;i++) scrawl(rand(.4,mw-.4)*u,yAt(),rand(.1,.18)*u,pick(INK));
+  for(let k=0;k<Math.max(1,mw/3.2);k++){ const cx=rand(.8,mw-.8), cy=rand(1.1,1.8); for(let i=0;i<16;i++) sticker((cx+rand(-.9,.9))*u,h-(cy+rand(-.6,.6))*u,rand(.13,.24)*u); } // clusters
+  for(let i=0;i<mw*2.2;i++) sticker(rand(.2,mw-.2)*u,yAt(),rand(.11,.22)*u);
+  for(let i=0;i<mw*.5;i++) tag(rand(.3,mw-.3)*u,yAt(),rand(.3,.75)*u,pick(['#7dffb0','#c8ffd8','#eafff0'])); // big tags over the top
+  return new THREE.CanvasTexture(c); }
 
 /* ================= PAPER MISE-EN-SCENE ================= */
 function plankTex(){ const c=document.createElement('canvas'); c.width=c.height=256; const x=c.getContext('2d');
