@@ -933,18 +933,13 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
 #onlineBtn .fi{position:relative;display:inline-flex;line-height:1}
 #onlineBtn .fi::after{content:'';position:absolute;right:-4px;top:-3px;width:7px;height:7px;border-radius:50%;background:#8a8a8a;border:1.5px solid #1c1024}
 #onlineBtn .fi.on::after{background:#2bff7a;box-shadow:0 0 6px #2bff7a}
-/* dance / roulette / style room / bag: glossy 3D key-cap tiles (tilted face, thick lower edge, icon lifted off the face); they press down when tapped */
-#danceMain,#danceRand,#styleMain,#bagMain{background:none!important;box-shadow:none!important;border-radius:0;color:#fff!important;perspective:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;-webkit-tap-highlight-color:transparent}
-#danceMain{--c1:#ff7ac3;--c2:#9b6bff;--cd:#5a36b8} #danceRand{--c1:#7be3ff;--c2:#c6ff3d;--cd:#5f9a14} #styleMain{--c1:#ffe07a;--c2:#ff4fa8;--cd:#b3266d} #bagMain{--c1:#b79bff;--c2:#46d6ff;--cd:#1f7fa8}
-.rbtn .ic3{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:14px;font-style:normal;font-size:25px;line-height:1;
-  background:linear-gradient(145deg,var(--c1),var(--c2));transform:rotateX(22deg) rotateY(-12deg);transform-style:preserve-3d;
-  box-shadow:0 1px 0 rgba(255,255,255,.75) inset,0 -3px 6px rgba(0,0,0,.18) inset,0 5px 0 var(--cd),0 6px 0 rgba(0,0,0,.35),0 12px 16px rgba(0,0,0,.45);
-  text-shadow:0 3px 4px rgba(0,0,0,.35);transition:transform .12s ease,box-shadow .12s ease}
-.rbtn .ic3::before{content:'';position:absolute;left:5px;right:5px;top:3px;height:42%;border-radius:11px 11px 16px 16px;background:linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none}
-.rbtn:active .ic3{transform:rotateX(22deg) rotateY(-12deg) translateY(4px);box-shadow:0 1px 0 rgba(255,255,255,.75) inset,0 -3px 6px rgba(0,0,0,.18) inset,0 1px 0 var(--cd),0 2px 0 rgba(0,0,0,.35),0 4px 8px rgba(0,0,0,.45)}
-#danceMain span,#danceRand span,#styleMain span,#bagMain span{font-size:11px!important;font-weight:800;margin-top:9px!important;color:#fff;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.8);max-width:72px!important;white-space:nowrap!important}
+/* dance / roulette / style room / bag: no plate and no outline, just a big icon with a soft shadow and its label underneath (no spinning) */
+#danceMain,#danceRand,#styleMain,#bagMain{background:none!important;box-shadow:none!important;border-radius:0;color:#fff!important;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;-webkit-tap-highlight-color:transparent}
+.rbtn .ic3{display:block;font-style:normal;font-size:36px;line-height:1;filter:drop-shadow(0 4px 5px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(255,255,255,.25));transition:transform .12s ease}
+.rbtn:active .ic3{transform:scale(.88)}
+#danceMain span,#danceRand span,#styleMain span,#bagMain span{font-size:11px!important;font-weight:800;margin-top:3px!important;color:#fff;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.8);max-width:72px!important;white-space:nowrap!important}
 #danceMain[aria-expanded="true"],#danceRand[aria-pressed="true"]{outline:none!important;animation:none!important}
-#danceMain[aria-expanded="true"] .ic3,#danceRand[aria-pressed="true"] .ic3{box-shadow:0 1px 0 rgba(255,255,255,.75) inset,0 5px 0 var(--cd),0 6px 0 rgba(0,0,0,.35),0 0 0 2px #fff,0 0 18px 4px var(--c1)}
+#danceMain[aria-expanded="true"] .ic3,#danceRand[aria-pressed="true"] .ic3{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 18px #ff4fa8)}
 @media (prefers-reduced-motion:reduce){ .rbtn .ic3{transition:none} }
 #clubNow{display:none!important}
 .np.np-off{display:none!important}
