@@ -903,7 +903,7 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
 #coinHud #stE{background:#ffc400} #coinHud #stF{background:#ff7f1f} #coinHud #stW{background:#22b8ff} #coinHud #stD{background:#ff2f95}
 #coinHud .coin{border:1.5px solid #b07a10;box-sizing:border-box}
 #coinHud .sep{width:1.5px;background:rgba(128,128,128,.6)}
-/* PREVIEW (?ui=row), phones: map, DJ line-up and step counter as one row of small chips under the status bar */
+/* phones: map, DJ line-up and step counter sit as one row of small chips under the status bar (?ui=old shows the earlier stacked layout) */
 @media (max-width:760px),(pointer:coarse){
   body.uirow .mapc:has(#boothList[hidden]){left:10px!important;top:calc(64px + var(--sat))!important;width:44px!important;max-width:none!important;height:40px;border-radius:12px}
   body.uirow .mapc:has(#boothList[hidden]) .maphead{font-size:0!important;padding:0!important;width:44px;height:40px;text-align:center}
@@ -959,7 +959,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
   </div>
 </section>
 
-<script>if(/[?&]ui=row/.test(location.search))document.body.classList.add('uirow')</script>
+<script>if(!/[?&]ui=old/.test(location.search))document.body.classList.add('uirow')</script>
 <div id="hud" hidden>
   <div id="coinHud" class="card" aria-live="polite"><span class="coin" aria-hidden="true"></span><b id="coinN">0</b><span class="meter" title="춤 보너스 게이지"><i id="danceMeter"></i></span><span class="sep"></span>
     <span class="st" title="체력"><span aria-hidden="true">⚡</span><i><b id="stE"></b></i></span>
