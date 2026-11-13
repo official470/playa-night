@@ -933,6 +933,16 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
 #onlineBtn .fi{position:relative;display:inline-flex;line-height:1}
 #onlineBtn .fi::after{content:'';position:absolute;right:-4px;top:-3px;width:7px;height:7px;border-radius:50%;background:#8a8a8a;border:1.5px solid #1c1024}
 #onlineBtn .fi.on::after{background:#2bff7a;box-shadow:0 0 6px #2bff7a}
+/* dance / roulette / style room / bag: no round plate, just a big icon that spins in 3D with its label underneath */
+#danceMain,#danceRand,#styleMain,#bagMain{background:none!important;box-shadow:none!important;border-radius:0;color:#fff!important;perspective:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;-webkit-tap-highlight-color:transparent}
+.rbtn .ic3{display:block;font-style:normal;font-size:36px;line-height:1;transform-style:preserve-3d;animation:ic3spin 3.6s linear infinite;filter:drop-shadow(0 4px 5px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(255,255,255,.25));will-change:transform}
+#danceRand .ic3{animation-delay:-.9s} #styleMain .ic3{animation-delay:-1.8s} #bagMain .ic3{animation-delay:-2.7s}
+@keyframes ic3spin{0%{transform:rotateX(-12deg) rotateY(0)}50%{transform:rotateX(-12deg) rotateY(180deg) translateY(-3px)}100%{transform:rotateX(-12deg) rotateY(360deg)}}
+#danceMain span,#danceRand span,#styleMain span,#bagMain span{font-size:11px!important;font-weight:800;margin-top:3px!important;color:#fff;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.8);max-width:72px!important;white-space:nowrap!important}
+#danceMain[aria-expanded="true"],#danceRand[aria-pressed="true"]{outline:none!important;animation:none!important}
+#danceMain[aria-expanded="true"] .ic3,#danceRand[aria-pressed="true"] .ic3{animation-duration:1s;filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 18px #ff4fa8)}
+.rbtn:active .ic3{animation-duration:.6s}
+@media (prefers-reduced-motion:reduce){ .rbtn .ic3{animation:none} }
 #clubNow{display:none!important}
 .np.np-off{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
@@ -1011,10 +1021,10 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
   </section>
   <div class="keys card" id="keys">WASD나 방향키로 이동, Shift로 달리기, Space로 점프. 드래그로 시점을 돌리고 휠로 줌해요. 위로 드래그하거나 Q를 누르면 하늘을 올려다봐요. 체험 조형물 근처에서는 E를 눌러요. 숫자 키로 춤을 바꾸고 F로 제자리 춤을 켜요. 차량은 W/S로 가속, A/D로 방향, Space로 브레이크(비행기는 상승), C로 하강해요. B로 가방을 열어요.</div>
   <div id="joy" class="idle" hidden><div id="knob"></div></div>
-  <button id="danceMain" class="rbtn" aria-expanded="false" aria-label="춤 고르기">💃<span>춤</span></button>
-  <button id="danceRand" class="rbtn" aria-pressed="false" aria-label="막춤 룰렛, 춤이 랜덤으로 바뀌어요">🎲<span>막춤룰렛</span></button>
-  <button id="styleMain" class="rbtn qbtn" aria-label="스타일룸, 옷 갈아입기">👗<span>스타일룸</span></button>
-  <button id="bagMain" class="rbtn qbtn" aria-label="가방 열기">🎒<span id="bagMainT">가방</span></button>
+  <button id="danceMain" class="rbtn" aria-expanded="false" aria-label="춤 고르기"><i class="ic3" aria-hidden="true">💃</i><span>춤</span></button>
+  <button id="danceRand" class="rbtn" aria-pressed="false" aria-label="막춤 룰렛, 춤이 랜덤으로 바뀌어요"><i class="ic3" aria-hidden="true">🎲</i><span>막춤룰렛</span></button>
+  <button id="styleMain" class="rbtn qbtn" aria-label="스타일룸, 옷 갈아입기"><i class="ic3" aria-hidden="true">👗</i><span>스타일룸</span></button>
+  <button id="bagMain" class="rbtn qbtn" aria-label="가방 열기"><i class="ic3" aria-hidden="true">🎒</i><span id="bagMainT">가방</span></button>
   <button id="jumpBtn" class="rbtn" hidden>점프</button>
   <button id="downBtn" class="rbtn" hidden>하강</button>
   <section id="bagPanel" class="card" hidden aria-label="가방">
