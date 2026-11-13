@@ -880,6 +880,22 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
 @media (max-width:760px){ .lu-in{padding:14px 14px 18px;border-radius:18px} .lu-head{top:-14px;margin:-14px -14px 0;padding:14px 14px 8px} .lu-head b{font-size:24px}
   .lu-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .lu-grid.big{grid-template-columns:1fr 1fr} .lu-detail{grid-template-columns:1fr} .lu-detail .cdw{width:62%} .lu-detail h3{font-size:26px} }
 @media (prefers-reduced-motion: reduce){ .cd.live .disc,.lu-detail .disc,.cdw .sleeve em{animation:none} .cdw .disc{transition:none} }
+/* bigger, easier-to-read status bar (coins, stamina, food, water, drunk) */
+#coinHud{padding:9px 18px;gap:10px;font-size:15px}
+#coinHud .coin{width:24px;height:24px}
+#coinN{font-size:21px}
+#coinHud .meter{width:40px;height:8px;border-radius:4px}
+#coinHud .sep{height:22px}
+#coinHud .st{gap:5px}
+#coinHud .st>span{font-size:19px}
+#coinHud .st i{width:44px;height:9px;border-radius:5px}
+@media (max-width:760px),(pointer:coarse){
+  #coinHud{padding:7px 10px;gap:5px;max-width:calc(100vw - 12px)}
+  #coinHud .coin{width:19px;height:19px} #coinN{font-size:17px;flex:none}
+  #coinHud .meter{width:16px;height:7px;flex:none} #coinHud .sep{height:18px;flex:none}
+  #coinHud .st{gap:2px} #coinHud .st>span{font-size:16px} #coinHud .st i{width:22px;height:8px}
+}
+@media (max-width:380px){ #coinHud .meter{display:none} #coinHud .st i{width:20px} }
 #clubNow{display:none!important}
 .np.np-off{display:none!important}
 body:has(#sp:not([hidden])) #soundFix{display:none}
