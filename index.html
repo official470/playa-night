@@ -3638,7 +3638,10 @@ function buildItaewon(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); sc
   [-1.4,1.4].forEach(z=>{ B(.08,1,.08,M('#d4a83a',{glow:.3}),7.1,.5,z,IG); mesh(G.sph,M('#d4a83a',{glow:.4}),7.1,1.02,z,.07,.07,.07,IG); });
   IT.ropeMesh=B(.05,.05,2.8,M('#8a1f2b'),7.1,.85,0,IG); IT.rope={x:OX+7.3,z:0,r:1.2}; colliders.push(IT.rope);
   const wl=new THREE.PointLight(0xff4fa8,1.2,14); wl.position.set(6,3.5,0); IG.add(wl);
-  const elev=(g,x)=>{ B(.06,2.4,1.6,M('#a8a8b4',{glow:.08}),x,1.2,7.2,g); B(.04,.06,1.8,M('#ffcf8a',{glow:1.2}),x-.02,2.48,7.2,g); const ind=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('ELEVATOR','#ffcf8a'),transparent:true})); ind.scale.set(1.6,.4,1); ind.position.set(x-.05,2.9,7.2); ind.rotation.y=-Math.PI/2; g.add(ind); };
+  const elev=(g,x)=>{ B(.06,2.4,1.6,M('#a8a8b4',{glow:.08}),x,1.2,7.2,g); B(.04,.06,1.8,M('#ffcf8a',{glow:1.2}),x-.02,2.48,7.2,g); const ind=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('ELEVATOR','#ffcf8a'),transparent:true})); ind.scale.set(1.6,.4,1); ind.position.set(x-.05,2.9,7.2); ind.rotation.y=-Math.PI/2; g.add(ind);
+    // lift doors plastered with stickers and marker tags, with the seam between the two doors
+    const st=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:stickerWallTex(LOW?220:368,LOW?330:552,1.6,2.4,3.2),transparent:true,depthWrite:false,color:0xe4f4e8})); st.scale.set(1.6,2.4,1); st.position.set(x-.035,1.2,7.2); st.rotation.y=-Math.PI/2; st.renderOrder=1; g.add(st);
+    B(.012,2.4,.02,M('#2a2a30'),x-.04,1.2,7.2,g); };
   { const g0=IT.levels[0].g; B(13.4,.02,17.4,M('#1a1820'),15,.01,0,g0); elev(g0,21.82); [[-4,'#ff4fa8'],[-1,'#46d6ff'],[2,'#ffcf3a']].forEach(([z,c])=>B(.04,1.4,1,M(c,{glow:.5}),21.83,1.8,z,g0)); }
   // 4F SHELTER
   { const g3=IT.levels[3].g, dark=M('#0c0c0e');
@@ -4099,7 +4102,8 @@ function upgradeShelter(){ const g3=IT.levels[3]&&IT.levels[3].g; if(!g3) return
     discM.color.setRGB(.04+.9*k,.1+.9*k,.05+.9*k); haloM.opacity=.55*k; halo2M.opacity=.22*k; lampL.intensity=4.2*k;
     cl.forEach((L,i)=>{ L.material.opacity=(Math.sin(t*(1.3+i*.37)+i*2.1)>.2?.75:.08)*(.6+.4*Math.exp(-ph*4)); }); }); }
 // a see-through wall layer of stickers and marker tags; w,h in pixels, mw,mh in metres
-function stickerWallTex(w,h,mw,mh){ const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'), u=h/mh; // u = pixels per metre
+function stickerWallTex(w,h,mw,mh,dn){ dn=dn||1; // dn = how crowded (1 = club wall, 3 = lift door)
+  const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'), u=h/mh; // u = pixels per metre
   const WORDS=['WAH WAH WAH','SHELTER','DIMZ GOER','BAY AREA','NOPE','이코쟁','PLASTIC PEOPLE','unolab','ZAWA','NO SLEEP','4F','RAVE','딥테크노','TRUNKSEA','MILKY','이태원','LOVE','ACID','303','909','KEEP OUT','서울','GOOD SAVE','FRAGILE','HANDLE WITH CARE','CASH ONLY','AFTER','7AM'];
   const INK=['#c8ffd8','#eafff0','#ff9a9a','#ffe27a','#9fd0ff','#ffffff','#7dffb0'];
   const tag=(px,py,sz,col)=>{ x.save(); x.translate(px,py); x.rotate(rand(-.5,.5)); x.strokeStyle=col; x.lineWidth=Math.max(1.5,sz*.07); x.lineCap='round'; x.lineJoin='round'; x.beginPath(); let a=-sz, b=rand(-sz*.3,sz*.3); x.moveTo(a,b);
@@ -4117,11 +4121,11 @@ function stickerWallTex(w,h,mw,mh){ const c=document.createElement('canvas'); c.
     x.restore(); };
   // busiest between knee and head height; a few strays higher up
   const yAt=()=>{ const m=Math.random()<.82?rand(.55,2.15):rand(.2,mh-.25); return h-m*u; };
-  for(let i=0;i<mw*1.3;i++) tag(rand(.3,mw-.3)*u,yAt(),rand(.22,.6)*u,pick(INK));
-  for(let i=0;i<mw*.6;i++) scrawl(rand(.4,mw-.4)*u,yAt(),rand(.1,.18)*u,pick(INK));
+  for(let i=0;i<mw*1.3*dn;i++) tag(rand(.3,mw-.3)*u,yAt(),rand(.22,.6)*u,pick(INK));
+  for(let i=0;i<mw*.6*dn;i++) scrawl(rand(.4,mw-.4)*u,yAt(),rand(.1,.18)*u,pick(INK));
   for(let k=0;k<Math.max(1,mw/3.2);k++){ const cx=rand(.8,mw-.8), cy=rand(1.1,1.8); for(let i=0;i<16;i++) sticker((cx+rand(-.9,.9))*u,h-(cy+rand(-.6,.6))*u,rand(.13,.24)*u); } // clusters
-  for(let i=0;i<mw*2.2;i++) sticker(rand(.2,mw-.2)*u,yAt(),rand(.11,.22)*u);
-  for(let i=0;i<mw*.5;i++) tag(rand(.3,mw-.3)*u,yAt(),rand(.3,.75)*u,pick(['#7dffb0','#c8ffd8','#eafff0'])); // big tags over the top
+  for(let i=0;i<mw*2.2*dn;i++) sticker(rand(.2,mw-.2)*u,yAt(),rand(.11,.22)*u);
+  for(let i=0;i<mw*.5*dn;i++) tag(rand(.3,mw-.3)*u,yAt(),rand(.3,.75)*u,pick(['#7dffb0','#c8ffd8','#eafff0'])); // big tags over the top
   return new THREE.CanvasTexture(c); }
 
 /* ================= PAPER MISE-EN-SCENE ================= */
