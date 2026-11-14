@@ -696,8 +696,27 @@ body.dressing .creator .actions{grid-area:act;padding:8px 14px;gap:8px}
 body.dressing .creator .actions .primary{font-family:"Noto Sans KR",sans-serif;font-weight:700;font-size:13px;padding:9px 12px;border-radius:10px}
 body.dressing .creator .actions .ghost{font-size:12px;padding:8px 10px;border-radius:10px;font-weight:500}
 @media (max-width:760px),(pointer:coarse){
-  body.dressing .creator{grid-template-columns:1fr;grid-template-rows:auto 28vh auto minmax(0,1fr) auto;grid-template-areas:"head" "view" "nav" "opts" "act";top:var(--sat)!important;bottom:var(--sab)!important;left:0!important;transform:none;width:100vw!important;border-radius:0!important}
-  body.dressing #styleView{border-right:0;border-bottom:1px solid var(--panel-line);padding:2px 10px 4px}
+  body.dressing .creator{grid-template-columns:minmax(0,58%) minmax(0,42%);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"head head" "nav view" "opts view" "act act";top:var(--sat)!important;bottom:var(--sab)!important;left:0!important;transform:none;width:100vw!important;border-radius:0!important}
+  body.dressing #styleView{border-right:0;border-left:1px solid var(--panel-line);padding:4px 4px 6px;justify-content:flex-start}
+  body.dressing #styleView small{font-size:10px;text-align:center}
+  body.dressing #svCv{flex:1;width:100%;height:auto;min-height:0}
+  body.dressing #opts{padding:0 8px 10px!important;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  body.dressing #opts .sec{padding:8px 0}
+  body.dressing #opts .chips:has(> .kchip),body.dressing #opts .chips:has(> [data-preset]){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+  body.dressing #opts .chips{gap:5px}
+  body.dressing .creator .chip{font-size:11px;padding:6px 7px;border-radius:10px;line-height:1.2}
+  body.dressing .creator .chip.kchip{min-width:0!important;padding:6px 4px}
+  body.dressing .creator .chip small{font-size:9.5px}
+  body.dressing .creator .chip em.kp{font-size:9.5px}
+  body.dressing .creator .chip i.kth{width:44px;height:44px;margin-bottom:2px}
+  body.dressing .creator .chip .kbadge{font-size:8px;padding:1px 4px;top:3px;left:3px}
+  body.dressing #optNav{font-size:11px;display:flex;flex-wrap:nowrap;gap:4px;padding:4px 6px}
+  body.dressing #optNav button{white-space:nowrap!important;font-size:10.5px!important;padding:5px 8px!important;min-width:auto!important;flex:none;border-radius:999px!important;display:flex;flex-direction:row!important;align-items:center;gap:3px;height:auto!important}
+  body.dressing #optNav button *{font-size:inherit}
+  body.dressing .creator header p{display:none!important}
+  body.dressing .creator h1{font-size:19px}
+  body.dressing .creator .sec h2{font-size:13px}
+  body.dressing .creator .chip[data-kcat]{padding:5px 9px}
   body.dressing .creator header{padding:10px 14px 2px}
   body.dressing .creator h1{font-size:22px}
 }
@@ -976,7 +995,7 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
 #danceMain,#danceRand,#styleMain,#bagMain{background:none!important;box-shadow:none!important;border-radius:0;color:#fff!important;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;-webkit-tap-highlight-color:transparent}
 .rbtn .ic3{display:block;font-style:normal;font-size:36px;line-height:1;filter:drop-shadow(0 4px 5px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(255,255,255,.25));transition:transform .12s ease}
 .rbtn:active .ic3{transform:scale(.88)}
-.rbtn .ic3.img3{width:52px;height:52px;margin:-6px auto -2px;background:center/contain no-repeat;filter:drop-shadow(0 5px 6px rgba(0,0,0,.5))}
+.rbtn .ic3.img3{width:40px;height:40px;margin:-2px auto 0;background:center/contain no-repeat;filter:drop-shadow(0 5px 6px rgba(0,0,0,.5))}
 #danceMain span,#danceRand span,#styleMain span,#bagMain span{font-size:11px!important;font-weight:800;margin-top:3px!important;color:#fff;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.8);max-width:72px!important;white-space:nowrap!important}
 #danceMain[aria-expanded="true"],#danceRand[aria-pressed="true"]{outline:none!important;animation:none!important}
 #danceMain[aria-expanded="true"] .ic3,#danceRand[aria-pressed="true"] .ic3{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 18px #ff4fa8)}
@@ -5525,7 +5544,7 @@ function kpvEnsure(){ if(KPV.R) return; const box=document.createElement('div');
   document.addEventListener('pointerdown',e=>{ const b=$('#kpv'); if(!b||b.hidden||e.target.closest('#kpv')) return; kpvClose(); },true);
   addEventListener('keydown',e=>{ if(e.code==='Escape') kpvClose(); }); }
 function kpvOpen(it){ if(document.body.classList.contains('dressing')&&typeof SV!=='undefined'&&SV.R){
-    if(!it.keep) it.apply(); SV.focus={...(FOCUS[it.cat]||FOCUS.def),until:performance.now()/1000+2.6}; SV.rot=it.cat==='신발'?.7:.35;
+    if(!it.keep) it.apply(); if(!matchMedia('(max-width:760px),(pointer:coarse)').matches) SV.focus={...(FOCUS[it.cat]||FOCUS.def),until:performance.now()/1000+2.6}; SV.rot=it.cat==='신발'?.7:.35;
     const sm=document.querySelector('#styleView small'); if(sm){ sm.textContent=`${it.brand===it.cat?'':it.brand+' · '}${it.name}`; clearTimeout(SV.capT); SV.capT=setTimeout(()=>{ sm.textContent='드래그해서 돌려 보세요'; },3000); } return; }
   kpvEnsure(); KPV.item=it; $('#kpvBrand').textContent=it.brand; $('#kpvName').textContent=it.name; $('#kpvNote').textContent=it.note; $('#kpvWear').textContent=it.keep?'입고 있어요':it.worn?'벗기':'입기';
   KPV.full=false; $('#kpvView').textContent='전신 보기'; if(KPV.P) KPV.scene.remove(KPV.P.root); KPV.P=buildCharacter(it.cfg); KPV.P.dance='sway'; KPV.scene.add(KPV.P.root);
@@ -5545,7 +5564,12 @@ function presetPreview(i){ const p=PRESETS[i], pc=Object.assign({},cfg); KFIELDS
 function ownPreview(name){ const it=ITEMS[name]; if(!it||!it.set) return; const worn=setOn(it.set), pc=Object.assign({},cfg,it.set); if(it.set.outer) delete pc.kOuter; if(it.set.top) delete pc.kTop; if(it.set.head) delete pc.kHead;
   kpvOpen({brand:'내 옷장',name,cat:'전체',cfg:pc,worn,keep:worn,note:it.d||'상점에서 산 아이템이에요.',apply:()=>{ if(worn) return; applySet(it.set); toast(`${name} 착용!`); }}); }
 function addOwnedSec(after){ const own=(typeof owned!=='undefined'?owned:[]).filter(k=>ITEMS[k]&&ITEMS[k].k==='wear'&&ITEMS[k].set); const d=document.createElement('div'); d.className='sec';
-  d.innerHTML=`<h2>내 옷장</h2>`+(own.length?`<div class='chips'>${own.map(k=>`<button class='chip preset' data-own='${esc(k)}' aria-pressed='${setOn(ITEMS[k].set)}'>${esc(k)}<small>${esc(ITEMS[k].d||'')}</small></button>`).join('')}</div>`:`<p class='hint'>아직 산 옷이 없어요. 미라지 부티크, 히피 마켓 같은 상점에서 산 옷이 여기에 모여요.</p>`); after.after(d); }
+  d.innerHTML=`<h2>내 옷장</h2>`+(own.length?`<div class='chips'>${own.map(k=>`<button class='chip preset' data-own='${esc(k)}' aria-pressed='${setOn(ITEMS[k].set)}'>${esc(k)}<small>${esc(ITEMS[k].d||'')}</small></button>`).join('')}</div>`:`<p class='hint'>아직 산 옷이 없어요. 미라지 부티크, 히피 마켓 같은 상점에서 산 옷이 여기에 모여요.</p>`);
+  // brand shop pieces you bought (and the free ones) live here too, ready to wear out
+  const mine=KREAM.map((it,i)=>[it,i]).filter(([it])=>owned.includes(kKey(it))), free=[...kFree()].map(i=>[KREAM[i],i]);
+  const chip=([it,i])=>`<button class='chip preset kchip${it.fx?' krare':''}' data-kream='${i}' aria-pressed='${kreamOn(it)}'><i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small></button>`;
+  d.innerHTML+=`<h2 style='margin-top:12px'>구매한 브랜드 아이템</h2>`+(mine.length?`<div class='chips'>${mine.map(chip).join('')}</div>`:`<p class='hint'>브랜드샵에서 산 아이템이 여기에 모여요. 산 것만 입고 나갈 수 있어요.</p>`)+`<h2 style='margin-top:12px'>무료 아이템</h2><div class='chips'>${free.map(chip).join('')}</div>`;
+  after.after(d); setTimeout(kThumbFill,60); }
 
 /* ================= BRAND SHOP: ORIGINAL EMBLEMS + NAME TAG ================= */
 function kSlot(it){ if(it.slot) return it.slot; if(it.set.kAcc) return 'acc'; if(it.set.face) return 'face'; return {'신발':'shoes','아우터':'outer','상의':'top','하의':'bottom','모자':'head'}[it.c]||'acc'; }
@@ -5591,7 +5615,7 @@ function svLoop(){ if(!document.body.classList.contains('dressing')||$('#creator
   const k=JSON.stringify(cfg); if(k!==SV.key){ SV.key=k; if(SV.P) SV.scene.remove(SV.P.root); SV.P=buildCharacter(cfg); SV.P.dance='sway'; SV.scene.add(SV.P.root); }
   const cv=SV.R.domElement, w=cv.clientWidth, h=cv.clientHeight; if(w>10&&h>10){ const pr=SV.R.getPixelRatio(); if(cv.width!==Math.round(w*pr)||cv.height!==Math.round(h*pr)){ SV.R.setSize(w,h,false); SV.cam.aspect=w/h; SV.cam.updateProjectionMatrix(); } }
   const t=performance.now()/1000; if(!SV.drag) SV.rot+=.004; if(SV.P){ SV.P.root.rotation.y=SV.rot; poseChar(SV.P,'dance',t,t*1.3); }
-  const asp=SV.cam.aspect||1, F=SV.focus&&t<SV.focus.until?SV.focus:null, ty=F?F.y:.92, td=F?Math.max(1.3,F.d*(asp<.8?1.15:1)):(asp<.8?3.6:3.2);
+  const asp=SV.cam.aspect||1, F=SV.focus&&t<SV.focus.until?SV.focus:null, ty=F?F.y:.92, td=F?Math.max(1.3,F.d*(asp<.8?1.15:1)):(asp<.8?Math.max(3.9,.5/(.287*asp)):3.2);
   SV.cy=SV.cy==null?ty:SV.cy+(ty-SV.cy)*.08; SV.cd=SV.cd==null?td:SV.cd+(td-SV.cd)*.08; SV.cam.position.set(0,SV.cy+.13,SV.cd); SV.cam.lookAt(0,SV.cy,0); SV.R.render(SV.scene,SV.cam); }
 $('#dressBtn').addEventListener('click',()=>{ svEnsure(); SV.key=''; if(!SV.raf) svLoop(); });
 
