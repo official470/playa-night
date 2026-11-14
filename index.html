@@ -653,9 +653,17 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 #styleView small{font-size:11px;color:var(--muted)}
 .creator .chip em.kp{display:block;font-style:normal;font-size:11px;font-weight:700;margin-top:3px;color:#ffcf3a}
 .creator .chip em.kp.free{color:#7dff9a}.creator .chip em.kp.own{color:#9ad8ff}
-#kBuy{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:12px;text-align:center}
+#kBuy{display:flex;gap:10px;align-items:center;width:100%;max-width:340px;font-size:12px;background:rgba(0,0,0,.28);border:1px solid var(--panel-line);border-radius:14px;padding:6px 10px 6px 6px}
+#kPc{width:96px;height:96px;flex:none;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.14),rgba(255,255,255,.02))}
+#kBuy .kinfo{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
+#kBuy .kinfo small{opacity:.7;font-size:11px}#kBuy .kinfo b{font-size:14px;line-height:1.25}
+#kBuy .kprice{font-weight:800;color:#ffcf3a}#kBuy .kprice.free{color:#7dff9a}#kBuy .kprice.own{color:#9ad8ff}#kBuy .kwon{opacity:.6;font-size:11px}
+#kBuy .kinfo button small{font-weight:600;opacity:.75}
+.creator .chip i.kth{display:block;width:64px;height:64px;margin:0 auto 4px;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.12),rgba(255,255,255,.02)) center/contain no-repeat}
+.creator .chip i.kth.done{background-color:transparent;background-size:contain;background-position:center;background-repeat:no-repeat}
+.creator .chip.kchip{text-align:center;min-width:104px}
 #kBuy[hidden]{display:none!important}
-#kBuy button{border:0;border-radius:999px;padding:8px 14px;font-weight:800;background:#ffcf3a;color:#1a1408;cursor:pointer;font-size:13px}
+#kBuy button{margin-top:4px;align-self:flex-start;border:0;border-radius:999px;padding:7px 12px;font-weight:800;background:#ffcf3a;color:#1a1408;cursor:pointer;font-size:13px}
 #kBuy button:disabled{opacity:.5;cursor:not-allowed}
 .fnew{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px;max-height:46vh;overflow:auto}
 .fnew li{display:flex;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.06);font-size:13px}
@@ -5057,7 +5065,7 @@ updaters.push(t=>{ if(FNEW.done||!inGame) return; if(!FNEW.t) FNEW.t=t+6; if(t<F
   if(!$('#sp').hidden||document.body.classList.contains('dressing')) return; const np=document.getElementById('nsPop'); if(np&&!np.hidden) return;
   FNEW.done=true; const L=fashionNew().slice(); if(!L.length) return; for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; }
   const five=L.slice(0,5);
-  openSp('👗 신상 패션 입고',`스타일룸 브랜드샵에 새 아이템 ${L.length}개가 들어왔어요`,`<ul class='fnew'>${five.map(it=>`<li><span>${esc(it.b)}<small>${esc(it.c)} · ${esc(it.n)}</small></span><b class='${kFree().has(KREAM.indexOf(it))?'free':''}'>${esc(kTag(it))}</b></li>`).join('')}</ul><p class='hint'>가격은 실제 판매가 기준이에요 (1코인 = 1만 원). 가장 저렴한 10개는 무료로 입을 수 있어요.</p><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
+  openSp('👗 신상 패션 입고',`스타일룸 브랜드샵에 새 아이템 ${L.length}개가 들어왔어요`,`<ul class='fnew'>${five.map(it=>`<li><span>${esc(it.b)}<small>${esc(it.c)} · ${esc(it.n)}</small></span><b class='${kFree().has(KREAM.indexOf(it))?'free':''}'>${esc(kTag(it))}</b></li>`).join('')}</ul><p class='hint'>가장 저렴한 10개는 무료로 입을 수 있어요.</p><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
     a=>{ closeSp(); if(a==='go') $('#dressBtn').click(); }); });
 const KCATS=['전체','아우터','상의','하의','신발','모자','액세서리']; let kCat='전체';
 function kreamOn(it){ return Object.entries(it.set).every(([k,v])=>cfg[k]===v); }
@@ -5231,8 +5239,8 @@ const KDET={
 function kreamDetails(P,c){ for(const i of Object.values(c.kWorn||{})){ const it=KREAM[i]; if(!it||!it.d||!KDET[it.d]) continue; if(!Object.entries(it.set).every(([k,v])=>c[k]===v)) continue; try{ KDET[it.d](P,c,it); }catch(e){ console.warn('brand detail',it.d,e&&e.message); } } }
 function renderOpts(){ renderOptsBase(); const first=$('#opts .sec'); if(!first) return; const d=document.createElement('div'); d.className='sec';
   const list=KREAM.map((it,i)=>[it,i]).filter(([it])=>kCat==='전체'||it.c===kCat);
-  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset' data-kream='${i}' aria-pressed='${kreamOn(it)}'>${esc(it.b)}<small>${esc(it.n)}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${kTag(it)}</em></button>`).join('')}</div><p class='hint'>실제 판매가 기준 가격이에요 (1코인 = 1만 원). 가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
-  first.after(d); addOwnedSec(d); }
+  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset kchip' data-kream='${i}' aria-pressed='${kreamOn(it)}'><i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${kTag(it)}</em></button>`).join('')}</div><p class='hint'>가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
+  first.after(d); addOwnedSec(d); setTimeout(kThumbFill,60); }
 $('#opts').addEventListener('click',e=>{ const btn=e.target.closest('button'); if(!btn) return;
   if(btn.dataset.kcat){ kCat=btn.dataset.kcat; return; }
   if(btn.dataset.kream!==undefined){ e.stopPropagation(); kreamPreview(+btn.dataset.kream); return; }
@@ -5297,8 +5305,29 @@ function kWon(p){ return p>=100?(p/100).toLocaleString('ko-KR',{maximumFractionD
 function kBuyBar(it){ const v=$('#styleView'); if(!v) return; let bar=$('#kBuy'); if(!bar){ bar=document.createElement('div'); bar.id='kBuy'; v.appendChild(bar);
     bar.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; const it=KREAM[+b.dataset.i]; if(!it||kOwned(it)) return; if(coins<it.p){ toast(`코인이 ${it.p-coins}개 모자라요. 춤추거나 코인을 주워 보세요`); return; }
       addCoins(-it.p); owned.push(kKey(it)); saveEco(); chime(79,'sine',.08,.5); toast(`${it.b} ${it.n} 구매 완료! 이제 계속 입을 수 있어요`); kBuyBar(it); refreshOpts(); }); }
-  if(!it||kOwned(it)||!kreamOn(it)){ bar.hidden=true; return; } const i=KREAM.indexOf(it);
-  bar.innerHTML=`<span>입어 보는 중 · 실제가 약 ${kWon(it.p)} · 보유 🪙${coins}</span><button data-i='${i}' ${coins<it.p?'disabled':''}>🪙 ${it.p}코인에 사기</button>`; bar.hidden=false; }
+  if(!it){ bar.hidden=true; kCardStop(); return; } const i=KREAM.indexOf(it), own=kOwned(it), on=kreamOn(it);
+  bar.innerHTML=`<canvas id='kPc' width='240' height='240' aria-label='${esc(it.b+' '+it.n)} 프로덕트 컷'></canvas><div class='kinfo'><small>${esc(it.b)} · ${esc(it.c)}</small><b>${esc(it.n)}</b><span class='kprice ${kFree().has(i)?'free':own?'own':''}'>${esc(kTag(it))}</span>${!own&&on?`<button data-i='${i}' ${coins<it.p?'disabled':''}>🪙 ${it.p}코인에 사기 <small>(보유 ${coins})</small></button>`:''}</div>`;
+  bar.hidden=false; kCardStart(i); }
+// product shot: only the piece itself (no body), turning slowly, on its own small renderer
+const KPC={R:null,scene:null,cam:null,P:null,raf:0,i:-1};
+function kProduct(i){ const it=KREAM[i], D='#010203', pc=JSON.parse(JSON.stringify(cfg)); Object.keys(pc).forEach(k=>{ if(k[0]==='k') delete pc[k]; });
+  Object.assign(pc,{topColor:D,bottomColor:D,shoeColor:D,outer:'none',head:'none',face:'none',extra:'none'}); delete pc.acc; Object.assign(pc,it.set); pc.kWorn={[kSlot(it)]:i};
+  const P=buildCharacterBase(pc); P.cfg=pc; const base=new Set(); P.root.traverse(o=>{ if(o.isMesh) base.add(o); }); try{ kreamGear(P,pc); }catch(e){}
+  const want={'상의':pc.topColor,'하의':pc.bottomColor,'신발':pc.shoeColor}[it.c], hex=want&&want!==D?want.replace('#','').toLowerCase():null;
+  P.root.traverse(o=>{ if(!o.isMesh||!base.has(o)) return; const mc=o.material&&o.material.color?o.material.color.getHexString():''; o.visible=!!hex&&mc===hex; });
+  P.root.updateMatrixWorld(true); const box=new THREE.Box3(); P.root.traverse(o=>{ if(o.isMesh&&o.visible){ let v=true, q=o; while(q){ if(!q.visible){ v=false; break; } q=q.parent; } if(v) box.expandByObject(o); } });
+  return {P,box}; }
+function kFrame(cam,box){ const c=box.getCenter(new THREE.Vector3()), sz=box.getSize(new THREE.Vector3()), r=Math.max(sz.x,sz.y,sz.z*1.2,.12); cam.position.set(0,c.y+r*.15,r*2.3); cam.lookAt(0,c.y,0); return c; }
+function kStudio(){ const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xfff4e8,0x5a4a6a,1.15)); const dl=new THREE.DirectionalLight(0xffffff,.9); dl.position.set(2,4,3); sc.add(dl); const rl=new THREE.DirectionalLight(0xff9ad2,.45); rl.position.set(-3,2,-2); sc.add(rl); return sc; }
+function kCardStart(i){ const cv=$('#kPc'); if(!cv) return; try{ if(!KPC.R){ KPC.R=new THREE.WebGLRenderer({antialias:true,alpha:true}); KPC.R.setPixelRatio(1); KPC.R.setSize(240,240,false); KPC.scene=kStudio(); KPC.cam=new THREE.PerspectiveCamera(30,1,.01,50); }
+    if(KPC.P){ KPC.scene.remove(KPC.P.root); KPC.P=null; } const {P,box}=kProduct(i), c=kFrame(KPC.cam,box); P.root.position.x=-c.x; P.root.position.z=-c.z; const hold=new THREE.Group(); hold.add(P.root); KPC.scene.add(hold); KPC.P={root:hold}; KPC.i=i;
+    const x=cv.getContext('2d'); cancelAnimationFrame(KPC.raf); const loop=()=>{ if(!document.body.contains(cv)||$('#kBuy').hidden){ KPC.raf=0; return; } hold.rotation.y=performance.now()/1000*.7; KPC.R.setClearColor(0x000000,0); KPC.R.render(KPC.scene,KPC.cam); x.clearRect(0,0,240,240); x.drawImage(KPC.R.domElement,0,0); KPC.raf=requestAnimationFrame(loop); }; loop(); }catch(e){} }
+function kCardStop(){ cancelAnimationFrame(KPC.raf); KPC.raf=0; }
+// small still product shots on every brand chip, rendered a few at a time
+const KTH={};
+function kThumb(i){ if(KTH[i]!==undefined) return KTH[i]; let url=''; try{ if(!BTH.R){ bagThumb('__init__',{k:'x'}); } const {P,box}=kProduct(i), cam=new THREE.PerspectiveCamera(30,1,.01,50), c=kFrame(cam,box), hold=new THREE.Group(); P.root.position.x=-c.x; P.root.position.z=-c.z; hold.add(P.root); hold.rotation.y=-.5;
+  const sc=BTH.pscene||(BTH.pscene=kStudio()); sc.add(hold); BTH.R.setClearColor(0x000000,0); BTH.R.render(sc,cam); url=BTH.R.domElement.toDataURL('image/png'); sc.remove(hold); }catch(e){ url=''; } return KTH[i]=url; }
+function kThumbFill(){ const els=[...document.querySelectorAll('i.kth:not(.done)')]; if(!els.length) return; const step=()=>{ for(let n=0;n<3&&els.length;n++){ const el=els.shift(); if(!document.body.contains(el)) continue; const u=kThumb(+el.dataset.kth); if(u) el.style.backgroundImage=`url(${u})`; el.classList.add('done'); } if(els.length) setTimeout(step,30); }; step(); }
 // leaving the style room takes off brand items you tried on but did not buy (back to what you wore before)
 let KSNAP=null;
 function kStrip(snap){ let n=0; KREAM.forEach(it=>{ if(kOwned(it)||!kreamOn(it)) return; n++; Object.keys(it.set).forEach(k=>{ if(k[0]==='k') delete cfg[k]; else if(snap&&k in snap) cfg[k]=snap[k]; else if(k==='face') cfg.face='none'; }); if(cfg.kWorn){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[kSlot(it)]; } }); return n; }
