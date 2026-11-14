@@ -6265,8 +6265,44 @@ const IT_FOOD=[
     {n:'소금 닭꼬치',p:10,k:'food',c:'#e8c08a',d:'숯불에 구운 담백한 맛',fx:{food:20,energy:3}},{n:'양념 닭꼬치',p:12,k:'food',c:'#c8302a',d:'달콤 짭짤한 양념',fx:{food:22,energy:3}},{n:'매운 닭꼬치',p:12,k:'food',c:'#ff2a2a',d:'얼얼하게 매워요',fx:{food:22,water:-8,energy:6}},{n:'떡꼬치',p:8,k:'food',c:'#ff7a5a',d:'쫑득한 떡',fx:{food:15}},{n:'소주 한 잔',p:15,k:'food',c:'#cfe8ff',d:'꼬치에는 소주',fx:{drunk:25,water:-3}},{n:'캔맥주',p:10,k:'food',c:'#ffe08a',d:'시원한 한 캔',fx:{drunk:15,water:5}}]}];
 IT_FOOD.forEach(S=>S.items.forEach(it=>{ ITEMS[it.n]=it; ITEM_FX[it.n]=it.fx; }));
 function stripeTex(a,b){ const c=document.createElement('canvas'); c.width=64; c.height=16; const x=c.getContext('2d'); for(let i=0;i<8;i++){ x.fillStyle=i%2?a:b; x.fillRect(i*8,0,8,16); } return new THREE.CanvasTexture(c); }
+// Itaewon Taco shopfront: red brick above, a big round sign, a banner, a red door, a red-framed pickup window and a cream tile wall with menu cards
+function tacoTex(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'); draw(x,w,h); return new THREE.CanvasTexture(c); }
+function tacoShop(IG,zc){ const X=6.7, face=(tex,w,h,x,y,z,o)=>{ const m=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial(Object.assign({map:tex},o||{}))); m.scale.set(w,h,1); m.position.set(x,y,z); m.rotation.y=-Math.PI/2; IG.add(m); return m; };
+  const red='#d82a22', cream='#efe6cf', brown='#55302a';
+  // red brick upper wall with three windows
+  const brick=tacoTex(256,128,(x,w,h)=>{ x.fillStyle='#b8483a'; x.fillRect(0,0,w,h); for(let r=0;r<8;r++) for(let q=-1;q<9;q++){ const v=rand(-12,12)|0; x.fillStyle=`rgb(${222+v},${98+v},${82+v})`; x.fillRect(q*32+(r%2)*16+1,r*16+1,30,14); } }); brick.wrapS=brick.wrapT=THREE.RepeatWrapping; brick.repeat.set(3,2);
+  const bw=new THREE.Mesh(G.box,new THREE.MeshLambertMaterial({map:brick})); bw.scale.set(.36,3.5,5.3); bw.position.set(6.87,4.85,zc); IG.add(bw);
+  [-1.6,0,1.6].forEach(dz=>{ B(.06,1.3,1.1,M('#f4efe6'),6.67,5.5,zc+dz,IG); B(.07,1.1,.9,M('#2a2420'),6.66,5.5,zc+dz,IG); });
+  // ground floor: brown stone piers, dark band, cream wall
+  [-2.45,2.45].forEach(dz=>B(.42,3.1,.4,M(brown),6.84,1.55,zc+dz,IG)); B(.4,.55,5.3,M('#3a2824'),6.85,2.95,zc,IG); B(.3,2.7,4.5,M(cream),6.86,1.35,zc,IG); B(.75,.12,5.3,M('#8a8a8e'),6.45,.06,zc,IG);
+  // banner over the window, with a yellow tube light above it
+  face(tacoTex(512,96,(x,w,h)=>{ x.fillStyle='#f6efdc'; x.fillRect(0,0,w,h); x.strokeStyle='#c8bca0'; x.lineWidth=3; x.strokeRect(2,2,w-4,h-4); x.textBaseline='middle'; x.fillStyle='#6a3a22'; x.font='700 22px Georgia,serif'; x.textAlign='center'; x.fillText('TACOS   CERVEZA   JUGOS',300,24);
+    x.fillStyle=red; x.beginPath(); x.arc(52,52,34,0,7); x.fill(); x.fillStyle='#f6efdc'; x.font='900 15px "Arial Black",sans-serif'; x.fillText('TACO',52,56);
+    x.font='900 46px Georgia,serif'; x.textAlign='left'; x.fillStyle='#2f7a3a'; x.fillText('ITAEWON',100,64); x.fillStyle=red; x.font='900 50px "Arial Black",Impact,sans-serif'; x.fillText('TACO',345,64); }),3.5,.66,X-.1,2.8,zc+.55);
+  B(.06,.05,3.3,M('#fff0a0',{glow:1.8}),X-.14,3.18,zc+.55,IG);
+  // big round sign, hung out from the wall and leaning a little
+  const sg=new THREE.Group(); sg.position.set(X-.55,4.05,zc-.55); sg.rotation.set(0,0,0); IG.add(sg); const disc=mesh(G.cyl,M('#e9e1cc'),0,0,0,1.2,.16,1.2,sg); disc.rotation.z=Math.PI/2;
+  const rs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({transparent:true,map:tacoTex(512,512,(x,w,h)=>{ x.beginPath(); x.arc(256,256,250,0,7); x.fillStyle='#f3ecd8'; x.fill(); x.lineWidth=12; x.strokeStyle='#ff5a48'; x.shadowColor='#ff5a48'; x.shadowBlur=18; x.beginPath(); x.arc(256,256,232,0,7); x.stroke(); x.shadowBlur=0;
+    x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#3a8a44'; x.font='900 64px Georgia,serif'; const t='ITAEWON'; for(let i=0;i<t.length;i++){ const a=-.62+i*.207; x.save(); x.translate(256+Math.sin(a)*190,300-Math.cos(a)*190); x.rotate(a); x.fillText(t[i],0,0); x.restore(); }
+    x.fillStyle='#e02a22'; x.shadowColor='#ff6a58'; x.shadowBlur=14; x.font='900 150px "Arial Black",Impact,sans-serif'; x.fillText('TACO',256,262,400); x.shadowBlur=0; x.strokeStyle='#fff6e8'; x.lineWidth=3; x.strokeText('TACO',256,262,400);
+    x.fillStyle='#5a3a22'; x.font='700 30px Georgia,serif'; x.fillText('TACOS CERVEZA JUGOS',256,372,380); x.font='italic 20px Georgia,serif'; x.fillStyle='#8a7a66'; x.fillText('El tacos es delicioso',256,412); })})); rs.scale.set(2.4,2.4,1); rs.position.set(-.09,0,0); rs.rotation.y=-Math.PI/2; sg.add(rs);
+  sg.rotation.z=-.16; B(.5,.06,.06,M('#3a3a40'),X-.25,4.6,zc-.55,IG); for(let k=0;k<4;k++){ const st=B(.03,.45,.03,M('#ff8a78',{glow:1.4}),X-.5,5.5,zc-1+k*.3,IG); st.rotation.x=.25*(k%2?1:-1); }
+  // red door (left) with dark glass and gold lettering
+  B(.1,2.3,1.05,M(red),X,1.27,zc-1.55,IG); B(.11,1.75,.6,M('#17120f'),X-.01,1.4,zc-1.55,IG);
+  face(tacoTex(128,256,(x,w,h)=>{ x.fillStyle='#17120f'; x.fillRect(0,0,w,h); x.fillStyle='#f0b83a'; x.textAlign='center'; x.font='900 20px Georgia,serif'; x.fillText('ITAEWON',64,52); x.font='900 26px "Arial Black",sans-serif'; x.fillText('TACO',64,80); x.font='700 14px sans-serif'; ['TACOS','CERVEZA','JUGOS'].forEach((t,i)=>x.fillText(t,64,150+i*24)); }),.56,1.6,X-.07,1.4,zc-1.55);
+  B(.05,.5,.05,M('#c8c8d0'),X-.1,1.2,zc-1.2,IG);
+  // red-framed pickup window (right) with a steel counter and a tube light under it
+  B(.1,1.15,2.75,M(red),X,1.85,zc+.75,IG); B(.11,.95,2.55,M('#201c1a'),X-.01,1.85,zc+.75,IG); B(.12,.95,.05,M(red),X-.02,1.85,zc+.6,IG);
+  face(tacoTex(256,32,(x,w,h)=>{ x.fillStyle='#201c1a'; x.fillRect(0,0,w,h); x.fillStyle='#f4efe6'; x.font='700 16px sans-serif'; x.textBaseline='middle'; x.fillText('ORDER HERE',8,16); x.textAlign='right'; x.fillText('PICKUP HERE',248,16); }),2.5,.2,X-.08,2.2,zc+.75);
+  B(.14,.3,.4,M('#3a3a40'),X+.02,1.7,zc+1.3,IG); B(.4,.05,2.75,M('#c0c4cc'),X-.2,1.25,zc+.75,IG); B(.05,.04,2.3,M('#fff0a0',{glow:1.8}),X-.1,1.17,zc+.75,IG);
+  // cream tile wall under the window: EAT HERE arrow, a poster and four price cards
+  face(tacoTex(512,256,(x,w,h)=>{ x.fillStyle='#f1e8d0'; x.fillRect(0,0,w,h); x.strokeStyle='#d8ccb0'; x.lineWidth=2; for(let i=0;i<=w;i+=32){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,h); x.stroke(); } for(let j=0;j<=h;j+=32){ x.beginPath(); x.moveTo(0,j); x.lineTo(w,j); x.stroke(); }
+    x.fillStyle='#3fb8a8'; x.beginPath(); x.moveTo(8,96); x.lineTo(70,96); x.lineTo(70,74); x.lineTo(112,118); x.lineTo(70,162); x.lineTo(70,140); x.lineTo(8,140); x.closePath(); x.fill(); x.strokeStyle='#f0b83a'; x.lineWidth=4; x.stroke(); x.fillStyle='#fff'; x.font='900 17px "Arial Black",sans-serif'; x.textAlign='center'; x.fillText('EAT',44,114); x.fillText('HERE',46,133);
+    x.fillStyle='#f2b830'; x.fillRect(128,22,160,212); x.fillStyle='#7a3a18'; x.font='900 19px Georgia,serif'; x.fillText('ME GUSTAS',208,52); x.fillText('ITAEWON TACOS',208,76,150); for(let k=0;k<3;k++){ x.fillStyle='#e8c86a'; x.beginPath(); x.arc(168+k*40,140,24,Math.PI,0); x.fill(); x.fillStyle=['#c8302a','#3d8a3a','#8a4a2a'][k]; x.fillRect(150+k*40,136,36,8); } x.fillStyle='#7a3a18'; x.font='700 15px Georgia,serif'; x.fillText('TODOS JUNTOS',208,206);
+    [['BIRRIA','4.6'],['GAMBAS','4.5'],['PASTOR','4.3'],['TINGA','4.3']].forEach(([n,pr],i)=>{ const px=304+(i%2)*100, py=22+(i>>1)*110; x.fillStyle='#fff'; x.fillRect(px,py,92,100); x.strokeStyle='#d8d0c0'; x.strokeRect(px,py,92,100); x.fillStyle='#1f4fa8'; x.font='900 17px "Arial Black",sans-serif'; x.fillText(n,px+46,py+24,84); x.fillText('TACO',px+46,py+44); x.fillStyle='#e02a22'; x.font='900 34px "Arial Black",sans-serif'; x.fillText(pr,px+46,py+86); }); }),2.75,1.05,X-.01,.66,zc+.75);
+  const pl=new THREE.PointLight(0xffc880,1.1,10); pl.position.set(X-1.3,2.4,zc+.3); IG.add(pl); }
 function buildITStreet(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); scene.add(IG);
-  IT_FOOD.forEach(S=>{ const s=Math.sign(S.x), g=new THREE.Group(); g.position.set(S.x,0,S.z); IG.add(g); const fx=-s;
+  IT_FOOD.forEach(S=>{ const s=Math.sign(S.x), g=new THREE.Group(), shop=S.id==='itaco'; g.position.set(S.x,0,S.z); if(shop) tacoShop(IG,S.z); else IG.add(g); const fx=-s; // Itaewon Taco is a real shopfront on the building, not a cart
     B(1.2,1,2.6,M('#3a3a42'),0,.75,0,g); B(1.24,.08,2.64,M(S.col,{glow:.6}),0,1.26,0,g); [-1,1].forEach(zz=>[-1,1].forEach(xx=>{ const w=mesh(G.cyl,M('#141414'),xx*.5,.22,zz*1.05,.22,.12,.22,g); w.rotation.x=Math.PI/2; }));
     [[-.55,-1.25],[-.55,1.25],[.55,-1.25],[.55,1.25]].forEach(([x,z])=>B(.06,2.3,.06,M('#c0c4cc'),x,1.95,z,g)); const aw=new THREE.Mesh(G.box,new THREE.MeshLambertMaterial({map:stripeTex(S.col,'#f4efe6')})); aw.scale.set(1.9,.08,3); aw.position.set(fx*.3,3.1,0); aw.rotation.z=fx*.12; g.add(aw);
     for(let i=0;i<7;i++) mesh(G.sph,M('#fff3c0',{glow:1.6}),fx*1.2,2.95,-1.4+i*.47,.06,.06,.06,g);
@@ -6276,10 +6312,10 @@ function buildITStreet(){ const IG=new THREE.Group(); IG.position.set(OX,0,0); s
     else { for(let i=0;i<8;i++){ const z=-.9+i*.24; const st=mesh(G.cyl,M('#d8b88a'),0,1.47,z,.012,1,.012,g); st.rotation.z=Math.PI/2; for(let k=0;k<4;k++) mesh(G.sph,M(i%2?'#c8302a':'#e8a85a'),-.3+k*.18,1.47,z,.07,.06,.06,g); } }
     const sg=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign(S.name,S.col),transparent:true,side:THREE.DoubleSide})); sg.scale.set(2.4,.6,1); sg.position.set(fx*.62,2.55,0); sg.rotation.y=fx>0?Math.PI/2:-Math.PI/2; g.add(sg);
     const pl=new THREE.PointLight(0xffb070,.9,9); pl.position.set(fx*.6,2.6,0); g.add(pl);
-    const sp=[]; const sm=[]; for(let i=0;i<24;i++){ sm.push({y:Math.random()*2.2,ph:Math.random()*6,z:rand(-.9,.3)}); sp.push(0,0,0); } const sgeo=new THREE.BufferGeometry(); sgeo.setAttribute('position',new THREE.Float32BufferAttribute(sp,3)); const smoke=new THREE.Points(sgeo,new THREE.PointsMaterial({color:0xd8d4dc,size:.35,transparent:true,opacity:.35,depthWrite:false})); smoke.position.set(OX+S.x,1.4,S.z); scene.add(smoke);
-    addNPC({top:'tee',topColor:'#f4efe6',outer:'none',head:'bucket',headColor:S.col,extra:'none'},{x:OX+S.x+s*1.0,z:S.z},s>0?-Math.PI/2:Math.PI/2,'talk',{talk:true});
+    const sp=[]; const sm=[]; for(let i=0;i<24;i++){ sm.push({y:Math.random()*2.2,ph:Math.random()*6,z:rand(-.9,.3)}); sp.push(0,0,0); } const sgeo=new THREE.BufferGeometry(); sgeo.setAttribute('position',new THREE.Float32BufferAttribute(sp,3)); const smoke=new THREE.Points(sgeo,new THREE.PointsMaterial({color:0xd8d4dc,size:.35,transparent:true,opacity:.35,depthWrite:false})); smoke.position.set(OX+S.x+(shop?.75:0),shop?1.5:1.4,S.z+(shop?.9:0)); scene.add(smoke);
+    addNPC({top:'tee',topColor:'#f4efe6',outer:'none',head:'bucket',headColor:S.col,extra:'none'},{x:OX+S.x+s*(shop?.45:1.0),z:S.z+(shop?2.15:0)},s>0?-Math.PI/2:Math.PI/2,'talk',{talk:true});
     for(let i=0;i<2;i++) addNPC(avantLook(),{x:OX+S.x-s*(1.9+i*.2),z:S.z+(i?1.6:-1.2)},s>0?Math.PI/2:-Math.PI/2,'talk',{talk:true});
-    colliders.push({x:OX+S.x,z:S.z,r:1.1}); ITS.carts.push({S,smoke,sm});
+    if(!shop) colliders.push({x:OX+S.x,z:S.z,r:1.1}); ITS.carts.push({S,smoke,sm});
     INTER.push({pos:()=>MAP==='itaewon'&&inGame&&IT.floor===0?{x:OX+S.x-s*1.6,z:S.z}:FARV,r:2.8,prio:3,label:`${S.name} (${S.sub})`,act:()=>{ openShop(S); }}); });
   IT_SPOTS.splice(3,0,{n:'엉클버거 노상',x:OX-3.4,z:-47},{n:'이태원타코',x:OX+3.4,z:-52},{n:'닭꼬치 노상',x:OX-3.4,z:30});
   const cg=new THREE.CylinderGeometry(.42,.42,.09,14), cm=M('#ffcf3a',{glow:.9}); for(let i=0;i<(LOW?12:18);i++){ const m=new THREE.Mesh(cg,cm); m.rotation.set(0,0,Math.PI/2); scene.add(m); const c={m,wait:0,ph:Math.random()*6}; itsCoin(c); ITS.coins.push(c); }
