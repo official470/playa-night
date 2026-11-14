@@ -1901,7 +1901,7 @@ let player=null;
 const pState={x:0,z:136,y:0,vy:0,face:Math.PI,ride:null,bounce:0};
 function rebuildPlayer(){
   if(player) scene.remove(player.root);
-  player=buildCharacter(cfg); player.dance=myDance; player.seed=0; scene.add(player.root);
+  player=buildCharacter(typeof kWearable==='function'?kWearable():cfg); player.dance=myDance; player.seed=0; scene.add(player.root);
   player.root.position.set(pState.x,pState.y,pState.z); player.root.rotation.y=pState.face;
   try{ backPrint(); }catch(e){} // AUTH may not exist yet during the first build
 }
@@ -5471,6 +5471,10 @@ function kThumbFill(){ const els=[...document.querySelectorAll('i.kth:not(.done)
 let KSNAP=null;
 function kStrip(snap){ let n=0; KREAM.forEach(it=>{ if(kOwned(it)||!kreamOn(it)) return; n++; Object.keys(it.set).forEach(k=>{ if(k[0]==='k') delete cfg[k]; else if(snap&&k in snap) cfg[k]=snap[k]; else if(k==='face') cfg.face='none'; }); if(cfg.kWorn){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[kSlot(it)]; } }); return n; }
 $('#dressBtn').addEventListener('click',()=>{ KSNAP=JSON.parse(JSON.stringify(cfg)); kBuyBar(null); });
+// the character out in the world only ever wears what you own: trying on happens in the style room preview
+function kWearable(){ const save=cfg, c=JSON.parse(JSON.stringify(cfg)); cfg=c; try{ kStrip(KSNAP); }catch(e){} cfg=save; return c; }
+// however the style room closes, unbought pieces come off
+new MutationObserver(()=>{ const d=document.body.classList.contains('dressing'); if(KSNAP&&!d){ const n=kStrip(KSNAP); KSNAP=null; if(n){ refreshOpts(); toast(`사지 않은 아이템 ${n}개는 벗었어요. 구매해야 입고 다닐 수 있어요`); } } }).observe(document.body,{attributes:true,attributeFilter:['class']});
 $('#enterBtn').addEventListener('click',()=>{ if(!document.body.classList.contains('dressing')) return; const n=kStrip(KSNAP); if(n) toast(`사지 않은 브랜드 아이템 ${n}개는 벗었어요. 스타일룸에서 코인으로 살 수 있어요`); },true);
 function kreamPreview(i){ const it=KREAM[i], worn=kreamOn(it), pc=Object.assign({},cfg); if(!worn){ kClear(pc,it); Object.assign(pc,it.set); } pc.kWorn=Object.assign({},cfg.kWorn||{}); if(!worn) pc.kWorn[kSlot(it)]=i;
   kpvOpen({brand:it.b+' · 브랜드샵',name:it.n,cat:it.c,cfg:pc,worn,note:worn?'지금 입고 있어요. 벗으려면 아래 버튼을 눌러요.':'드래그해서 돌려 보고, 마음에 들면 입어요. 로고는 그리지 않아요.',apply:()=>kreamApply(it)}); }
