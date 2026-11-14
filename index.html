@@ -32,7 +32,7 @@
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&family=Orbitron:wght@600;800;900&family=Monoton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   box-sizing:border-box;
@@ -663,7 +663,7 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 #kBuy .kprice{font-weight:800;color:#ffcf3a}#kBuy .kprice.free{color:#7dff9a}#kBuy .kprice.own{color:#9ad8ff}#kBuy .kwon{opacity:.6;font-size:11px}
 #kBuy .kinfo button small{font-weight:600;opacity:.75}
 .creator .chip i.kth{display:block;width:64px;height:64px;margin:0 auto 4px;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.12),rgba(255,255,255,.02)) center/contain no-repeat}
-.creator .chip i.kth.done{background-color:rgba(214,226,255,.16);box-shadow:0 0 18px rgba(150,180,255,.18) inset;background-size:contain;background-position:center;background-repeat:no-repeat}
+.creator .chip i.kth.done{background-color:transparent;background-size:contain;background-position:center;background-repeat:no-repeat}
 .creator .chip.kchip{text-align:center;min-width:104px}
 .creator .chip.krare{position:relative;border:1px solid rgba(190,140,255,.55);box-shadow:0 0 0 1px rgba(255,79,216,.15) inset,0 0 14px rgba(155,107,255,.25)}
 .creator .chip .kbadge{position:absolute;top:5px;left:5px;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:999px;background:linear-gradient(120deg,#9b6bff,#ff4fd8);color:#fff;letter-spacing:.02em}
@@ -988,63 +988,6 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
 #clubNow.mc #cnTrack{display:none}
 #clubNow.mc #cnMix{display:block}
 
-/* ================= RETRO CHROME THEME (80s airbrush: deep navy space, electric-blue flare, perspective grid, chrome lettering, red striped logo type) ================= */
-:root,:root:not([data-theme="light"]),:root[data-theme]{
-  color-scheme:dark;
-  --panel:rgba(5,9,26,.9); --panel-line:rgba(96,160,255,.3);
-  --text:#eaf2ff; --muted:#8fa8d0; --chip:rgba(18,30,66,.82); --chip-on:#5ab4ff; --chip-on-text:#03101f;
-  --ember:#ff2e5a; --cyan:#5ac8ff; --stage:#03050f;
-  --chrome:linear-gradient(180deg,#ffffff 0%,#d8e8ff 34%,#4a6aa8 49%,#0e1a3a 51%,#9cc2ff 70%,#f2f8ff 100%);
-  --redstripe:repeating-linear-gradient(180deg,#ff3a5c 0 3px,#b0103a 3px 5px);
-  --flare:radial-gradient(circle,rgba(255,255,255,.95) 0,rgba(140,200,255,.55) 6%,rgba(60,120,255,.12) 22%,transparent 46%);
-  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  --grid:linear-gradient(transparent 0 calc(100% - 1px),rgba(90,160,255,.22) 0),linear-gradient(90deg,transparent 0 calc(100% - 1px),rgba(90,160,255,.22) 0);
-}
-.card,.creator,#sp,#shop,#bagPanel,#dancePanel,#np,.tools,#boothList,#wish,#nsPop .box{
-  background:var(--grain),
-    radial-gradient(120% 70% at 12% -5%,rgba(72,72,236,.78),transparent 62%),
-    radial-gradient(90% 60% at 105% 28%,rgba(128,84,232,.55),transparent 66%),
-    radial-gradient(85% 55% at 35% 105%,rgba(80,184,228,.38),transparent 70%),
-    radial-gradient(55% 35% at 72% 82%,rgba(244,234,206,.14),transparent 72%),
-    linear-gradient(180deg,#0e1446,#060924)!important;
-  background-size:180px 180px,auto,auto,auto,auto,auto!important;
-  border:1px solid var(--panel-line)!important;
-  box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 0 24px rgba(40,110,255,.22),0 18px 40px rgba(0,0,0,.55)!important;
-  color:var(--text)}
-/* the horizon grid along the bottom of big panels */
-.creator::before,#shop::before,#bagPanel::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;
-  background:repeating-radial-gradient(circle at 78% 34%,transparent 0 62px,rgba(214,222,255,.16) 63px 65px,transparent 66px 118px),
-    linear-gradient(118deg,transparent 47%,rgba(214,222,255,.12) 47.4%,transparent 47.8%),linear-gradient(28deg,transparent 58%,rgba(214,222,255,.1) 58.3%,transparent 58.6%);
-  filter:blur(.8px);-webkit-mask:radial-gradient(circle at 78% 34%,#000 0,#000 40%,transparent 78%);mask:radial-gradient(circle at 78% 34%,#000 0,#000 40%,transparent 78%)}
-/* a star flare in the corner */
-.creator::after{content:"";position:absolute;top:-30px;right:-30px;width:160px;height:160px;pointer-events:none;z-index:0;
-  background:var(--flare),linear-gradient(90deg,transparent 49.4%,rgba(180,220,255,.7) 50%,transparent 50.6%),linear-gradient(0deg,transparent 49.4%,rgba(180,220,255,.7) 50%,transparent 50.6%);
-  -webkit-mask:radial-gradient(circle,#000 30%,transparent 70%);mask:radial-gradient(circle,#000 30%,transparent 70%)}
-.creator>*:not(#styleView):not(#opts):not(#optNav){z-index:1}
-/* chrome lettering */
-.creator h1,#spTitle,.shophead h2,.creator .sec h2,#np b,.card h2{
-  font-family:"Orbitron","Black Han Sans","Noto Sans KR",sans-serif!important;font-weight:900!important;letter-spacing:.04em;
-  background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 6px rgba(80,150,255,.55)) drop-shadow(0 1px 0 rgba(0,0,0,.6))}
-.creator h1{font-size:40px}
-.creator .sec h2{font-size:15px;text-transform:uppercase}
-/* red striped logo type for big brand words */
-.brandlogo+*,#spTitle:is(:only-child){}
-#sp #spTitle[data-red],.redtype{font-family:"Monoton","Orbitron",sans-serif!important;background:var(--redstripe)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;filter:drop-shadow(0 0 8px rgba(255,40,90,.55))!important}
-/* buttons */
-.primary{background:linear-gradient(180deg,#ff5a7a,#d0103c 55%,#8a0a2a)!important;border:1px solid rgba(255,140,170,.6)!important;color:#fff!important;
-  font-family:"Orbitron","Black Han Sans",sans-serif!important;font-weight:800!important;letter-spacing:.06em;text-shadow:0 0 8px rgba(255,255,255,.5);
-  box-shadow:0 0 18px rgba(255,40,90,.45),0 1px 0 rgba(255,255,255,.35) inset!important}
-.ghost,#spClose,#randBtn{background:rgba(14,24,56,.85)!important;border:1px solid var(--panel-line)!important;color:#cfe2ff!important}
-.chip,.acts button,#shopList button{background:var(--grain),linear-gradient(180deg,rgba(14,20,62,.72),rgba(6,10,34,.82))!important;background-size:180px 180px,auto!important;backdrop-filter:blur(6px);border:1px solid rgba(96,160,255,.28)!important;color:#e4eeff!important}
-.chip[aria-pressed="true"],.acts button.hot{background:linear-gradient(180deg,#8ad0ff,#2a7aff 60%,#123a9a)!important;color:#fff!important;border-color:#bfe4ff!important;box-shadow:0 0 14px rgba(70,160,255,.7)!important}
-.creator .chip small,.creator .chip em.kp{color:#9fbbe6}
-/* round menu buttons: dark chrome rim with a blue glow */
-.rbtn{background:radial-gradient(circle at 50% 35%,#1a2c62,#050a1e 72%)!important;border:2px solid transparent!important;
-  background-clip:padding-box!important;box-shadow:0 0 0 2px rgba(190,220,255,.55),0 0 16px rgba(60,140,255,.55),0 6px 14px rgba(0,0,0,.6)!important}
-.rbtn span{font-family:"Orbitron","Noto Sans KR",sans-serif;font-weight:800;font-size:10.5px!important;letter-spacing:.03em;color:#dbe9ff;text-shadow:0 0 6px rgba(80,160,255,.8)}
-/* HUD numbers */
-#coinHud,#coinN{font-family:"Orbitron","Noto Sans KR",sans-serif}
 /* new arrivals: product shots on clean white */
 .fshots figure{background:#fff!important;border:0!important;box-shadow:0 6px 18px rgba(0,0,0,.35)}
 </style>
@@ -2880,7 +2823,7 @@ function drawScope(cv,k){ const x=cv.getContext('2d'), W=cv.width, H=cv.height, 
   else { x.save(); x.translate(cx,cy); x.rotate(.5); x.scale(1,.35); for(let i=0;i<2200;i++){ const r=Math.pow(Math.random(),1.8)*140, a=Math.random()*Math.PI*2; x.fillStyle=`rgba(${230+Math.random()*25|0},${205+Math.random()*40|0},255,${(.15+Math.random()*.5).toFixed(2)})`; x.fillRect(Math.cos(a)*r,Math.sin(a)*r,1.5,1.5); }
     const core=x.createRadialGradient(0,0,0,0,0,40); core.addColorStop(0,'rgba(255,245,230,.95)'); core.addColorStop(1,'rgba(255,245,230,0)'); x.fillStyle=core; x.beginPath(); x.arc(0,0,40,0,Math.PI*2); x.fill(); x.restore(); }
   const v=x.createRadialGradient(cx,cy,W*.32,cx,cy,W*.5); v.addColorStop(0,'rgba(0,0,0,0)'); v.addColorStop(1,'rgba(0,0,0,1)'); x.fillStyle=v; x.fillRect(0,0,W,H); }
-function openSp(title,sub,html,handler){ for(const k in keys) keys[k]=false; const spE=$('#sp'); spE.classList.remove('float'); spE.style.top=''; spE.style.left=''; spFloat=null; $('#spTitle').textContent=title; delete $('#spTitle').dataset.red; $('#spSub').textContent=sub||''; $('#spBody').innerHTML=html; spHandler=handler||null; $('#sp').hidden=false; }
+function openSp(title,sub,html,handler){ for(const k in keys) keys[k]=false; const spE=$('#sp'); spE.classList.remove('float'); spE.style.top=''; spE.style.left=''; spFloat=null; $('#spTitle').textContent=title; $('#spSub').textContent=sub||''; $('#spBody').innerHTML=html; spHandler=handler||null; $('#sp').hidden=false; }
 function closeSp(){ $('#sp').hidden=true; spHandler=null; spFloat=null; }
 $('#spClose').addEventListener('click',closeSp);
 $('#spBody').addEventListener('click',e=>{ const b=e.target.closest('[data-act]'); if(b&&spHandler) spHandler(b.dataset.act,b); });
@@ -5174,7 +5117,6 @@ updaters.push(t=>{ if(FNEW.done||!inGame) return; if(!FNEW.t) FNEW.t=t+6; if(t<F
   if(!$('#sp').hidden||document.body.classList.contains('dressing')) return; const np=document.getElementById('nsPop'); if(np&&!np.hidden) return;
   FNEW.done=true; const L=fashionNew().slice(); if(!L.length) return; for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; }
   const five=L.slice(0,5);
-  setTimeout(()=>{ const t=$('#spTitle'); if(t&&t.textContent==='NEW ARRIVALS') t.dataset.red='1'; },0);
   openSp('NEW ARRIVALS','',`<div class='fshots'>${five.map((it,k)=>`<figure><canvas data-fs='${KREAM.indexOf(it)}' width='240' height='240' aria-label='${esc(it.b+' '+it.n)}'></canvas></figure>`).join('')}</div><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
     a=>{ closeSp(); if(a==='go') $('#dressBtn').click(); }); fshotsSpin(); });
 // the new-arrivals pieces turn slowly in 3D (one shared renderer draws all five canvases)
