@@ -653,6 +653,9 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 #styleView small{font-size:11px;color:var(--muted)}
 .creator .chip em.kp{display:block;font-style:normal;font-size:11px;font-weight:700;margin-top:3px;color:#ffcf3a}
 .creator .chip em.kp.free{color:#7dff9a}.creator .chip em.kp.own{color:#9ad8ff}
+#kBuyBtn{border:0;border-radius:14px;padding:6px 14px;font-weight:800;background:#ffcf3a;color:#1a1408;font-size:14px;line-height:1.1;max-width:44%}
+#kBuyBtn small{display:block;font-size:10.5px;font-weight:600;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#kBuyBtn.poor{opacity:.6}#kBuyBtn[hidden],body:not(.dressing) #kBuyBtn{display:none!important}
 #kBuy{display:flex;gap:10px;align-items:center;width:100%;max-width:340px;font-size:12px;background:rgba(0,0,0,.28);border:1px solid var(--panel-line);border-radius:14px;padding:6px 10px 6px 6px}
 #kPc{width:96px;height:96px;flex:none;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.14),rgba(255,255,255,.02))}
 #kBuy .kinfo{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
@@ -665,6 +668,11 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 #kBuy[hidden]{display:none!important}
 #kBuy button{margin-top:4px;align-self:flex-start;border:0;border-radius:999px;padding:7px 12px;font-weight:800;background:#ffcf3a;color:#1a1408;cursor:pointer;font-size:13px}
 #kBuy button:disabled{opacity:.5;cursor:not-allowed}
+.fshots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 12px}
+.fshots figure{margin:0;aspect-ratio:3/4;border-radius:14px;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.16),rgba(255,255,255,.02) 70%) ,linear-gradient(160deg,#2a1f3a,#120e18);background-size:92% auto,cover;background-repeat:no-repeat;background-position:center 30%,center;display:flex;align-items:flex-end;padding:8px;border:1px solid rgba(255,255,255,.08)}
+.fshots figure:first-child{grid-column:span 2;aspect-ratio:auto;background-size:auto 88%,cover}
+.fshots figcaption{font-weight:800;font-size:12px;line-height:1.2;letter-spacing:.02em}
+.fshots figcaption small{display:block;font-weight:500;opacity:.65;font-size:10.5px;margin-top:2px}
 .fnew{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px;max-height:46vh;overflow:auto}
 .fnew li{display:flex;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.06);font-size:13px}
 .fnew li small{display:block;opacity:.7;font-size:11px}.fnew li b.free{color:#7dff9a}.fnew li b{color:#ffcf3a;white-space:nowrap;align-self:center}
@@ -954,6 +962,7 @@ body.dressing #optNav{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scro
 #danceMain,#danceRand,#styleMain,#bagMain{background:none!important;box-shadow:none!important;border-radius:0;color:#fff!important;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;-webkit-tap-highlight-color:transparent}
 .rbtn .ic3{display:block;font-style:normal;font-size:36px;line-height:1;filter:drop-shadow(0 4px 5px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(255,255,255,.25));transition:transform .12s ease}
 .rbtn:active .ic3{transform:scale(.88)}
+.rbtn .ic3.img3{width:52px;height:52px;margin:-6px auto -2px;background:center/contain no-repeat;filter:drop-shadow(0 5px 6px rgba(0,0,0,.5))}
 #danceMain span,#danceRand span,#styleMain span,#bagMain span{font-size:11px!important;font-weight:800;margin-top:3px!important;color:#fff;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.8);max-width:72px!important;white-space:nowrap!important}
 #danceMain[aria-expanded="true"],#danceRand[aria-pressed="true"]{outline:none!important;animation:none!important}
 #danceMain[aria-expanded="true"] .ic3,#danceRand[aria-pressed="true"] .ic3{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 18px #ff4fa8)}
@@ -5065,7 +5074,7 @@ updaters.push(t=>{ if(FNEW.done||!inGame) return; if(!FNEW.t) FNEW.t=t+6; if(t<F
   if(!$('#sp').hidden||document.body.classList.contains('dressing')) return; const np=document.getElementById('nsPop'); if(np&&!np.hidden) return;
   FNEW.done=true; const L=fashionNew().slice(); if(!L.length) return; for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; }
   const five=L.slice(0,5);
-  openSp('👗 신상 패션 입고',`스타일룸 브랜드샵에 새 아이템 ${L.length}개가 들어왔어요`,`<ul class='fnew'>${five.map(it=>`<li><span>${esc(it.b)}<small>${esc(it.c)} · ${esc(it.n)}</small></span><b class='${kFree().has(KREAM.indexOf(it))?'free':''}'>${esc(kTag(it))}</b></li>`).join('')}</ul><p class='hint'>가장 저렴한 10개는 무료로 입을 수 있어요.</p><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
+  openSp('NEW ARRIVALS',`스타일룸 브랜드샵 신상 ${L.length}개 중 5개`,`<div class='fshots'>${five.map(it=>{ const u=kShot(KREAM.indexOf(it)); return `<figure${u?` style='background-image:url(${u})'`:''}><figcaption>${esc(it.b)}<small>${esc(it.n)}</small></figcaption></figure>`; }).join('')}</div><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
     a=>{ closeSp(); if(a==='go') $('#dressBtn').click(); }); });
 const KCATS=['전체','아우터','상의','하의','신발','모자','액세서리']; let kCat='전체';
 function kreamOn(it){ return Object.entries(it.set).every(([k,v])=>cfg[k]===v); }
@@ -5248,6 +5257,51 @@ $('#opts').addEventListener('click',e=>{ const btn=e.target.closest('button'); i
   if(btn.dataset.preset!==undefined){ e.stopPropagation(); presetPreview(+btn.dataset.preset); return; }
   if(btn.dataset.own!==undefined){ e.stopPropagation(); ownPreview(btn.dataset.own); return; }
   const k=btn.dataset.k; if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head') delete cfg.kHead; if(k==='face') delete cfg.kFace; if(k==='bottom') delete cfg.kPants; if(k==='top') delete cfg.kPrint; if(cfg.kWorn&&TYPE_CAT[k]){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } },true);
+/* ================= 3D ICONS FOR THE MAIN ROUND BUTTONS (bag, style room, roulette, dance) ================= */
+// rendered once into still images; the emoji stays if WebGL is not there
+function icons3D(){ let R; try{ R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); R.setPixelRatio(1); R.setSize(192,192,false); }catch(e){ return; }
+  const studio=(warm)=>{ const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xfff4ec,0x3a3a5a,1.05)); const k=new THREE.DirectionalLight(0xffffff,1); k.position.set(2.5,4,4); sc.add(k); const r=new THREE.DirectionalLight(warm||0x8ab8ff,.55); r.position.set(-3,1.5,-2); sc.add(r); return sc; };
+  const tex=(w,h,draw)=>{ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h); const t=new THREE.CanvasTexture(c); return t; };
+  const fuzz=(col)=>tex(128,128,(x,w,h)=>{ x.fillStyle=col; x.fillRect(0,0,w,h); for(let i=0;i<1800;i++){ x.fillStyle=`rgba(255,255,255,${Math.random()*.18})`; x.fillRect(Math.random()*w,Math.random()*h,1,2+Math.random()*3); x.fillStyle=`rgba(0,0,0,${Math.random()*.12})`; x.fillRect(Math.random()*w,Math.random()*h,1,2+Math.random()*3); } });
+  const L=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.75,metalness:0},o));
+  const shot=(sc,cam)=>{ R.setClearColor(0x000000,0); R.render(sc,cam); return R.domElement.toDataURL('image/png'); };
+  const out={};
+  try{ // shopping bag: orange paper, blurry blue figure print, fuzzy black handles
+    const sc=studio(0xffb070), g=new THREE.Group(); sc.add(g);
+    const front=tex(256,288,(x,w,h)=>{ x.fillStyle='#ff7a22'; x.fillRect(0,0,w,h); const gr=x.createRadialGradient(w/2,h*.55,10,w/2,h*.55,w*.42); gr.addColorStop(0,'#2a2ae0'); gr.addColorStop(.7,'#3a30d8'); gr.addColorStop(1,'rgba(220,40,140,0)'); x.fillStyle=gr; x.beginPath(); x.ellipse(w/2,h*.62,w*.36,h*.5,0,Math.PI,0); x.lineTo(w*.86,h); x.lineTo(w*.14,h); x.fill(); x.fillStyle='#ff8a3a'; x.font='italic bold 22px Georgia,serif'; x.textAlign='center'; x.fillText('made to be worn',w/2,h*.48); x.font='bold 26px Georgia,serif'; x.fillText('OUT OF ORDER',w/2,h*.6); });
+    const side=L('#e86a18'), m=[side,side,L('#ff7a22'),L('#ff7a22'),L('#ffffff',{map:front}),L('#ff7a22',{map:front})];
+    const bag=new THREE.Mesh(new THREE.BoxGeometry(.8,.9,.28),m); g.add(bag);
+    const hm=L('#141414',{roughness:1,map:fuzz('#161616')}); [-.17,.17].forEach(x=>{ const h=new THREE.Mesh(new THREE.TorusGeometry(.17,.035,8,20,Math.PI),hm); h.position.set(x,.45,0); h.rotation.set(0,Math.PI/2,0); h.scale.set(1,1.7,1); g.add(h); });
+    g.rotation.set(.12,-.5,.05); const cam=new THREE.PerspectiveCamera(30,1,.1,20); cam.position.set(0,.24,2.4); cam.lookAt(0,.2,0); out.bag=shot(sc,cam); }catch(e){}
+  try{ // style room: bust with a green felt cone hat, lilac bob, white cat-eye shades with red lenses, pink fur coat
+    const sc=studio(0x9ab8ff), g=new THREE.Group(); sc.add(g); const skin=L('#e8907a');
+    const head=new THREE.Mesh(new THREE.SphereGeometry(.3,24,18),skin); head.scale.set(.9,1.08,.95); head.position.y=.55; g.add(head);
+    const hair=L('#b8c8f0',{map:fuzz('#b8c8f0')}); const bob=new THREE.Mesh(new THREE.CylinderGeometry(.34,.4,.5,20,1,true,Math.PI*.18,Math.PI*1.64),Object.assign(hair.clone(),{side:THREE.DoubleSide})); bob.position.set(0,.5,-.02); g.add(bob);
+    const fr=new THREE.Mesh(new THREE.BoxGeometry(.5,.08,.1),hair); fr.position.set(0,.74,.22); g.add(fr);
+    const hat=new THREE.Mesh(new THREE.ConeGeometry(.42,.7,28),L('#b8c04a',{roughness:1,map:fuzz('#b4be46')})); hat.position.y=1.08; g.add(hat);
+    const wf=L('#ffd0e0',{roughness:.4}), red=L('#e8323a',{roughness:.3,emissive:'#5a0808'}); [-1,1].forEach(s=>{ const f=new THREE.Mesh(new THREE.BoxGeometry(.24,.08,.04),wf); f.position.set(s*.13,.6,.27); f.rotation.z=-s*.18; g.add(f); const l=new THREE.Mesh(new THREE.BoxGeometry(.18,.045,.02),red); l.position.set(s*.13,.6,.295); l.rotation.z=-s*.18; g.add(l); });
+    const lip=new THREE.Mesh(new THREE.SphereGeometry(.07,12,8),L('#d42a2a',{roughness:.35})); lip.scale.set(1.2,.45,.6); lip.position.set(0,.36,.27); g.add(lip);
+    const fur=L('#f2a6c8',{roughness:1,map:fuzz('#f0a4c6')}); const coat=new THREE.Mesh(new THREE.CylinderGeometry(.36,.66,.62,24),fur); coat.scale.set(1,1,.72); coat.position.y=-.05; g.add(coat); const nk=new THREE.Mesh(new THREE.CylinderGeometry(.1,.12,.16,12),skin); nk.position.y=.3; g.add(nk);
+    const sh=new THREE.Mesh(new THREE.BoxGeometry(.2,.3,.05),L('#2a5ab8')); sh.position.set(0,.04,.25); g.add(sh);
+    [-1,1].forEach(s=>{ const lap=new THREE.Mesh(new THREE.BoxGeometry(.22,.42,.08),fur); lap.position.set(s*.15,.02,.27); lap.rotation.z=s*.4; g.add(lap); });
+    g.rotation.y=-.3; const cam=new THREE.PerspectiveCamera(30,1,.1,20); cam.position.set(0,.6,2.75); cam.lookAt(0,.52,0); out.style=shot(sc,cam); }catch(e){}
+  try{ // roulette: a glow-in-the-dark dice
+    const sc=new THREE.Scene(); sc.add(new THREE.AmbientLight(0xffffff,.35)); const k=new THREE.DirectionalLight(0xe8ffe8,.8); k.position.set(2,3,4); sc.add(k);
+    const geo=new THREE.BoxGeometry(1,1,1,8,8,8), p=geo.attributes.position, v=new THREE.Vector3(), r=.2, hb=.5-r; for(let i=0;i<p.count;i++){ v.fromBufferAttribute(p,i); const c=new THREE.Vector3(Math.max(-hb,Math.min(hb,v.x)),Math.max(-hb,Math.min(hb,v.y)),Math.max(-hb,Math.min(hb,v.z))); const d=v.clone().sub(c).normalize().multiplyScalar(r); v.copy(c.add(d)); p.setXYZ(i,v.x,v.y,v.z); } geo.computeVertexNormals();
+    const g=new THREE.Group(); sc.add(g); g.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:'#b8ffc8',emissive:'#5aff8a',emissiveIntensity:.55,roughness:.5})));
+    const pip=new THREE.MeshBasicMaterial({color:'#0a1a10'}), pg=new THREE.SphereGeometry(.085,12,8); const face=(n,pts)=>pts.forEach(([a,b])=>{ const m=new THREE.Mesh(pg,pip); m.scale.set(1,1,.3); if(n==='z'){ m.position.set(a,b,.5); } else if(n==='y'){ m.position.set(a,.5,b); m.rotation.x=Math.PI/2; } else { m.position.set(.5,a,b); m.rotation.y=Math.PI/2; } g.add(m); });
+    face('z',[[-.22,.22],[.22,.22],[-.22,-.22],[.22,-.22]]); face('x',[[-.25,-.2],[-.25,.2],[0,-.2],[0,.2],[.25,-.2],[.25,.2]]); face('y',[[0,0]]);
+    g.rotation.set(.55,-.6,0); const cam=new THREE.PerspectiveCamera(30,1,.1,20); cam.position.set(0,0,2.45); cam.lookAt(0,0,0); out.dice=shot(sc,cam); }catch(e){}
+  try{ // dance: a dancer mid-move, blue leather moto jacket with sleeve stripes, white tee, wide black trousers, shades
+    const sc=studio(0x7ad8ff); const c=Object.assign(randomConfig(),{skin:'#e8b896',hairStyle:'buzz',hairColor:'#b07a3a',top:'tee',topColor:'#f4f2ec',outer:'none',bottom:'flare',bottomColor:'#1a1a1e',shoes:'boots',shoeColor:'#141414',head:'none',face:'none',extra:'none',kOuter:'track',kOuterColor:'#2a58b0',kOuterColor2:'#e8e4d8',kFace:'wrap',kFaceColor:'#2a2a3a'}); delete c.acc; delete c.paint;
+    const P=buildCharacter(c); sc.add(P.root);
+    P.sh[0].rotation.z=2.5; P.el[0].rotation.z=-1.5; P.sh[1].rotation.z=-.35; P.el[1].rotation.x=-.4; P.body.rotation.z=.14; P.torso.rotation.z=-.1; P.head.rotation.z=.18;
+    P.hip[0].rotation.x=-.45; P.knee[0].rotation.x=.75; P.hip[1].rotation.z=-.2; P.hip[1].rotation.x=.1; P.knee[1].rotation.x=.3; P.root.rotation.y=-.35; P.root.position.y=.08;
+    const cam=new THREE.PerspectiveCamera(30,1,.1,30); cam.position.set(0,1.1,2.9); cam.lookAt(0,1.05,0); out.dance=shot(sc,cam); }catch(e){}
+  try{ R.dispose(); R.forceContextLoss&&R.forceContextLoss(); }catch(e){}
+  const set=(id,u)=>{ const i=document.querySelector(`#${id} .ic3`); if(!u||!i) return; i.textContent=''; i.classList.add('img3'); i.style.backgroundImage=`url(${u})`; };
+  set('bagMain',out.bag); set('styleMain',out.style); set('danceRand',out.dice); set('danceMain',out.dance); }
+setTimeout(icons3D,900);
 /* ================= TAP OUTSIDE TO CLOSE POPUPS ================= */
 document.addEventListener('pointerdown',e=>{ const T=e.target; if(!T||!T.closest) return; const inS=s=>!!T.closest(s);
   if(!$('#sp').hidden&&!inS('#sp')) closeSp();
@@ -5302,12 +5356,11 @@ function kOwned(it){ return kFree().has(KREAM.indexOf(it))||owned.includes(kKey(
 function kTag(it){ return kFree().has(KREAM.indexOf(it))?'무료':kOwned(it)?'✓ 보유':'🪙 '+it.p+'코인'; }
 function kWon(p){ return p>=100?(p/100).toLocaleString('ko-KR',{maximumFractionDigits:1})+'백만 원':(p*10000).toLocaleString('ko-KR')+'원'; }
 // the try-on bar under the style room preview: shows the price of a brand item you are trying on, and buys it
-function kBuyBar(it){ const v=$('#styleView'); if(!v) return; let bar=$('#kBuy'); if(!bar){ bar=document.createElement('div'); bar.id='kBuy'; v.appendChild(bar);
-    bar.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; const it=KREAM[+b.dataset.i]; if(!it||kOwned(it)) return; if(coins<it.p){ toast(`코인이 ${it.p-coins}개 모자라요. 춤추거나 코인을 주워 보세요`); return; }
+// buying sits in the bottom bar next to "적용하고 돌아가기", so the preview shows only the model
+function kBuyBar(it){ let bt=$('#kBuyBtn'); if(!bt){ bt=document.createElement('button'); bt.id='kBuyBtn'; bt.type='button'; bt.hidden=true; $('#enterBtn').before(bt);
+    bt.addEventListener('click',()=>{ const it=KREAM[+bt.dataset.i]; if(!it||kOwned(it)) return; if(coins<it.p){ toast(`코인이 ${it.p-coins}개 모자라요 (보유 ${coins}). 춤추거나 코인을 주워 보세요`); return; }
       addCoins(-it.p); owned.push(kKey(it)); saveEco(); chime(79,'sine',.08,.5); toast(`${it.b} ${it.n} 구매 완료! 이제 계속 입을 수 있어요`); kBuyBar(it); refreshOpts(); }); }
-  if(!it){ bar.hidden=true; kCardStop(); return; } const i=KREAM.indexOf(it), own=kOwned(it), on=kreamOn(it);
-  bar.innerHTML=`<canvas id='kPc' width='240' height='240' aria-label='${esc(it.b+' '+it.n)} 프로덕트 컷'></canvas><div class='kinfo'><small>${esc(it.b)} · ${esc(it.c)}</small><b>${esc(it.n)}</b><span class='kprice ${kFree().has(i)?'free':own?'own':''}'>${esc(kTag(it))}</span>${!own&&on?`<button data-i='${i}' ${coins<it.p?'disabled':''}>🪙 ${it.p}코인에 사기 <small>(보유 ${coins})</small></button>`:''}</div>`;
-  bar.hidden=false; kCardStart(i); }
+  if(!it||kOwned(it)||!kreamOn(it)){ bt.hidden=true; return; } bt.dataset.i=KREAM.indexOf(it); bt.innerHTML=`🪙 ${it.p} 사기<small>${esc(it.n)}</small>`; bt.classList.toggle('poor',coins<it.p); bt.hidden=false; }
 // product shot: only the piece itself (no body), turning slowly, on its own small renderer
 const KPC={R:null,scene:null,cam:null,P:null,raf:0,i:-1};
 function kProduct(i){ const it=KREAM[i], D='#010203', pc=JSON.parse(JSON.stringify(cfg)); Object.keys(pc).forEach(k=>{ if(k[0]==='k') delete pc[k]; });
@@ -5319,9 +5372,13 @@ function kProduct(i){ const it=KREAM[i], D='#010203', pc=JSON.parse(JSON.stringi
   return {P,box}; }
 function kFrame(cam,box){ const c=box.getCenter(new THREE.Vector3()), sz=box.getSize(new THREE.Vector3()), r=Math.max(sz.x,sz.y,sz.z*1.2,.12); cam.position.set(0,c.y+r*.15,r*2.3); cam.lookAt(0,c.y,0); return c; }
 function kStudio(){ const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xfff4e8,0x5a4a6a,1.15)); const dl=new THREE.DirectionalLight(0xffffff,.9); dl.position.set(2,4,3); sc.add(dl); const rl=new THREE.DirectionalLight(0xff9ad2,.45); rl.position.set(-3,2,-2); sc.add(rl); return sc; }
-function kCardStart(i){ const cv=$('#kPc'); if(!cv) return; try{ if(!KPC.R){ KPC.R=new THREE.WebGLRenderer({antialias:true,alpha:true}); KPC.R.setPixelRatio(1); KPC.R.setSize(240,240,false); KPC.scene=kStudio(); KPC.cam=new THREE.PerspectiveCamera(30,1,.01,50); }
+function kCardStart(i){ const cv=$('#kPc'); if(!cv) return; try{ kpcInit();
     if(KPC.P){ KPC.scene.remove(KPC.P.root); KPC.P=null; } const {P,box}=kProduct(i), c=kFrame(KPC.cam,box); P.root.position.x=-c.x; P.root.position.z=-c.z; const hold=new THREE.Group(); hold.add(P.root); KPC.scene.add(hold); KPC.P={root:hold}; KPC.i=i;
     const x=cv.getContext('2d'); cancelAnimationFrame(KPC.raf); const loop=()=>{ if(!document.body.contains(cv)||$('#kBuy').hidden){ KPC.raf=0; return; } hold.rotation.y=performance.now()/1000*.7; KPC.R.setClearColor(0x000000,0); KPC.R.render(KPC.scene,KPC.cam); x.clearRect(0,0,240,240); x.drawImage(KPC.R.domElement,0,0); KPC.raf=requestAnimationFrame(loop); }; loop(); }catch(e){} }
+// a still, larger product shot (for the new-arrivals popup)
+function kShot(i){ try{ kpcInit(); const {P,box}=kProduct(i), cam=new THREE.PerspectiveCamera(30,1,.01,50), c=kFrame(cam,box), hold=new THREE.Group(); P.root.position.x=-c.x; P.root.position.z=-c.z; hold.add(P.root); hold.rotation.y=-.55;
+  const sc=KPC.still||(KPC.still=kStudio()); sc.add(hold); KPC.R.setClearColor(0x000000,0); KPC.R.render(sc,cam); const cv=document.createElement('canvas'); cv.width=cv.height=240; cv.getContext('2d').drawImage(KPC.R.domElement,0,0); sc.remove(hold); return cv.toDataURL('image/png'); }catch(e){ return ''; } }
+function kpcInit(){ if(KPC.R) return; KPC.R=new THREE.WebGLRenderer({antialias:true,alpha:true}); KPC.R.setPixelRatio(1); KPC.R.setSize(240,240,false); KPC.scene=kStudio(); KPC.cam=new THREE.PerspectiveCamera(30,1,.01,50); }
 function kCardStop(){ cancelAnimationFrame(KPC.raf); KPC.raf=0; }
 // small still product shots on every brand chip, rendered a few at a time
 const KTH={};
