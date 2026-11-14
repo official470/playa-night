@@ -665,6 +665,16 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 .creator .chip i.kth{display:block;width:64px;height:64px;margin:0 auto 4px;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.12),rgba(255,255,255,.02)) center/contain no-repeat}
 .creator .chip i.kth.done{background-color:transparent;background-size:contain;background-position:center;background-repeat:no-repeat}
 .creator .chip.kchip{text-align:center;min-width:104px}
+.creator .chip.krare{position:relative;border:1px solid rgba(190,140,255,.55);box-shadow:0 0 0 1px rgba(255,79,216,.15) inset,0 0 14px rgba(155,107,255,.25)}
+.creator .chip .kbadge{position:absolute;top:5px;left:5px;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:999px;background:linear-gradient(120deg,#9b6bff,#ff4fd8);color:#fff;letter-spacing:.02em}
+#rSim{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(6,4,12,.6);backdrop-filter:blur(3px)}
+#rSim[hidden]{display:none!important}
+#rSim .box{width:min(360px,92vw);border-radius:20px;overflow:hidden;background:#120e1c;border:1px solid rgba(190,140,255,.4);box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative}
+#rSim canvas{display:block;width:100%;aspect-ratio:1/1.1}
+#rSim .cap{padding:10px 14px 14px;font-size:13px;line-height:1.4}
+#rSim .cap b{display:block;font-size:15px;margin-bottom:2px}
+#rSim .cond{position:absolute;top:12px;left:12px;font-weight:800;font-size:13px;padding:5px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff}
+#rSim .x{position:absolute;top:10px;right:10px;border:0;border-radius:999px;width:32px;height:32px;background:rgba(0,0,0,.55);color:#fff;font-size:16px}
 .creator .chip em.kp .kfx{display:block;font-weight:500;color:#d8c8ff;font-size:10.5px;margin-bottom:3px;max-width:140px;white-space:normal}
 .creator .chip[data-kcat='레어']{background:linear-gradient(120deg,#5a2aa8,#c83a8a);color:#fff}
 #kBuy[hidden]{display:none!important}
@@ -5282,7 +5292,7 @@ const KDET={
 function kreamDetails(P,c){ for(const i of Object.values(c.kWorn||{})){ const it=KREAM[i]; if(!it||!it.d||!KDET[it.d]) continue; if(!Object.entries(it.set).every(([k,v])=>c[k]===v)) continue; try{ KDET[it.d](P,c,it); }catch(e){ console.warn('brand detail',it.d,e&&e.message); } } }
 function renderOpts(){ renderOptsBase(); const first=$('#opts .sec'); if(!first) return; const d=document.createElement('div'); d.className='sec';
   const list=KREAM.map((it,i)=>[it,i]).filter(([it])=>kCat==='전체'||it.c===kCat);
-  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset kchip' data-kream='${i}' aria-pressed='${kreamOn(it)}'><i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${it.fx&&kCat==='레어'?`<span class='kfx'>${esc(it.fx)}</span>`:''}${kTag(it)}</em></button>`).join('')}</div><p class='hint'>가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
+  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset kchip${it.fx?' krare':''}' data-kream='${i}' aria-pressed='${kreamOn(it)}'>${it.fx?`<span class='kbadge'>⚡ 특수 기능</span>`:''}<i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${it.fx&&kCat==='레어'?`<span class='kfx'>${esc(it.fx)}</span>`:''}${kTag(it)}</em></button>`).join('')}</div><p class='hint'>가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
   first.after(d); addOwnedSec(d); setTimeout(kThumbFill,60); }
 $('#opts').addEventListener('click',e=>{ const btn=e.target.closest('button'); if(!btn) return;
   if(btn.dataset.kcat){ kCat=btn.dataset.kcat; return; }
@@ -5460,6 +5470,22 @@ function kCardStart(i){ const cv=$('#kPc'); if(!cv) return; try{ kpcInit();
 // a still, larger product shot (for the new-arrivals popup)
 function kShot(i){ try{ kpcInit(); const {P,box}=kProduct(i), cam=new THREE.PerspectiveCamera(30,1,.01,50), c=kFrame(cam,box), hold=new THREE.Group(); P.root.position.x=-c.x; P.root.position.z=-c.z; hold.add(P.root); hold.rotation.y=-.55;
   const sc=KPC.still||(KPC.still=kStudio()); sc.add(hold); KPC.R.setClearColor(0x000000,0); KPC.R.render(sc,cam); const cv=document.createElement('canvas'); cv.width=cv.height=240; cv.getContext('2d').drawImage(KPC.R.domElement,0,0); sc.remove(hold); return cv.toDataURL('image/png'); }catch(e){ return ''; } }
+// effect simulation for special items: a dark stage, the character dancing in the piece; day/night pieces flip every 3 s, beat pieces pulse to a 124 bpm clock
+const RSIM={R:null,raf:0}, RSIM_DN={poncho_glow:1,uv_body:1,sun_tattoo:1,reverse:1,solar:1}, RSIM_BEAT={led_harness:1,step_boots:1};
+function rareSim(i){ const it=KREAM[i]; if(!it||!it.fx) return; const s=it.set, id=s.kRo||s.kRt||s.kRs||s.kRh||s.kRf||s.kRa;
+  let el=$('#rSim'); if(!el){ el=document.createElement('div'); el.id='rSim'; el.innerHTML=`<div class='box'><canvas width='360' height='396'></canvas><span class='cond'></span><button class='x' aria-label='닫기'>✕</button><div class='cap'></div></div>`; document.body.appendChild(el);
+    el.addEventListener('click',e=>{ if(e.target===el||e.target.closest('.x')){ el.hidden=true; cancelAnimationFrame(RSIM.raf); } }); }
+  el.querySelector('.cap').innerHTML=`<b>${esc(it.n)}</b>${esc(it.fx)}`; el.hidden=false;
+  try{ if(!RSIM.R){ RSIM.R=new THREE.WebGLRenderer({antialias:true}); RSIM.R.setPixelRatio(Math.min(2,devicePixelRatio||1)); RSIM.sc=kStudio(); RSIM.cam=new THREE.PerspectiveCamera(32,360/396,.05,50);
+      const fl=new THREE.Mesh(new THREE.CircleGeometry(1.2,32),new THREE.MeshLambertMaterial({color:'#2a2238'})); fl.rotation.x=-Math.PI/2; RSIM.sc.add(fl); }
+    RSIM.R.setSize(360,396,false); const cv=el.querySelector('canvas'), x=cv.getContext('2d');
+    if(RSIM.P) RSIM.sc.remove(RSIM.P.root); const pc=JSON.parse(JSON.stringify(cfg)); kClear(pc,it); if(it.slot==='top'||it.slot==='acc'){ pc.outer='none'; KSLOTF.outer.forEach(k=>delete pc[k]); if(pc.kWorn){ pc.kWorn=Object.assign({},pc.kWorn); delete pc.kWorn.outer; } } if(pc.extra==='cape'||pc.extra==='wings') pc.extra='none'; Object.assign(pc,s); pc.kWorn=Object.assign({},pc.kWorn||{},{[kSlot(it)]:i}); const P=buildCharacter(pc); RSIM.P=P; RSIM.sc.add(P.root);
+    const head=it.slot==='head'||it.slot==='face', feet=it.slot==='shoes'; const cy=head?1.62:feet?.35:1.0, cd=head?1.3:feet?1.7:3.3;
+    const cond=el.querySelector('.cond'); cancelAnimationFrame(RSIM.raf);
+    const loop=()=>{ if(el.hidden) return; const t=performance.now()/1000, b=t*2.07, dn=RSIM_DN[id]?Math.floor(t/3)%2===1:true, save=night; night=dn;
+      cond.textContent=RSIM_DN[id]?(dn?'🌙 밤':'☀️ 낮'):RSIM_BEAT[id]?(((b%1)<.25)?'🎵 비트!':'🎵 비트에 반응'):'✨ 효과 미리보기';
+      RSIM.R.setClearColor(dn?0x0c0a14:0x9ac8f0,1); RSIM.sc.children.forEach(l=>{ if(l.isLight){ if(l.userData.b==null) l.userData.b=l.intensity; l.intensity=l.userData.b*(dn&&RSIM_DN[id]?.28:1); } }); P.root.rotation.y=Math.sin(t*.5)*.9; poseChar(P,'dance',t,b);
+      RSIM.cam.position.set(0,cy+.15,cd); RSIM.cam.lookAt(0,cy,0); RSIM.R.render(RSIM.sc,RSIM.cam); night=save; x.drawImage(RSIM.R.domElement,0,0,360,396); RSIM.raf=requestAnimationFrame(loop); }; loop(); }catch(e){ console.warn('rare sim',e&&e.message); } }
 function kpcInit(){ if(KPC.R) return; KPC.R=new THREE.WebGLRenderer({antialias:true,alpha:true}); KPC.R.setPixelRatio(1); KPC.R.setSize(240,240,false); KPC.scene=kStudio(); KPC.cam=new THREE.PerspectiveCamera(30,1,.01,50); }
 function kCardStop(){ cancelAnimationFrame(KPC.raf); KPC.raf=0; }
 // small still product shots on every brand chip, rendered a few at a time
@@ -5480,7 +5506,7 @@ function kreamPreview(i){ const it=KREAM[i], worn=kreamOn(it), pc=Object.assign(
   kpvOpen({brand:it.b+' · 브랜드샵',name:it.n,cat:it.c,cfg:pc,worn,note:worn?'지금 입고 있어요. 벗으려면 아래 버튼을 눌러요.':'드래그해서 돌려 보고, 마음에 들면 입어요. 로고는 그리지 않아요.',apply:()=>kreamApply(it)}); }
 function typePreview(btn){ const k=btn.dataset.k, v=btn.dataset.v, worn=cfg[k]===v, pc=Object.assign({},cfg,{[k]:v}); pc.kWorn=Object.assign({},cfg.kWorn||{}); delete pc.kWorn[k]; if(k==='outer') delete pc.kOuter; if(k==='top') delete pc.kTop; if(k==='head') delete pc.kHead;
   kpvOpen({brand:TYPE_CAT[k],name:btn.textContent.trim(),cat:TYPE_CAT[k],cfg:pc,worn,note:worn?'지금 입고 있는 아이템이에요. 색은 아래 색 버튼으로 바꿔요.':'드래그해서 돌려 보고, 마음에 들면 입어요.',keep:worn,apply:()=>{ if(worn) return; cfg[k]=v; if(cfg.kWorn){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head'){ delete cfg.kHead; delete cfg.kRh; } if(k==='face'){ delete cfg.kFace; delete cfg.kRf; } if(k==='bottom') delete cfg.kPants; if(k==='top'){ delete cfg.kPrint; delete cfg.kRt; } if(k==='shoes') delete cfg.kRs; if(k==='outer') delete cfg.kRo; refreshOpts(); toast(`${btn.textContent.trim()} 착용!`); }}); }
-const _kPrev=kreamPreview; kreamPreview=function(i){ _kPrev(i); if(document.body.classList.contains('dressing')) setTimeout(()=>kBuyBar(KREAM[i]),0); };
+const _kPrev=kreamPreview; kreamPreview=function(i){ _kPrev(i); if(KREAM[i]&&KREAM[i].fx&&kreamOn(KREAM[i])) setTimeout(()=>rareSim(i),120); if(document.body.classList.contains('dressing')) setTimeout(()=>kBuyBar(KREAM[i]),0); };
 function kpvEnsure(){ if(KPV.R) return; const box=document.createElement('div'); box.id='kpv'; box.className='card'; box.hidden=true; box.setAttribute('role','dialog'); box.setAttribute('aria-label','아이템 3D 미리보기');
   box.innerHTML=`<div class='kpvhead'><div><small id='kpvBrand'></small><b id='kpvName'></b></div><button id='kpvX' aria-label='닫기'>✕</button></div><canvas id='kpvCv' width='260' height='300'></canvas><p id='kpvNote'></p><div class='kpvacts'><button id='kpvView' class='ghost'>전신 보기</button><button id='kpvWear' class='primary'>입기</button></div>`;
   document.body.appendChild(box); const cv=$('#kpvCv');
