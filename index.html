@@ -5351,9 +5351,9 @@ function icons3D(){ let R; try{ R=new THREE.WebGLRenderer({antialias:true,alpha:
   try{ // shopping bag: orange paper, blurry blue figure print, fuzzy black handles
     const sc=studio(0xffb070), g=new THREE.Group(); sc.add(g);
     const front=tex(256,288,(x,w,h)=>{ x.fillStyle='#ff7a22'; x.fillRect(0,0,w,h); const gr=x.createRadialGradient(w/2,h*.55,10,w/2,h*.55,w*.42); gr.addColorStop(0,'#2a2ae0'); gr.addColorStop(.7,'#3a30d8'); gr.addColorStop(1,'rgba(220,40,140,0)'); x.fillStyle=gr; x.beginPath(); x.ellipse(w/2,h*.62,w*.36,h*.5,0,Math.PI,0); x.lineTo(w*.86,h); x.lineTo(w*.14,h); x.fill(); x.fillStyle='#ff8a3a'; x.font='italic bold 22px Georgia,serif'; x.textAlign='center'; x.fillText('made to be worn',w/2,h*.48); x.font='bold 26px Georgia,serif'; x.fillText('OUT OF ORDER',w/2,h*.6); });
-    const side=L('#e86a18'), m=[side,side,L('#ff7a22'),L('#ff7a22'),L('#ffffff',{map:front}),L('#ff7a22',{map:front})];
+    const side=L('#ffa04a',{emissive:'#ff7a22',emissiveIntensity:.25}), m=[side,side,L('#ff7a22'),L('#ff7a22'),L('#ffffff',{map:front}),L('#ff7a22',{map:front})];
     const bag=new THREE.Mesh(new THREE.BoxGeometry(.8,.9,.28),m); g.add(bag);
-    const hm=L('#141414',{roughness:1,map:fuzz('#161616')}); [-.17,.17].forEach(x=>{ const h=new THREE.Mesh(new THREE.TorusGeometry(.17,.035,8,20,Math.PI),hm); h.position.set(x,.45,0); h.rotation.set(0,Math.PI/2,0); h.scale.set(1,1.7,1); g.add(h); });
+    const hm=L('#fff2e0',{roughness:1,map:fuzz('#fff0dc'),emissive:'#ffffff',emissiveIntensity:.25}); const rim=new THREE.Mesh(new THREE.BoxGeometry(.82,.03,.3),L('#ffd8a8',{emissive:'#ffb060',emissiveIntensity:.35})); rim.position.y=.45; g.add(rim); const ed=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(.8,.9,.28)),new THREE.LineBasicMaterial({color:'#fff4e0'})); g.add(ed); [-.17,.17].forEach(x=>{ const h=new THREE.Mesh(new THREE.TorusGeometry(.17,.035,8,20,Math.PI),hm); h.position.set(x,.45,0); h.rotation.set(0,Math.PI/2,0); h.scale.set(1,1.7,1); g.add(h); });
     g.rotation.set(.12,-.5,.05); const cam=new THREE.PerspectiveCamera(30,1,.1,20); cam.position.set(0,.24,2.4); cam.lookAt(0,.2,0); out.bag=shot(sc,cam); }catch(e){}
   try{ // style room: bust with a green felt cone hat, lilac bob, white cat-eye shades with red lenses, pink fur coat
     const sc=studio(0x9ab8ff), g=new THREE.Group(); sc.add(g); const skin=L('#e8907a');
@@ -5375,11 +5375,11 @@ function icons3D(){ let R; try{ R=new THREE.WebGLRenderer({antialias:true,alpha:
     face('z',[[-.22,.22],[.22,.22],[-.22,-.22],[.22,-.22]]); face('x',[[-.25,-.2],[-.25,.2],[0,-.2],[0,.2],[.25,-.2],[.25,.2]]); face('y',[[0,0]]);
     g.rotation.set(.55,-.6,0); const cam=new THREE.PerspectiveCamera(30,1,.1,20); cam.position.set(0,0,2.45); cam.lookAt(0,0,0); out.dice=shot(sc,cam); }catch(e){}
   try{ // dance: a dancer mid-move, blue leather moto jacket with sleeve stripes, white tee, wide black trousers, shades
-    const sc=studio(0x7ad8ff); const c=Object.assign(randomConfig(),{skin:'#e8b896',hairStyle:'buzz',hairColor:'#b07a3a',top:'tee',topColor:'#f4f2ec',outer:'none',bottom:'flare',bottomColor:'#1a1a1e',shoes:'boots',shoeColor:'#141414',head:'none',face:'none',extra:'none',kOuter:'track',kOuterColor:'#2a58b0',kOuterColor2:'#e8e4d8',kFace:'wrap',kFaceColor:'#2a2a3a'}); delete c.acc; delete c.paint;
+    const sc=studio(0x7ad8ff); const c=Object.assign(randomConfig(),{skin:'#e8b896',hairStyle:'buzz',hairColor:'#b07a3a',top:'tee',topColor:'#f4f2ec',outer:'none',bottom:'flare',bottomColor:'#1a1a1e',shoes:'boots',shoeColor:'#141414',head:'none',face:'none',extra:'none',kOuter:'track',kOuterColor:'#2a58b0',kOuterColor2:'#e8e4d8'}); delete c.acc; delete c.paint; c.skin='#f0c4a0'; c.hairColor='#e8b060';
     const P=buildCharacter(c); sc.add(P.root);
-    P.sh[0].rotation.z=2.5; P.el[0].rotation.z=-1.5; P.sh[1].rotation.z=-.35; P.el[1].rotation.x=-.4; P.body.rotation.z=.14; P.torso.rotation.z=-.1; P.head.rotation.z=.18;
-    P.hip[0].rotation.x=-.45; P.knee[0].rotation.x=.75; P.hip[1].rotation.z=-.2; P.hip[1].rotation.x=.1; P.knee[1].rotation.x=.3; P.root.rotation.y=-.35; P.root.position.y=.08;
-    const cam=new THREE.PerspectiveCamera(30,1,.1,30); cam.position.set(0,1.1,2.9); cam.lookAt(0,1.05,0); out.dance=shot(sc,cam); }catch(e){}
+    P.sh[0].rotation.z=2.5; P.el[0].rotation.z=-1.5; P.sh[1].rotation.z=-.35; P.el[1].rotation.x=-.4; P.body.rotation.z=.14; P.torso.rotation.z=-.1; P.head.rotation.z=.08; P.head.rotation.y=.3;
+    P.hip[0].rotation.x=-.45; P.knee[0].rotation.x=.75; P.hip[1].rotation.z=-.2; P.hip[1].rotation.x=.1; P.knee[1].rotation.x=.3; P.root.rotation.y=-.12; P.root.position.y=.08;
+    const cam=new THREE.PerspectiveCamera(30,1,.1,30); cam.position.set(.05,1.5,2.75); cam.lookAt(0,1.4,0); const fl=new THREE.PointLight(0xffffff,.9,6); fl.position.set(.3,1.9,1.6); sc.add(fl); out.dance=shot(sc,cam); }catch(e){}
   try{ R.dispose(); R.forceContextLoss&&R.forceContextLoss(); }catch(e){}
   const set=(id,u)=>{ const i=document.querySelector(`#${id} .ic3`); if(!u||!i) return; i.textContent=''; i.classList.add('img3'); i.style.backgroundImage=`url(${u})`; };
   set('bagMain',out.bag); set('styleMain',out.style); set('danceRand',out.dice); set('danceMain',out.dance); }
