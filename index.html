@@ -665,12 +665,16 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 .creator .chip i.kth{display:block;width:64px;height:64px;margin:0 auto 4px;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.12),rgba(255,255,255,.02)) center/contain no-repeat}
 .creator .chip i.kth.done{background-color:transparent;background-size:contain;background-position:center;background-repeat:no-repeat}
 .creator .chip.kchip{text-align:center;min-width:104px}
+.creator .chip em.kp .kfx{display:block;font-weight:500;color:#d8c8ff;font-size:10.5px;margin-bottom:3px;max-width:140px;white-space:normal}
+.creator .chip[data-kcat='레어']{background:linear-gradient(120deg,#5a2aa8,#c83a8a);color:#fff}
 #kBuy[hidden]{display:none!important}
 #kBuy button{margin-top:4px;align-self:flex-start;border:0;border-radius:999px;padding:7px 12px;font-weight:800;background:#ffcf3a;color:#1a1408;cursor:pointer;font-size:13px}
 #kBuy button:disabled{opacity:.5;cursor:not-allowed}
 .fshots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 12px}
-.fshots figure{margin:0;aspect-ratio:3/4;border-radius:14px;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.16),rgba(255,255,255,.02) 70%) ,linear-gradient(160deg,#2a1f3a,#120e18);background-size:92% auto,cover;background-repeat:no-repeat;background-position:center 30%,center;display:flex;align-items:flex-end;padding:8px;border:1px solid rgba(255,255,255,.08)}
-.fshots figure:first-child{grid-column:span 2;aspect-ratio:auto;background-size:auto 88%,cover}
+.fshots canvas{width:100%;height:100%;object-fit:contain;display:block}
+.fshots figure{margin:0;aspect-ratio:3/4;overflow:hidden;border-radius:14px;background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.16),rgba(255,255,255,.02) 70%) ,linear-gradient(160deg,#2a1f3a,#120e18);background-size:92% auto,cover;background-repeat:no-repeat;background-position:center 30%,center;display:flex;align-items:flex-end;padding:8px;border:1px solid rgba(255,255,255,.08)}
+.fshots figure:first-child{grid-column:span 2;aspect-ratio:auto}
+.fshots figure{padding:0;align-items:center;justify-content:center}
 .fshots figcaption{font-weight:800;font-size:12px;line-height:1.2;letter-spacing:.02em}
 .fshots figcaption small{display:block;font-weight:500;opacity:.65;font-size:10.5px;margin-top:2px}
 .fnew{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px;max-height:46vh;overflow:auto}
@@ -5066,7 +5070,33 @@ const KREAM=[
   {c:'상의',p:50,b:'Marine Serre',n:'문 프린트 저지 톱',set:{top:'long',topColor:'#1a1a1e',kPrint:'moon',kInk:'#e8e4dc'}},
   {c:'상의',p:90,b:'Casablanca',n:'프린트 실크 셔츠',set:{top:'tee',topColor:'#f4e8d0',kPrint:'casa'}},
   {c:'상의',p:7,b:'Stüssy',d:'stussy',n:'베이직 스투시 티',set:{top:'tee',topColor:'#f4f2ec'}},
-  {c:'하의',p:20,b:'Carhartt WIP',d:'dknee',n:'더블 니 팬츠 브라운',set:{bottom:'cargo',bottomColor:'#8a5a2e'}}];
+  {c:'하의',p:20,b:'Carhartt WIP',d:'dknee',n:'더블 니 팬츠 브라운',set:{bottom:'cargo',bottomColor:'#8a5a2e'}},
+  {c:'레어',b:'✦ RARE',p:780,n:'별자리 광섬유 케이프',slot:'outer',fx:'검은 망토 안쪽에서 별빛이 반짝여요',set:{outer:'none',kOuter:'rare',kRo:'cape_star'}},
+  {c:'레어',b:'✦ RARE',p:260,n:'빛을 충전하는 야광 판초',slot:'outer',fx:'밤이 되면 무늬가 은은하게 빛나요',set:{outer:'none',kOuter:'rare',kRo:'poncho_glow'}},
+  {c:'레어',b:'✦ RARE',p:540,n:'플래시 반응 실버 슈트',slot:'outer',fx:'조명을 받으면 번쩍 반사해요',set:{outer:'none',kOuter:'rare',kRo:'suit_flash'}},
+  {c:'레어',b:'✦ RARE',p:330,n:'UV 형광 바디수트',slot:'top',fx:'밤에만 뼈·회로 무늬가 떠올라요',set:{top:'long',topColor:'#101014',kTop:'rare',kRt:'uv_body'}},
+  {c:'레어',b:'✦ RARE',p:420,n:'음악 반응 LED 하네스',slot:'acc',fx:'가슴과 등의 빛이 비트에 맞춰 뛰어요',set:{kAcc:'rare',kRa:'led_harness'}},
+  {c:'레어',b:'✦ RARE',p:610,n:'빛나는 척추 백피스',slot:'acc',fx:'등을 따라 빛이 아래에서 위로 흘러요',set:{kAcc:'rare',kRa:'spine'}},
+  {c:'레어',b:'✦ RARE',p:890,n:'유성 프린지 재킷',slot:'outer',fx:'빛나는 술이 춤출 때 궤적을 그려요',set:{outer:'none',kOuter:'rare',kRo:'fringe'}},
+  {c:'레어',b:'✦ RARE',p:370,n:'발걸음 반응 부츠',slot:'shoes',fx:'디딜 때마다 밑창에서 빛이 퍼져요',set:{shoes:'boots',shoeColor:'#1a1a22',kRs:'step_boots'}},
+  {c:'레어',b:'✦ RARE',p:480,n:'빛의 후광 헤드피스',slot:'head',fx:'머리 뒤에서 원형 빛이 천천히 돌아요',set:{head:'none',kHead:'rare',kRh:'halo'}},
+  {c:'레어',b:'✦ RARE',p:150,n:'빛을 그리는 장갑',slot:'acc',fx:'손끝의 빛이 손동작을 강조해요',set:{kAcc:'rare',kRa:'gloves'}},
+  {c:'레어',b:'✦ RARE',p:290,n:'태양에 드러나는 타투 셔츠',slot:'top',fx:'낮에는 문양이 나타나고 밤엔 옅어져요',set:{top:'tee',topColor:'#eeeae4',kTop:'rare',kRt:'sun_tattoo'}},
+  {c:'레어',b:'✦ RARE',p:350,n:'체온에 반응하는 감정 지도 톱',slot:'top',fx:'춤출수록 색이 따뜻하게 번져요',set:{top:'long',topColor:'#6a4ab0',kTop:'rare',kRt:'thermo'}},
+  {c:'레어',b:'✦ RARE',p:960,n:'딱정벌레 오로라 코트',slot:'outer',fx:'보라·초록·파랑으로 색이 흘러요',set:{outer:'none',kOuter:'rare',kRo:'beetle'}},
+  {c:'레어',b:'✦ RARE',p:720,n:'바람으로 살아나는 해파리 케이프',slot:'outer',fx:'반투명 천과 리본이 부풀고 흔들려요',set:{outer:'none',kOuter:'rare',kRo:'jelly'}},
+  {c:'레어',b:'✦ RARE',p:830,n:'접히는 곤충 날개 백팩',slot:'acc',fx:'반투명 날개가 접혔다 펼쳐져요',set:{kAcc:'rare',kRa:'wings'}},
+  {c:'레어',b:'✦ RARE',p:990,n:'공기로 부푸는 조각 베스트',slot:'outer',fx:'어깨와 등이 숨 쉬듯 부풀어요',set:{outer:'none',kOuter:'rare',kRo:'inflate'}},
+  {c:'레어',b:'✦ RARE',p:1150,n:'전자종이 문양 재킷',slot:'outer',fx:'패널 문양이 별자리·눈·기호로 바뀌어요',set:{outer:'none',kOuter:'rare',kRo:'epaper'}},
+  {c:'레어',b:'✦ RARE',p:640,n:'사막→디스코 리버서블 코트',slot:'outer',fx:'낮엔 무광 모래색, 밤엔 메탈릭',set:{outer:'none',kOuter:'rare',kRo:'reverse'}},
+  {c:'레어',b:'✦ RARE',p:210,n:'유목민 후드 케이프',slot:'outer',fx:'큰 후드와 목 가림막의 미래형 사막복',set:{outer:'none',kOuter:'rare',kRo:'nomad'}},
+  {c:'레어',b:'✦ RARE',p:180,n:'외계 탐험가 더스트 고글',slot:'face',fx:'크롬 프레임 고글, 렌즈가 은은히 빛나요',set:{face:'none',kFace:'rare',kRf:'goggles'}},
+  {c:'레어',b:'✦ RARE',p:240,n:'사이버 장식 페이스피스',slot:'face',fx:'입가를 덮는 마스크에 LED 라인',set:{face:'none',kFace:'rare',kRf:'mask'}},
+  {c:'레어',b:'✦ RARE',p:130,n:'물 저장 하네스',slot:'acc',fx:'튜브 속 물빛이 흘러요',set:{kAcc:'rare',kRa:'water'}},
+  {c:'레어',b:'✦ RARE',p:460,n:'냉각 팩 아머 베스트',slot:'outer',fx:'얼음빛 냉각 패널이 맥박처럼 빛나요',set:{outer:'none',kOuter:'rare',kRo:'cool'}},
+  {c:'레어',b:'✦ RARE',p:310,n:'밤에는 이불이 되는 코트',slot:'outer',fx:'무릎까지 오는 퀼팅 보온 코트',set:{outer:'none',kOuter:'rare',kRo:'blanket'}},
+  {c:'레어',b:'✦ RARE',p:190,n:'모래 차단 스패츠 부츠',slot:'shoes',fx:'게이터로 덮인 우주복 같은 실루엣',set:{shoes:'boots',shoeColor:'#e8e4dc',kRs:'gaiter'}},
+  {c:'레어',b:'✦ RARE',p:560,n:'태양광 유목민 백팩',slot:'acc',fx:'낮에는 패널이 충전 표시를 켜요',set:{kAcc:'rare',kRa:'solar'}}];
 // new fashion: each time you enter, 5 random items from the ones added in the last 7 days (it.at = day added, KST; items without it came in on 2026-11-14)
 const FNEW_DAYS=7, FNEW={done:false,t:0};
 function fashionNew(){ const now=Date.now(); return KREAM.filter(it=>now-Date.parse((it.at||'2026-11-14')+'T00:00:00+09:00')<FNEW_DAYS*864e5); }
@@ -5074,9 +5104,12 @@ updaters.push(t=>{ if(FNEW.done||!inGame) return; if(!FNEW.t) FNEW.t=t+6; if(t<F
   if(!$('#sp').hidden||document.body.classList.contains('dressing')) return; const np=document.getElementById('nsPop'); if(np&&!np.hidden) return;
   FNEW.done=true; const L=fashionNew().slice(); if(!L.length) return; for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; }
   const five=L.slice(0,5);
-  openSp('NEW ARRIVALS',`스타일룸 브랜드샵 신상 ${L.length}개 중 5개`,`<div class='fshots'>${five.map(it=>{ const u=kShot(KREAM.indexOf(it)); return `<figure${u?` style='background-image:url(${u})'`:''}><figcaption>${esc(it.b)}<small>${esc(it.n)}</small></figcaption></figure>`; }).join('')}</div><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
-    a=>{ closeSp(); if(a==='go') $('#dressBtn').click(); }); });
-const KCATS=['전체','아우터','상의','하의','신발','모자','액세서리']; let kCat='전체';
+  openSp('NEW ARRIVALS','',`<div class='fshots'>${five.map((it,k)=>`<figure><canvas data-fs='${KREAM.indexOf(it)}' width='240' height='240' aria-label='${esc(it.b+' '+it.n)}'></canvas></figure>`).join('')}</div><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
+    a=>{ closeSp(); if(a==='go') $('#dressBtn').click(); }); fshotsSpin(); });
+// the new-arrivals pieces turn slowly in 3D (one shared renderer draws all five canvases)
+function fshotsSpin(){ try{ kpcInit(); }catch(e){ return; } const cvs=[...document.querySelectorAll('canvas[data-fs]')], sc=kStudio(), S=cvs.map(cv=>{ const {P,box}=kProduct(+cv.dataset.fs), cam=new THREE.PerspectiveCamera(30,1,.01,50), c=kFrame(cam,box), hold=new THREE.Group(); P.root.position.x=-c.x; P.root.position.z=-c.z; hold.add(P.root); return {cv,x:cv.getContext('2d'),cam,hold,P}; });
+  const loop=()=>{ if($('#sp').hidden||!cvs.length||!document.body.contains(cvs[0])) return; const t=performance.now()/1000; S.forEach((o,i)=>{ sc.add(o.hold); o.hold.rotation.y=t*.6+i*1.3; if(o.P.fx) o.P.fx.forEach(f=>{ try{ f(t,t*2.07); }catch(e){} }); KPC.R.setClearColor(0x000000,0); KPC.R.render(sc,o.cam); o.x.clearRect(0,0,240,240); o.x.drawImage(KPC.R.domElement,0,0); sc.remove(o.hold); }); requestAnimationFrame(loop); }; loop(); }
+const KCATS=['전체','레어','아우터','상의','하의','신발','모자','액세서리']; let kCat='전체';
 function kreamOn(it){ return Object.entries(it.set).every(([k,v])=>cfg[k]===v); }
 function buildCharacter(c){ const P=buildCharacterBase(c); P.cfg=c; try{ kreamGear(P,c); }catch(e){} if(c&&c.ringG) P.ringG=c.ringG; return P; }
 const PATM={};
@@ -5111,7 +5144,7 @@ function tatMat(){ if(TATM) return TATM; const cv=document.createElement('canvas
   for(let i=0;i<22;i++){ const cx=Math.random()*128, cy=Math.random()*128, r=6+Math.random()*12; x.beginPath(); if(i%3===0) x.arc(cx,cy,r,0,Math.PI*1.6); else if(i%3===1){ x.moveTo(cx-r,cy); x.quadraticCurveTo(cx,cy-r*1.4,cx+r,cy); x.quadraticCurveTo(cx,cy+r*.8,cx-r,cy); } else { x.moveTo(cx,cy-r); x.lineTo(cx+r*.4,cy); x.lineTo(cx,cy+r); x.lineTo(cx-r*.4,cy); x.closePath(); } x.stroke(); }
   const t=new THREE.CanvasTexture(cv); return TATM=new THREE.MeshLambertMaterial({map:t,transparent:true,depthWrite:false}); }
 function kreamGear(P,c){ const T=P.torso, H=P.head;
-  if(c.kOuter&&!['leather','drape','track','check','crop'].includes(c.kOuter)){ const k=c.kOuter, col=M(c.kOuterColor||'#141414');
+  if(c.kOuter&&!['leather','drape','track','check','crop','rare'].includes(c.kOuter)){ const k=c.kOuter, col=M(c.kOuterColor||'#141414');
     if(k==='puffer'){ for(let i=0;i<4;i++) mk(new THREE.CylinderGeometry(.26,.26,.14,12),col,0,.1+i*.135,0,T); mk(new THREE.CylinderGeometry(.17,.2,.1,12),col,0,.6,0,T); P.sh.forEach(s=>{ mesh(G.sph,col,0,-.08,0,.11,.12,.11,s); mesh(G.sph,col,0,-.21,0,.1,.11,.1,s); }); }
     else { const v=k==='varsity', c2=M(c.kOuterColor2||'#f4efe6'); B(.47,.6,.29,col,0,.32,0,T); if(k!=='fleece') B(.015,.5,.005,M('#c0c4cc'),0,.32,.147,T);
       if(k==='shell') mesh(G.sph,col,0,.6,-.1,.17,.15,.14,T); if(k==='fleece'){ mk(new THREE.CylinderGeometry(.16,.19,.1,12),col,0,.62,0,T); B(.1,.12,.02,M('#3a5a8a'),.12,.42,.147,T); } if(v) B(.48,.06,.3,c2,0,.04,0,T);
@@ -5163,6 +5196,7 @@ function kreamGear(P,c){ const T=P.torso, H=P.head;
   else if(c.kHead==='beanie'){ const col=M(c.kHeadColor||'#141414'); mesh(G.half,col,0,.04,0,.16,.19,.16,H); mk(new THREE.TorusGeometry(.155,.03,6,18),col,0,.07,0,H).rotation.x=Math.PI/2; }
   if(c.kAcc==='sling'){ const col=M(c.kAccColor||'#141414'); B(.035,.62,.01,col,0,.32,.145,T).rotation.z=.75; B(.2,.12,.08,col,.13,.14,.16,T); }
   else if(c.kAcc==='chain'){ mk(new THREE.TorusGeometry(.14,.008,6,24),M('#d8dce4',{glow:.3}),0,.5,.07,T).rotation.x=1.2; }
+  try{ rareGear(P,c); }catch(e){ console.warn('rare gear',e&&e.message); }
   if(c.kWorn){ kreamBadges(P,c); kreamDetails(P,c); } }
 // brand details: logos and the product's own shape cues, drawn only while that brand item is worn
 const LGM={};
@@ -5248,7 +5282,7 @@ const KDET={
 function kreamDetails(P,c){ for(const i of Object.values(c.kWorn||{})){ const it=KREAM[i]; if(!it||!it.d||!KDET[it.d]) continue; if(!Object.entries(it.set).every(([k,v])=>c[k]===v)) continue; try{ KDET[it.d](P,c,it); }catch(e){ console.warn('brand detail',it.d,e&&e.message); } } }
 function renderOpts(){ renderOptsBase(); const first=$('#opts .sec'); if(!first) return; const d=document.createElement('div'); d.className='sec';
   const list=KREAM.map((it,i)=>[it,i]).filter(([it])=>kCat==='전체'||it.c===kCat);
-  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset kchip' data-kream='${i}' aria-pressed='${kreamOn(it)}'><i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${kTag(it)}</em></button>`).join('')}</div><p class='hint'>가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
+  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset kchip' data-kream='${i}' aria-pressed='${kreamOn(it)}'><i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${it.fx&&kCat==='레어'?`<span class='kfx'>${esc(it.fx)}</span>`:''}${kTag(it)}</em></button>`).join('')}</div><p class='hint'>가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
   first.after(d); addOwnedSec(d); setTimeout(kThumbFill,60); }
 $('#opts').addEventListener('click',e=>{ const btn=e.target.closest('button'); if(!btn) return;
   if(btn.dataset.kcat){ kCat=btn.dataset.kcat; return; }
@@ -5256,7 +5290,55 @@ $('#opts').addEventListener('click',e=>{ const btn=e.target.closest('button'); i
   if(btn.dataset.k&&TYPE_CAT[btn.dataset.k]&&btn.dataset.v!=='none'&&!btn.classList.contains('sw')){ e.stopPropagation(); typePreview(btn); return; }
   if(btn.dataset.preset!==undefined){ e.stopPropagation(); presetPreview(+btn.dataset.preset); return; }
   if(btn.dataset.own!==undefined){ e.stopPropagation(); ownPreview(btn.dataset.own); return; }
-  const k=btn.dataset.k; if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head') delete cfg.kHead; if(k==='face') delete cfg.kFace; if(k==='bottom') delete cfg.kPants; if(k==='top') delete cfg.kPrint; if(cfg.kWorn&&TYPE_CAT[k]){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } },true);
+  const k=btn.dataset.k; if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head'){ delete cfg.kHead; delete cfg.kRh; } if(k==='face'){ delete cfg.kFace; delete cfg.kRf; } if(k==='bottom') delete cfg.kPants; if(k==='top'){ delete cfg.kPrint; delete cfg.kRt; } if(k==='shoes') delete cfg.kRs; if(k==='outer') delete cfg.kRo; if(cfg.kWorn&&TYPE_CAT[k]){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } },true);
+/* ================= RARE / FUNCTIONAL ITEMS: each piece has its own moving effect (P.fx runs every frame through poseChar) ================= */
+const RTX={};
+function rTex(key,draw,w,h){ if(RTX[key]) return RTX[key]; const c=document.createElement('canvas'); c.width=w||128; c.height=h||128; draw(c.getContext('2d'),c.width,c.height); return RTX[key]=new THREE.CanvasTexture(c); }
+function rareGear(P,c){ const ids=[c.kRo,c.kRt,c.kRs,c.kRh,c.kRf,c.kRa].filter(Boolean); if(!ids.length) return;
+  const T=P.torso, H=P.head, fx=f=>(P.fx||(P.fx=[])).push(f), GL=(col,op)=>new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op==null?1:op,depthWrite:false}), LM=(col,o)=>new THREE.MeshLambertMaterial(Object.assign({color:col},o||{})),
+    add=(geo,mat,x,y,z,p)=>{ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); (p||T).add(m); return m; }, box=(w,h,d,mat,x,y,z,p)=>{ const m=add(G.box,mat,x,y,z,p); m.scale.set(w,h,d); return m; },
+    jacket=(mat,long)=>{ box(.47,.6,.29,mat,0,.32,0); P.sh.forEach(S=>box(.13,.3,.13,mat,0,-.14,0,S)); P.el.forEach(E=>box(.11,.24,.11,mat,0,-.12,0,E)); if(long) add(new THREE.CylinderGeometry(.25,.34,long,14,1,true),Object.assign(mat.clone(),{side:THREE.DoubleSide}),0,.02-long/2,0); },
+    legs=(mat)=>{ P.hip.forEach(Hh=>box(.155,.44,.155,mat,0,-.22,0,Hh)); P.knee.forEach(K=>box(.135,.42,.135,mat,0,-.21,0,K)); };
+  for(const id of ids){
+    if(id==='cape_star'){ add(new THREE.CylinderGeometry(.27,.46,1.05,18,1,true,Math.PI*.5,Math.PI),LM('#08080c',{side:THREE.DoubleSide}),0,.08,0); const ms=[0,1,2].map(i=>GL(['#ffffff','#bfe0ff','#ffe8b0'][i])), g=new THREE.SphereGeometry(.009,6,4);
+      for(let i=0;i<54;i++){ const th=Math.PI*(.55+Math.random()*.9), y=-.42+Math.random()*1.0, r=.27+(.46-.27)*((.6-y)/1.05)+.004; add(g,ms[i%3],Math.sin(th)*r,y,Math.cos(th)*r); } fx(t=>ms.forEach((m,i)=>m.opacity=.25+.75*Math.abs(Math.sin(t*2.3+i*2.1)))); }
+    else if(id==='poncho_glow'){ add(new THREE.CylinderGeometry(.18,.52,.58,18,1,true),LM('#c8b490',{side:THREE.DoubleSide}),0,.26,0); const tx=rTex('pg',(x,w,h)=>{ x.strokeStyle='#9dffb8'; x.lineWidth=5; for(let i=0;i<6;i++){ x.beginPath(); for(let k=0;k<=w;k+=16) x.lineTo(k,i*22+12+(k/16%2?8:-8)); x.stroke(); } }); const gm=new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:.2,depthWrite:false,side:THREE.DoubleSide,color:'#bfffd0'});
+      add(new THREE.CylinderGeometry(.185,.525,.585,18,1,true),gm,0,.26,0); fx(t=>{ gm.opacity=(night?.75:.12)+.15*Math.sin(t*1.2); }); }
+    else if(id==='suit_flash'){ const m=LM('#9aa0aa',{emissive:'#ffffff',emissiveIntensity:0}); jacket(m); legs(m); let nx=2+Math.random()*3; fx(t=>{ const ph=t%3.4; m.emissiveIntensity=ph<.18?1.4*(1-ph/.18):0; }); }
+    else if(id==='uv_body'){ const tx=rTex('uv',(x,w,h)=>{ x.strokeStyle='#46f0ff'; x.lineWidth=3; for(let i=0;i<6;i++){ x.beginPath(); x.ellipse(w/2,20+i*16,40-i*2,6,0,0,Math.PI); x.stroke(); } x.beginPath(); x.moveTo(w/2,8); x.lineTo(w/2,124); x.stroke(); x.strokeStyle='#ff4fd8'; for(let i=0;i<8;i++){ x.beginPath(); x.moveTo(8,8+i*15); x.lineTo(24,8+i*15); x.lineTo(24,16+i*15); x.stroke(); x.beginPath(); x.moveTo(w-8,8+i*15); x.lineTo(w-24,8+i*15); x.stroke(); } });
+      const gm=new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:.1,depthWrite:false}); box(.405,.505,.245,gm,0,.27,0); P.el.forEach(E=>box(.095,.27,.095,gm,0,-.135,0,E)); P.sh.forEach(S=>box(.105,.3,.105,gm,0,-.15,0,S)); fx(()=>{ gm.opacity=night?.95:.08; }); }
+    else if(id==='led_harness'){ const gm=GL('#ff3df0'); [1,-1].forEach(z=>{ [-.5,.5].forEach(r=>{ const b=box(.02,.6,.012,gm,0,.28,z*.128); b.rotation.z=r; }); box(.42,.02,.012,gm,0,.4,z*.128); }); fx((t,b)=>{ const f=((b%1)+1)%1; gm.opacity=.25+.75*Math.exp(-f*4); }); }
+    else if(id==='spine'){ const ms=[]; for(let i=0;i<10;i++){ const m=GL('#46d6ff',.3); ms.push(m); box(.05,.035,.03,m,0,.04+i*.055,-.13); } fx(t=>{ const ph=(t*6)%13; ms.forEach((m,i)=>m.opacity=.2+.8*Math.exp(-((ph-i)**2)/1.5)); }); }
+    else if(id==='fringe'){ jacket(LM('#2a1a3a')); const gm=GL('#ffd23d'), fr=[]; P.sh.concat(P.el).forEach((S,j)=>{ for(let i=0;i<5;i++){ const g=new THREE.Group(); g.position.set((j%2?-1:1)*.0,-.04-i*.05,0); S.add(g); const side=j<2?(j===0?1:-1):(j===2?1:-1); g.position.x=side*.065; const b=box(.008,.12,.008,gm,0,-.06,0,g); fr.push(g); } }); fx(t=>fr.forEach((g,i)=>{ g.rotation.x=Math.sin(t*7+i)*.6; g.rotation.z=Math.cos(t*5+i)*.3; })); }
+    else if(id==='step_boots'){ const rs=P.knee.map(K=>{ const m=GL('#46d6ff',.6), r=add(new THREE.RingGeometry(.09,.13,24),m,0,-.535,.04,K); r.rotation.x=-Math.PI/2; return {m,r}; }); fx((t,b)=>rs.forEach((o,i)=>{ const f=(((b+i*.5)%1)+1)%1; o.r.scale.setScalar(1+f*1.4); o.m.opacity=.9*(1-f); })); }
+    else if(id==='halo'){ const m=GL('#ffe08a'), r=add(new THREE.TorusGeometry(.24,.012,8,48),m,0,.06,-.17,H); const r2=add(new THREE.TorusGeometry(.2,.005,6,40),GL('#ffffff',.6),0,.06,-.17,H); fx(t=>{ r.rotation.z=t*.4; m.opacity=.7+.3*Math.sin(t*2); r2.rotation.z=-t*.6; }); }
+    else if(id==='gloves'){ const ms=[]; P.el.forEach(E=>{ add(G.sph,LM('#121216'),0,-.3,0,E).scale.setScalar(.062); for(let i=0;i<5;i++){ const m=GL('#ffffff'); ms.push(m); add(G.sph,m,(i-2)*.02,-.36,.02,E).scale.setScalar(.012); } }); fx(t=>ms.forEach((m,i)=>m.color.setHSL(((t*.2)+i*.08)%1,1,.65))); }
+    else if(id==='sun_tattoo'){ const tx=rTex('st',(x,w,h)=>{ x.strokeStyle='#1a2a6a'; x.lineWidth=3; for(let i=0;i<14;i++){ const cx=Math.random()*w, cy=Math.random()*h; x.beginPath(); for(let a=0;a<10;a+=.3) x.lineTo(cx+Math.cos(a)*a*1.6,cy+Math.sin(a)*a*1.6); x.stroke(); } }); const gm=new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:.9,depthWrite:false});
+      box(.405,.505,.245,gm,0,.27,0); P.sh.forEach(S=>box(.105,.3,.105,gm,0,-.15,0,S)); fx(()=>{ gm.opacity=night?.12:.92; }); }
+    else if(id==='thermo'){ const tx=rTex('th',(x,w,h)=>{ for(let i=0;i<9;i++){ const g=x.createRadialGradient(Math.random()*w,Math.random()*h,2,Math.random()*w,Math.random()*h,40); g.addColorStop(0,'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,w,h); } }); const gm=new THREE.MeshBasicMaterial({map:tx,transparent:true,opacity:.85,depthWrite:false});
+      box(.405,.505,.245,gm,0,.27,0); P.sh.forEach(S=>box(.105,.3,.105,gm,0,-.15,0,S)); P.el.forEach(E=>box(.095,.27,.095,gm,0,-.135,0,E)); fx(t=>gm.color.setHSL((.95+.12*Math.sin(t*.7))%1,.9,.55)); }
+    else if(id==='beetle'){ const m=LM('#5a2aa8',{emissive:'#2a1050',emissiveIntensity:.4}); jacket(m,.55); fx(t=>{ const h=.62+.16*Math.sin(t*.9+P.root.rotation.y*2); m.color.setHSL(h%1,.75,.42); m.emissive.setHSL(h%1,.8,.2); }); }
+    else if(id==='jelly'){ const dm=new THREE.MeshBasicMaterial({color:'#ffb0e8',transparent:true,opacity:.42,depthWrite:false,side:THREE.DoubleSide}), d=add(new THREE.SphereGeometry(.36,20,12,0,Math.PI*2,0,Math.PI/2),dm,0,.42,0); const rb=[];
+      for(let i=0;i<10;i++){ const a=i/10*Math.PI*2, g=new THREE.Group(); g.position.set(Math.sin(a)*.34,.42,Math.cos(a)*.34); T.add(g); const r=box(.03,.7,.004,GL(i%2?'#bfe8ff':'#ffd0f0',.7),0,-.35,0,g); r.rotation.y=a; rb.push(g); }
+      fx(t=>{ d.scale.set(1+.06*Math.sin(t*2),1+.14*Math.sin(t*2),1+.06*Math.sin(t*2)); rb.forEach((g,i)=>{ g.rotation.x=Math.sin(t*1.8+i)*.35; g.rotation.z=Math.cos(t*1.5+i)*.25; }); }); }
+    else if(id==='wings'){ const wm=new THREE.MeshBasicMaterial({color:'#c8f0ff',transparent:true,opacity:.45,depthWrite:false,side:THREE.DoubleSide}), wg=[]; [1,-1].forEach(sd=>[0,1].forEach(k=>{ const g=new THREE.Group(); g.position.set(sd*.05,.42-k*.18,-.14); T.add(g); const w=add(new THREE.CircleGeometry(.28,20),wm,sd*.26,k?-.04:.06,0,g); w.scale.set(1,k?.45:.6,1); wg.push({g,sd,k}); }));
+      fx(t=>{ const o=.5+.5*Math.sin(t*.9); wg.forEach(w=>{ w.g.rotation.y=w.sd*(1.35-1.1*o)+(w.k?.1:0)*w.sd; w.g.rotation.z=w.sd*(w.k?-.3:.2); }); wm.color.setHSL((.5+.08*Math.sin(t))%1,.8,.8); }); }
+    else if(id==='inflate'){ const m=LM('#f2f2f4'); box(.45,.5,.27,m,0,.3,0); const bl=[[.2,.52,0],[-.2,.52,0],[0,.36,-.18],[0,.16,-.17]].map(([x,y,z])=>{ const b=add(G.sph,LM('#ffffff',{emissive:'#c8d8ff',emissiveIntensity:.2}),x,y,z); b.scale.setScalar(.13); return b; }); fx(t=>bl.forEach((b,i)=>b.scale.setScalar(.12+.045*(.5+.5*Math.sin(t*1.6+i))))); }
+    else if(id==='epaper'){ jacket(LM('#d8d8d0')); const sy=['star','eye','tri','dot'].map(k=>rTex('ep'+k,(x,w,h)=>{ x.fillStyle='#e8e8e0'; x.fillRect(0,0,w,h); x.fillStyle='#141414'; x.strokeStyle='#141414'; x.lineWidth=8; x.beginPath(); if(k==='star'){ for(let i=0;i<10;i++){ const a=i*Math.PI/5-Math.PI/2, r=i%2?20:48; x.lineTo(64+Math.cos(a)*r,64+Math.sin(a)*r); } x.fill(); } else if(k==='eye'){ x.ellipse(64,64,50,26,0,0,7); x.stroke(); x.beginPath(); x.arc(64,64,14,0,7); x.fill(); } else if(k==='tri'){ x.moveTo(64,16); x.lineTo(112,104); x.lineTo(16,104); x.closePath(); x.stroke(); } else { for(let i=0;i<9;i++){ x.beginPath(); x.arc(28+(i%3)*36,28+Math.floor(i/3)*36,9,0,7); x.fill(); } } }));
+      const pm=[]; [[-.11,.42,.148],[.11,.42,.148],[-.11,.22,.148],[.11,.22,.148],[-.11,.36,-.148],[.11,.36,-.148]].forEach(([x,y,z],i)=>{ const m=new THREE.MeshBasicMaterial({map:sy[i%4]}); pm.push(m); const q=add(G.plane,m,x,y,z); q.scale.set(.15,.15,1); if(z<0) q.rotation.y=Math.PI; });
+      let last=-1; fx(t=>{ const k=Math.floor(t/2); if(k!==last){ last=k; pm.forEach((m,i)=>{ m.map=sy[(k+i)%4]; m.needsUpdate=true; }); } }); }
+    else if(id==='reverse'){ const m=LM('#d8c4a0',{emissive:'#ffffff',emissiveIntensity:0}); jacket(m,.5); fx(()=>{ if(night){ m.color.set('#c8ccd8'); m.emissiveIntensity=.28; } else { m.color.set('#d8c4a0'); m.emissiveIntensity=0; } }); }
+    else if(id==='nomad'){ const m=LM('#c8b08a',{side:THREE.DoubleSide}); add(new THREE.SphereGeometry(.22,18,12,0,Math.PI*2,0,Math.PI*.62),m,0,.05,-.03,H).rotation.x=-.35; add(new THREE.CylinderGeometry(.14,.2,.22,14,1,true),m,0,.58,0); add(new THREE.CylinderGeometry(.27,.5,1.05,18,1,true,Math.PI*.35,Math.PI*1.3),m,0,.08,0); }
+    else if(id==='goggles'){ const ch=LM('#d8dce4',{emissive:'#ffffff',emissiveIntensity:.25}), lm=GL('#ffb030',.8); [-.06,.06].forEach(x=>{ const r=add(new THREE.CylinderGeometry(.055,.06,.05,16),ch,x,.03,.13,H); r.rotation.x=Math.PI/2; const l=add(new THREE.CircleGeometry(.047,16),lm,x,.03,.157,H); }); box(.3,.025,.24,LM('#2a2a2e'),0,.03,-.01,H); fx(t=>lm.opacity=.55+.35*Math.sin(t*2.5)); }
+    else if(id==='mask'){ box(.2,.1,.06,LM('#1a1a1e'),0,-.07,.13,H); const ls=[0,1,2].map(i=>{ const m=GL('#46f0ff'); box(.16,.008,.005,m,0,-.045-i*.022,.162,H); return m; }); fx(t=>ls.forEach((m,i)=>m.opacity=.3+.7*Math.max(0,Math.sin(t*5-i*1.2)))); }
+    else if(id==='water'){ box(.26,.34,.08,LM('#2a3a4a'),0,.32,-.17); box(.05,.5,.03,LM('#1a1a1e'),.14,.3,0).rotation.z=.15; const segs=[]; for(let i=0;i<8;i++){ const m=GL('#46c8ff',.3); segs.push(m); const y=.55-i*.05, z=i<3?-.1+i*.08:.14; box(.018,.05,.018,m,-.08,y,z); } fx(t=>{ const ph=(t*5)%10; segs.forEach((m,i)=>m.opacity=.25+.7*Math.exp(-((ph-i)**2)/1.2)); }); }
+    else if(id==='cool'){ const m=LM('#bfe8ff',{emissive:'#46c8ff',emissiveIntensity:.3}); box(.44,.52,.27,LM('#2a3440'),0,.3,0); [[-.1,.42],[.1,.42],[-.1,.22],[.1,.22]].forEach(([x,y])=>{ box(.15,.15,.02,m,x,y,.145); box(.15,.15,.02,m,x,y,-.145); }); fx(t=>m.emissiveIntensity=.2+.25*(.5+.5*Math.sin(t*2.2))); }
+    else if(id==='blanket'){ const m=LM('#5a3a6a'); jacket(m,.72); for(let i=0;i<7;i++) add(new THREE.TorusGeometry(.3-i*.005,.008,4,24),LM('#3a2448'),0,.5-i*.17,0).rotation.x=Math.PI/2; }
+    else if(id==='gaiter'){ const m=LM('#e8e4dc'), d=LM('#8a8a90'); P.knee.forEach(K=>{ box(.17,.36,.17,m,0,-.24,0,K); box(.18,.02,.18,d,0,-.12,0,K); box(.18,.02,.18,d,0,-.3,0,K); }); }
+    else if(id==='solar'){ box(.3,.36,.12,LM('#2a2a30'),0,.3,-.19); const tx=rTex('sol',(x,w,h)=>{ x.fillStyle='#1a3a8a'; x.fillRect(0,0,w,h); x.strokeStyle='#8ab0ff'; x.lineWidth=2; for(let i=0;i<=w;i+=21){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,h); x.stroke(); x.beginPath(); x.moveTo(0,i); x.lineTo(w,i); x.stroke(); } });
+      const pn=add(G.plane,new THREE.MeshLambertMaterial({map:tx,emissive:'#1a3a8a',emissiveIntensity:.3}),0,.32,-.252); pn.scale.set(.28,.32,1); pn.rotation.y=Math.PI; const led=GL('#7dff9a'); box(.05,.02,.02,led,.1,.14,-.255); fx(t=>{ led.opacity=night?.15:(.4+.6*((t*1.5)%1)); }); }
+  } }
+{ const _pc=poseChar; poseChar=function(P,mode,t,beat){ _pc(P,mode,t,beat); if(P&&P.fx){ const tt=performance.now()/1000, b=beat!=null&&isFinite(beat)?beat:tt*2.07; for(const f of P.fx){ try{ f(tt,b); }catch(e){} } } }; }
 /* ================= 3D ICONS FOR THE MAIN ROUND BUTTONS (bag, style room, roulette, dance) ================= */
 // rendered once into still images; the emoji stays if WebGL is not there
 function icons3D(){ let R; try{ R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); R.setPixelRatio(1); R.setSize(192,192,false); }catch(e){ return; }
@@ -5347,11 +5429,11 @@ const FOCUS={'신발':{y:.2,d:1.6},'모자':{y:1.6,d:1.4},'얼굴':{y:1.55,d:1.3
 const KPV={R:null,scene:null,cam:null,P:null,raf:0,rot:0,drag:null,item:null,tgt:FOCUS.def,full:false,cy:null,cd:null};
 function refreshOpts(){ const st=$('#opts').scrollTop; renderOpts(); $('#opts').scrollTop=st; rebuildPlayer(); }
 // putting on a brand item first clears the previous item's print / shape fields on that body part
-const KSLOTF={top:['kTop','kPrint','kInk'],bottom:['kPants','kPantsInk'],outer:['kOuter','kOuterColor','kOuterColor2'],head:['kHead','kHeadColor'],acc:['kAcc','kAccStyle','kAccColor'],face:['kFace','kFaceColor']};
+const KSLOTF={top:['kTop','kPrint','kInk','kRt'],bottom:['kPants','kPantsInk'],outer:['kOuter','kOuterColor','kOuterColor2','kRo'],head:['kHead','kHeadColor','kRh'],acc:['kAcc','kAccStyle','kAccColor','kRa'],face:['kFace','kFaceColor','kRf'],shoes:['kRs']};
 function kClear(o,it){ (KSLOTF[kSlot(it)]||[]).forEach(k=>delete o[k]); }
 function kreamApplyBase(it){ if(kreamOn(it)) Object.keys(it.set).forEach(k=>{ if(k[0]==='k') delete cfg[k]; else if(k==='face') cfg.face='none'; }); else { kClear(cfg,it); Object.assign(cfg,it.set); } refreshOpts(); toast(kreamOn(it)?`${it.b} ${it.n} 착용!`:`${it.n}을(를) 벗었어요`); }
 const kKey=it=>'B:'+it.b+'|'+it.n; let KFREE=null;
-function kFree(){ return KFREE||(KFREE=new Set(KREAM.map((it,i)=>[it.p||0,i]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]).slice(0,10).map(x=>x[1]))); }
+function kFree(){ return KFREE||(KFREE=new Set(KREAM.map((it,i)=>[it.c==='레어'?1e9:(it.p||0),i]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]).slice(0,10).map(x=>x[1]))); }
 function kOwned(it){ return kFree().has(KREAM.indexOf(it))||owned.includes(kKey(it)); }
 function kTag(it){ return kFree().has(KREAM.indexOf(it))?'무료':kOwned(it)?'✓ 보유':'🪙 '+it.p+'코인'; }
 function kWon(p){ return p>=100?(p/100).toLocaleString('ko-KR',{maximumFractionDigits:1})+'백만 원':(p*10000).toLocaleString('ko-KR')+'원'; }
@@ -5393,7 +5475,7 @@ $('#enterBtn').addEventListener('click',()=>{ if(!document.body.classList.contai
 function kreamPreview(i){ const it=KREAM[i], worn=kreamOn(it), pc=Object.assign({},cfg); if(!worn){ kClear(pc,it); Object.assign(pc,it.set); } pc.kWorn=Object.assign({},cfg.kWorn||{}); if(!worn) pc.kWorn[kSlot(it)]=i;
   kpvOpen({brand:it.b+' · 브랜드샵',name:it.n,cat:it.c,cfg:pc,worn,note:worn?'지금 입고 있어요. 벗으려면 아래 버튼을 눌러요.':'드래그해서 돌려 보고, 마음에 들면 입어요. 로고는 그리지 않아요.',apply:()=>kreamApply(it)}); }
 function typePreview(btn){ const k=btn.dataset.k, v=btn.dataset.v, worn=cfg[k]===v, pc=Object.assign({},cfg,{[k]:v}); pc.kWorn=Object.assign({},cfg.kWorn||{}); delete pc.kWorn[k]; if(k==='outer') delete pc.kOuter; if(k==='top') delete pc.kTop; if(k==='head') delete pc.kHead;
-  kpvOpen({brand:TYPE_CAT[k],name:btn.textContent.trim(),cat:TYPE_CAT[k],cfg:pc,worn,note:worn?'지금 입고 있는 아이템이에요. 색은 아래 색 버튼으로 바꿔요.':'드래그해서 돌려 보고, 마음에 들면 입어요.',keep:worn,apply:()=>{ if(worn) return; cfg[k]=v; if(cfg.kWorn){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head') delete cfg.kHead; if(k==='face') delete cfg.kFace; if(k==='bottom') delete cfg.kPants; if(k==='top') delete cfg.kPrint; refreshOpts(); toast(`${btn.textContent.trim()} 착용!`); }}); }
+  kpvOpen({brand:TYPE_CAT[k],name:btn.textContent.trim(),cat:TYPE_CAT[k],cfg:pc,worn,note:worn?'지금 입고 있는 아이템이에요. 색은 아래 색 버튼으로 바꿔요.':'드래그해서 돌려 보고, 마음에 들면 입어요.',keep:worn,apply:()=>{ if(worn) return; cfg[k]=v; if(cfg.kWorn){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head'){ delete cfg.kHead; delete cfg.kRh; } if(k==='face'){ delete cfg.kFace; delete cfg.kRf; } if(k==='bottom') delete cfg.kPants; if(k==='top'){ delete cfg.kPrint; delete cfg.kRt; } if(k==='shoes') delete cfg.kRs; if(k==='outer') delete cfg.kRo; refreshOpts(); toast(`${btn.textContent.trim()} 착용!`); }}); }
 const _kPrev=kreamPreview; kreamPreview=function(i){ _kPrev(i); if(document.body.classList.contains('dressing')) setTimeout(()=>kBuyBar(KREAM[i]),0); };
 function kpvEnsure(){ if(KPV.R) return; const box=document.createElement('div'); box.id='kpv'; box.className='card'; box.hidden=true; box.setAttribute('role','dialog'); box.setAttribute('aria-label','아이템 3D 미리보기');
   box.innerHTML=`<div class='kpvhead'><div><small id='kpvBrand'></small><b id='kpvName'></b></div><button id='kpvX' aria-label='닫기'>✕</button></div><canvas id='kpvCv' width='260' height='300'></canvas><p id='kpvNote'></p><div class='kpvacts'><button id='kpvView' class='ghost'>전신 보기</button><button id='kpvWear' class='primary'>입기</button></div>`;
@@ -5433,7 +5515,7 @@ function addOwnedSec(after){ const own=(typeof owned!=='undefined'?owned:[]).fil
   d.innerHTML=`<h2>내 옷장</h2>`+(own.length?`<div class='chips'>${own.map(k=>`<button class='chip preset' data-own='${esc(k)}' aria-pressed='${setOn(ITEMS[k].set)}'>${esc(k)}<small>${esc(ITEMS[k].d||'')}</small></button>`).join('')}</div>`:`<p class='hint'>아직 산 옷이 없어요. 미라지 부티크, 히피 마켓 같은 상점에서 산 옷이 여기에 모여요.</p>`); after.after(d); }
 
 /* ================= BRAND SHOP: ORIGINAL EMBLEMS + NAME TAG ================= */
-function kSlot(it){ if(it.set.kAcc) return 'acc'; if(it.set.face) return 'face'; return {'신발':'shoes','아우터':'outer','상의':'top','하의':'bottom','모자':'head'}[it.c]||'acc'; }
+function kSlot(it){ if(it.slot) return it.slot; if(it.set.kAcc) return 'acc'; if(it.set.face) return 'face'; return {'신발':'shoes','아우터':'outer','상의':'top','하의':'bottom','모자':'head'}[it.c]||'acc'; }
 function kreamApply(it){ const i=KREAM.indexOf(it), sl=kSlot(it), was=kreamOn(it); cfg.kWorn=Object.assign({},cfg.kWorn||{}); if(was) delete cfg.kWorn[sl]; else cfg.kWorn[sl]=i; kreamApplyBase(it); }
 const EMB_MATS=[];
 function embMat(i){ i=i%6; if(EMB_MATS[i]) return EMB_MATS[i]; const c=document.createElement('canvas'); c.width=c.height=96; const x=c.getContext('2d');
