@@ -4918,47 +4918,68 @@ updaters.push(()=>{ const h=$('#boothList').hidden; if($('#mapClose').hidden!==h
 
 /* ================= KREAM HOT ITEMS ================= */
 const KREAM=[
-  {c:'신발',b:'Nike',n:'에어포스 1 ’07 로우 화이트',set:{shoes:'sneakers',shoeColor:'#f4f4f0'}},
-  {c:'신발',b:'Jordan',n:'조던 1 로우 블랙',set:{shoes:'sneakers',shoeColor:'#1b1b1e'}},
-  {c:'신발',b:'adidas',n:'삼바 OG 화이트 블랙',set:{shoes:'sneakers',shoeColor:'#f4efe6'}},
-  {c:'신발',b:'New Balance',n:'530 화이트 실버',set:{shoes:'sneakers',shoeColor:'#e2e4ea'}},
-  {c:'신발',b:'New Balance',n:'2002R 레인 클라우드',set:{shoes:'sneakers',shoeColor:'#a8aab0'}},
-  {c:'신발',b:'ASICS',n:'젤-카야노 14 크림',set:{shoes:'sneakers',shoeColor:'#e8e0cc'}},
-  {c:'신발',b:'Salomon',n:'XT-6 블랙',set:{shoes:'sneakers',shoeColor:'#1a1a1e'}},
-  {c:'신발',b:'UGG',n:'타스만 체스트넛',set:{shoes:'boots',shoeColor:'#a86a3a'}},
-  {c:'아우터',b:'The North Face',n:'1996 눍시 재킷 블랙',set:{outer:'none',kOuter:'puffer',kOuterColor:'#141414'}},
-  {c:'아우터',b:'Moncler',n:'마야 쇼트 다운 네이비',set:{outer:'none',kOuter:'puffer',kOuterColor:'#1f2a44'}},
-  {c:'아우터',b:"Arc'teryx",n:'베타 LT 재킷',set:{outer:'none',kOuter:'shell',kOuterColor:'#2a3a4a'}},
-  {c:'아우터',b:'Carhartt WIP',n:'디트로이트 재킷',set:{outer:'none',kOuter:'shell',kOuterColor:'#a8763a'}},
-  {c:'아우터',b:'Stüssy',n:'바시티 재킷',set:{outer:'none',kOuter:'varsity',kOuterColor:'#141414',kOuterColor2:'#f4efe6'}},
-  {c:'아우터',b:'Patagonia',n:'클래식 레트로 X 플리스',set:{outer:'none',kOuter:'fleece',kOuterColor:'#e8e0cc'}},
-  {c:'상의',b:'Stüssy',n:'베이직 후디 그레이',set:{top:'long',topColor:'#7a7a80',kTop:'hoodie'}},
-  {c:'상의',b:'Supreme',n:'박스 로고 후디 레드',set:{top:'long',topColor:'#8a1f2b',kTop:'hoodie'}},
-  {c:'상의',b:'AMI',n:'하트 로고 맨투맨 화이트',set:{top:'long',topColor:'#f4efe6'}},
-  {c:'상의',b:'Matin Kim',n:'크롭 티 블랙',set:{top:'crop',topColor:'#141414'}},
-  {c:'상의',b:'thisisneverthat',n:'롱슬리브 올리브',set:{top:'long',topColor:'#3d4a3a'}},
-  {c:'상의',b:'Marithé + François Girbaud',n:'클래식 티 화이트',set:{top:'tee',topColor:'#f4efe6'}},
-  {c:'상의',b:'Mardi Mercredi',n:'플라워 티 핑크',set:{top:'tee',topColor:'#ffd0dc'}},
-  {c:'하의',b:"Levi's",n:'501 오리지널 진',set:{bottom:'cargo',bottomColor:'#3a5a8a'}},
-  {c:'하의',b:'Carhartt WIP',n:'더블 니 팬츠',set:{bottom:'cargo',bottomColor:'#a8763a'}},
-  {c:'하의',b:'Nike',n:'테크 플리스 조거',set:{bottom:'leggings',bottomColor:'#4a4a50'}},
-  {c:'하의',b:'adidas',n:'파이어버드 트랙 팬츠',set:{bottom:'flare',bottomColor:'#141414'}},
-  {c:'모자',b:'New Era',n:'볼캐슡 블랙',set:{head:'none',kHead:'cap',kHeadColor:'#141414'}},
-  {c:'모자',b:'EMIS',n:'볼캐슡 베이지',set:{head:'none',kHead:'cap',kHeadColor:'#c8b49a'}},
-  {c:'모자',b:"Arc'teryx",n:'버드 비니 블랙',set:{head:'none',kHead:'beanie',kHeadColor:'#141414'}},
-  {c:'모자',b:'Carhartt WIP',n:'워치 비니 오렌지',set:{head:'none',kHead:'beanie',kHeadColor:'#ff7a2f'}},
-  {c:'액세서리',b:'Gentle Monster',n:'블랙 선글라스',set:{face:'shades'}},
-  {c:'액세서리',b:"Arc'teryx",n:'맨티스 2 웨이스트팩',set:{kAcc:'sling',kAccColor:'#141414'}},
-  {c:'액세서리',b:'Chrome Hearts',n:'실버 체인 목걸이',set:{kAcc:'chain'}}];
-const KCATS=['전체','신발','아우터','상의','하의','모자','액세서리']; let kCat='전체';
+  // dark club brands only (no Korean labels): silhouette and colour, never a logo
+  {c:'아우터',b:'Rick Owens',n:'가죽 바이커 재킷 블랙',set:{outer:'none',kOuter:'leather',kOuterColor:'#121214'}},
+  {c:'상의',b:'Rick Owens',n:'슬리브리스 탱크 블랙',set:{top:'tank',topColor:'#141414'}},
+  {c:'하의',b:'Rick Owens',n:'드롭 크로치 팬츠',set:{bottom:'leggings',bottomColor:'#1b1b1e'}},
+  {c:'신발',b:'Rick Owens',n:'레이스업 아미 부츠',set:{shoes:'boots',shoeColor:'#141414'}},
+  {c:'액세서리',b:'WERKSTATT:MÜNCHEN',n:'레이어드 실버 링',set:{kAcc:'rings'}},
+  {c:'액세서리',b:'WERKSTATT:MÜNCHEN',n:'헤비 실버 체인',set:{kAcc:'chain'}},
+  {c:'액세서리',b:'WERKSTATT:MÜNCHEN',n:'가죽 팔찌',set:{kAcc:'band'}},
+  {c:'액세서리',b:'The Great Frog',n:'스컬 링',set:{kAcc:'skullring'}},
+  {c:'액세서리',b:'The Great Frog',n:'스컬 펜던트',set:{kAcc:'pendant',kAccStyle:'skull'}},
+  {c:'액세서리',b:'Parts of Four',n:'실버 커프',set:{kAcc:'cuff'}},
+  {c:'액세서리',b:'Parts of Four',n:'크리스털 펜던트',set:{kAcc:'pendant',kAccStyle:'crystal'}},
+  {c:'아우터',b:'Boris Bidjan Saberi',n:'퇴색한 가죽 재킷',set:{outer:'none',kOuter:'leather',kOuterColor:'#2e2a27'}},
+  {c:'하의',b:'Boris Bidjan Saberi',n:'코팅 팬츠',set:{bottom:'leggings',bottomColor:'#121214'}},
+  {c:'신발',b:'Boris Bidjan Saberi',n:'오브젝트 다이드 부츠',set:{shoes:'boots',shoeColor:'#3a3430'}},
+  {c:'상의',b:'Ann Demeulemeester',n:'롱 셔츠 화이트',set:{top:'long',topColor:'#f4efe6',kTop:'longshirt'}},
+  {c:'아우터',b:'Ann Demeulemeester',n:'롱 테일러드 코트',set:{outer:'none',kOuter:'drape',kOuterColor:'#141414'}},
+  {c:'신발',b:'Ann Demeulemeester',n:'레이스업 부츠',set:{shoes:'boots',shoeColor:'#1b1b1e'}},
+  {c:'액세서리',b:'Ann Demeulemeester',n:'실버 크로스 펜던트',set:{kAcc:'pendant',kAccStyle:'cross'}},
+  {c:'상의',b:'MISBHV',n:'타이트 크롭 톱',set:{top:'crop',topColor:'#141414'}},
+  {c:'상의',b:'MISBHV',n:'메시 톱 블랙',set:{top:'mesh',topColor:'#141414'}},
+  {c:'상의',b:'GmbH',n:'바디핏 롱슬리브',set:{top:'long',topColor:'#2a2c34'}},
+  {c:'하의',b:'GmbH',n:'지퍼 디테일 팬츠',set:{bottom:'cargo',bottomColor:'#141414'}},
+  {c:'상의',b:'Hyein Seo',n:'스트랩 톱',set:{top:'harness',topColor:'#141414'}},
+  {c:'하의',b:'Hyein Seo',n:'유틸리티 카고 팬츠',set:{bottom:'cargo',bottomColor:'#3d4a3a'}},
+  {c:'아우터',b:'Hyein Seo',n:'사이버 셸 재킷',set:{outer:'none',kOuter:'shell',kOuterColor:'#1c1e24'}},
+  {c:'아우터',b:'Julius',n:'드레이프 롱 톱',set:{outer:'none',kOuter:'drape',kOuterColor:'#1b1b1e'}},
+  {c:'하의',b:'Julius',n:'입체 카고 팬츠',set:{bottom:'cargo',bottomColor:'#1b1b1e'}},
+  {c:'상의',b:'032c',n:'그래픽 티셔츠',set:{top:'tee',topColor:'#f4efe6'}},
+  {c:'아우터',b:'032c',n:'가죽 재킷',set:{outer:'none',kOuter:'leather',kOuterColor:'#1a1a1c'}},
+  {c:'하의',b:'032c',n:'워시드 데님',set:{bottom:'cargo',bottomColor:'#3a5a8a'}},
+  {c:'상의',b:'Jean Paul Gaultier',n:'타투 프린트 메시 톱',set:{top:'mesh',topColor:'#2a2c34',kTop:'tattoo'}},
+  {c:'상의',b:'Jean Paul Gaultier',n:'시스루 톱',set:{top:'mesh',topColor:'#f4efe6'}}];
+const KCATS=['전체','아우터','상의','하의','신발','액세서리']; let kCat='전체';
 function kreamOn(it){ return Object.entries(it.set).every(([k,v])=>cfg[k]===v); }
 function buildCharacter(c){ const P=buildCharacterBase(c); P.cfg=c; try{ kreamGear(P,c); }catch(e){} if(c&&c.ringG) P.ringG=c.ringG; return P; }
+let TATM=null;
+function tatMat(){ if(TATM) return TATM; const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d'); x.strokeStyle='#1a1418'; x.lineWidth=3; x.lineCap='round';
+  for(let i=0;i<22;i++){ const cx=Math.random()*128, cy=Math.random()*128, r=6+Math.random()*12; x.beginPath(); if(i%3===0) x.arc(cx,cy,r,0,Math.PI*1.6); else if(i%3===1){ x.moveTo(cx-r,cy); x.quadraticCurveTo(cx,cy-r*1.4,cx+r,cy); x.quadraticCurveTo(cx,cy+r*.8,cx-r,cy); } else { x.moveTo(cx,cy-r); x.lineTo(cx+r*.4,cy); x.lineTo(cx,cy+r); x.lineTo(cx-r*.4,cy); x.closePath(); } x.stroke(); }
+  const t=new THREE.CanvasTexture(cv); return TATM=new THREE.MeshLambertMaterial({map:t,transparent:true,depthWrite:false}); }
 function kreamGear(P,c){ const T=P.torso, H=P.head;
-  if(c.kOuter){ const k=c.kOuter, col=M(c.kOuterColor||'#141414');
+  if(c.kOuter&&c.kOuter!=='leather'&&c.kOuter!=='drape'){ const k=c.kOuter, col=M(c.kOuterColor||'#141414');
     if(k==='puffer'){ for(let i=0;i<4;i++) mk(new THREE.CylinderGeometry(.26,.26,.14,12),col,0,.1+i*.135,0,T); mk(new THREE.CylinderGeometry(.17,.2,.1,12),col,0,.6,0,T); P.sh.forEach(s=>{ mesh(G.sph,col,0,-.08,0,.11,.12,.11,s); mesh(G.sph,col,0,-.21,0,.1,.11,.1,s); }); }
     else { const v=k==='varsity', c2=M(c.kOuterColor2||'#f4efe6'); B(.47,.6,.29,col,0,.32,0,T); if(k!=='fleece') B(.015,.5,.005,M('#c0c4cc'),0,.32,.147,T);
       if(k==='shell') mesh(G.sph,col,0,.6,-.1,.17,.15,.14,T); if(k==='fleece'){ mk(new THREE.CylinderGeometry(.16,.19,.1,12),col,0,.62,0,T); B(.1,.12,.02,M('#3a5a8a'),.12,.42,.147,T); } if(v) B(.48,.06,.3,c2,0,.04,0,T);
       P.sh.forEach(s=>B(.13,.3,.13,v?c2:col,0,-.14,0,s)); } }
+  if(c.kOuter==='leather'){ const col=M(c.kOuterColor||'#121214'), sv=M('#d8dce4',{glow:.25}); B(.47,.6,.29,col,0,.32,0,T);
+    B(.016,.52,.006,sv,.06,.32,.148,T).rotation.z=.18; [-1,1].forEach(s=>{ B(.11,.16,.012,col,s*.1,.5,.15,T).rotation.z=-s*.5; B(.05,.012,.006,sv,s*.13,.24,.149,T); });
+    B(.48,.05,.3,col,0,.05,0,T); P.sh.forEach(s=>{ B(.13,.3,.13,col,0,-.14,0,s); }); P.el.forEach(E=>B(.1,.24,.1,col,0,-.12,0,E)); }
+  if(c.kOuter==='drape'){ const col=M(c.kOuterColor||'#141414'); B(.47,.6,.29,col,0,.32,0,T); mk(new THREE.CylinderGeometry(.24,.34,.62,10,1,true),M(c.kOuterColor||'#141414',{side:1}),0,-.26,0,T);
+    B(.2,.42,.012,col,.1,.34,.15,T).rotation.z=.22; P.sh.forEach(s=>B(.14,.3,.14,col,0,-.14,0,s)); P.el.forEach(E=>mk(new THREE.CylinderGeometry(.06,.085,.26,8),col,0,-.14,0,E)); }
+  if(c.kTop==='longshirt'){ const col=M(c.topColor||'#f4efe6',{side:1}); mk(new THREE.CylinderGeometry(.22,.27,.5,10,1,true),col,0,-.12,0,T); B(.2,.06,.24,M(c.topColor||'#f4efe6'),0,.53,0,T); }
+  if(c.kTop==='tattoo'){ const m=new THREE.Mesh(G.box,tatMat()); m.scale.set(.425,.525,.265); m.position.set(0,.27,0); T.add(m); P.el.forEach(E=>{ const a=new THREE.Mesh(G.box,tatMat()); a.scale.set(.1,.28,.1); a.position.set(0,-.135,0); E.add(a); }); }
+  if(c.kAcc){ const sv=M('#d8dce4',{glow:.35}), k=c.kAcc;
+    if(k==='rings'||k==='skullring') P.el.forEach((E,i)=>{ [-.27,-.3,-.33].forEach((y,j)=>{ if(k==='skullring'&&j) return; mk(new THREE.TorusGeometry(.058,.011,6,16),sv,0,y,0,E).rotation.x=Math.PI/2; });
+      if(k==='skullring'){ mesh(G.sph,sv,0,-.27,.06,.03,.032,.026,E); [-.01,.01].forEach(x=>mesh(G.sph,M('#0a0a0c'),x,-.266,.084,.006,.007,.004,E)); } });
+    else if(k==='cuff') P.el.forEach(E=>{ const r=mk(new THREE.CylinderGeometry(.068,.068,.07,14,1,true,.4,Math.PI*1.7),M('#d8dce4',{glow:.35,side:1}),0,-.22,0,E); r.rotation.y=Math.PI/2; });
+    else if(k==='band') P.el.forEach(E=>{ mk(new THREE.TorusGeometry(.06,.014,6,16),M('#3a2418'),0,-.23,0,E).rotation.x=Math.PI/2; mesh(G.sph,sv,0,-.23,.064,.016,.016,.016,E); });
+    else if(k==='pendant'){ mk(new THREE.TorusGeometry(.14,.007,6,24),sv,0,.5,.07,T).rotation.x=1.2; const st=c.kAccStyle;
+      if(st==='skull'){ mesh(G.sph,sv,0,.37,.15,.032,.036,.024,T); [-.012,.012].forEach(x=>mesh(G.sph,M('#0a0a0c'),x,.372,.172,.008,.009,.004,T)); }
+      else if(st==='crystal'){ mk(new THREE.OctahedronGeometry(.04),M('#bfe8ff',{glow:.8,op:.85}),0,.36,.155,T).scale.set(.7,1.3,.7); }
+      else { B(.014,.08,.01,sv,0,.36,.15,T); B(.05,.014,.01,sv,0,.375,.15,T); } } }
   if(c.kTop==='hoodie'){ const col=M(c.topColor||'#7a7a80'); mesh(G.sph,col,0,.6,-.11,.17,.14,.13,T); B(.26,.1,.02,col,0,.18,.13,T); [-.04,.04].forEach(x=>B(.012,.14,.012,M('#f4efe6'),x,.5,.135,T)); }
   if(c.kHead==='cap'){ const col=M(c.kHeadColor||'#141414'); mesh(G.half,col,0,.05,0,.155,.13,.16,H); B(.2,.015,.15,col,0,.07,.17,H); }
   else if(c.kHead==='beanie'){ const col=M(c.kHeadColor||'#141414'); mesh(G.half,col,0,.04,0,.16,.19,.16,H); mk(new THREE.TorusGeometry(.155,.03,6,18),col,0,.07,0,H).rotation.x=Math.PI/2; }
@@ -4967,7 +4988,7 @@ function kreamGear(P,c){ const T=P.torso, H=P.head;
   if(c.kWorn) kreamBadges(P,c); }
 function renderOpts(){ renderOptsBase(); const first=$('#opts .sec'); if(!first) return; const d=document.createElement('div'); d.className='sec';
   const list=KREAM.map((it,i)=>[it,i]).filter(([it])=>kCat==='전체'||it.c===kCat);
-  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset' data-kream='${i}' aria-pressed='${kreamOn(it)}'>${esc(it.b)}<small>${esc(it.n)}</small></button>`).join('')}</div><p class='hint'>인기 브랜드 아이템을 실루엣과 색으로 표현했어요. 눌러서 3D로 미리 보고 입어요.</p>`;
+  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset' data-kream='${i}' aria-pressed='${kreamOn(it)}'>${esc(it.b)}<small>${esc(it.n)}</small></button>`).join('')}</div><p class='hint'>다크·클럽 무드 해외 브랜드 아이템을 실루엣과 색으로 표현했어요. 눌러서 3D로 미리 보고 입어요.</p>`;
   first.after(d); addOwnedSec(d); }
 $('#opts').addEventListener('click',e=>{ const btn=e.target.closest('button'); if(!btn) return;
   if(btn.dataset.kcat){ kCat=btn.dataset.kcat; return; }
