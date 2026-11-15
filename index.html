@@ -667,7 +667,7 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 .creator .chip.kchip{text-align:center;min-width:104px}
 .creator .chip.krare{position:relative;border:1px solid rgba(190,140,255,.55);box-shadow:0 0 0 1px rgba(255,79,216,.15) inset,0 0 14px rgba(155,107,255,.25)}
 .creator .chip .kbadge{position:absolute;top:5px;left:5px;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:999px;background:linear-gradient(120deg,#9b6bff,#ff4fd8);color:#fff;letter-spacing:.02em}
-#rSim{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(6,4,12,.6);backdrop-filter:blur(3px)}
+#rSim{position:fixed;inset:0;z-index:62;display:flex;align-items:center;justify-content:center;background:rgba(6,4,12,.6);backdrop-filter:blur(3px)}
 #rSim[hidden]{display:none!important}
 #kAsk{position:fixed;inset:0;z-index:61;display:flex;align-items:center;justify-content:center;background:rgba(6,4,12,.6);backdrop-filter:blur(3px);padding:16px}
 #kAsk[hidden]{display:none!important}
@@ -5556,14 +5556,15 @@ new MutationObserver(()=>{ const d=document.body.classList.contains('dressing');
 // "적용하고 돌아가기" with pieces you don't own yet: ask to buy them first; only bought pieces stay on
 let KPASS=false;
 function kUnowned(){ return KREAM.map((it,i)=>[it,i]).filter(([it])=>!kOwned(it)&&kBrandOn(it)); }
-function kAsk(list){ let el=$('#kAsk'); if(!el){ el=document.createElement('div'); el.id='kAsk'; document.body.appendChild(el); }
+function kAsk(list,one){ let el=$('#kAsk'); if(!el){ el=document.createElement('div'); el.id='kAsk'; document.body.appendChild(el); }
   const sum=list.reduce((a,[it])=>a+it.p,0), poor=coins<sum;
-  el.innerHTML=`<div class='box'><h3>구매하시겠습니까?</h3><p>옷장에 없는 아이템 ${list.length}개를 입고 있어요. 구매해야 입고 나갈 수 있어요.</p>
+  el.innerHTML=`<div class='box'><h3>구매하시겠습니까?</h3><p>${one?'아직 옷장에 없는 아이템이에요. 구매하면 내 옷장에 들어가고 바로 입어요.':`옷장에 없는 아이템 ${list.length}개를 입고 있어요. 구매해야 입고 나갈 수 있어요.`}</p>
     <ul>${list.map(([it,i])=>`<li><i style="background-image:url(${kThumb(i)})"></i><span><b>${esc(it.b)}</b>${esc(it.n)}</span><em>🪙 ${it.p}</em></li>`).join('')}</ul>
     <div class='sum'>합계 🪙 ${sum} · 보유 🪙 ${coins}${poor?` · <b>${sum-coins}코인 부족</b>`:''}</div>
-    <div class='btns'><button class='buy' ${poor?'disabled':''}>구매하기</button><button class='skip'>사지 않고 벗고 나가기</button><button class='back'>계속 고르기</button></div></div>`;
+    <div class='btns'><button class='buy' ${poor?'disabled':''}>구매하기</button>${one?(list[0][0].fx?`<button class='sim'>⚡ 효과 미리보기</button>`:'')+`<button class='back'>취소</button>`:`<button class='skip'>사지 않고 벗고 나가기</button><button class='back'>계속 고르기</button>`}</div></div>`;
   el.hidden=false; const go=()=>{ el.hidden=true; KPASS=true; $('#enterBtn').click(); KPASS=false; };
-  el.querySelector('.buy').onclick=()=>{ if(coins<sum) return; addCoins(-sum); list.forEach(([it])=>{ if(!owned.includes(kKey(it))) owned.push(kKey(it)); }); saveEco(); try{ chime(79,'sine',.08,.5); }catch(e){} toast(`${list.length}개 구매 완료! 내 옷장에 넣고 바로 입었어요`); go(); };
+  el.querySelector('.buy').onclick=()=>{ if(coins<sum) return; addCoins(-sum); list.forEach(([it])=>{ if(!owned.includes(kKey(it))) owned.push(kKey(it)); }); saveEco(); try{ chime(79,'sine',.08,.5); }catch(e){} toast(one?`${list[0][0].b} ${list[0][0].n} 구매 완료! 내 옷장에 넣고 바로 입었어요`:`${list.length}개 구매 완료! 내 옷장에 넣고 바로 입었어요`); if(one){ el.hidden=true; one(); } else go(); };
+  if(one){ const sm=el.querySelector('.sim'); if(sm) sm.onclick=()=>rareSim(list[0][1]); el.querySelector('.back').onclick=()=>{ el.hidden=true; }; el.onclick=e=>{ if(e.target===el) el.hidden=true; }; return; }
   el.querySelector('.skip').onclick=()=>{ const n=kStrip(KSNAP); refreshOpts(); if(n) toast(`사지 않은 아이템 ${n}개는 벗었어요`); go(); };
   el.querySelector('.back').onclick=()=>{ el.hidden=true; };
   el.onclick=e=>{ if(e.target===el) el.hidden=true; }; }
@@ -5572,7 +5573,7 @@ function kreamPreview(i){ const it=KREAM[i], worn=kreamOn(it), pc=Object.assign(
   kpvOpen({brand:it.b+' · 브랜드샵',name:it.n,cat:it.c,cfg:pc,worn,note:worn?'지금 입고 있어요. 벗으려면 아래 버튼을 눌러요.':'드래그해서 돌려 보고, 마음에 들면 입어요. 로고는 그리지 않아요.',apply:()=>kreamApply(it)}); }
 function typePreview(btn){ const k=btn.dataset.k, v=btn.dataset.v, worn=cfg[k]===v, pc=Object.assign({},cfg,{[k]:v}); pc.kWorn=Object.assign({},cfg.kWorn||{}); delete pc.kWorn[k]; if(k==='top'&&!worn) kTopOver(pc); if(k==='outer') delete pc.kOuter; if(k==='top') delete pc.kTop; if(k==='head') delete pc.kHead;
   kpvOpen({brand:TYPE_CAT[k],name:btn.textContent.trim(),cat:TYPE_CAT[k],cfg:pc,worn,note:worn?'지금 입고 있는 아이템이에요. 색은 아래 색 버튼으로 바꿔요.':'드래그해서 돌려 보고, 마음에 들면 입어요.',keep:worn,apply:()=>{ if(worn) return; cfg[k]=v; if(k==='top') kTopOver(cfg); if(cfg.kWorn){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head'){ delete cfg.kHead; delete cfg.kRh; } if(k==='face'){ delete cfg.kFace; delete cfg.kRf; } if(k==='bottom') delete cfg.kPants; if(k==='top'){ delete cfg.kPrint; delete cfg.kRt; } if(k==='shoes') delete cfg.kRs; if(k==='outer') delete cfg.kRo; refreshOpts(); toast(`${btn.textContent.trim()} 착용!`); }}); }
-const _kPrev=kreamPreview; kreamPreview=function(i){ _kPrev(i); if(KREAM[i]&&KREAM[i].fx&&kreamOn(KREAM[i])) setTimeout(()=>rareSim(i),120); if(document.body.classList.contains('dressing')) setTimeout(()=>kBuyBar(KREAM[i]),0); };
+const _kPrev=kreamPreview; kreamPreview=function(i){ const it0=KREAM[i]; if(it0&&document.body.classList.contains('dressing')&&!kOwned(it0)&&!kreamOn(it0)){ kAsk([[it0,i]],()=>kreamPreview(i)); return; } _kPrev(i); if(KREAM[i]&&KREAM[i].fx&&kreamOn(KREAM[i])) setTimeout(()=>rareSim(i),120); if(document.body.classList.contains('dressing')) setTimeout(()=>kBuyBar(KREAM[i]),0); };
 function kpvEnsure(){ if(KPV.R) return; const box=document.createElement('div'); box.id='kpv'; box.className='card'; box.hidden=true; box.setAttribute('role','dialog'); box.setAttribute('aria-label','아이템 3D 미리보기');
   box.innerHTML=`<div class='kpvhead'><div><small id='kpvBrand'></small><b id='kpvName'></b></div><button id='kpvX' aria-label='닫기'>✕</button></div><canvas id='kpvCv' width='260' height='300'></canvas><p id='kpvNote'></p><div class='kpvacts'><button id='kpvView' class='ghost'>전신 보기</button><button id='kpvWear' class='primary'>입기</button></div>`;
   document.body.appendChild(box); const cv=$('#kpvCv');
