@@ -741,11 +741,11 @@ body.dressing .creator .actions .ghost{font-size:12px;padding:8px 10px;border-ra
   body.dressing #optNav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px;padding:5px 6px;overflow:hidden!important}
   body.dressing #optNav button{font-size:0!important;padding:6px 0!important;min-height:38px!important;border-radius:12px!important;justify-content:center;gap:0}
   body.dressing #optNav button b{font-size:19px!important;line-height:1}
-  body.dressing #opts{overflow-x:hidden!important;overscroll-behavior:contain;touch-action:pan-y;contain:layout paint;scrollbar-gutter:stable;width:100%;max-width:100%}
+  body.dressing #opts{overflow-x:hidden!important;overscroll-behavior:contain;touch-action:pan-y;width:100%;max-width:100%}
   body.dressing #opts .chips{max-width:100%;overflow:hidden}
   body.dressing .creator .chip.kchip{overflow:hidden;min-height:92px}
   body.dressing .creator .chip.kchip,body.dressing .creator .chip.kchip *{white-space:normal!important;overflow-wrap:anywhere;word-break:break-word;text-overflow:clip!important}
-  body.dressing .creator{overflow:hidden;overscroll-behavior:none;touch-action:pan-y}
+  body.dressing .creator{overflow:hidden;overscroll-behavior:none}
   body.dressing #styleView{touch-action:none}
 }
 body.seated #danceMain,body.seated #danceRand{display:none!important}
@@ -5477,7 +5477,7 @@ function optGroupOf(t){ if(OPT_DROP.includes(t)) return -1; const g=OPT_GROUPS.f
 function renderOptNav(){ const secs=[...document.querySelectorAll('#opts .sec')];
   $('#optNav').innerHTML=OPT_GROUPS.map((G,i)=>`<button data-grp='${i}' title='${G[1]}' aria-label='${G[1]}' role='tab' aria-selected='${i===optG}' class='${i===optG?'on':''}'><b>${G[0]==='WARDROBE'?WARDROBE_SVG:G[0]}</b>${G[1]}</button>`).join('');
   secs.forEach(sec=>{ const h=sec.querySelector('h2'), t=h?h.textContent:''; sec.hidden=optGroupOf(t)<0||(optG!==0&&optGroupOf(t)!==optG); }); }
-$('#optNav').addEventListener('click',e=>{ const b=e.target.closest('[data-grp]'); if(!b) return; optG=+b.dataset.grp; renderOptNav(); $('#opts').scrollTop=0; });
+$('#optNav').addEventListener('click',e=>{ const b=e.target.closest('[data-grp]'); if(!b) return; optG=+b.dataset.grp; renderOptNav(); const o=$('#opts'); o.scrollTop=0; o.style.setProperty('display','none','important'); void o.offsetHeight; o.style.removeProperty('display'); setTimeout(kThumbFill,30); }); // force a repaint: some phone browsers kept showing the old (hidden) list
 new MutationObserver(renderOptNav).observe($('#opts'),{childList:true});
 $('#dressBtn').addEventListener('click',()=>{ document.body.classList.add('dressing'); selMap=MAP; $('#creator h1').textContent='스타일 꾸미기'; const p=$('#creator header p'); if(p) p.textContent='고르면 바로 캐릭터에 입혀져요. 화면을 드래그하면 캐릭터를 돌려 볼 수 있어요.'; $('#enterBtn').textContent='적용하고 돌아가기'; const c=$('#creator'); if(c.classList.contains('min')) $('#sheetToggle').click(); $('#opts').scrollTop=0; });
 $('#enterBtn').addEventListener('click',()=>{ document.body.classList.remove('dressing'); });
