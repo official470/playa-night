@@ -5954,7 +5954,8 @@ const STEP_RANK=true, STEP_AUTO=false; // tap the pedometer to open the ranking 
 const STEPS={n:0,acc:0,saveT:0,el:null,open:false,manual:false,shown:-1,board:null,id:''};
 try{ STEPS.n=+(localStorage.getItem('playa-steps')||0)||0; STEPS.id=localStorage.getItem('playa-step-id')||''; }catch(e){}
 if(!STEPS.id){ STEPS.id=String(1000+Math.floor(Math.random()*9000)); try{ localStorage.setItem('playa-step-id',STEPS.id); }catch(e){} }
-function stepName(){ return ((($('#pname')&&$('#pname').value)||'버너').trim()||'버너').slice(0,12)+'#'+STEPS.id; }
+// the board name is fixed per account once it is on the board (SB.name from the saved record), so it doesn't change with the nickname box
+function stepName(){ if(typeof SB!=='undefined'&&SB.name) return SB.name; return ((($('#pname')&&$('#pname').value)||'버너').trim()||'버너').slice(0,12)+'#'+STEPS.id; }
 function stepFmt(n){ return String(Math.floor(n)).padStart(7,'0'); }
 function stepBuild(){ const d=document.createElement('div'); d.id='stepHud'; d.className='card'; d.hidden=true;
   d.innerHTML=`<button id='stepTop' aria-expanded='false' aria-label='만보기, 춤출 때만 올라가요. 눌러서 랭킹 보기'><span id='stepDig' class='dig'></span><span class='sr'>랭킹 ▸</span></button><div id='stepBoard' hidden><div class='sbh'>💃 춤 만보기 랭킹 <small>춤출 때만 올라가요</small></div><ol id='stepList'></ol><button id='stepMe' class='me'>나의 순위 보기</button></div>`;
@@ -5969,21 +5970,30 @@ function stepRender(){ const {L,rank}=stepRank(); const top=L.slice(0,10); if(ra
   $('#stepList').innerHTML=top.map(x=>{ const r=L.indexOf(x)+1; return `<li class='${x.me?'mine':''}'><b>${r<=3?['🥇','🥈','🥉'][r-1]:r}</b><span>${esc(x.name)}</span><em>${x.n.toLocaleString()}</em></li>`; }).join('')+(STEPS.board?'':`<li class='note'>다른 참여자 기록은 랭킹 서버가 연결되면 함께 보여요</li>`); }
 // the board everyone sees: real players' step counts from the shared database (steps/{key}) plus a set of house dancers whose counts
 // come from the clock, so every player sees the same numbers and they keep climbing through the day. Nothing marks who is who.
-const SB={key:'',sent:-1,real:null,t:0,busy:false};
+const SB={key:'',sent:-1,real:null,t:0,busy:false,k:'',name:''};
 const SB_NAMES=['하루','Luna','도파민','sora','테크노곰','Kai','밤비','네온','Mango','초코','레이','yuna','달토끼','Echo','버니','Theo','진저','J','루피','mio'];
-function stepKey(){ if(typeof AUTH!=='undefined'&&AUTH.user) return AUTH.user.uid; if(!SB.key){ try{ SB.key=localStorage.getItem('playa-step-key')||''; }catch(e){} if(!SB.key){ SB.key='g'+STEPS.id+Math.random().toString(36).slice(2,8); try{ localStorage.setItem('playa-step-key',SB.key); }catch(e){} } } return SB.key; }
+function stepKey(){ if(typeof AUTH!=='undefined'&&AUTH.user) return AUTH.user.uid; if(typeof AUTH!=='undefined'&&AUTH.kakao&&AUTH.kakao.id) return 'kakao_'+AUTH.kakao.id; if(!SB.key){ try{ SB.key=localStorage.getItem('playa-step-key')||''; }catch(e){} if(!SB.key){ SB.key='g'+STEPS.id+Math.random().toString(36).slice(2,8); try{ localStorage.setItem('playa-step-key',SB.key); }catch(e){} } } return SB.key; }
 function stepBots(){ const now=Date.now(), day=Math.floor(now/864e5), h=(now%864e5)/36e5, rate=2.2*3600, out=[], rnd=s=>{ const x=Math.sin(s*127.1+311.7)*43758.5453; return x-Math.floor(x); };
   for(let i=0;i<16;i++){ let n=Math.floor(120+Math.pow(rnd(i+7),2.5)*6000)+Math.floor(Math.max(0,day-20765)*rate*(.01+Math.pow(rnd(i+13),2)*.25)); // what they had before today
     n+=Math.floor(clamp(h-rnd(i+day*3.1)*22,0,.1+rnd(i+day*7.7)*1.1)*rate); // today's session: starts at their own hour and ticks up while it lasts
     out.push({name:SB_NAMES[i%SB_NAMES.length]+'#'+(1000+Math.floor(rnd(i+1)*9000)),n}); } return out; }
 async function stepSync(){ if(SB.busy) return; SB.busy=true; SB.t=0;
   try{ if(!window.FB_CONFIG) await rhaLoad('firebase-config.js?v='+Math.floor(Date.now()/36e5)); const base=String(window.FB_CONFIG&&window.FB_CONFIG.databaseURL||'').replace(/\/$/,'');
-    if(base){ const n=Math.floor(STEPS.n), k=stepKey(); if(n>0&&n!==SB.sent){ SB.sent=n; fetch(`${base}/steps/${encodeURIComponent(k)}.json`,{method:'PUT',body:JSON.stringify({n,name:stepName(),t:Date.now()})}).catch(()=>{}); }
+    if(base){ let k=stepKey();
+      // account changed (first sync, login, logout): pick up that account's own record and never go below it
+      if(SB.k!==k){ const first=!SB.k; let loc=0; try{ if(SB.k) localStorage.setItem('playa-steps@'+SB.k,String(Math.floor(STEPS.n))); loc=+(localStorage.getItem('playa-steps@'+k)||0)||0; }catch(e){}
+        let rec=null; try{ const q=await fetch(`${base}/steps/${encodeURIComponent(k)}.json`); rec=q.ok?await q.json():null; }catch(e){}
+        if(k!==stepKey()){ SB.busy=false; return; }
+        SB.k=k; SB.sent=-1; SB.name=rec&&rec.name?String(rec.name).slice(0,18):'';
+        const srv=rec&&typeof rec.n==='number'?Math.floor(rec.n):0;
+        STEPS.n=(first||(!rec&&!loc))?Math.max(STEPS.n,loc,srv):Math.max(loc,srv); // a brand-new account keeps the steps danced so far
+        if(!SB.name) SB.name=stepName(); try{ localStorage.setItem('playa-steps@'+k,String(Math.floor(STEPS.n))); localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); }catch(e){} }
+      const n=Math.floor(STEPS.n); if(n>0&&n!==SB.sent){ SB.sent=n; fetch(`${base}/steps/${encodeURIComponent(k)}.json`,{method:'PUT',body:JSON.stringify({n,name:stepName(),t:Date.now()})}).catch(()=>{}); }
       const r=await fetch(`${base}/steps.json?orderBy=%22n%22&limitToLast=40`), d=r.ok?await r.json():null;
       if(d&&typeof d==='object') SB.real=Object.entries(d).filter(([key,v])=>v&&typeof v.n==='number'&&key!==k).map(([key,v])=>({name:String(v.name||'버너').slice(0,18),n:Math.floor(v.n)})); } }catch(e){}
   SB.busy=false; STEPS.board=stepBots().concat(SB.real||[]); if(STEPS.open) stepRender(); }
 // my count goes up to the board now and then; while the board is open it refreshes every 20 seconds
-updaters.push((t,dt)=>{ if(!inGame) return; SB.t+=dt; if(SB.t>(STEPS.open?20:45)&&(STEPS.open||Math.floor(STEPS.n)!==SB.sent)) stepSync(); });
+updaters.push((t,dt)=>{ if(!inGame) return; SB.t+=dt; if((SB.k&&stepKey()!==SB.k&&SB.t>2)||(SB.t>(STEPS.open?20:45)&&(STEPS.open||Math.floor(STEPS.n)!==SB.sent))) stepSync(); });
 // every 100 steps: the count pops up over your head with a fanfare and confetti (every 1000: fireworks too)
 const SP_FX=[];
 function stepParty(v){ if(!player||!player.root) return; const big=v%1000===0;
@@ -6005,7 +6015,7 @@ updaters.push((t,dt)=>{ if(!STEPS.el) stepBuild(); const show=inGame&&!document.
   const dancing=pAct==='dance'&&!sleepS&&!pState.veh; STEPS.el.classList.toggle('on',dancing);
   // folded away until you dance, then it pops open; it folds again a few seconds after you stop
   STEPS.since=dancing?0:(STEPS.since??99)+dt; STEPS.el.classList.toggle('show',dancing||STEPS.since<3);
-  if(dancing){ STEPS.acc+=dt*(SHK.active?3:2.2); if(STEPS.acc>=1){ const k=Math.floor(STEPS.acc); STEPS.acc-=k; STEPS.n+=k; const h=Math.floor(STEPS.n/100); if(h>Math.floor((STEPS.n-k)/100)) stepParty(h*100); } STEPS.saveT+=dt; if(STEPS.saveT>3){ STEPS.saveT=0; try{ localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); }catch(e){} } }
+  if(dancing){ STEPS.acc+=dt*(SHK.active?3:2.2); if(STEPS.acc>=1){ const k=Math.floor(STEPS.acc); STEPS.acc-=k; STEPS.n+=k; const h=Math.floor(STEPS.n/100); if(h>Math.floor((STEPS.n-k)/100)) stepParty(h*100); } STEPS.saveT+=dt; if(STEPS.saveT>3){ STEPS.saveT=0; try{ localStorage.setItem('playa-steps',String(Math.floor(STEPS.n))); if(SB.k) localStorage.setItem('playa-steps@'+SB.k,String(Math.floor(STEPS.n))); }catch(e){} } }
   // dancing opens the ranking; it folds again a few seconds after you stop (unless you opened it yourself)
   if(!STEP_AUTO){} else if(dancing){ STEPS.idle=0; if(!STEPS.open) stepOpen(true); } else if(STEPS.open&&!STEPS.manual){ STEPS.idle=(STEPS.idle||0)+dt; if(STEPS.idle>4) stepOpen(false); }
   const v=Math.floor(STEPS.n); if(v!==STEPS.shown){ STEPS.shown=v; const s=stepFmt(v); $('#stepDig').innerHTML=[...s].map((c,i)=>`<i class='${i<s.length-String(v).length?'z':''}'>${c}</i>`).join(''); if(STEPS.open&&(v%5===0)) stepRender(); } });
@@ -6049,7 +6059,7 @@ async function authInit(){ if(AUTH.auth) return true; if(AUTH.busy) return false
     ['kakaoJsKey','kakaoRestKey'].forEach(k=>delete C[k]);
     await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'); await rhaLoad('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
     AUTH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); AUTH.auth=AUTH.app.auth(); AUTH.db=AUTH.app.database();
-    AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); }); presListen();
+    AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); }); presListen();
     return true; }catch(e){ console.warn('auth init',e); return false; } finally{ AUTH.busy=false; } }
 function authName(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous&&AUTH.kakao) return AUTH.kakao.name||'카카오 버너'; return u.displayName||(u.email||'').split('@')[0]||'버너'; }
 function authProvider(){ const u=AUTH.user; return !u?'':u.isAnonymous?'kakao':'google'; }
@@ -6065,13 +6075,13 @@ async function kakaoReturn(){ const q=new URLSearchParams(location.search), code
   try{ await authInit(); const K=await kakaoSDK(); const body=new URLSearchParams({grant_type:'authorization_code',client_id:L.kakaoRestKey,redirect_uri:location.origin+location.pathname,code});
     const tk=await (await fetch('https://kauth.kakao.com/oauth/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'},body})).json(); if(!tk.access_token) throw new Error('token');
     K.Auth.setAccessToken(tk.access_token); const me=await K.API.request({url:'/v2/user/me'}); const p=(me.kakao_account&&me.kakao_account.profile)||{};
-    AUTH.kakao={id:String(me.id),name:p.nickname||'카카오 버너',pic:p.thumbnail_image_url||''}; try{ localStorage.setItem('playa-kakao',JSON.stringify(AUTH.kakao)); }catch(e){}
+    AUTH.kakao={id:String(me.id),name:p.nickname||'카카오 버너',pic:p.thumbnail_image_url||''}; try{ localStorage.setItem('playa-kakao',JSON.stringify(AUTH.kakao)); }catch(e){} setTimeout(()=>{ try{ stepSync(); }catch(e){} },400);
     if(!AUTH.user||!AUTH.user.isAnonymous){ const r=await AUTH.auth.signInAnonymously(); AUTH.user=r.user; }
     authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
 async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; favLoad(); presStart(); try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
 function authAfterLogin(){ const n=authName();
   if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
-async function logout(){ presStop(); if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); toast('로그아웃했어요'); }
+async function logout(){ presStop(); if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); toast('로그아웃했어요'); }
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
     box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
