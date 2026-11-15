@@ -5502,7 +5502,7 @@ function kWon(p){ return p>=100?(p/100).toLocaleString('ko-KR',{maximumFractionD
 function kBuyBar(it){ let bt=$('#kBuyBtn'); if(!bt){ bt=document.createElement('button'); bt.id='kBuyBtn'; bt.type='button'; bt.hidden=true; $('#enterBtn').before(bt);
     bt.addEventListener('click',()=>{ const it=KREAM[+bt.dataset.i]; if(!it||kOwned(it)) return; if(coins<it.p){ toast(`코인이 ${it.p-coins}개 모자라요 (보유 ${coins}). 춤추거나 코인을 주워 보세요`); return; }
       addCoins(-it.p); owned.push(kKey(it)); saveEco(); chime(79,'sine',.08,.5); toast(`${it.b} ${it.n} 구매 완료! 이제 계속 입을 수 있어요`); kBuyBar(it); refreshOpts(); }); }
-  if(!it||kOwned(it)||!kreamOn(it)){ bt.hidden=true; return; } bt.dataset.i=KREAM.indexOf(it); bt.innerHTML=`🪙 ${it.p} 사기<small>${esc(it.n)}</small>`; bt.classList.toggle('poor',coins<it.p); bt.hidden=false; }
+  if(!it||kOwned(it)||!kreamOn(it)){ bt.hidden=true; return; } bt.dataset.i=KREAM.indexOf(it); bt.innerHTML=`구매하기<small>${esc(it.n)}</small>`; bt.classList.toggle('poor',coins<it.p); bt.hidden=false; }
 // product shot: only the piece itself (no body), turning slowly, on its own small renderer
 const KPC={R:null,scene:null,cam:null,P:null,raf:0,i:-1};
 function kProduct(i){ const it=KREAM[i], D='#010203', pc=JSON.parse(JSON.stringify(cfg)); Object.keys(pc).forEach(k=>{ if(k[0]==='k') delete pc[k]; });
@@ -5561,7 +5561,7 @@ function kAsk(list){ let el=$('#kAsk'); if(!el){ el=document.createElement('div'
   el.innerHTML=`<div class='box'><h3>구매하시겠습니까?</h3><p>옷장에 없는 아이템 ${list.length}개를 입고 있어요. 구매해야 입고 나갈 수 있어요.</p>
     <ul>${list.map(([it,i])=>`<li><i style="background-image:url(${kThumb(i)})"></i><span><b>${esc(it.b)}</b>${esc(it.n)}</span><em>🪙 ${it.p}</em></li>`).join('')}</ul>
     <div class='sum'>합계 🪙 ${sum} · 보유 🪙 ${coins}${poor?` · <b>${sum-coins}코인 부족</b>`:''}</div>
-    <div class='btns'><button class='buy' ${poor?'disabled':''}>🪙 ${sum} 구매하고 입기</button><button class='skip'>사지 않고 벗고 나가기</button><button class='back'>계속 고르기</button></div></div>`;
+    <div class='btns'><button class='buy' ${poor?'disabled':''}>구매하기</button><button class='skip'>사지 않고 벗고 나가기</button><button class='back'>계속 고르기</button></div></div>`;
   el.hidden=false; const go=()=>{ el.hidden=true; KPASS=true; $('#enterBtn').click(); KPASS=false; };
   el.querySelector('.buy').onclick=()=>{ if(coins<sum) return; addCoins(-sum); list.forEach(([it])=>{ if(!owned.includes(kKey(it))) owned.push(kKey(it)); }); saveEco(); try{ chime(79,'sine',.08,.5); }catch(e){} toast(`${list.length}개 구매 완료! 내 옷장에 넣고 바로 입었어요`); go(); };
   el.querySelector('.skip').onclick=()=>{ const n=kStrip(KSNAP); refreshOpts(); if(n) toast(`사지 않은 아이템 ${n}개는 벗었어요`); go(); };
