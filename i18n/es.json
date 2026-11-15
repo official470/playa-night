@@ -2073,7 +2073,8 @@
 "⚡ 효과 미리보기": "⚡ Vista previa del efecto",
 "사지 않고 벗고 나가기": "Salir sin comprar",
 "계속 고르기": "Seguir eligiendo",
-"아직 옷장에 없는 아이템이에요. 구매하면 내 옷장에 들어가고 바로 입어요.": "Este artículo aún no está en tu armario. Si lo compras, entra en tu armario y te lo pones al instante."
+"아직 옷장에 없는 아이템이에요. 구매하면 내 옷장에 들어가고 바로 입어요.": "Este artículo aún no está en tu armario. Si lo compras, entra en tu armario y te lo pones al instante.",
+"커스텀": "Personalizar"
 },
 "patterns": {
 ". 코인 +{0}": ". +{0} monedas",

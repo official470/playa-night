@@ -2073,7 +2073,8 @@
 "⚡ 효과 미리보기": "⚡ Preview effect",
 "사지 않고 벗고 나가기": "Leave without buying",
 "계속 고르기": "Keep picking",
-"아직 옷장에 없는 아이템이에요. 구매하면 내 옷장에 들어가고 바로 입어요.": "This item isn't in your closet yet. Buy it to add it to your closet and put it on right away."
+"아직 옷장에 없는 아이템이에요. 구매하면 내 옷장에 들어가고 바로 입어요.": "This item isn't in your closet yet. Buy it to add it to your closet and put it on right away.",
+"커스텀": "Custom"
 },
 "patterns": {
 ". 코인 +{0}": ". Coins +{0}",
