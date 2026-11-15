@@ -762,6 +762,7 @@ body.seated #danceMain,body.seated #danceRand{display:none!important}
 #stageBonus[hidden]{display:none}
 #shakeBtn{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(168px + var(--sab));z-index:6;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:14px;color:#1a0f08;background:linear-gradient(90deg,#ffcf3a,#ff4fd8);box-shadow:0 6px 20px rgba(255,79,216,.45)}
 #shakeBtn[hidden]{display:none}
+#shakeBtn .shx{display:inline-flex;align-items:center;justify-content:center;margin-left:10px;width:22px;height:22px;border-radius:999px;background:rgba(0,0,0,.25);font-size:12px;vertical-align:middle}
 #stageBonus i{display:block;width:70px;height:6px;border-radius:3px;background:var(--chip);overflow:hidden}
 #stageBonus i b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffcf3a,#ff4fd8);border-radius:3px}
 #sp.bigmap{left:50%!important;top:50%!important;bottom:auto!important;right:auto!important;transform:translate(-50%,-50%)!important;width:min(940px,96vw)!important;max-height:94vh!important;max-height:94dvh!important;z-index:40;box-shadow:0 0 0 100vmax rgba(0,0,0,.5),0 20px 60px rgba(0,0,0,.5)}
@@ -5907,11 +5908,11 @@ function shkOn(e){ let a=e.acceleration, x,y,z;
       SHK.steady=SHK.iv.length>=3&&SHK.iv.slice(-4).every(v=>Math.abs(v-SHK.ivl)<SHK.ivl*.28); } else { SHK.iv=[]; SHK.steady=false; }
     SHK.last=t; SHK.n++; shkBuzz(); }
   SHK.prev=m; }
-async function shkArm(){ try{ if(typeof DeviceMotionEvent!=='undefined'&&typeof DeviceMotionEvent.requestPermission==='function'){ const r=await DeviceMotionEvent.requestPermission(); if(r!=='granted'){ toast('움직임 센서를 허용해야 흔들어 춤출 수 있어요'); return; } }
-    if(!SHK.armed){ addEventListener('devicemotion',shkOn); SHK.armed=true; } toast('📳 이제 폰을 음악 박자에 맞춰 흔들어 보세요! 꾸준히 흔들면 코인 3배'); }catch(e){ toast('이 기기에서는 움직임 센서를 쓸 수 없어요'); } }
+async function shkArm(){ try{ if(typeof DeviceMotionEvent!=='undefined'&&typeof DeviceMotionEvent.requestPermission==='function'){ const r=await DeviceMotionEvent.requestPermission(); if(r!=='granted'){ SHK.off=true; toast('움직임 센서를 허용해야 흔들어 춤출 수 있어요'); return; } }
+    if(!SHK.armed){ addEventListener('devicemotion',shkOn); SHK.armed=true; } toast('📳 이제 폰을 음악 박자에 맞춰 흔들어 보세요! 꾸준히 흔들면 코인 3배'); }catch(e){ SHK.off=true; toast('이 기기에서는 움직임 센서를 쓸 수 없어요'); } }
 updaters.push(()=>{ const t=shkNow(); SHK.active=SHK.armed&&t-SHK.last<Math.max(1.1,SHK.ivl*2.2); if(!SHK.active) SHK.steady=false;
-  let b=document.getElementById('shakeBtn'); const want=isTouch&&inGame&&STG.on&&!SHK.armed;
-  if(want&&!b){ b=document.createElement('button'); b.id='shakeBtn'; b.type='button'; b.textContent='📳 폰 흔들어 춤추기 · 코인 3배'; b.addEventListener('click',e=>{ e.stopPropagation(); shkBuzz(); shkArm(); }); document.body.appendChild(b); }
+  let b=document.getElementById('shakeBtn'); const want=isTouch&&inGame&&STG.on&&!SHK.armed&&!SHK.off; // declined (or ✕) = the button goes away
+  if(want&&!b){ b=document.createElement('button'); b.id='shakeBtn'; b.type='button'; b.innerHTML='📳 폰 흔들어 춤추기 · 코인 3배<span class="shx" role="button" aria-label="닫기">✕</span>'; b.addEventListener('click',e=>{ e.stopPropagation(); if(e.target.closest('.shx')){ SHK.off=true; b.hidden=true; return; } shkBuzz(); shkArm(); }); document.body.appendChild(b); }
   if(b) b.hidden=!want; });
 
 // vibration on every shake beat (stronger double pulse once the rhythm is steady); iPhone has no vibrate API, so tap a hidden iOS 18 switch for a haptic tick
