@@ -6823,7 +6823,16 @@ function buildHut(){ const IG=new THREE.Group(); IG.position.set(NX,0,0); scene.
   SNPC.forEach(S2=>{ if(S2.P.root.position.x<-1500&&!ALLP.includes(S2.P)){ ALLP.push(S2.P); if(S2.talk) TALKP.push(S2.P); } });
   // air house stage DJs: play live with headphones and a booth
   const tops={jandi:.8,hanok:.9,soop:.5,exp:0}; SNPC.forEach(S2=>{ if(S2.mode!=='dj') return; const zo=NM.zones.find(z=>z.Z===S2.zone); if(!zo) return; S2.mode='djlive'; const y=tops[zo.id]; if(y!==undefined) S2.P.root.position.y=y; const p=S2.P.root.position;
-    if(zo.id==='exp') B(3,.4,2.4,M('#1a1a22'),p.x,.2,p.z,scene); if(zo.id==='exp') S2.P.root.position.y=.4; djHeadset(S2.P,(zo.id==='soop'||zo.id==='exp')?scene:null,p.x,S2.P.root.position.y,p.z-.9); });
+    if(zo.id==='exp') B(3,.4,2.4,M('#1a1a22'),p.x,.2,p.z,scene); if(zo.id==='exp') S2.P.root.position.y=.4; djHeadset(S2.P,(zo.id==='soop'||zo.id==='exp')?scene:null,p.x,S2.P.root.position.y,p.z-.9); if(zo.id==='hanok') hanokDJ(p.x,S2.P.root.position.y,p.z-.95); });
+  // HANOK stage DJ booth: a dark wood table with red lacquer trim and dancheong bands, two decks with turning jog wheels, a mixer, a laptop on a stand and two paper lanterns
+  function hanokDJ(x,y,z){ const g=new THREE.Group(); g.position.set(x,y,z); scene.add(g); const wood=M('#3a2418'), red=M('#a8281e'), grn=M('#2a6a5a'), gold=M('#e8b05a',{glow:.6}), dark=M('#141418'), metal=M('#9a9aa4');
+    B(2.3,.95,.85,wood,0,.475,0,g); B(2.36,.08,.9,red,0,.99,0,g); B(2.3,.1,.02,grn,0,.75,-.43,g); B(2.3,.05,.02,gold,0,.66,-.43,g); [-1.08,1.08].forEach(sx=>B(.12,.95,.88,red,sx,.475,0,g));
+    const jogs=[]; [-.62,.62].forEach(sx=>{ B(.6,.07,.6,dark,sx,1.065,.02,g); const jw=new THREE.Group(); jw.position.set(sx,1.11,.04); g.add(jw); mesh(G.cyl,M('#2c2c34'),0,0,0,.21,.025,.21,jw); mesh(G.cyl,M('#e8b05a',{glow:1.3}),0,.016,0,.07,.01,.07,jw); B(.025,.01,.18,metal,0,.017,0,jw); jogs.push(jw);
+      B(.32,.015,.1,M('#46d6ff',{glow:1.4}),sx,1.105,-.22,g); B(.06,.015,.06,M('#3dff6a',{glow:1.5}),sx-.2,1.105,.26,g); B(.06,.015,.06,M('#ffb030',{glow:1.5}),sx-.1,1.105,.26,g); });
+    B(.42,.08,.56,dark,0,1.07,.02,g); for(let c=0;c<3;c++){ for(let r=0;r<3;r++) mesh(G.cyl,metal,-.12+c*.12,1.13,-.16+r*.12,.02,.035,.02,g); B(.025,.015,.12,M('#3dff6a',{glow:1.5}),-.12+c*.12,1.115,.2,g); }
+    B(.05,.28,.05,metal,0,1.17,-.32,g); B(.46,.025,.32,M('#c0c4cc'),0,1.32,-.32,g); const lid=new THREE.Group(); lid.position.set(0,1.33,-.48); lid.rotation.x=.3; g.add(lid); B(.46,.3,.02,M('#c0c4cc'),0,.15,0,lid); B(.4,.24,.005,M('#ff7a2a',{glow:1.2}),0,.15,.012,lid);
+    [-1.25,1.25].forEach(sx=>{ B(.05,1.5,.05,wood,sx,.75,.3,g); mesh(G.cyl,M('#ffd9a0',{glow:1.8}),sx,1.62,.3,.16,.32,.16,g); B(.36,.04,.36,red,sx,1.8,.3,g); B(.36,.04,.36,red,sx,1.44,.3,g); });
+    updaters.push((t)=>{ if(MAP!=='nami') return; jogs.forEach((j,k)=>{ j.rotation.y=t*(k?2.1:-2.1); }); }); }
   INTER.push({pos:()=>MAP==='nami'&&inGame&&NM.admit?{x:NX+cx,z:cz-R+.8}:FARV,r:3,prio:2,label:'오두막에서 명상하기',act:()=>{ pState.emote={kind:'meditate',t:30,regen:2.5,bell:0}; toast('향 냄새를 맡으며 명상해요. 체력이 차오르고 취기가 살짝 올라요'); }});
   updaters.push(hutTick); }
 function hutTick(t,dt){ if(MAP!=='nami') return; const dx=pState.x-(NX+HUT.cx), dz=pState.z-HUT.cz, d=Math.hypot(dx,dz);
