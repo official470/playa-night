@@ -672,6 +672,7 @@ body.dressing #styleView{display:flex;grid-area:view;flex-direction:column;align
 #kAsk{position:fixed;inset:0;z-index:61;display:flex;align-items:center;justify-content:center;background:rgba(6,4,12,.6);backdrop-filter:blur(3px);padding:16px}
 #kAsk[hidden]{display:none!important}
 #kRoomX{display:none}
+.wdrb{width:1.2em;height:1.2em;display:block;margin:0 auto}
 body.dressing #kRoomX{display:flex;align-items:center;justify-content:center;position:absolute;top:10px;right:10px;z-index:5;width:36px;height:36px;border:0;border-radius:999px;background:var(--chip,#333);color:var(--text,#fff);font-size:17px;font-weight:800;cursor:pointer}
 body.dressing #langSel{margin-right:44px}
 #kAsk .box{width:min(380px,100%);max-height:86vh;display:flex;flex-direction:column;border-radius:20px;background:var(--panel,#1c1420);color:var(--text,#fff);border:1px solid var(--panel-line,rgba(255,255,255,.15));box-shadow:0 20px 60px rgba(0,0,0,.6);padding:16px}
@@ -5467,12 +5468,14 @@ updaters.push((t,dt)=>{ if(!RND.on) return; if(!danceOn||!inGame||sleepS||pState
 /* ================= STYLE EDITOR + MENU EXTRAS ================= */
 const NAVN={'스타일 프리셋':'프리셋','브랜드샵':'브랜드샵','내 옷장':'옷장','시그니처 춤':'춤','피부 톤':'피부','머리 장식':'모자','특별 아이템':'특별'};
 // style room: a few big tabs instead of one long scroll of 12 sections
-const OPT_GROUPS=[['✨','추천 룩',['스타일 프리셋','브랜드샵']],['👕','옷',['상의','아우터','하의','신발']],['💇','헤어·얼굴',['헤어','피부 톤','얼굴','머리 장식']],['⭐','특별',['특별 아이템','시그니처 춤']],['🧺','내 옷장',['내 옷장']]];
+const OPT_GROUPS=[['✨','전체보기',['스타일 프리셋','브랜드샵']],['👕','옷',['상의','아우터','하의','신발']],['💇','헤어·얼굴',['헤어','피부 톤','얼굴','머리 장식']],['⭐','특별',['특별 아이템','시그니처 춤']],['WARDROBE','내 옷장',['내 옷장']]];
+// there is no wardrobe emoji, so the closet tab draws one: two doors, knobs and little legs
+const WARDROBE_SVG=`<svg class='wdrb' viewBox='0 0 24 24' width='1em' height='1em' aria-hidden='true'><rect x='4' y='2.5' width='16' height='17' rx='1.6' fill='#b8835a' stroke='#5a3a22' stroke-width='1.2'/><line x1='12' y1='3' x2='12' y2='19' stroke='#5a3a22' stroke-width='1.1'/><rect x='5.6' y='4.2' width='5.2' height='13.6' rx='.6' fill='#d7a577'/><rect x='13.2' y='4.2' width='5.2' height='13.6' rx='.6' fill='#d7a577'/><circle cx='10.2' cy='11' r='.9' fill='#ffd76a'/><circle cx='13.8' cy='11' r='.9' fill='#ffd76a'/><rect x='5.5' y='19.4' width='2' height='2.4' rx='.4' fill='#5a3a22'/><rect x='16.5' y='19.4' width='2' height='2.4' rx='.4' fill='#5a3a22'/></svg>`;
 let optG=0;
 function optGroupOf(t){ const g=OPT_GROUPS.findIndex(G=>G[2].includes(t)); return g<0?3:g; }
 function renderOptNav(){ const secs=[...document.querySelectorAll('#opts .sec')];
-  $('#optNav').innerHTML=OPT_GROUPS.map((G,i)=>`<button data-grp='${i}' title='${G[1]}' aria-label='${G[1]}' role='tab' aria-selected='${i===optG}' class='${i===optG?'on':''}'><b>${G[0]}</b>${G[1]}</button>`).join('');
-  secs.forEach(sec=>{ const h=sec.querySelector('h2'), t=h?h.textContent:''; sec.hidden=optGroupOf(t)!==optG; }); }
+  $('#optNav').innerHTML=OPT_GROUPS.map((G,i)=>`<button data-grp='${i}' title='${G[1]}' aria-label='${G[1]}' role='tab' aria-selected='${i===optG}' class='${i===optG?'on':''}'><b>${G[0]==='WARDROBE'?WARDROBE_SVG:G[0]}</b>${G[1]}</button>`).join('');
+  secs.forEach(sec=>{ const h=sec.querySelector('h2'), t=h?h.textContent:''; sec.hidden=optG!==0&&optGroupOf(t)!==optG; }); }
 $('#optNav').addEventListener('click',e=>{ const b=e.target.closest('[data-grp]'); if(!b) return; optG=+b.dataset.grp; renderOptNav(); $('#opts').scrollTop=0; });
 new MutationObserver(renderOptNav).observe($('#opts'),{childList:true});
 $('#dressBtn').addEventListener('click',()=>{ document.body.classList.add('dressing'); selMap=MAP; $('#creator h1').textContent='스타일 꾸미기'; const p=$('#creator header p'); if(p) p.textContent='고르면 바로 캐릭터에 입혀져요. 화면을 드래그하면 캐릭터를 돌려 볼 수 있어요.'; $('#enterBtn').textContent='적용하고 돌아가기'; const c=$('#creator'); if(c.classList.contains('min')) $('#sheetToggle').click(); $('#opts').scrollTop=0; });
