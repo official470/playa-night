@@ -5919,7 +5919,9 @@ updaters.push(()=>{ const t=shkNow(); SHK.active=SHK.armed&&t-SHK.last<Math.max(
 let HAPL=null;
 function shkPulse(){ let el=document.getElementById('shkPulse'); if(!el){ el=document.createElement('div'); el.id='shkPulse'; el.setAttribute('aria-hidden','true'); document.body.appendChild(el); }
   el.classList.remove('go'); void el.offsetWidth; el.classList.toggle('st',!!SHK.steady); el.classList.add('go'); }
-function shkBuzz(){ shkPulse(); try{ if(navigator.vibrate){ navigator.vibrate(SHK.steady?[45,35,60]:35); return; }
+// inside the REAL HOUSE iOS app the phone really vibrates (Safari on iPhone cannot)
+function rhHaptic(kind){ try{ const h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.haptic; if(h){ h.postMessage(kind||'medium'); return true; } }catch(e){} return false; }
+function shkBuzz(){ shkPulse(); if(rhHaptic(SHK.steady?'double':'medium')) return; try{ if(navigator.vibrate){ navigator.vibrate(SHK.steady?[45,35,60]:35); return; }
   if(!HAPL){ const l=document.createElement('label'), i=document.createElement('input'); i.type='checkbox'; i.setAttribute('switch',''); l.appendChild(i); l.setAttribute('aria-hidden','true'); l.style.cssText='position:fixed;left:-200px;top:0;opacity:0;pointer-events:none'; document.body.appendChild(l); HAPL=l; }
   HAPL.click(); if(SHK.steady) setTimeout(()=>{ try{ HAPL.click(); }catch(e){} },70); }catch(e){} }
 
@@ -6353,7 +6355,7 @@ updaters.push((t,dt)=>{ if(!STG.el){ const d=document.createElement('div'); d.id
 
 /* ================= COIN FANFARE BURST ================= */
 const CB={parts:[],sprites:[]};
-function coinBurst(n){ if(!player) return; const hx=pState.x, hy=pState.y+2.3, hz=pState.z;
+function coinBurst(n){ rhHaptic('success'); if(!player) return; const hx=pState.x, hy=pState.y+2.3, hz=pState.z;
   if(!CB.cg){ CB.cg=new THREE.CylinderGeometry(.16,.16,.035,14); CB.cm=new THREE.MeshBasicMaterial({color:0xffcf3a}); CB.cf=new THREE.PlaneGeometry(.13,.07); CB.cfm=['#ff4fd8','#46d6ff','#c6ff3d','#ff7a2a','#9b6bff','#f4efe6'].map(c=>new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide})); }
   const N=LOW?26:40; for(let i=0;i<N;i++){ const coin=i<16, m=new THREE.Mesh(coin?CB.cg:CB.cf,coin?CB.cm:pick(CB.cfm)), a=Math.random()*Math.PI*2, sp=coin?rand(1.4,3.2):rand(2,4.5); m.position.set(hx,hy,hz); m.rotation.set(rand(0,6),rand(0,6),rand(0,6)); scene.add(m);
     CB.parts.push({m,coin,v:new THREE.Vector3(Math.cos(a)*sp,coin?rand(4,6.5):rand(4.5,7.5),Math.sin(a)*sp),w:new THREE.Vector3(rand(-9,9),rand(-9,9),rand(-9,9)),life:coin?1.6:2.2}); }
