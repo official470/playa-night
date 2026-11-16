@@ -2331,7 +2331,7 @@ function loop(){
       const op=Math.max(pitch,.04), up=Math.max(0,-pitch), dist=(camDist+vehCam())*(1-up*.4), cp=Math.cos(op);
       camera.position.set(tx+Math.sin(yaw)*dist*cp, Math.max(pState.y+.35, ty+Math.sin(op)*dist+.4-up*1.4), tz+Math.cos(yaw)*dist*cp);
       if(MAP==='sphere'&&SPH.inside){ const fy=sphCamFloor(camera.position.x,camera.position.z); if(camera.position.y<fy) camera.position.y=fy; }
-      if(MAP==='itaewon'&&(RING.in||RING.al)) ringCam();
+      if(MAP==='itaewon'&&(RING.in||RING.al)) ringCam(); else if(MAP==='itaewon'&&CST.on) cstCam();
       camera.lookAt(tx, ty+Math.tan(Math.min(up,1.3))*dist*cp, tz); }
       if(tipsy>0) camera.rotateZ(Math.sin(t*.9)*.035*Math.min(tipsy,6));
       listT-=dt; if(listT<=0){ listT=.6; renderBoothList(); const nb=nearest(); if(nb.b!==npBooth) npBooth=nb.b; }
@@ -3650,18 +3650,19 @@ const PAPER_TR=[
  {name:'서울 야경 딥하우스',bpm:120,root:33,kick:K4,hat:OFF,clap:CL,shk:1,bass:'0.....0...3...5.',bt:'sub',prog:[[0,'min9'],[0,'min9'],[-4,'maj7'],[-2,'dom7']],chord:'x...............',ct:'pad'}];
 const IT_TR={3:SHELTER_TR,4:PAPER_TR}, IT_TI={3:0,4:0};
 function inBldg(x,z){ const lx=x-OX; return lx>8.2&&lx<21.8&&z>-8.8&&z<8.8; }
-function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTread(x,z); if(MAP==='itaewon'&&IT.floor>0&&inBldg(x,z)) return IT.floorY[IT.floor]; if(MAP==='itaewon'&&RING.st&&ringOnStairs(x,z)) return ringStairY(x-OX); return floorAtBase(x,z); }
+function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTread(x,z); if(MAP==='itaewon'&&CST.on) return cstY(x-OX); if(MAP==='itaewon'&&IT.floor>0&&inBldg(x,z)) return IT.floorY[IT.floor]; if(MAP==='itaewon'&&RING.st&&ringOnStairs(x,z)) return ringStairY(x-OX); return floorAtBase(x,z); }
 function clampMap(){ if(BM.mode){ bmClamp(); return; } if(pState.z>1500){ clampSphere(); return; } if(pState.x<-1500){ clampNami(); return; } if(pState.x<1500){ const dr=Math.hypot(pState.x,pState.z); if(dr>300){ pState.x*=300/dr; pState.z*=300/dr; } return; }
   let lx=pState.x-OX, z=pState.z;
   if(TEL.in){ lx=clamp(lx,TEL.X-9.8,TEL.X+7.8); z=clamp(z,-7.8,7.8); if(lx>TEL.X+1.6&&z>5.6) z=5.6; }
   else if(RING.in){ lx=clamp(lx,RING.X-10.5,RING.X+7.9); z=clamp(z,-5,5); if(lx>RING.X-9.9&&lx<RING.X+7.3&&z<-3.1) z=-3.1; }
-  else if(IT.floor>0){ lx=clamp(lx,8.7,21.3); z=clamp(z,-8.3,8.3); }
+  else if(CST.on){ if(lx<7.5||lx>14.5||z>-5||z<-9.5) CST.on=false; else { [lx,z]=cstClamp(lx,z); if(CST.on) IT.floor=cstFloor(lx); } }
+  else if(IT.floor>0){ lx=clamp(lx,8.7,21.3); z=clamp(z,-8.3,8.3); const r=cstFromRoom(lx,z,IT.floor); if(r){ [lx,z]=r; if(CST.on) IT.floor=cstFloor(lx); } }
   else { const band=z>-18.9&&z<-13.8, alley=RING.al&&lx>6.6;
     if(alley){ // the Ring alley: ground on the open side, the stairs along the building wall (you get on at the bottom, past the bouncer)
       z=clamp(z,-18.85,-13.85); lx=Math.min(lx,18.6);
       if(RING.st){ if(lx<8.4||(lx<9.6&&z>-17.55)) RING.st=false; /* walked off the bottom, forwards or sideways */ else z=Math.min(z,-17.6); if(lx>18.15) ringGo(true); }
       else if(z<-17.5){ if(lx>8.3&&lx<12.4&&RING.admitted) RING.st=true; /* you can step on anywhere along the first few steps, not only at the very foot */ else if(lx>8.3){ z=-17.5; if(!RING.admitted&&lx<12.4&&clk.elapsedTime-RING.nagT>5){ RING.nagT=clk.elapsedTime; toast('계단은 경호원에게 신분증을 보여 준 뒤에 올라갈 수 있어요'); } } } }
-    else if(lx>8.1&&z>-9){ lx=Math.min(lx,21.3); z=clamp(z,-8.3,8.3); } else if(Math.abs(z)<1.5) lx=clamp(lx,-6.6,21.3); else if(z>20.9&&z<27.1) lx=clamp(lx,-28.2,6.6); else if(band) lx=clamp(lx,-6.6,18.6); else lx=clamp(lx,-6.6,6.6);
+    else if(lx>8.1&&z>-9){ lx=Math.min(lx,21.3); z=clamp(z,-8.3,8.3); if(lx>8.45){ const r=cstFromRoom(lx,z,0); if(r) [lx,z]=r; } } else if(Math.abs(z)<1.5) lx=clamp(lx,-6.6,21.3); else if(z>20.9&&z<27.1) lx=clamp(lx,-28.2,6.6); else if(band) lx=clamp(lx,-6.6,18.6); else lx=clamp(lx,-6.6,6.6);
     if(lx<-6.6) z=clamp(z,20.9,27.1); else if(!alley) z=clamp(z,-72,72);
     RING.al=lx>6.6&&z<-9; }
   pState.x=OX+lx; pState.z=z; }
@@ -3672,17 +3673,17 @@ function winTex(){ const c=document.createElement('canvas'); c.width=c.height=12
   for(let i=0;i<4;i++) for(let j=0;j<4;j++){ x.fillStyle=Math.random()<.55?pick(['#ffe2a8','#fff3d0','#cfe8ff','#ffd0a0']):'#16161e'; x.fillRect(8+i*30,10+j*30,20,16); }
   const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; return t; }
 function goMapBase(m){ if(pState.veh){ if(pState.veh.alt>.4){ toast('비행 중에는 맵을 바꿀 수 없어요'); return; } exitVehicle(); } if(pState.ride) endRide(); if(pState.art) exitArt(); if(pState.use) clearUse(); closeSp();
-  IT.floor=0; pState.y=0; pState.vy=0;
+  IT.floor=0; CST.on=false; pState.y=0; pState.vy=0;
   if(m==='itaewon'){ pState.x=OX-1.5; pState.z=-58; pState.face=0; if(!night){ night=true; applyTime(); } toast('이태원에 도착했어요. 길 왼쪽, 경호원이 서 있는 건물이 클럽이에요'); }
   else { pState.x=0; pState.z=136; pState.face=Math.PI; toast('사막점으로 돌아왔어요'); }
   yaw=pState.face+Math.PI; pitch=.32; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z); }
 function goFloor(f){ closeSp(); const fd=$('#fade'); fd.style.opacity='1'; sfx(tt=>{ tone(master,tt,'sine',880,.08,.5); tone(master,tt+.18,'sine',660,.08,.6); });
-  setTimeout(()=>{ if(f<0){ IT.floor=0; pState.x=OX+5.4; pState.z=0; pState.face=-Math.PI/2; camDist=LOW?8.5:7.5; pitch=.32; }
+  setTimeout(()=>{ CST.on=false; if(f<0){ IT.floor=0; pState.x=OX+5.4; pState.z=0; pState.face=-Math.PI/2; camDist=LOW?8.5:7.5; pitch=.32; }
     else { IT.floor=f; pState.x=OX+(f===4?17.6:18.4); pState.z=f===4?4.2:6.2; pState.face=f===4?-Math.PI/2:-Math.PI/2-.4; if(f>0){ camDist=f===4?6:6.5; pitch=f===4?.15:.62; } else { camDist=LOW?8.5:7.5; pitch=.45; } }
     pState.y=IT.floorY[Math.max(0,f)]; pState.vy=0; yaw=pState.face+Math.PI; fd.style.opacity='0';
-    toast(f===3?'4F 쉘터. 묵직한 딥테크노가 어둠을 채워요':f===4?'5F 페이퍼 루프탑. 하우스 음악과 서울 야경. 위로 드래그하거나 Q를 누르면 열리는 천장을 올려다봐요':f===0?'1층 로비예요':'건물 밖으로 나왔어요'); },450); }
-function openElevator(){ const cur=IT.floor, bt=(a,l,f)=>`<button data-act='${a}' ${cur===f?'disabled':''}>${l}</button>`;
-  openSp('엘리베이터','층을 골라 주세요',`<div class='acts' style='grid-template-columns:1fr 1fr'>${bt('f4','5F 페이퍼 (하우스 루프탑)',4)}${bt('f3','4F 쉘터 (딥테크노)',3)}${bt('f0','1F 로비',0)}<button data-act='out'>건물 밖으로</button></div>`,a=>{ if(a==='out') goFloor(-1); else goFloor(+a.slice(1)); }); }
+    toast(f===3?'4F 쉘터. 묵직한 딥테크노가 어둠을 채워요. 내려갈 때는 초록 EXIT 계단으로 걸어가요':f===4?'5F 페이퍼 루프탑. 하우스 음악과 서울 야경. 내려갈 때는 초록 EXIT 계단으로 걸어가요':f===0?'1층 로비예요':'건물 밖으로 나왔어요'); },450); }
+function openElevator(){ if(IT.floor===4){ toast('내려갈 때는 초록 EXIT 표시가 있는 계단으로 걸어 내려가요'); return; } const cur=IT.floor, bt=(a,l,f)=>`<button data-act='${a}' ${cur===f?'disabled':''}>${l}</button>`;
+  openSp('엘리베이터',cur===3?'올라가는 엘리베이터예요. 내려갈 때는 계단으로 걸어가요':'층을 골라 주세요',`<div class='acts' style='grid-template-columns:1fr 1fr'>${bt('f4','5F 페이퍼 (하우스 루프탑)',4)}${cur===3?'':bt('f3','4F 쉘터 (딥테크노)',3)}${cur===3?'':`<button data-act='out'>건물 밖으로</button>`}</div>`,a=>{ if(a==='out') goFloor(-1); else goFloor(+a.slice(1)); }); }
 function clubEntry(){ const B_=IT.bouncer;
   if(IT.stamped){ say(B_,'도장 확인했습니다. 즐거운 시간 되세요'); toast('손등 도장 확인! 안으로 들어가 엘리베이터를 타요'); return; }
   say(B_,'신분증 보여 주세요');
@@ -3900,9 +3901,9 @@ function telTick(t,dt){ if(TEL.in&&!telInside()) telLeave();
 function setClubTrack(f,i){ const Z=f===3?IT.zS:IT.zP, list=IT_TR[f]; IT_TI[f]=(i+list.length)%list.length; Z.tracks[0]=list[IT_TI[f]]; Z.running=false; if(Z.delay) Z.delay.delayTime.value=60/Z.tracks[0].bpm*.75; }
 $('#cnNext').addEventListener('click',()=>{ if(IT.floor===3||IT.floor===4){ setClubTrack(IT.floor,IT_TI[IT.floor]+1); toast(`다음 곡: ${IT_TR[IT.floor][IT_TI[IT.floor]].name}`); } });
 function itTick(t,dt){ const was=MAP; MAP=pState.z>1500?'sphere':(pState.x>1500?'itaewon':(pState.x<-1500?'nami':'playa')); document.body.classList.toggle('itaewon',MAP==='itaewon');
-  if(was!==MAP){ if(MAP==='playa'){ IT.floor=0; applyCut(-1); applyTime(); } renderBoothList(); }
+  if(was!==MAP){ CST.on=false; if(MAP==='playa'){ IT.floor=0; applyCut(-1); applyTime(); } renderBoothList(); }
   if(dust) dust.visible=MAP!=='itaewon';
-  for(const Z of [IT.zS,IT.zP]){ let v=0; if(MAP==='itaewon'&&hearOn()){ if(IT.floor===Z.floor) v=.85; else if(IT.floor===0){ const d=Math.hypot(pState.x-(OX+15),pState.z); if(d<45) v=(Z.floor===4?.05+.1*IT.roofOpen:.06)*(1-d/45); } } Z.target=v; if(Z.out&&ac) Z.out.gain.setTargetAtTime(v,ac.currentTime,.2); }
+  for(const Z of [IT.zS,IT.zP]){ let v=0; if(MAP==='itaewon'&&hearOn()){ if(CST.on) v=.4*Math.max(0,1-Math.abs(pState.y-IT.floorY[Z.floor])/5); else if(IT.floor===Z.floor) v=.85; else if(IT.floor===0){ const d=Math.hypot(pState.x-(OX+15),pState.z); if(d<45) v=(Z.floor===4?.05+.1*IT.roofOpen:.06)*(1-d/45); } } Z.target=v; if(Z.out&&ac) Z.out.gain.setTargetAtTime(v,ac.currentTime,.2); }
   const cn=$('#clubNow'), inClub=MAP==='itaewon'&&inGame&&(IT.floor===3||IT.floor===4); cn.hidden=!inClub;
   if(inClub){ const nm=IT.floor===3?'4F 쉘터':'5F 페이퍼', tr=IT_TR[IT.floor][IT_TI[IT.floor]].name+' · '+(IT.floor===3?'딥테크노':'하우스'); setTx($('#cnName'),nm); setTx($('#cnTrack'),tr); $('#cnDot').style.background=IT.floor===3?'#ff2a2a':'#ffcf8a'; }
   if(MAP!=='itaewon') return;
@@ -3932,7 +3933,7 @@ function renderBoothListIT(){ if(MAP!=='itaewon') return renderBoothListPlaya();
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-it]'); if(!b) return; const s=IT_SPOTS[+b.dataset.it];
   if(s.back){ goMap('playa'); return; }
   if(s.fl){ if(!IT.stamped){ toast('먼저 경호원에게 신분증을 보여 주고 도장을 받아야 해요'); IT.floor=0; pState.x=OX+5; pState.z=-4; pState.y=0; return; } goFloor(s.fl); return; }
-  IT.floor=0; pState.x=s.x; pState.z=s.z; pState.y=0; pState.face=0; yaw=Math.PI; });
+  IT.floor=0; CST.on=false; pState.x=s.x; pState.z=s.z; pState.y=0; pState.face=0; yaw=Math.PI; });
 
 /* ================= RING: house club up the alley stairs, on the left of the street just before Shelter ================= */
 // street side: the whole dark building at z -31..-19 with the green neon R, the alley beside it (z -19..-13.5) where people stand vaping,
@@ -4288,6 +4289,77 @@ function stickerWallTex(w,h,mw,mh,dn){ dn=dn||1; // dn = how crowded (1 = club w
   for(let i=0;i<mw*2.2*dn;i++) sticker(rand(.2,mw-.2)*u,yAt(),rand(.11,.22)*u);
   for(let i=0;i<mw*.5*dn;i++) tag(rand(.3,mw-.3)*u,yAt(),rand(.3,.75)*u,pick(['#7dffb0','#c8ffd8','#eafff0'])); // big tags over the top
   return new THREE.CanvasTexture(c); }
+
+/* ================= CLUB STAIRS: walk down from 5F Paper and 4F Shelter to the 1F lobby =================
+   A switchback stairwell in the front corner of the building (local x 8.45..13.5, z -8.55..-6.25), the same on every floor.
+   Each floor: a landing by the door (x 12.5..13.5), flight A down along the inner side to the half landing (x 8.45..9.45),
+   flight B back along the outer wall to the landing below. Paper's top is open behind a glass rail; Shelter and the lobby have a door. */
+const CST={on:false,L:0,seg:'land',X0:8.45,XM:9.45,XT:12.5,XL:13.5,Z0:-8.55,ZB:-7.4,Z1:-6.25,hintT:-99};
+function cstY(lx){ const C=CST, f=3.6*C.L, w=C.XT-C.XM;
+  if(C.seg==='land') return f; if(C.seg==='mid') return f-1.8;
+  if(C.seg==='A') return f-1.8*clamp((C.XT-lx)/w,0,1);
+  return f-1.8-1.8*clamp((lx-C.XM)/w,0,1); }
+// which floor the scene is cut to: the floor you left until halfway down the first flight, then the one below
+function cstFloor(lx){ const C=CST; if(C.seg==='land') return C.L; if(C.seg==='A'&&lx>10.9) return C.L; return C.L-1; }
+function cstEnter(L,seg){ CST.on=true; CST.L=L; CST.seg=seg; if(clk.elapsedTime-CST.hintT>25){ CST.hintT=clk.elapsedTime; toast(L===0?'계단이에요. 올라가면 4F 쉘터, 5F 페이퍼예요':'계단이에요. 걸어서 내려가면 1층 로비예요'); } }
+function cstExit(L){ CST.on=false; IT.floor=L; toast(L===0?'1층 로비예요. 앞문으로 나가면 거리예요':L===3?'4F 쉘터':'5F 페이퍼 루프탑'); }
+// keeps you on the stairs as you walk; returns the new local x and z
+function cstClamp(lx,z){ const C=CST;
+  for(let k=0;k<4;k++){
+    if(C.seg==='land'){ lx=Math.min(lx,C.XL-.1); z=Math.max(z,C.Z0+.1);
+      if((C.L===0||C.L===3)&&z>C.Z1&&lx>12.65&&lx<13.35){ cstExit(C.L); return [lx,Math.max(z,C.Z1+.05)]; } // out through the door
+      z=Math.min(z,-6.3);
+      if(lx<C.XT){ if(z>C.ZB){ if(C.L>0){ C.seg='A'; continue; } lx=C.XT; } else { if(C.L<4){ C.L++; C.seg='B'; continue; } lx=C.XT; } } break; }
+    if(C.seg==='A'){ z=clamp(z,C.ZB+.08,-6.3); if(lx>=C.XT){ if(C.L===4){ cstExit(4); return [lx,z]; } C.seg='land'; continue; } if(lx<C.XM){ C.seg='mid'; continue; } break; }
+    if(C.seg==='mid'){ lx=Math.max(lx,C.X0+.1); z=clamp(z,C.Z0+.1,-6.3); if(lx>=C.XM){ C.seg=z>C.ZB?'A':'B'; continue; } break; }
+    if(C.seg==='B'){ z=clamp(z,C.Z0+.1,C.ZB-.08); if(lx<C.XM){ C.seg='mid'; continue; } if(lx>=C.XT){ C.L--; C.seg='land'; continue; } break; } }
+  return [lx,z]; }
+// from a room into the stairwell: through the door (lobby, Shelter) or onto the top step (Paper); elsewhere the stairwell walls push you back
+function cstFromRoom(lx,z,f){ const C=CST; if(z>=C.Z1+.1||lx>=C.XL+.1) return null;
+  if(f===4){ if(lx>=C.XT) return null; if(lx>C.XT-.6){ if(z>C.ZB+.05){ cstEnter(4,'A'); return [lx,clamp(z,C.ZB+.08,-6.3)]; } return [C.XT,z]; } return [lx,C.Z1+.12]; }
+  if(lx>12.65&&lx<13.35){ if(z<C.Z1-.08){ cstEnter(f,'land'); return [lx,Math.min(z,-6.3)]; } return null; } // the doorway: in once you are past the frame
+  const toZ=(C.Z1+.12)-z, toX=(C.XL+.12)-lx; return toZ<toX?[lx,C.Z1+.12]:[C.XL+.12,z]; }
+// on the stairs the camera stays inside the stairwell, a little above you
+function cstCam(){ const c=camera.position; c.x=clamp(c.x,OX+8.6,OX+13.35); c.z=clamp(c.z,-8.45,-6.4); c.y=clamp(c.y,pState.y+1.6,pState.y+3.4); }
+// cut a rectangular hole (local x x0..x1, z z0..z1) out of a flat box or floor plane by replacing it with up to four pieces around the hole
+function cstCut(m,x0,x1,z0,z1){ if(!m.isMesh||!m.visible) return;
+  const flatPlane=m.geometry===G.plane&&Math.abs(Math.abs(m.rotation.x)-Math.PI/2)<.01&&Math.abs(m.rotation.y)<.01&&Math.abs(m.rotation.z)<.01, box=m.geometry===G.box&&Math.abs(m.rotation.x)+Math.abs(m.rotation.y)+Math.abs(m.rotation.z)<.01;
+  if(!flatPlane&&!box) return; const W=Math.abs(m.scale.x), D=Math.abs(box?m.scale.z:m.scale.y), ax0=m.position.x-W/2, ax1=m.position.x+W/2, az0=m.position.z-D/2, az1=m.position.z+D/2;
+  if(ax1<=x0||ax0>=x1||az1<=z0||az0>=z1) return; const parts=[];
+  if(ax0<x0) parts.push([ax0,x0,az0,az1]); if(ax1>x1) parts.push([x1,ax1,az0,az1]); const cx0=Math.max(ax0,x0), cx1=Math.min(ax1,x1); if(az0<z0) parts.push([cx0,cx1,az0,z0]); if(az1>z1) parts.push([cx0,cx1,z1,az1]);
+  parts.forEach(([a,b,c,d])=>{ if(b-a<.01||d-c<.01) return; const q=m.clone(); q.position.x=(a+b)/2; q.position.z=(c+d)/2; q.scale.x=(b-a)*Math.sign(m.scale.x||1); if(box) q.scale.z=d-c; else q.scale.y=(d-c)*Math.sign(m.scale.y||1); m.parent.add(q); });
+  m.visible=false; }
+function buildClubStairs(){ const C=CST, conc=M('#4a4a52'), step=M('#5a5a62'), edge=M('#c6ff3d',{glow:.5}), rail=M('#9a9aa6'), wallM=M('#2c2c34');
+  // holes in every floor above the lobby where the flights pass, and Shelter's ceiling and pipes cleared above the stairwell
+  for(let f=1;f<5;f++) [...IT.levels[f].g.children].forEach(m=>{ if(m.position.y<.2) cstCut(m,7.9,C.XT,-9.1,C.Z1); });
+  [...IT.levels[3].g.children].forEach(m=>{ if(m.position.y>.4) cstCut(m,C.X0,C.XL,C.Z0,C.Z1); });
+  // the mirror, extinguisher and cables on Shelter's front wall that now sit inside the stairwell
+  IT.levels[3].g.children.forEach(m=>{ if(m.isMesh&&m.position.x<8.6&&m.position.z<-5.4&&m.position.z>-8&&Math.abs(m.scale.x)<3) m.visible=false; });
+  const w=(C.XT-C.XM)/9;
+  for(let L=1;L<=4;L++){ const g=IT.levels[L-1].g;
+    // flight A: from this floor's landing (rel 3.6) down to the half landing (rel 1.8), along the inner side
+    for(let k=0;k<9;k++){ const top=3.6-.2*(k+1), x=C.XT-(k+.5)*w; B(w,.42,1.12,step,x,top-.21,(C.ZB+C.Z1)/2,g); B(.05,.025,1.12,edge,x+w/2-.03,top+.005,(C.ZB+C.Z1)/2,g); }
+    B(C.XM-C.X0,.3,C.Z1-C.Z0,conc,(C.X0+C.XM)/2,1.65,(C.Z0+C.Z1)/2,g);
+    // flight B: from the half landing down to the landing below, along the outer wall
+    for(let k=0;k<9;k++){ const top=1.8-.2*(k+1), x=C.XM+(k+.5)*w; if(top>.02){ B(w,.42,1.12,step,x,top-.21,(C.Z0+C.ZB)/2,g); B(.05,.025,1.12,edge,x-w/2+.03,top+.005,(C.Z0+C.ZB)/2,g); } }
+    // the wall between the two flights
+    B(C.XT-C.XM,3.6,.08,conc,(C.XM+C.XT)/2,1.8,C.ZB,g); }
+  // walls round the stairwell on the lobby, 2F, 3F and Shelter; Shelter and the lobby get a door with a green EXIT sign
+  for(let f=0;f<4;f++){ const g=IT.levels[f].g, door=f===0||f===3;
+    if(door){ B(12.6-C.X0,3.6,.12,wallM,(C.X0+12.6)/2,1.8,C.Z1,g); B(C.XL-13.4,3.6,.12,wallM,(13.4+C.XL)/2,1.8,C.Z1,g); B(.8,1.15,.12,wallM,13,3.02,C.Z1,g);
+      const ex=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('EXIT  ↓ 계단','#3dff6a'),transparent:true})); ex.scale.set(1.3,.33,1); ex.position.set(13,2.72,C.Z1+.07); g.add(ex);
+      B(.05,2.4,.05,M('#2a2a30'),12.6,1.2,C.Z1,g); B(.05,2.4,.05,M('#2a2a30'),13.4,1.2,C.Z1,g); }
+    else B(C.XL-C.X0,3.6,.12,wallM,(C.X0+C.XL)/2,1.8,C.Z1,g);
+    B(.12,3.6,C.Z1-C.Z0,wallM,C.XL,1.8,(C.Z0+C.Z1)/2,g);
+    const fl=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign(['1F 로비','2F','3F','4F 쉘터'][f],f===3?'#3dff6a':'#ffcf8a'),transparent:true})); fl.scale.set(1.2,.3,1); fl.position.set(C.XL-.07,1.9,-7.4); fl.rotation.y=-Math.PI/2; g.add(fl);
+    }
+  // Paper: the stairs open straight off the deck, behind a glass rail
+  { const g=IT.levels[4].g, gl=M('#cfe8ff',{op:.25});
+    B(C.XT-C.X0,1.05,.04,gl,(C.X0+C.XT)/2,.55,C.Z1,g); B(C.XT-C.X0,.05,.06,rail,(C.X0+C.XT)/2,1.08,C.Z1,g);
+    B(.04,1.05,C.ZB-C.Z0,gl,C.XT,.55,(C.Z0+C.ZB)/2,g); B(.06,.05,C.ZB-C.Z0,rail,C.XT,1.08,(C.Z0+C.ZB)/2,g);
+    const ex=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('EXIT  ↓ 계단','#3dff6a'),transparent:true,side:THREE.DoubleSide})); ex.scale.set(1.3,.33,1); ex.position.set(C.XT+.05,1.45,-6.8); ex.rotation.y=Math.PI/2; g.add(ex); B(.05,1.45,.05,rail,C.XT+.05,.72,-6.2,g); }
+  // nobody dances inside the new walls
+  IT.npcs.forEach(N=>{ const p=N.P.root.position, lx=p.x-OX; if(lx<C.XL+.4&&p.z<C.Z1+.4){ p.z=C.Z1+.7; if(lx<C.X0+.3) p.x=OX+C.X0+.6; } }); }
 
 /* ================= PAPER MISE-EN-SCENE ================= */
 function plankTex(){ const c=document.createElement('canvas'); c.width=c.height=256; const x=c.getContext('2d');
@@ -6390,7 +6462,7 @@ function hyUndress(m){ if(m.dead||m.st==='out'||m.shirtless) return; const old=m
   const sh=new THREE.Mesh(G.box,M(old)); sh.scale.set(.42,.46,.06); sh.position.set(pos.x,pos.y+1.9,pos.z); scene.add(sh); HY.shirts.push({m:sh,v:new THREE.Vector3(rand(-1.5,1.5),rand(4.5,6.5),rand(-1.5,1.5)),w:new THREE.Vector3(rand(-8,8),rand(-8,8),rand(-8,8)),life:2}); }
 function hyCheerSound(l){ if(!ac||!master) return; const tt=ac.currentTime; if(!HY.nb){ const b=ac.createBuffer(1,Math.floor(ac.sampleRate*1.2),ac.sampleRate), d=b.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; HY.nb=b; }
   const s=ac.createBufferSource(); s.buffer=HY.nb; const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000+Math.random()*300; bp.Q.value=.55; const g=ac.createGain(); g.gain.setValueAtTime(0.0001,tt); g.gain.linearRampToValueAtTime(.04+.025*Math.min(l,5),tt+.12); g.gain.exponentialRampToValueAtTime(.0005,tt+.95); s.connect(bp); bp.connect(g); g.connect(master); s.start(tt); s.stop(tt+1.1); }
-function hyLevel(k){ if(k===2){ toast('🔥 2분 돌파! 사람들이 스테이지 앞으로 우르르 몰려와요'); }
+function hyLevel(k){ if(MAP==='sphere'&&k<5) return; if(k===2){ toast('🔥 2분 돌파! 사람들이 스테이지 앞으로 우르르 몰려와요'); }
   else if(k===3){ toast('🔥🔥 3분! 스테이지 앞이 점점 차오르고 있어요'); }
   else if(k===4){ toast('🔥🔥🔥 4분! 맨 앞까지 꽉 찼어요'); }
   else if(k===5&&!HY.bonus){ HY.bonus=true; addCoins(50); coinBurst(50); toast('🏆 5분 연속 스테이지 댄스! 보너스 +50코인'); } }
@@ -6399,8 +6471,10 @@ updaters.push((t,dt)=>{
   const L=HY.total>=300?5:HY.total>=240?4:HY.total>=180?3:HY.total>=120?2:0; if(L>HY.lvl){ for(let k=HY.lvl+1;k<=L;k++) hyLevel(k); HY.lvl=L; }
   const hb=document.getElementById('sbHype'); if(hb){ const s=Math.floor(HY.total), tx=HY.total>0?`${HY.lvl>=5?'🏆':'🔥'.repeat(Math.max(0,HY.lvl-1))} 총 ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`:''; setTx(hb,tx); }
   // at two minutes a wave of ravers rushes the front, then the floor keeps packing tighter until it is wall to wall
-  if(STG.on&&HY.total>=120&&!HY.rush){ HY.rush=true; for(let k=0;k<(LOW?14:28);k++) HY.queue.push({sp:1}); }
-  if(STG.on&&HY.total>=120&&HY.mem.filter(m=>m.st!=='out').length+HY.queue.length<(LOW?56:120)){ HY.spawnT=(HY.spawnT||0)-dt; if(HY.spawnT<=0){ HY.queue.push({sp:1}); HY.spawnT=HY.total<180?1.4:HY.total<300?1:.8; } }
+  const hyMap=MAP!=='sphere'; // Las Vegas (the Sphere) has its own seated crowd: nobody rushes the stage there
+  if(!hyMap&&HY.mem.some(m=>m.st!=='out')){ HY.queue=[]; HY.mem.forEach(m=>{ m.st='out'; }); }
+  if(hyMap&&STG.on&&HY.total>=120&&!HY.rush){ HY.rush=true; for(let k=0;k<(LOW?14:28);k++) HY.queue.push({sp:1}); }
+  if(hyMap&&STG.on&&HY.total>=120&&HY.mem.filter(m=>m.st!=='out').length+HY.queue.length<(LOW?56:120)){ HY.spawnT=(HY.spawnT||0)-dt; if(HY.spawnT<=0){ HY.queue.push({sp:1}); HY.spawnT=HY.total<180?1.4:HY.total<300?1:.8; } }
   for(let n=0;n<(LOW?1:2)&&HY.queue.length;n++){ const q=HY.queue.shift(); if(q.strip) hyUndress(q.strip); else hySpawn(!!q.bare); }
   if(HY.mem.length){ const src=hyBest(), stg=hyStage(src), beat=hyBeat(src,t), bar=Math.floor(beat/4), cheer=HY.lvl>=2&&STG.on;
     if(cheer&&bar!==HY.cheerB){ HY.cheerB=bar; hyCheerSound(HY.lvl); const live=HY.mem.filter(m=>m.st==='dance'); for(let k=0;k<Math.min(live.length,HY.lvl>=3?4:2);k++) say(pick(live).P,pick(HY_CHEER),1.3); }
@@ -7376,7 +7450,7 @@ updaters.push(t=>{ if(t-(NS.ck||0)<.5) return; NS.ck=t; const A=nsActive();
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
   for(let i=BOOTHS.length-1;i>=0;i--) if(BOOTH_CUT.includes(BOOTHS[i].id)) BOOTHS.splice(i,1);
-  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildStudio(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
+  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); buildClubStairs(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildStudio(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }
