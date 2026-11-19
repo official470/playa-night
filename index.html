@@ -361,6 +361,18 @@ body.dressing #sp{display:none!important}
 #meCard .olr button.g2{background:var(--panel);color:var(--text)} #meCard .olr button.chat{background:#ff4fa8;color:#fff;position:relative}
 #meCard .olr button.chat.new::after{content:'';position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#ffcf3a;box-shadow:0 0 0 2px var(--chip)}
 #meCard .olr .bs{display:flex;gap:5px;flex:none}
+#authBox .apple{background:#000;color:#fff;border:1px solid #333!important} #authBox .apple b{font-size:17px;line-height:1}
+#meCard .macc{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 14px;margin-top:10px;font-size:12px}
+#meCard .macc button,#meCard .macc a{border:0;background:none;padding:4px 2px;font:inherit;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+#meCard .macc .danger{color:#ff8a8a}
+#meCard .frsafe{display:flex;justify-content:flex-end;gap:6px;margin-top:10px} #meCard .frsafe button{border:0;border-radius:999px;padding:6px 11px;background:var(--chip);color:var(--muted);font:inherit;font-size:12px;cursor:pointer}
+#meCard .repw{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px} #meCard .repw button{border:0;border-radius:12px;padding:11px 8px;background:var(--chip);color:var(--text);font:inherit;font-weight:700;cursor:pointer}
+#meCard .repn{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:var(--muted)}
+#chatDlg .ch-hb{display:flex;gap:6px;flex:none}
+#termsDlg{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1100;width:min(380px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow-y:auto;padding:18px;border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+#termsDlg h3{margin:0 0 10px;font-size:18px} #termsDlg ul{margin:0 0 10px;padding-left:18px;font-size:13.5px;line-height:1.6} #termsDlg p{font-size:12.5px;color:var(--muted);margin:8px 0}
+#termsDlg a{color:#ffb070} #termsDlg .ma{display:flex;gap:8px;margin-top:12px} #termsDlg .ma button{flex:1;border:0;border-radius:12px;padding:12px;font:inherit;font-weight:800;cursor:pointer;background:var(--chip);color:var(--text)}
+#termsDlg .ma button.primary{background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff}
 #meCard .fra{display:flex;gap:8px;margin-top:6px} #meCard .fra button{flex:1;border:0;border-radius:12px;padding:11px;font:inherit;font-weight:800;cursor:pointer;background:var(--chip);color:var(--text)}
 #meCard .fra button.primary{background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff}
 #chatDlg{position:fixed;left:50%;bottom:calc(84px + var(--sab));transform:translateX(-50%);z-index:910;width:min(380px,calc(100vw - 20px));height:min(460px,calc(100vh - 190px));height:min(460px,calc(100dvh - 190px));display:flex;flex-direction:column;padding:0;border-radius:18px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.5)}
@@ -4630,13 +4642,13 @@ async function mcFetch(g){ if(MC.cache[g]&&MC.cache[g].length) return MC.cache[g
   const seen=new Set(), L=lists.flat().filter(c=>mcMusicOnly(c)&&!seen.has(c.key)&&seen.add(c.key));
   L.sort((a,b)=>(b.play_count||0)-(a.play_count||0)); L.length=Math.min(L.length,40);
   for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } MC.cache[g]=L; return L; }
-async function mcPlay(g,T){ initAudio(); MC.target=T; MC.genre=g; 
+async function mcPlay(g,T){ if(typeof STEAM!=='undefined'&&STEAM) return; initAudio(); MC.target=T; MC.genre=g; 
   mcStatus(`${MC_G[g][0]} DJ 세트를 찾는 중이에요`);
   MC.list=await mcFetch(g); if(MC.target!==T||MC.genre!==g) return;
   if(!MC.list.length){ mcStatus(''); toast('Mixcloud에 연결하지 못했어요. 인터넷 연결을 확인해 주세요'); mcStop(); return; }
   MC.idx=-1; MC.fails=0; mcNext(); }
 // every play and every skip lands on a random set (never the same one twice in a row)
-function mcNext(){ if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null; MC.autoPaused=false;
+function mcNext(){ if(typeof STEAM!=='undefined'&&STEAM) MC.list=MC.list.filter(x=>x&&x.sched&&steamOK(x.user&&x.user.name)); if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null; MC.autoPaused=false;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
   const kind=c.sc?'sc':'mc';
   if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; const go=!MC.quiet||!MC_NOVOL; if(!go) MC.autoPaused=true; const q=!!MC.quiet; MC.vol=-1; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:go&&!q,visual:false,show_comments:false,hide_related:true,callback:()=>{ scInfo(w,c); if(q){ try{ w.setVolume(0); MC.vol=0; if(go) w.play(); }catch(e){} } }}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,go); mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); return; }
@@ -6135,8 +6147,12 @@ async function authInit(){ if(AUTH.auth) return true; if(AUTH.busy) return false
     AUTH.app=firebase.apps.length?firebase.app():firebase.initializeApp(C); AUTH.auth=AUTH.app.auth(); AUTH.db=AUTH.app.database();
     AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); }); presListen();
     return true; }catch(e){ console.warn('auth init',e); return false; } finally{ AUTH.busy=false; } }
-function authName(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous&&AUTH.kakao) return AUTH.kakao.name||'카카오 버너'; return u.displayName||(u.email||'').split('@')[0]||'버너'; }
-function authProvider(){ const u=AUTH.user; return !u?'':u.isAnonymous?'kakao':'google'; }
+function authName(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous&&AUTH.kakao) return AUTH.kakao.name||'카카오 버너'; return u.displayName||(/privaterelay\.appleid\.com$/.test(u.email||'')?'':(u.email||'').split('@')[0])||'버너'; }
+function authProvider(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous) return 'kakao'; return (u.providerData||[]).some(p=>p&&p.providerId==='apple.com')?'apple':'google'; }
+function authLabel(){ return {kakao:'카카오',apple:'Apple',google:'Google'}[authProvider()]||'Google'; }
+// inside the iOS app Google and Kakao sign-in cannot open (they need a real browser), so the app offers Sign in with Apple
+const RH_IN_APP=!!(window.RH_APP&&window.RH_APP.platform==='ios');
+function loginMain(){ if(RH_IN_APP) loginApple(); else loginGoogle(); }
 async function loginGoogle(){ if(!(await authInit())){ toast('Google 로그인은 준비 중이에요'); return; }
   try{ const r=await AUTH.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); AUTH.user=r.user; authAfterLogin(); }
   catch(e){ if(e&&e.code!=='auth/popup-closed-by-user') toast('Google 로그인에 실패했어요'); } }
@@ -6154,20 +6170,20 @@ async function kakaoReturn(){ const q=new URLSearchParams(location.search), code
     authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
 async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; favLoad(); presStart(); try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
 function authAfterLogin(){ const n=authName();
-  if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); authLoadProfile().then(()=>profOpen(true)); }
+  if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); termsGate().then(ok=>{ if(ok) authLoadProfile().then(()=>profOpen(true)); }); }
 async function logout(){ presStop(); if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); toast('로그아웃했어요'); }
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
-    box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
-      :`<p class='authlead'><b>👥 함께 즐기기</b>로그인하면 다른 버너들과 프로필을 나누고, 같이 춤추고 어울릴 수 있어요</p><div class='authbtns one'><button type='button' class='google' data-auth='google'><b>G</b>Google로 로그인하고 함께 즐기기</button></div><small class='authhint'>🎧 로그인 없이 입장하면 혼자서 즐겨요</small>`; }
+    box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':authProvider()==='apple'?'':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authLabel()}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
+      :`<p class='authlead'><b>👥 함께 즐기기</b>로그인하면 다른 버너들과 프로필을 나누고, 같이 춤추고 어울릴 수 있어요</p><div class='authbtns one'>${RH_IN_APP?`<button type='button' class='apple' data-auth='google'><b></b>Apple로 로그인하고 함께 즐기기</button>`:`<button type='button' class='google' data-auth='google'><b>G</b>Google로 로그인하고 함께 즐기기</button>`}</div><small class='authhint'>🎧 로그인 없이 입장하면 혼자서 즐겨요</small>`; }
   const mb=document.getElementById('profBtn'); if(mb) setBtn(mb,AUTH.user?'내 프로필':'로그인','프로필'); }
 function authBuild(){ if(document.getElementById('authBox')) return; const nm=document.querySelector('#creator label.name'); if(!nm) return;
   const box=document.createElement('div'); box.id='authBox'; nm.after(box);
-  box.addEventListener('click',e=>{ const b=e.target.closest('[data-auth]'); if(!b) return; const a=b.dataset.auth; if(a==='google') loginGoogle(); else if(a==='kakao') loginKakao(); else if(a==='prof') profOpen(false); else if(a==='out') logout(); });
+  box.addEventListener('click',e=>{ const b=e.target.closest('[data-auth]'); if(!b) return; const a=b.dataset.auth; if(a==='google') loginMain(); else if(a==='kakao') loginKakao(); else if(a==='prof') profOpen(false); else if(a==='out') logout(); });
   const tools=document.querySelector('.tools'), help=document.getElementById('helpBtn'); if(tools&&help&&!document.getElementById('profBtn')){ const b=document.createElement('button'); b.id='profBtn'; b.innerHTML="<span class='l'>로그인</span><span class='s'>프로필</span>"; help.before(b);
     b.addEventListener('click',()=>{ if(AUTH.user) profOpen(false); else authChoose(); }); }
   authRender(); }
-function authChoose(){ loginGoogle(); }
+function authChoose(){ loginMain(); }
 // profile popup: a photo that shows your taste + Instagram ID (kept private, shared only with people you choose)
 // photos: 2 to 20 shots that show your taste. The first one is the cover on your public card (profiles/{uid}.photo);
 // the full set lives in photos/{uid} so member lists stay light.
@@ -6200,7 +6216,7 @@ async function profSave(){ const insta=($('#pdInsta').value||'').trim().replace(
   if(PROF_PHOTOS.length<PHOTO_MIN){ toast(`취향 사진을 최소 ${PHOTO_MIN}장 올려 주세요`); return; }
   const uid=AUTH.user.uid, card={name:authName().slice(0,20),photo:PROF_PHOTOS[0],photos:PROF_PHOTOS.length,provider:authProvider(),created:(AUTH.prof&&AUTH.prof.created)||Date.now(),updated:Date.now()};
   const btn=$('#pdSave'); btn.disabled=true; btn.textContent='저장 중…';
-  try{ await AUTH.db.ref('photos/'+uid).set(PROF_PHOTOS); await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).set({insta,updated:Date.now()}); AUTH.prof=card; authRender(); backPrint(); $('#profDlg').hidden=true; toast(`프로필을 저장했어요 (사진 ${PROF_PHOTOS.length}장)`); }
+  try{ await AUTH.db.ref('photos/'+uid).set(PROF_PHOTOS); await AUTH.db.ref('profiles/'+uid).set(card); await AUTH.db.ref('private/'+uid).update({insta,updated:Date.now()}); AUTH.prof=card; authRender(); backPrint(); $('#profDlg').hidden=true; toast(`프로필을 저장했어요 (사진 ${PROF_PHOTOS.length}장)`); }
   catch(e){ console.warn('profile',e); toast('저장하지 못했어요. 잠시 후 다시 해 주세요'); profGrid(); } }
 // ---------- favourite DJ sets: ♡ on the now-playing card; listed on your profile card; tap opens the original in a popup ----------
 const FAV={map:{},cur:null}; try{ FAV.map=JSON.parse(localStorage.getItem('playa-favs')||'{}')||{}; }catch(e){}
@@ -6276,7 +6292,7 @@ function presStop(){ if(PRES.ref){ PRES.ref.onDisconnect().cancel(); PRES.ref.re
 function tagTex(name){ const c=document.createElement('canvas'); c.width=256; c.height=64; const x=c.getContext('2d'); x.font='700 26px sans-serif'; const w=Math.min(240,x.measureText(name).width+44);
   x.fillStyle='rgba(12,10,20,.78)'; x.beginPath(); x.roundRect?x.roundRect((256-w)/2,10,w,44,22):x.rect((256-w)/2,10,w,44); x.fill(); x.fillStyle='#7dffb0'; x.beginPath(); x.arc((256-w)/2+20,32,6,0,7); x.fill();
   x.fillStyle='#fff'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(name,128+8,33); const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter; return t; }
-function presUpsert(uid,v){ if(!v||(AUTH.user&&uid===AUTH.user.uid)) return; PRES.others[uid]=v; let A=PRES.av[uid];
+function presUpsert(uid,v){ if(!v||(AUTH.user&&uid===AUTH.user.uid)) return; if(BLK.map[uid]){ presRemove(uid); return; } PRES.others[uid]=v; let A=PRES.av[uid];
   if(v.lk&&(!A||A.lk!==v.lk)){ if(A) scene.remove(A.P.root); let c={}; try{ c=JSON.parse(v.lk); }catch(e){}
     const P=buildCharacter(Object.assign(randomConfig(),c)); P.seed=Math.random()*9; scene.add(P.root); P.root.position.set(v.x||0,v.y||0,v.z||0);
     const tag=new THREE.Sprite(new THREE.SpriteMaterial({map:tagTex(String(v.n||'버너').slice(0,12)),depthTest:false,transparent:true})); tag.scale.set(1.6,.4,1); tag.position.y=2.35; tag.renderOrder=7; P.root.add(tag);
@@ -6334,14 +6350,14 @@ canvas.addEventListener('pointerup',e=>{ const d=meDown; meDown=null; if(!d||!in
     hit=lo.z<1&&Math.abs(e.clientX-x0)<hw&&e.clientY>yH-10&&e.clientY<yL+10; }
   if(hit){ meCard(); return; } const who=tapWho(); if(who) personCard(who); },true);
 function meEl(){ let c=document.getElementById('meCard'); if(!c){ c=document.createElement('section'); c.id='meCard'; c.className='card'; c.setAttribute('role','dialog'); c.setAttribute('aria-label','내 프로필'); document.body.appendChild(c);
-    c.addEventListener('click',e=>{ const b=e.target.closest('[data-me]'); if(!b) return; const a=b.dataset.me; if(a==='x'){ c.hidden=true; } else if(a==='edit'){ c.hidden=true; profOpen(false); } else if(a==='login'){ c.hidden=true; loginGoogle(); } }); } return c; }
+    c.addEventListener('click',e=>{ const b=e.target.closest('[data-me]'); if(!b) return; const a=b.dataset.me; if(a==='x'){ c.hidden=true; } else if(a==='edit'){ c.hidden=true; profOpen(false); } else if(a==='login'){ c.hidden=true; loginMain(); } else if(a==='delacct'){ acctDelete(); } else if(a==='rules'){ termsShow(false); } }); } return c; }
 async function meCard(){ const c=meEl();
   const u=AUTH.user, nm=((($('#pname')&&$('#pname').value)||'').trim()||'버너');
-  if(!u){ c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'><i>👤</i><div><b>${esc(nm)}</b><small>지금은 혼자서 즐기는 중이에요. 로그인하면 프로필을 만들고 다른 버너들과 함께 즐길 수 있어요</small></div></div>${favListHTML()}<div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`; c.hidden=false; return; }
+  if(!u){ c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'><i>👤</i><div><b>${esc(nm)}</b><small>지금은 혼자서 즐기는 중이에요. 로그인하면 프로필을 만들고 다른 버너들과 함께 즐길 수 있어요</small></div></div>${favListHTML()}<div class='ma'><button data-me='login' class='primary'>${RH_IN_APP?'':'G'}  로그인하고 함께 즐기기</button></div>`; c.hidden=false; return; }
   let ph=[]; try{ if(AUTH.db){ const v=(await AUTH.db.ref('photos/'+u.uid).once('value')).val(); if(Array.isArray(v)) ph=v.filter(Boolean); } }catch(e){} if(!ph.length&&AUTH.prof&&AUTH.prof.photo) ph=[AUTH.prof.photo];
-  c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(AUTH.prof&&AUTH.prof.name||authName())}</b><small>${authProvider()==='kakao'?'카카오':'Google'} 로그인 · 취향 사진 ${ph.length}장</small></div></div>
+  c.innerHTML=`<button class='mx' data-me='x' aria-label='닫기'>✕</button><div class='mh'>${ph[0]?`<i style="background-image:url('${ph[0]}')"></i>`:'<i>👤</i>'}<div><b>${esc(AUTH.prof&&AUTH.prof.name||authName())}</b><small>${authLabel()} 로그인 · 취향 사진 ${ph.length}장</small></div></div>
     ${ph.length?`<div class='mg'>${ph.map(x=>`<i style="background-image:url('${x}')"></i>`).join('')}</div>`:`<p class='me'>아직 취향 사진이 없어요. 2장 이상 올려 프로필을 완성해요.</p>`}
-    ${favListHTML()}<p class='mi'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달돼요</p><div class='ma'><button data-me='edit' class='primary'>프로필 편집</button></div>`;
+    ${favListHTML()}<p class='mi'>🔒 인스타그램 아이디는 원하는 사람들에게만 전달돼요</p><div class='ma'><button data-me='edit' class='primary'>프로필 편집</button></div><div class='macc'><button type='button' data-me='rules'>커뮤니티 규칙</button><a href='privacy.html' target='_blank' rel='noopener'>개인정보 처리방침</a><button type='button' data-me='delacct' class='danger'>계정 삭제</button></div>`;
   c.hidden=false; }
 // ---------- friends + chat ----------
 // friends/{me}/{other} = {s:'out'|'in'|'ok', n:their name, t}. A request writes 'out' on my side and 'in' on theirs; accepting turns both into 'ok'.
@@ -6379,31 +6395,31 @@ function frChatOpen(uid){ if(!AUTH.user||frState(uid)!=='ok'){ toast('친구가 
   let d=document.getElementById('chatDlg'); if(!d){ d=document.createElement('section'); d.id='chatDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','채팅'); document.body.appendChild(d);
     d.addEventListener('click',e=>{ if(e.target.closest('[data-ch="x"]')) frChatClose(); }); d.addEventListener('submit',e=>{ e.preventDefault(); frSend(); }); }
   const nm=(FR.map[uid]&&FR.map[uid].n)||'친구';
-  d.innerHTML=`<div class='ch-h'><b>💬 ${esc(nm)}</b><button type='button' data-ch='x'>닫기</button></div><div class='ch-l' id='chList'><p class='ch-e'>친구끼리만 볼 수 있는 대화예요. 먼저 인사해 보세요!</p></div><form class='ch-f'><input id='chIn' maxlength='300' autocomplete='off' enterkeyhint='send' placeholder='메시지 보내기'><button type='submit'>보내기</button></form>`; d.hidden=false; FR.chat=uid; frMarkSeen(uid,Date.now());
+  d.innerHTML=`<div class='ch-h'><b>💬 ${esc(nm)}</b><span class='ch-hb'><button type='button' data-bl='rep' data-uid='${esc(uid)}' data-n='${esc(nm)}' title='신고'>🚩</button><button type='button' data-bl='blk' data-uid='${esc(uid)}' data-n='${esc(nm)}' title='차단'>🚫</button><button type='button' data-ch='x'>닫기</button></span></div><div class='ch-l' id='chList'><p class='ch-e'>친구끼리만 볼 수 있는 대화예요. 먼저 인사해 보세요!</p></div><form class='ch-f'><input id='chIn' maxlength='300' autocomplete='off' enterkeyhint='send' placeholder='메시지 보내기'><button type='submit'>보내기</button></form>`; d.hidden=false; FR.chat=uid; frMarkSeen(uid,Date.now());
   const L=d.querySelector('#chList'), r=AUTH.db.ref(frChatPath(uid)).limitToLast(60); FR.chatRef=r;
-  r.on('child_added',s=>{ const m=s.val()||{}, mine=m.f===AUTH.user.uid, e0=L.querySelector('.ch-e'); if(e0) e0.remove(); const row=document.createElement('div'); row.className='ch-m'+(mine?' me':''); const sp=document.createElement('span'); sp.textContent=String(m.m||''); const tm=document.createElement('small'); tm.textContent=luHM(m.t||Date.now()); row.appendChild(sp); row.appendChild(tm); L.appendChild(row); L.scrollTop=L.scrollHeight; if(!mine) frMarkSeen(uid,m.t); },
+  r.on('child_added',s=>{ const m=s.val()||{}, mine=m.f===AUTH.user.uid, e0=L.querySelector('.ch-e'); if(e0) e0.remove(); const row=document.createElement('div'); row.className='ch-m'+(mine?' me':''); const sp=document.createElement('span'); sp.textContent=chatClean(m.m||''); const tm=document.createElement('small'); tm.textContent=luHM(m.t||Date.now()); row.appendChild(sp); row.appendChild(tm); L.appendChild(row); L.scrollTop=L.scrollHeight; if(!mine) frMarkSeen(uid,m.t); },
     e=>{ L.innerHTML=`<p class='ch-e'>대화를 불러오지 못했어요. 친구 사이가 맞는지 확인해 주세요.</p>`; });
   onlineRender(); if(!isTouch) setTimeout(()=>{ const i=document.getElementById('chIn'); if(i) i.focus(); },50); }
 async function frSend(){ const i=document.getElementById('chIn'); if(!i||!FR.chat||!AUTH.user) return; const t=i.value.trim(); if(!t) return; i.value='';
-  try{ await AUTH.db.ref(frChatPath(FR.chat)).push({f:AUTH.user.uid,m:t.slice(0,300),t:Date.now()}); }catch(e){ i.value=t; toast('메시지를 보내지 못했어요'); } }
+  try{ await AUTH.db.ref(frChatPath(FR.chat)).push({f:AUTH.user.uid,m:chatClean(t).slice(0,300),t:Date.now()}); }catch(e){ i.value=t; toast('메시지를 보내지 못했어요'); } }
 // ----- friend buttons on someone's profile card -----
 function frActions(uid,name){ const n=esc(String(name||'버너').slice(0,20)), s=frState(uid), a=`data-uid='${esc(uid)}' data-n='${n}'`;
-  const body=!AUTH.user?`<div class='ma'><button data-me='login' class='primary'>G  로그인하고 친구 신청하기</button></div>`
+  const body=!AUTH.user?`<div class='ma'><button data-me='login' class='primary'>${RH_IN_APP?'':'G'}  로그인하고 친구 신청하기</button></div>`
     :s==='ok'?`<div class='fra'><button class='primary' data-fr='chat' ${a}>💬 채팅하기</button><button data-fr='del' ${a}>친구 끊기</button></div>`
     :s==='in'?`<p class='me'>${n} 님이 친구 신청을 보냈어요.</p><div class='fra'><button class='primary' data-fr='acc' ${a}>수락</button><button data-fr='del' ${a}>거절</button></div>`
     :s==='out'?`<p class='me'>친구 신청을 보냈어요. 상대가 수락하면 채팅할 수 있어요.</p><div class='fra'><button data-fr='del' ${a}>신청 취소</button></div>`
     :`<div class='fra'><button class='primary' data-fr='add' ${a}>🤝 친구 신청</button></div><p class='me'>친구가 되면 채팅하고, 접속 중인지도 볼 수 있어요.</p>`;
-  return `<div id='frAct' ${a}>${body}</div>`; }
+  return `<div id='frAct' ${a}>${body}</div>${AUTH.user?`<div class='frsafe'><button type='button' data-bl='rep' ${a}>🚩 신고</button><button type='button' data-bl='blk' ${a}>🚫 차단</button></div>`:''}`; }
 // ----- the friends panel (the 🟢 pill in the top bar) -----
 function frPanel(){ FR.view='panel'; const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`;
-  if(!AUTH.user){ cardShow(`${X}<div class='mh'><i>👥</i><div><b>친구</b><small>로그인하면 만난 사람과 친구를 맺고, 친구가 접속 중인지 보고, 채팅할 수 있어요</small></div></div><div class='ma'><button data-me='login' class='primary'>G  로그인하고 함께 즐기기</button></div>`); return; }
+  if(!AUTH.user){ cardShow(`${X}<div class='mh'><i>👥</i><div><b>친구</b><small>로그인하면 만난 사람과 친구를 맺고, 친구가 접속 중인지 보고, 채팅할 수 있어요</small></div></div><div class='ma'><button data-me='login' class='primary'>${RH_IN_APP?'':'G'}  로그인하고 함께 즐기기</button></div>`); return; }
   const on=frOnline(), onU=new Set(on.map(v=>v.uid)), ok=frList('ok'), inn=frList('in'), out=frList('out');
   const row=(f,v)=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr${v?'':' off'}'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>${v?esc(presWhere(v))+(v.a==='dance'?' · 💃 춤추는 중':''):'지금은 접속해 있지 않아요'}</small></span><span class='bs'>${v?`<button type='button' data-go='${esc(f.uid)}'>만나러 가기</button>`:''}<button type='button' class='chat${FR.unread[f.uid]?' new':''}' data-fr='chat' ${a}>채팅</button></span></div>`; };
   const head=`<div class='mh'><i>👥</i><div><b>친구</b><small>지금 접속 중인 친구 ${on.length}명</small></div></div>`;
   const reqs=inn.length?`<div class='frs'>받은 친구 신청 <small>${inn.length}</small></div><div class='ol'>${inn.map(f=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>친구가 되고 싶어 해요</small></span><span class='bs'><button type='button' data-fr='acc' ${a}>수락</button><button type='button' class='g2' data-fr='del' ${a}>거절</button></span></div>`; }).join('')}</div>`:'';
   const fl=ok.length?`<div class='frs'>내 친구</div><div class='ol'>${ok.filter(f=>onU.has(f.uid)).map(f=>row(f,on.find(v=>v.uid===f.uid))).join('')}${ok.filter(f=>!onU.has(f.uid)).map(f=>row(f,null)).join('')}</div>`:`<p class='me'>아직 친구가 없어요. 게임에서 만난 사람을 눌러 프로필을 열고 친구 신청을 보내 보세요.</p>`;
   const sent=out.length?`<div class='frs'>보낸 신청 <small>${out.length}</small></div><div class='ol'>${out.map(f=>{ const a=`data-uid='${esc(f.uid)}' data-n='${esc(f.n||'버너')}'`; return `<div class='olr off'><i data-olph='${esc(f.uid)}'>👤</i><span><b>${esc(f.n||'버너')}</b><small>수락을 기다리는 중이에요</small></span><span class='bs'><button type='button' class='g2' data-fr='del' ${a}>취소</button></span></div>`; }).join('')}</div>`:'';
-  cardShow(X+head+reqs+fl+sent);
+  cardShow(X+head+reqs+fl+sent+blkListHTML());
   if(AUTH.db) [...inn,...ok,...out].forEach(f=>AUTH.db.ref('profiles/'+f.uid+'/photo').once('value').then(s=>{ const u=s.val(); if(u) document.querySelectorAll(`#meCard [data-olph="${f.uid}"]`).forEach(el=>{ el.style.backgroundImage=`url('${u}')`; el.textContent=''; }); }).catch(()=>{})); }
 // keep whatever is open in step with the latest friend state
 function frRefresh(){ const c=document.getElementById('meCard'); if(!c||c.hidden){ FR.view=''; return; } if(FR.view==='panel'){ frPanel(); return; } const a=c.querySelector('#frAct'); if(a){ const t=document.createElement('div'); t.innerHTML=frActions(a.dataset.uid,a.dataset.n); a.replaceWith(t.firstChild); } }
@@ -6412,6 +6428,75 @@ document.addEventListener('click',e=>{ const b=e.target.closest('[data-fr]'); if
 document.addEventListener('click',e=>{ if(e.target.closest('#meCard [data-me="x"]')) FR.view=''; },true);
 addEventListener('keydown',e=>{ if(e.key==='Escape'&&FR.chat) frChatClose(); });
 updaters.push((t,dt)=>{ FR.ck=(FR.ck||0)+dt; if(FR.ck<1) return; FR.ck=0; if((AUTH.user&&AUTH.user.uid||null)!==FR.uid) frListen(); else if(FR.view==='panel'){ const c=document.getElementById('meCard'); if(c&&!c.hidden){ const sig=frOnline().map(v=>v.uid+presWhere(v)+v.a).join('|'); if(sig!==FR.sig){ FR.sig=sig; frPanel(); } } } });
+// ---------- safety: block, report, community rules, account deletion, Sign in with Apple ----------
+// blocks/{me}/{other}: people I blocked never show up in my world, can't send me friend requests (database rule) and lose any friendship.
+// reports/{id}: what players flag; only the operator can read them (admin dashboard).
+const BLK={map:{},ref:null,uid:null};
+function blkListen(){ const me=AUTH.user&&AUTH.user.uid||null; if(BLK.uid===me) return; if(BLK.ref) BLK.ref.off(); BLK.ref=null; BLK.map={}; BLK.uid=me; if(!me||!AUTH.db) return;
+  BLK.ref=AUTH.db.ref('blocks/'+me); BLK.ref.on('value',s=>{ BLK.map=s.val()||{}; for(const u in BLK.map) presRemove(u); },()=>{}); }
+updaters.push((t,dt)=>{ BLK.ck=(BLK.ck||0)+dt; if(BLK.ck<1) return; BLK.ck=0; if((AUTH.user&&AUTH.user.uid||null)!==BLK.uid) blkListen(); });
+function blkUpdate(uid,name){ const me=AUTH.user.uid, up={}; up[`blocks/${me}/${uid}`]={n:String(name||'버너').slice(0,20),t:Date.now()}; up[`friends/${me}/${uid}`]=null; up[`friends/${uid}/${me}`]=null; return up; }
+function blkLocal(uid,rec){ BLK.map[uid]=rec||1; presRemove(uid); if(FR.chat===uid) frChatClose(); const c=document.getElementById('meCard'); if(c) c.hidden=true; }
+async function blkBlock(uid,name){ if(!AUTH.user||!AUTH.db) return; if(!confirm(tr(`${name} 님을 차단할까요?\n서로 보이지 않고, 친구 관계와 채팅도 끊겨요. 친구 목록에서 언제든 풀 수 있어요.`))) return;
+  try{ const up=blkUpdate(uid,name); await AUTH.db.ref().update(up); blkLocal(uid,up[`blocks/${AUTH.user.uid}/${uid}`]); toast(`${name} 님을 차단했어요`); }catch(e){ frFail(e); } }
+async function blkUnblock(uid){ if(!AUTH.user||!AUTH.db) return; try{ await AUTH.db.ref(`blocks/${AUTH.user.uid}/${uid}`).remove(); delete BLK.map[uid]; toast('차단을 풀었어요'); if(FR.view==='panel') frPanel(); }catch(e){ frFail(e); } }
+function blkListHTML(){ const L=Object.entries(BLK.map).map(([uid,x])=>({uid,n:x&&x.n||'버너'})); if(!L.length) return '';
+  return `<div class='frs'>차단한 사람 <small>${L.length}</small></div><div class='ol'>${L.map(f=>`<div class='olr off'><i>🚫</i><span><b>${esc(f.n)}</b><small>서로 보이지 않아요</small></span><span class='bs'><button type='button' class='g2' data-unblk='${esc(f.uid)}'>차단 풀기</button></span></div>`).join('')}</div>`; }
+const REP_WHY=[['photo','부적절한 사진'],['abuse','욕설·괴롭힘'],['sexual','성적인 내용'],['spam','스팸·광고'],['fake','사칭'],['etc','기타']];
+function repOpen(uid,name){ if(!AUTH.user){ toast('로그인하면 신고할 수 있어요'); return; } if(FR.chat) frChatClose(); FR.view='';
+  const X=`<button class='mx' data-me='x' aria-label='닫기'>✕</button>`, a=`data-uid='${esc(uid)}' data-n='${esc(name)}'`;
+  cardShow(`${X}<div class='mh'><i>🚩</i><div><b>${esc(name)} 님 신고하기</b><small>무엇이 문제인가요? 운영팀이 24시간 안에 확인하고, 규칙을 어긴 내용과 계정은 삭제해요</small></div></div><div class='repw'>${REP_WHY.map(([k,l])=>`<button type='button' data-rep='${k}' ${a}>${l}</button>`).join('')}</div><label class='repn'><input type='checkbox' id='repBlk' checked> 신고하면서 이 사람 차단하기</label>`); }
+async function repSend(uid,name,why){ const me=AUTH.user; if(!me||!AUTH.db) return; let ctx='';
+  try{ if(frState(uid)==='ok'){ const s=await AUTH.db.ref(frChatPath(uid)).limitToLast(10).once('value'); ctx=Object.values(s.val()||{}).map(m=>(m.f===uid?'상대: ':'나: ')+String(m.m||'')).join('\n').slice(0,1500); } }catch(e){}
+  const bx=document.getElementById('repBlk'), doBlk=!bx||bx.checked;
+  try{ await AUTH.db.ref('reports').push({from:me.uid,to:uid,n:String(name||'버너').slice(0,40),why,ctx,t:Date.now()}); }catch(e){ frFail(e); return; }
+  if(doBlk){ try{ const up=blkUpdate(uid,name); await AUTH.db.ref().update(up); blkLocal(uid,up[`blocks/${me.uid}/${uid}`]); }catch(e){} }
+  const c=document.getElementById('meCard'); if(c) c.hidden=true; toast(doBlk?'신고하고 차단했어요. 24시간 안에 확인할게요':'신고했어요. 24시간 안에 확인할게요'); }
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-bl],[data-rep],[data-unblk]'); if(!b) return; e.stopPropagation(); const uid=b.dataset.uid, n=b.dataset.n||'버너';
+  if(b.dataset.unblk){ blkUnblock(b.dataset.unblk); return; } if(b.dataset.rep){ repSend(uid,n,b.dataset.rep); return; }
+  if(b.dataset.bl==='rep') repOpen(uid,n); else if(b.dataset.bl==='blk') blkBlock(uid,n); },true);
+// chat: rude words are softened before sending and when shown
+const BAD_W=['씨발','씨빨','시발','ㅆㅂ','ㅅㅂ','병신','ㅂㅅ','개새끼','개새','좆','좃','지랄','ㅈㄹ','미친놈','미친년','창녀','니애미','느금','fuck','shit','bitch','cunt','nigger','nigga','faggot','retard','whore','slut'];
+const BAD_RE=new RegExp(BAD_W.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'gi');
+function chatClean(t){ return String(t).replace(BAD_RE,m=>'♡'.repeat(Math.min(3,m.length))); }
+// community rules: shown once per account before any shared feature (profile, friends, chat)
+function termsKey(){ return 'playa-terms-'+(AUTH.user&&AUTH.user.uid||''); }
+function termsShow(gate){ return new Promise(res=>{ let d=document.getElementById('termsDlg'); if(!d){ d=document.createElement('section'); d.id='termsDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','커뮤니티 규칙'); document.body.appendChild(d); }
+  d.innerHTML=`<h3>🤝 REAL HOUSE 커뮤니티 규칙</h3><ul><li>욕설, 괴롭힘, 혐오 표현은 안 돼요</li><li>성적인 사진이나 내용, 폭력적인 내용은 올리지 않아요</li><li>스팸, 광고, 다른 사람 사칭은 안 돼요</li><li>불편한 사람은 프로필에서 🚩 신고하거나 🚫 차단할 수 있어요</li><li>운영팀은 신고를 24시간 안에 확인하고, 규칙을 어긴 내용과 계정을 삭제해요</li></ul><p>함께 즐기기를 쓰면 <a href='terms.html' target='_blank' rel='noopener'>이용약관</a>과 <a href='privacy.html' target='_blank' rel='noopener'>개인정보 처리방침</a>에 동의하는 거예요. 부적절한 콘텐츠와 이용자는 용납하지 않아요.</p><div class='ma'>${gate?`<button type='button' data-t='no'>동의 안 함</button><button type='button' class='primary' data-t='ok'>동의하고 시작하기</button>`:`<button type='button' class='primary' data-t='close'>닫기</button>`}</div>`;
+  d.hidden=false; d.onclick=e=>{ const b=e.target.closest('[data-t]'); if(!b) return; d.hidden=true; res(b.dataset.t==='ok'); }; }); }
+async function termsGate(){ try{ if(localStorage.getItem(termsKey())==='1') return true; }catch(e){}
+  if(AUTH.db&&AUTH.user){ try{ if((await AUTH.db.ref('private/'+AUTH.user.uid+'/terms').once('value')).val()){ try{ localStorage.setItem(termsKey(),'1'); }catch(e){} return true; } }catch(e){} }
+  const yes=await termsShow(true); if(!yes){ toast('규칙에 동의해야 함께 즐기기를 쓸 수 있어요'); await logout(); return false; }
+  try{ localStorage.setItem(termsKey(),'1'); }catch(e){} if(AUTH.db&&AUTH.user) AUTH.db.ref('private/'+AUTH.user.uid+'/terms').set(Date.now()).catch(()=>{}); return true; }
+// delete my account: everything stored under my id, my friendships and chats, then the sign-in itself
+async function acctDelete(){ const u=AUTH.user; if(!u||!AUTH.db) return;
+  if(!confirm(tr('계정을 삭제할까요?\n프로필, 사진, 친구, 채팅, 즐겨찾기, 걸음 기록이 모두 지워지고 되돌릴 수 없어요.'))) return;
+  const me=u.uid, up={}; toast('계정을 지우는 중이에요…');
+  try{ const fr=(await AUTH.db.ref('friends/'+me).once('value')).val()||{};
+    for(const o in fr){ up[`friends/${me}/${o}`]=null; up[`friends/${o}/${me}`]=null; const a=me<o?me:o, b=me<o?o:me; up[`chats/${a}/${b}`]=null; }
+    ['profiles','photos','private','favs','presence','blocks','steps'].forEach(k=>{ up[`${k}/${me}`]=null; });
+    presStop(); await AUTH.db.ref().update(up); }
+  catch(e){ console.warn('delete',e); toast('지우지 못했어요. 잠시 후 다시 해 주세요'); return; }
+  const fin=async()=>{ try{ ['playa-kakao','playa-favs','playa-chat-seen',termsKey()].forEach(k=>localStorage.removeItem(k)); }catch(e){}
+    FAV.map={}; AUTH.kakao=null; AUTH.prof=null; try{ await AUTH.auth.signOut(); }catch(e){} authRender(); backPrint(); const c=document.getElementById('meCard'); if(c) c.hidden=true; toast('계정을 삭제했어요. 그동안 함께해 줘서 고마워요'); };
+  try{ await u.delete(); return fin(); }catch(e){ if(!(e&&e.code==='auth/requires-recent-login')){ console.warn('delete',e); toast('계정 삭제를 끝내지 못했어요. 다시 로그인한 뒤 한 번 더 눌러 주세요'); return; } }
+  toast('보안을 위해 한 번 더 로그인하면 삭제가 끝나요');
+  try{ if(authProvider()==='apple') await u.reauthenticateWithCredential(await appleCredential()); else await u.reauthenticateWithPopup(new firebase.auth.GoogleAuthProvider()); await u.delete(); fin(); }
+  catch(e){ console.warn('delete',e); toast('계정 삭제를 끝내지 못했어요. 다시 로그인한 뒤 한 번 더 눌러 주세요'); } }
+// Sign in with Apple (iOS app): the page makes a random nonce, the app shows Apple's sheet and hands back the signed ID token for Firebase
+const APL={wait:null,name:''};
+window.rhAppleDone=function(r){ const w=APL.wait; APL.wait=null; if(w) w(r||{}); };
+async function sha256hex(t){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+async function appleCredential(){ const h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.appleLogin; if(!h) throw Object.assign(new Error('noapp'),{code:'apple/noapp'});
+  const raw=[...crypto.getRandomValues(new Uint8Array(24))].map(x=>x.toString(16).padStart(2,'0')).join(''), hashed=await sha256hex(raw);
+  const r=await new Promise(res=>{ APL.wait=res; h.postMessage({nonce:hashed}); });
+  if(!r.idToken) throw Object.assign(new Error(r.error||'failed'),{code:r.error==='canceled'?'apple/canceled':'apple/failed'});
+  APL.name=String(r.name||'').trim(); return new firebase.auth.OAuthProvider('apple.com').credential({idToken:r.idToken,rawNonce:raw}); }
+async function loginApple(){ if(!(await authInit())){ toast('Apple 로그인은 준비 중이에요'); return; }
+  try{ const r=await AUTH.auth.signInWithCredential(await appleCredential()); AUTH.user=r.user;
+    if(APL.name&&!r.user.displayName) await r.user.updateProfile({displayName:APL.name.slice(0,20)}).catch(()=>{});
+    authAfterLogin(); }
+  catch(e){ if(!(e&&e.code==='apple/canceled')){ console.warn('apple',e); toast('Apple 로그인에 실패했어요'); } } }
 authBuild(); authInit().then(ok=>{ if(ok) kakaoReturn(); });
 
 /* ================= STAGE DANCE BONUS: 1 MIN = +3 COINS ================= */
@@ -7104,6 +7189,9 @@ function mcPlayItem(it,T){ initAudio(); MC.target=T; MC.genre=''; MC.list=[it]; 
 
 // 편성표: admin.html이 GitHub 저장소의 schedule.json에 저장하고, 게임은 1분마다 읽어요. 부스마다 시간대별 Mixcloud / SoundCloud 세트
 const SCHEDULE_URL='schedule.json';
+// Steam demo mode (?steam=1, or the desktop build): only sets by DJs who agreed to the game (schedule.json → steam.djs, edited in admin.html) play; genre search playback is off
+const STEAM=(()=>{ try{ if(new URLSearchParams(location.search).get('steam')==='1'||/Electron/i.test(navigator.userAgent)||window.STEAM_BUILD){ sessionStorage.setItem('playa-steam','1'); return true; } return sessionStorage.getItem('playa-steam')==='1'; }catch(e){ return false; } })();
+function steamOK(dj){ if(!STEAM) return true; const L=(SCH.sched&&SCH.sched.steam&&SCH.sched.steam.djs)||[]; const n=String(dj||'').trim().toLowerCase(); return !!n&&L.some(x=>String((x&&x.name)||x||'').trim().toLowerCase()===n); }
 const SCH={url:SCHEDULE_URL,sched:null,skew:0,lastFetch:-99,lastSync:-99,synced:false,fail:0};
 try{ const o=localStorage.getItem('playa-sched-url'); if(o) SCH.url=o; }catch(e){}
 function schNow(){ return Date.now()+SCH.skew; }
@@ -7113,7 +7201,7 @@ async function schFetch(){ try{ const t0=Date.now(), r=await fetch(SCH.url+(SCH.
     const d=await r.json(); SCH.sched=d&&d.booths?d:null; SCH.fail=0; }catch(e){ SCH.fail++; } }
 // every set starts a minute in (past the slow intro); the same offset for everyone keeps the room in sync
 const SCH_SKIP=60, SCH_GAP=30*60000;
-function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]).concat(SCH_DEF[key]||[]).sort((a,b)=>a.start-b.start); const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } }
+function schSlot(key){ const L=((SCH.sched&&SCH.sched.booths&&SCH.sched.booths[key])||[]).concat(SCH_DEF[key]||[]).filter(x=>steamOK(x.dj)).sort((a,b)=>a.start-b.start); const t=schNow(); let s=null, i=-1; for(let j=0;j<L.length;j++){ if(L[j].start<=t){ s=L[j]; i=j; } }
   if(s){ const end=s.dur?s.start+s.dur*60000:(L[i+1]?L[i+1].start:Infinity); if(t<end) return Object.assign({id:key+'@'+s.start+'@'+s.url},s); }
   return schFill(key,L,t,s); }
 // between scheduled sets the stage never goes quiet: it replays one of its own sets in 30-minute blocks, picked from the clock so every player hears the same one
@@ -7222,7 +7310,7 @@ function luWhen(s){ return `${luDay(s.start)} ${luHM(s.start)}`; }
 // the board shows what is on now and what starts within the next 5 hours (luAll(true) gives everything ahead)
 const LU_WINDOW=5*3600000;
 function luAll(full){ const B=SCH.sched&&SCH.sched.booths||{}, now=schNow(), lim=full?Infinity:now+LU_WINDOW, out=[];
-  for(const k in B) for(const s of B[k]){ const end=s.start+(s.dur||60)*60000; if(end>now&&s.start<lim&&LU_INFO[k]) out.push(Object.assign({key:k,end,live:s.start<=now},s,LU_INFO[k])); }
+  for(const k in B) for(const s of B[k]){ if(!steamOK(s.dj)) continue; const end=s.start+(s.dur||60)*60000; if(end>now&&s.start<lim&&LU_INFO[k]) out.push(Object.assign({key:k,end,live:s.start<=now},s,LU_INFO[k])); }
   return out.sort((a,b)=>a.start-b.start); }
 function luNext(key){ const now=schNow(); return luAll(true).find(s=>s.key===key&&s.start>now)||null; }
 function luArt(s){ return s.art?`style="background-image:url('${esc(String(s.art).replace(/['"()\\\s]/g,''))}')"`:''; }

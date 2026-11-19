@@ -184,6 +184,9 @@ details.setup li{margin:4px 0}
     </div>
     <h3>📅 날짜별 방문자</h3><ol class="dlist" id="dDay"></ol>
     <p class="small muted" id="dNote"></p>
+    <h3>🚩 신고 <span class="small muted" id="rSum"></span></h3>
+    <p class="small muted" style="margin:0 0 8px">App Store 규정상 신고는 24시간 안에 처리해요. 규칙 위반이면 "프로필·사진 삭제"로 내용을 지우고, 아니면 "처리 완료"로 목록에서 빼요.</p>
+    <div class="mlist" id="rList"></div>
     <div class="mhead"><h3>👥 가입자</h3><input id="mQ" type="search" placeholder="이름·인스타 검색" aria-label="가입자 검색"></div>
     <div class="dkpi" id="mKpi"></div>
     <div class="mlist" id="mList"></div>
@@ -226,6 +229,14 @@ details.setup li{margin:4px 0}
       </div>
       <p class="small muted" id="autoMsg" style="margin:8px 0 0"></p>
     </div>
+
+    <details class="card" id="steamCard">
+      <summary><b>🎮 스팀 데모: 허락한 DJ</b> <span class="muted small" id="steamSum"></span></summary>
+      <p class="small muted">게임에서 세트를 틀어도 된다고 서면(메일·DM)으로 허락한 DJ만 넣어요. 스팀 데모(주소 뒤 <code>?steam=1</code>)에서는 이 DJ들의 세트만 나오고, 웹사이트는 지금처럼 모든 편성이 나와요. 이름은 편성표의 DJ 이름과 똑같이 적어요.</p>
+      <div class="row"><input id="steamName" list="steamDjList" placeholder="DJ 이름" style="flex:1;min-width:180px"><input id="steamNote" placeholder="메모 (허락 받은 곳·날짜)" style="flex:1;min-width:180px"><button type="button" class="btn" id="steamAdd">추가</button></div>
+      <datalist id="steamDjList"></datalist>
+      <ul class="small" id="steamList" style="margin:10px 0 0;padding-left:18px"></ul>
+    </details>
 
     <h2 id="bTitle"></h2>
     <p class="muted small" id="bSub"></p>
@@ -333,7 +344,7 @@ async function publish(){ if(!token){ $('#setup').open=true; status('먼저 GitH
 function renderNav(){ const nav=$('#booths'); nav.innerHTML=AREAS.map(([a,L])=>`<div class="area">${esc(a)}</div>`+L.map(([k,n])=>{ const S=data.booths[k]||[], live=S.some(isLive), up=S.filter(s=>endOf(s)>Date.now()).length;
     return `<button data-k="${k}" aria-current="${k===cur}"><i class="air ${live?'on':''}"></i><span>${esc(n)}</span><small>${up?up+'개':''}</small></button>`; }).join('')).join(''); }
 
-function render(){ renderNav(); $('#publish').disabled=!dirty||!token; $('#publish').textContent=dirty?'게임에 게시하기 •':'게임에 게시하기';
+function render(){ renderNav(); try{ steamRender(); }catch(e){} $('#publish').disabled=!dirty||!token; $('#publish').textContent=dirty?'게임에 게시하기 •':'게임에 게시하기';
   $('#bTitle').textContent=NAME[cur].split(' · ')[0]; $('#bSub').textContent=NAME[cur].split(' · ')[1]+' · 이 부스 가까이에 있는 사람들에게 편성한 세트가 같은 시간에 나와요';
   const S=slotsOf(cur).slice().sort((a,b)=>a.start-b.start), live=S.find(isLive);
   $('#onair').innerHTML=live?`<div class="card onair">${live.art?`<img src="${esc(live.art)}" alt="">`:''}<div><b>● 지금 방송 중</b> · ${hm(live.start)}–${hm(endOf(live))}<br>${esc(live.title||live.url)}${live.dj?' · '+esc(live.dj):''}</div></div>`:`<p class="muted small">지금은 편성이 없어서 인기 DJ 세트가 랜덤으로 나와요.</p>`;
@@ -395,7 +406,7 @@ async function loadList(reset){ if(B.busy) return; B.busy=true; if(reset){ B.off
   B.busy=false; renderList();
   // the music-only filter can leave few results per page: keep fetching (up to 300) until there are at least 20
   if(B.more&&B.off<300&&B.items.filter(c=>!c.is_exclusive&&(!$('#onlyMusic').checked||musicOnly(c))).length<20) loadList(false); }
-function renderList(){ let L=B.items.filter(c=>!c.is_exclusive); // subscriber-only sets never play in the game const only=$('#onlyMusic').checked; if(only) L=L.filter(musicOnly); if(!B.q) L.sort((a,b)=>(b.play_count||0)-(a.play_count||0));
+function renderList(){ let L=B.items.filter(c=>!c.is_exclusive); /* subscriber-only sets never play in the game */ const only=$('#onlyMusic').checked; if(only) L=L.filter(musicOnly); if(!B.q) L.sort((a,b)=>(b.play_count||0)-(a.play_count||0));
   $('#bMeta').textContent=`${B.q?`‘${B.q}’ 검색 결과`:`${(TAGS.find(t=>t[0]===B.tag)||['',B.tag])[1]} 인기 순`} · ${L.length}개${only?` (전체 ${B.items.filter(c=>!c.is_exclusive).length}개 중 음악 세트)`:''}`;
   $('#blist').innerHTML=L.length?L.map((c,i)=>{ const ex=c.is_exclusive, art=c.pictures&&(c.pictures.medium||c.pictures.small)||'';
     return `<div class="bi ${B.playing===c.key?'playing':''}"><span class="rank">${i+1}</span>${art?`<img src="${esc(art)}" alt="" loading="lazy">`:'<img alt="">'}<div class="tx"><b>${esc(c.name)}</b><span>${esc(c.user&&c.user.name||'')} · ${Math.round((c.audio_length||0)/60)}분 · ▶ ${num(c.play_count)}${ex?' · 🔒 구독자 전용 (게임에서 재생 안 됨)':''}</span></div><div class="acts"><button type="button" class="btn sm" data-pv="${esc(c.key)}" ${ex?'disabled':''}>▶ 미리듣기</button><button type="button" class="btn sm main" data-use="${esc(c.key)}" ${ex?'disabled':''}>편성하기</button></div></div>`; }).join('')
@@ -583,13 +594,17 @@ resetForm(); checkConn(); load(); setTag(BOOTH_TAG[cur]||'techno');
 /* ===== visitor stats dashboard (Firebase Realtime Database, free Spark plan) ===== */
 const DASH={app:null,db:null,auth:null,range:1,data:null};
 const DASH_ADMIN='official@realsnap.ai';
-const DASH_RULES=JSON.stringify({rules:{public:{webcfg:{".read":true,".write":`auth != null && auth.token.email == '${DASH_ADMIN}'`}},sessions:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["last"],"$sid":{".write":"!data.exists() || data.child('uid').val() == newData.child('uid').val()",".validate":"newData.hasChildren(['uid','start','last','dur']) && newData.child('dur').isNumber() && newData.child('dur').val() < 86400"}},steps:{".read":true,".indexOn":["n"],"$uid":{".write":true,".validate":"newData.child('n').isNumber()"}},profiles:{".read":true,".indexOn":["created"],"$uid":{".write":"auth != null && auth.uid == $uid"}},photos:{".read":true,"$uid":{".write":"auth != null && auth.uid == $uid","$i":{".validate":"$i.matches(/^([0-9]|1[0-9])$/) && newData.isString() && newData.val().length < 200000"}}},presence:{".read":true,"$uid":{".write":"auth != null && auth.uid == $uid"}},favs:{"$uid":{".read":"auth != null && auth.uid == $uid",".write":"auth != null && auth.uid == $uid"}},private:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,"$uid":{".read":"auth != null && auth.uid == $uid",".write":"auth != null && auth.uid == $uid"}},
+const DASH_RULES=JSON.stringify({rules:{public:{webcfg:{".read":true,".write":`auth != null && auth.token.email == '${DASH_ADMIN}'`}},sessions:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["last"],"$sid":{".write":"!data.exists() || data.child('uid').val() == newData.child('uid').val()",".validate":"newData.hasChildren(['uid','start','last','dur']) && newData.child('dur').isNumber() && newData.child('dur').val() < 86400"}},steps:{".read":true,".indexOn":["n"],"$uid":{".write":true,".validate":"newData.child('n').isNumber()"}},profiles:{".read":true,".indexOn":["created"],"$uid":{".write":`auth != null && (auth.uid == $uid || auth.token.email == '${DASH_ADMIN}')`}},photos:{".read":true,"$uid":{".write":`auth != null && (auth.uid == $uid || auth.token.email == '${DASH_ADMIN}')`,"$i":{".validate":"$i.matches(/^([0-9]|1[0-9])$/) && newData.isString() && newData.val().length < 200000"}}},presence:{".read":true,"$uid":{".write":"auth != null && auth.uid == $uid"}},favs:{"$uid":{".read":"auth != null && auth.uid == $uid",".write":"auth != null && auth.uid == $uid"}},private:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,"$uid":{".read":"auth != null && auth.uid == $uid",".write":"auth != null && auth.uid == $uid"}},
   // friends/{me}/{other}: only the two people involved can write; a request is 'out' on the sender's side and 'in' on the other's, and only the person who RECEIVED it can turn both into 'ok'
-  friends:{"$uid":{".read":"auth != null && auth.uid == $uid","$other":{".write":"auth != null && (auth.uid == $uid || auth.uid == $other) && $uid != $other",
+  friends:{"$uid":{".read":"auth != null && auth.uid == $uid","$other":{".write":"auth != null && (auth.uid == $uid || auth.uid == $other) && $uid != $other && (auth.uid == $uid || !newData.exists() || !root.child('blocks/'+$uid+'/'+$other).exists())",
     ".validate":"newData.hasChildren(['s','t']) && newData.child('t').isNumber() && (!newData.child('n').exists() || (newData.child('n').isString() && newData.child('n').val().length < 40)) && ((auth.uid == $uid && ((newData.child('s').val() == 'out' && (!data.exists() || data.child('s').val() == 'out')) || (newData.child('s').val() == 'ok' && (data.child('s').val() == 'in' || data.child('s').val() == 'ok')))) || (auth.uid == $other && ((newData.child('s').val() == 'in' && (!data.exists() || data.child('s').val() == 'in')) || (newData.child('s').val() == 'ok' && (data.child('s').val() == 'out' || data.child('s').val() == 'ok')))))"}}},
   // chats/{a}/{b}: a conversation between two accepted friends (a < b); messages can only be added, never changed
-  chats:{"$a":{"$b":{".read":"auth != null && (auth.uid == $a || auth.uid == $b) && root.child('friends/'+$a+'/'+$b+'/s').val() == 'ok'",
-    "$msg":{".write":"auth != null && !data.exists() && (auth.uid == $a || auth.uid == $b) && root.child('friends/'+$a+'/'+$b+'/s').val() == 'ok'",".validate":"newData.hasChildren(['f','m','t']) && newData.child('f').val() == auth.uid && newData.child('m').isString() && newData.child('m').val().length > 0 && newData.child('m').val().length <= 300 && newData.child('t').isNumber()"}}}}}},null,2);
+  chats:{"$a":{"$b":{".read":"auth != null && (auth.uid == $a || auth.uid == $b) && root.child('friends/'+$a+'/'+$b+'/s').val() == 'ok'",".write":"auth != null && (auth.uid == $a || auth.uid == $b) && !newData.exists()",
+    "$msg":{".write":"auth != null && !data.exists() && (auth.uid == $a || auth.uid == $b) && root.child('friends/'+$a+'/'+$b+'/s').val() == 'ok'",".validate":"newData.hasChildren(['f','m','t']) && newData.child('f').val() == auth.uid && newData.child('m').isString() && newData.child('m').val().length > 0 && newData.child('m').val().length <= 300 && newData.child('t').isNumber()"}}}},
+  // blocks/{me}/{other}: my own block list. A blocked person cannot write a friend request onto my side (rule on friends above).
+  blocks:{"$uid":{".read":"auth != null && auth.uid == $uid",".write":"auth != null && auth.uid == $uid"}},
+  // reports/{id}: anyone signed in can file one about someone else; only the operator reads them (dashboard) and clears them
+  reports:{".read":`auth != null && auth.token.email == '${DASH_ADMIN}'`,".indexOn":["t"],"$rid":{".write":`auth != null && ((!data.exists() && newData.child('from').val() == auth.uid) || auth.token.email == '${DASH_ADMIN}')`,".validate":"!newData.exists() || (newData.hasChildren(['from','to','why','t']) && newData.child('to').isString() && newData.child('t').isNumber() && (!newData.child('ctx').exists() || newData.child('ctx').val().length <= 2000))"}}}},null,2);
 (()=>{ const t=document.getElementById('dRules2'), b=document.getElementById('dRulesCopy'); if(!t||!b) return; t.value=DASH_RULES;
   b.addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(DASH_RULES); }catch(e){ t.select(); document.execCommand('copy'); } document.getElementById('dRulesMsg').textContent='복사했어요. Firebase 콘솔의 규칙 탭에 붙여 넣고 게시해 주세요.'; }); })();
 function dLoad(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
@@ -623,7 +638,16 @@ function dashRender(S){ const users={}, reg={}, stg={}, day={}; let tot=0, mob=0
   const T=Object.values(stg).sort((a,b)=>b.v-a.v).slice(0,15); $('#dStage').innerHTML=dBar(T,T[0]?T[0].v:1,r=>`${dFmt(r.v)} · ${r.n}회`);
   const D=Object.values(day).sort((a,b)=>b.t-a.t).map(d=>({name:d.name,v:d.u.size,t:d.v})); const dm=Math.max(1,...D.map(d=>d.v)); $('#dDay').innerHTML=dBar(D,dm,r=>`${r.v}명 · ${dFmt(r.t)}`); }
 const MEM={list:[],ig:{}};
-async function memLoad(){ if(!DASH.db) return; try{ const [p,q]=await Promise.all([DASH.db.ref('profiles').once('value'),DASH.db.ref('private').once('value').catch(()=>null)]);
+// reports filed in the game (🚩): newest first; remove the reported person's profile and photos, or just close the report
+const REP_WHY_K={photo:'부적절한 사진',abuse:'욕설·괴롭힘',sexual:'성적인 내용',spam:'스팸·광고',fake:'사칭',etc:'기타'};
+async function repLoad(){ if(!DASH.db) return; const box=$('#rList'); try{ const s=await DASH.db.ref('reports').orderByChild('t').limitToLast(100).once('value'); const L=[]; s.forEach(c=>{ L.unshift({id:c.key,...c.val()}); });
+    const old=L.filter(r=>Date.now()-r.t>864e5).length; $('#rSum').textContent=L.length?`${L.length}건${old?` · ⚠️ 24시간 지난 것 ${old}건`:''}`:'없음';
+    box.innerHTML=L.length?L.map(r=>`<div class="card" style="padding:10px;margin:6px 0"><b>${esc(r.n||'버너')}</b> <span class="small muted">· ${esc(REP_WHY_K[r.why]||r.why)} · ${new Date(r.t).toLocaleString('ko-KR')}</span>${r.ctx?`<pre class="small" style="white-space:pre-wrap;margin:6px 0">${esc(r.ctx)}</pre>`:''}<div class="row" style="margin-top:6px"><button type="button" class="btn" data-rdel="${esc(r.to)}" data-rid="${esc(r.id)}">프로필·사진 삭제</button><button type="button" class="btn" data-rok="${esc(r.id)}">처리 완료</button><span class="small muted">대상 ID ${esc(r.to)}</span></div></div>`).join(''):`<p class="small muted">들어온 신고가 없어요.</p>`; }
+  catch(e){ box.innerHTML=`<p class='small muted'>신고를 불러오지 못했어요: ${esc(e.message||e)} (Firebase 규칙을 최신으로 게시해 주세요)</p>`; } }
+document.addEventListener('click',async e=>{ const d=e.target.closest('[data-rdel],[data-rok]'); if(!d||!DASH.db) return;
+  try{ if(d.dataset.rdel){ if(!confirm('이 사람의 프로필과 사진을 지울까요? 되돌릴 수 없어요.')) return; const u=d.dataset.rdel, up={}; up['profiles/'+u]=null; up['photos/'+u]=null; up['reports/'+d.dataset.rid]=null; await DASH.db.ref().update(up); }
+    else await DASH.db.ref('reports/'+d.dataset.rok).remove(); repLoad(); memLoad(); }catch(err){ alert('처리하지 못했어요: '+(err.message||err)); } });
+async function memLoad(){ if(!DASH.db) return; repLoad(); try{ const [p,q]=await Promise.all([DASH.db.ref('profiles').once('value'),DASH.db.ref('private').once('value').catch(()=>null)]);
     const L=[]; p.forEach(c=>{ L.push({uid:c.key,...c.val()}); }); MEM.list=L; MEM.ig={}; if(q) q.forEach(c=>{ const v=c.val(); if(v&&v.insta) MEM.ig[c.key]=v.insta; }); memRender();
     try{ const w=(await DASH.db.ref('public/webcfg').once('value')).val()||{}; if(w.kakaoJsKey) $('#kJs').placeholder='JavaScript 키 (저장됨)'; if(w.kakaoRestKey) $('#kRest').placeholder='REST API 키 (저장됨)'; }catch(e){}
   }catch(e){ $('#mList').innerHTML=`<p class='small muted'>가입자를 불러오지 못했어요: ${esc(e.message||e)}</p>`; } }
@@ -657,6 +681,16 @@ $('#dSaveCfg').addEventListener('click',async()=>{ const raw=$('#dCfg').value; c
     const body='// Firebase web config for visitor stats (saved from the admin dashboard)\nwindow.FB_CONFIG='+JSON.stringify(cfg)+';\n';
     const r=await fetch(url,{method:'PUT',headers:H,body:JSON.stringify({message:'Connect Firebase for visitor stats (admin)',content:b64(body),branch:'main',...(sha?{sha}:{})})});
     if(!r.ok) throw new Error('GitHub '+r.status); $('#dCfgMsg').textContent='저장했어요. 1~2분 뒤 사이트에 반영되면 이 창을 다시 열어 Google로 로그인하세요.'; }catch(e){ $('#dCfgMsg').textContent='저장 실패: '+e.message; } });
+// Steam demo allowlist: data.steam.djs = [{name, note, at}] saved with the schedule; the game's ?steam=1 mode plays only these DJs' sets
+function steamDjs(){ data.steam=data.steam||{djs:[]}; data.steam.djs=data.steam.djs||[]; return data.steam.djs; }
+function steamCount(name){ const n=name.trim().toLowerCase(); let c=0; for(const k in (data.booths||{})) for(const x of data.booths[k]) if(String(x.dj||'').trim().toLowerCase()===n) c++; return c; }
+function steamRender(){ const L=steamDjs(), all=new Set(); for(const k in (data.booths||{})) for(const x of data.booths[k]) if(x.dj) all.add(String(x.dj).trim());
+  document.getElementById('steamDjList').innerHTML=[...all].sort().map(n=>`<option value="${esc(n)}">`).join('');
+  const total=L.reduce((a,d)=>a+steamCount(d.name),0); document.getElementById('steamSum').textContent=L.length?`${L.length}명 · 편성 ${total}개`:'아직 없음';
+  document.getElementById('steamList').innerHTML=L.length?L.map((d,i)=>`<li style="margin:4px 0"><b>${esc(d.name)}</b> <span class="muted">편성 ${steamCount(d.name)}개${d.note?' · '+esc(d.note):''}${d.at?' · '+esc(d.at):''}</span> <button type="button" class="btn danger" data-steamdel="${i}" style="padding:2px 8px;font-size:12px">빼기</button></li>`).join(''):'<li class="muted">아직 허락한 DJ가 없어요. 스팀 데모에서는 DJ 세트가 나오지 않아요.</li>'; }
+document.getElementById('steamAdd').addEventListener('click',()=>{ const n=document.getElementById('steamName').value.trim(); if(!n) return; const L=steamDjs(); if(L.some(d=>d.name.toLowerCase()===n.toLowerCase())) return;
+  L.push({name:n,note:document.getElementById('steamNote').value.trim(),at:new Date().toISOString().slice(0,10)}); document.getElementById('steamName').value=''; document.getElementById('steamNote').value=''; dirty=true; render(); });
+document.getElementById('steamList').addEventListener('click',e=>{ const b=e.target.closest('[data-steamdel]'); if(!b) return; const L=steamDjs(), d=L[+b.dataset.steamdel]; if(d&&confirm(`${d.name}을(를) 스팀 데모 허락 목록에서 뺄까요?`)){ L.splice(+b.dataset.steamdel,1); dirty=true; render(); } });
 })();
 </script>
 </body>
