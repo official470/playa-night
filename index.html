@@ -361,6 +361,14 @@ body.dressing #sp{display:none!important}
 #meCard .olr button.g2{background:var(--panel);color:var(--text)} #meCard .olr button.chat{background:#ff4fa8;color:#fff;position:relative}
 #meCard .olr button.chat.new::after{content:'';position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#ffcf3a;box-shadow:0 0 0 2px var(--chip)}
 #meCard .olr .bs{display:flex;gap:5px;flex:none}
+#authBox .mail{background:transparent;color:var(--text);border:1px solid var(--panel-line)!important;grid-column:1/-1;font-weight:700}
+#authBox .authbtns.one{gap:8px}
+#mailDlg{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1100;width:min(360px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow-y:auto;padding:16px;border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+#mailDlg .em-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px} #mailDlg .em-h b{font-size:17px} #mailDlg .em-h button{border:0;background:var(--chip);color:var(--text);border-radius:999px;width:32px;height:32px;cursor:pointer}
+#mailDlg label{display:block;font-size:12.5px;color:var(--muted);margin:8px 0 4px} #mailDlg input{display:block;width:100%;margin-top:4px;padding:11px 12px;border-radius:12px;border:1px solid var(--panel-line);background:var(--chip);color:var(--text);font:inherit;font-size:16px}
+#mailDlg .primary{width:100%;margin-top:6px;border:0;border-radius:12px;padding:12px;font:inherit;font-weight:800;background:linear-gradient(135deg,#ff4fa8,#ff7a2f);color:#fff;cursor:pointer} #mailDlg .primary:disabled{opacity:.6}
+#mailDlg .em-msg{min-height:1.2em;margin:8px 0 2px;font-size:12.5px;color:#ffb0b0}
+#mailDlg .em-l{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:10px} #mailDlg .em-l button{border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;text-decoration:underline;cursor:pointer;padding:4px}
 #authBox .apple{background:#000;color:#fff;border:1px solid #333!important} #authBox .apple b{font-size:17px;line-height:1}
 #meCard .macc{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 14px;margin-top:10px;font-size:12px}
 #meCard .macc button,#meCard .macc a{border:0;background:none;padding:4px 2px;font:inherit;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
@@ -6154,10 +6162,10 @@ async function authInit(){ if(AUTH.auth) return true; if(AUTH.busy) return false
     AUTH.auth.onAuthStateChanged(u=>{ AUTH.user=u; authRender(); if(u) authLoadProfile(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); }); presListen();
     return true; }catch(e){ console.warn('auth init',e); return false; } finally{ AUTH.busy=false; } }
 function authName(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous&&AUTH.kakao) return AUTH.kakao.name||'카카오 버너'; return u.displayName||(/privaterelay\.appleid\.com$/.test(u.email||'')?'':(u.email||'').split('@')[0])||'버너'; }
-function authProvider(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous) return 'kakao'; return (u.providerData||[]).some(p=>p&&p.providerId==='apple.com')?'apple':'google'; }
-function authLabel(){ return {kakao:'카카오',apple:'Apple',google:'Google'}[authProvider()]||'Google'; }
+function authProvider(){ const u=AUTH.user; if(!u) return ''; if(u.isAnonymous) return 'kakao'; const P=(u.providerData||[]).map(p=>p&&p.providerId); return P.includes('apple.com')?'apple':P.includes('password')?'email':'google'; }
+function authLabel(){ return {kakao:'카카오',apple:'Apple',google:'Google',email:'이메일'}[authProvider()]||'Google'; }
 // inside the iOS app Google and Kakao sign-in cannot open (they need a real browser), so the app offers Sign in with Apple
-const RH_IN_APP=!!(window.RH_APP&&window.RH_APP.platform==='ios');
+const RH_IN_APP=!!(window.RH_APP&&window.RH_APP.platform==='ios'), RH_APP_GOOGLE=!!(RH_IN_APP&&window.RH_APP.googleLogin);
 function loginMain(){ if(RH_IN_APP) loginApple(); else loginGoogle(); }
 async function loginGoogle(){ if(!(await authInit())){ toast('Google 로그인은 준비 중이에요'); return; }
   try{ const r=await AUTH.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); AUTH.user=r.user; authAfterLogin(); }
@@ -6180,12 +6188,12 @@ function authAfterLogin(){ const n=authName();
 async function logout(){ presStop(); if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); toast('로그아웃했어요'); }
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
-    box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${authProvider()==='kakao'?'💬':authProvider()==='apple'?'':'G'}</i>`}<span><b>${esc(authName())}</b><small>${authLabel()}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
-      :`<p class='authlead'><b>👥 함께 즐기기</b>로그인하면 다른 버너들과 프로필을 나누고, 같이 춤추고 어울릴 수 있어요</p><div class='authbtns one'>${RH_IN_APP?`<button type='button' class='apple' data-auth='google'><b></b>Apple로 로그인하고 함께 즐기기</button>`:`<button type='button' class='google' data-auth='google'><b>G</b>Google로 로그인하고 함께 즐기기</button>`}</div><small class='authhint'>🎧 로그인 없이 입장하면 혼자서 즐겨요</small>`; }
+    box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${{kakao:'💬',apple:'',email:'✉️'}[authProvider()]||'G'}</i>`}<span><b>${esc(authName())}</b><small>${authLabel()}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`
+      :`<p class='authlead'><b>👥 함께 즐기기</b>로그인하면 다른 버너들과 프로필을 나누고, 같이 춤추고 어울릴 수 있어요</p><div class='authbtns one'>${RH_IN_APP?`<button type='button' class='apple' data-auth='google'><b></b>Apple로 로그인하고 함께 즐기기</button>${RH_APP_GOOGLE?`<button type='button' class='google' data-auth='gapp'><b>G</b>Google로 로그인</button>`:''}`:`<button type='button' class='google' data-auth='google'><b>G</b>Google로 로그인하고 함께 즐기기</button>`}<button type='button' class='mail' data-auth='email'><b>✉️</b>이메일로 로그인 · 가입</button></div><small class='authhint'>🎧 로그인 없이 입장하면 혼자서 즐겨요</small>`; }
   const mb=document.getElementById('profBtn'); if(mb) setBtn(mb,AUTH.user?'내 프로필':'로그인','프로필'); }
 function authBuild(){ if(document.getElementById('authBox')) return; const nm=document.querySelector('#creator label.name'); if(!nm) return;
   const box=document.createElement('div'); box.id='authBox'; nm.after(box);
-  box.addEventListener('click',e=>{ const b=e.target.closest('[data-auth]'); if(!b) return; const a=b.dataset.auth; if(a==='google') loginMain(); else if(a==='kakao') loginKakao(); else if(a==='prof') profOpen(false); else if(a==='out') logout(); });
+  box.addEventListener('click',e=>{ const b=e.target.closest('[data-auth]'); if(!b) return; const a=b.dataset.auth; if(a==='google') loginMain(); else if(a==='gapp') loginGoogleApp(); else if(a==='email') emailOpen(); else if(a==='kakao') loginKakao(); else if(a==='prof') profOpen(false); else if(a==='out') logout(); });
   const tools=document.querySelector('.tools'), help=document.getElementById('helpBtn'); if(tools&&help&&!document.getElementById('profBtn')){ const b=document.createElement('button'); b.id='profBtn'; b.innerHTML="<span class='l'>로그인</span><span class='s'>프로필</span>"; help.before(b);
     b.addEventListener('click',()=>{ if(AUTH.user) profOpen(false); else authChoose(); }); }
   authRender(); }
@@ -6487,7 +6495,10 @@ async function acctDelete(){ const u=AUTH.user; if(!u||!AUTH.db) return;
     FAV.map={}; AUTH.kakao=null; AUTH.prof=null; try{ await AUTH.auth.signOut(); }catch(e){} authRender(); backPrint(); const c=document.getElementById('meCard'); if(c) c.hidden=true; toast('계정을 삭제했어요. 그동안 함께해 줘서 고마워요'); };
   try{ await u.delete(); return fin(); }catch(e){ if(!(e&&e.code==='auth/requires-recent-login')){ console.warn('delete',e); toast('계정 삭제를 끝내지 못했어요. 다시 로그인한 뒤 한 번 더 눌러 주세요'); return; } }
   toast('보안을 위해 한 번 더 로그인하면 삭제가 끝나요');
-  try{ if(authProvider()==='apple') await u.reauthenticateWithCredential(await appleCredential()); else await u.reauthenticateWithPopup(new firebase.auth.GoogleAuthProvider()); await u.delete(); fin(); }
+  try{ const pv=authProvider(); if(pv==='apple') await u.reauthenticateWithCredential(await appleCredential());
+    else if(pv==='email'){ const pw=prompt(tr('비밀번호를 한 번 더 입력해 주세요')); if(!pw) return; await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,pw)); }
+    else if(RH_IN_APP) await u.reauthenticateWithCredential(await googleAppCredential()); else await u.reauthenticateWithPopup(new firebase.auth.GoogleAuthProvider());
+    await u.delete(); fin(); }
   catch(e){ console.warn('delete',e); toast('계정 삭제를 끝내지 못했어요. 다시 로그인한 뒤 한 번 더 눌러 주세요'); } }
 // Sign in with Apple (iOS app): the page makes a random nonce, the app shows Apple's sheet and hands back the signed ID token for Firebase
 const APL={wait:null,name:''};
@@ -6503,6 +6514,39 @@ async function loginApple(){ if(!(await authInit())){ toast('Apple 로그인은 
     if(APL.name&&!r.user.displayName) await r.user.updateProfile({displayName:APL.name.slice(0,20)}).catch(()=>{});
     authAfterLogin(); }
   catch(e){ if(!(e&&e.code==='apple/canceled')){ console.warn('apple',e); toast('Apple 로그인에 실패했어요'); } } }
+// email sign-up / sign-in (Firebase email + password); works the same on the website and in the app
+function emailOpen(){ let d=document.getElementById('mailDlg'); if(!d){ d=document.createElement('section'); d.id='mailDlg'; d.className='card'; d.setAttribute('role','dialog'); d.setAttribute('aria-label','이메일 로그인'); document.body.appendChild(d);
+    d.addEventListener('click',e=>{ const b=e.target.closest('[data-em]'); if(!b) return; const a=b.dataset.em; if(a==='x') d.hidden=true; else if(a==='mode'){ d.dataset.mode=d.dataset.mode==='up'?'in':'up'; emailRender(); } else if(a==='reset') emailReset(); });
+    d.addEventListener('submit',e=>{ e.preventDefault(); emailGo(); }); }
+  d.dataset.mode='in'; emailRender(); d.hidden=false; setTimeout(()=>{ const i=document.getElementById('emAddr'); if(i&&!isTouch) i.focus(); },50); }
+function emailRender(){ const d=document.getElementById('mailDlg'), up=d.dataset.mode==='up', em=(document.getElementById('emAddr')||{}).value||'';
+  d.innerHTML=`<div class='em-h'><b>✉️ ${up?'이메일로 가입하기':'이메일로 로그인'}</b><button type='button' data-em='x' aria-label='닫기'>✕</button></div>
+  <form class='em-f'>${up?`<label>닉네임<input id='emName' maxlength='20' autocomplete='nickname' placeholder='게임에서 보일 이름' required></label>`:''}
+  <label>이메일<input id='emAddr' type='email' autocomplete='email' inputmode='email' required value='${esc(em)}'></label>
+  <label>비밀번호<input id='emPw' type='password' minlength='6' autocomplete='${up?'new-password':'current-password'}' placeholder='6자 이상' required></label>
+  <p class='em-msg' id='emMsg' role='status'></p>
+  <button type='submit' class='primary'>${up?'가입하고 시작하기':'로그인'}</button></form>
+  <div class='em-l'><button type='button' data-em='mode'>${up?'이미 계정이 있어요 → 로그인':'처음이에요 → 이메일로 가입'}</button>${up?'':`<button type='button' data-em='reset'>비밀번호를 잊었어요</button>`}</div>`; }
+const EM_ERR={'auth/email-already-in-use':'이미 가입된 이메일이에요. 로그인해 주세요','auth/invalid-email':'이메일 주소를 확인해 주세요','auth/weak-password':'비밀번호는 6자 이상이어야 해요','auth/user-not-found':'이메일이나 비밀번호가 맞지 않아요','auth/wrong-password':'이메일이나 비밀번호가 맞지 않아요','auth/invalid-credential':'이메일이나 비밀번호가 맞지 않아요','auth/invalid-login-credentials':'이메일이나 비밀번호가 맞지 않아요','auth/too-many-requests':'시도가 너무 많아요. 잠시 후 다시 해 주세요','auth/network-request-failed':'인터넷 연결을 확인해 주세요'};
+async function emailGo(){ const d=document.getElementById('mailDlg'), up=d.dataset.mode==='up', msg=document.getElementById('emMsg');
+  const em=document.getElementById('emAddr').value.trim(), pw=document.getElementById('emPw').value, nm=up?document.getElementById('emName').value.trim().slice(0,20):'';
+  if(!(await authInit())){ msg.textContent='지금은 로그인할 수 없어요'; return; } const btn=d.querySelector('.em-f .primary'); btn.disabled=true; msg.textContent='';
+  try{ const r=up?await AUTH.auth.createUserWithEmailAndPassword(em,pw):await AUTH.auth.signInWithEmailAndPassword(em,pw); AUTH.user=r.user;
+    if(up){ if(nm) await r.user.updateProfile({displayName:nm}).catch(()=>{}); r.user.sendEmailVerification().catch(()=>{}); }
+    d.hidden=true; authAfterLogin(); if(up) setTimeout(()=>toast('가입했어요! 확인 메일도 보냈어요'),3400); }
+  catch(e){ msg.textContent=EM_ERR[e&&e.code]||'처리하지 못했어요. 잠시 후 다시 해 주세요'; btn.disabled=false; } }
+async function emailReset(){ const em=(document.getElementById('emAddr')||{}).value||'', msg=document.getElementById('emMsg'); if(!em.trim()){ msg.textContent='이메일을 먼저 입력해 주세요'; return; }
+  if(!(await authInit())) return; try{ await AUTH.auth.sendPasswordResetEmail(em.trim()); msg.textContent='비밀번호를 바꾸는 메일을 보냈어요'; }catch(e){ msg.textContent=EM_ERR[e&&e.code]||'메일을 보내지 못했어요'; } }
+// Google in the iOS app: Google refuses sign-in inside an embedded web view, so the app runs Google's own sign-in sheet and returns an ID token
+const GAP={wait:null};
+window.rhGoogleDone=function(r){ const w=GAP.wait; GAP.wait=null; if(w) w(r||{}); };
+async function googleAppCredential(){ const h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.googleLogin; if(!h) throw Object.assign(new Error('noapp'),{code:'google/noapp'});
+  const r=await new Promise(res=>{ GAP.wait=res; h.postMessage({}); });
+  if(!r.idToken) throw Object.assign(new Error(r.error||'failed'),{code:r.error==='canceled'?'google/canceled':'google/failed'});
+  return firebase.auth.GoogleAuthProvider.credential(r.idToken); }
+async function loginGoogleApp(){ if(!(await authInit())){ toast('Google 로그인은 준비 중이에요'); return; }
+  try{ const r=await AUTH.auth.signInWithCredential(await googleAppCredential()); AUTH.user=r.user; authAfterLogin(); }
+  catch(e){ if(!(e&&e.code==='google/canceled')){ console.warn('google app',e); toast('Google 로그인에 실패했어요'); } } }
 authBuild(); authInit().then(ok=>{ if(ok) kakaoReturn(); });
 
 /* ================= STAGE DANCE BONUS: 1 MIN = +3 COINS ================= */
