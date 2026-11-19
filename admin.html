@@ -235,6 +235,7 @@ details.setup li{margin:4px 0}
       <p class="small muted">게임에서 세트를 틀어도 된다고 서면(메일·DM)으로 허락한 DJ만 넣어요. 스팀 데모(주소 뒤 <code>?steam=1</code>)에서는 이 DJ들의 세트만 나오고, 웹사이트는 지금처럼 모든 편성이 나와요. 이름은 편성표의 DJ 이름과 똑같이 적어요.</p>
       <div class="row"><input id="steamName" list="steamDjList" placeholder="DJ 이름" style="flex:1;min-width:180px"><input id="steamNote" placeholder="메모 (허락 받은 곳·날짜)" style="flex:1;min-width:180px"><button type="button" class="btn" id="steamAdd">추가</button></div>
       <datalist id="steamDjList"></datalist>
+      <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0 0"><input type="checkbox" id="steamApp"> <b>📱 iOS 앱에도 적용</b> <span class="muted">켜면 App Store 앱에서도 이 DJ들의 세트만 나와요 (웹사이트는 그대로)</span></label>
       <ul class="small" id="steamList" style="margin:10px 0 0;padding-left:18px"></ul>
     </details>
 
@@ -684,10 +685,11 @@ $('#dSaveCfg').addEventListener('click',async()=>{ const raw=$('#dCfg').value; c
 // Steam demo allowlist: data.steam.djs = [{name, note, at}] saved with the schedule; the game's ?steam=1 mode plays only these DJs' sets
 function steamDjs(){ data.steam=data.steam||{djs:[]}; data.steam.djs=data.steam.djs||[]; return data.steam.djs; }
 function steamCount(name){ const n=name.trim().toLowerCase(); let c=0; for(const k in (data.booths||{})) for(const x of data.booths[k]) if(String(x.dj||'').trim().toLowerCase()===n) c++; return c; }
-function steamRender(){ const L=steamDjs(), all=new Set(); for(const k in (data.booths||{})) for(const x of data.booths[k]) if(x.dj) all.add(String(x.dj).trim());
+function steamRender(){ const L=steamDjs(), all=new Set(); const ap=document.getElementById('steamApp'); if(ap) ap.checked=!!data.steam.app; for(const k in (data.booths||{})) for(const x of data.booths[k]) if(x.dj) all.add(String(x.dj).trim());
   document.getElementById('steamDjList').innerHTML=[...all].sort().map(n=>`<option value="${esc(n)}">`).join('');
   const total=L.reduce((a,d)=>a+steamCount(d.name),0); document.getElementById('steamSum').textContent=L.length?`${L.length}명 · 편성 ${total}개`:'아직 없음';
   document.getElementById('steamList').innerHTML=L.length?L.map((d,i)=>`<li style="margin:4px 0"><b>${esc(d.name)}</b> <span class="muted">편성 ${steamCount(d.name)}개${d.note?' · '+esc(d.note):''}${d.at?' · '+esc(d.at):''}</span> <button type="button" class="btn danger" data-steamdel="${i}" style="padding:2px 8px;font-size:12px">빼기</button></li>`).join(''):'<li class="muted">아직 허락한 DJ가 없어요. 스팀 데모에서는 DJ 세트가 나오지 않아요.</li>'; }
+document.getElementById('steamApp').addEventListener('change',e=>{ steamDjs(); if(e.target.checked&&!data.steam.djs.length&&!confirm('허락한 DJ가 아직 없어요. 켜면 앱에서 무대 음악이 나오지 않아요. 그래도 켤까요?')){ e.target.checked=false; return; } data.steam.app=e.target.checked; dirty=true; render(); });
 document.getElementById('steamAdd').addEventListener('click',()=>{ const n=document.getElementById('steamName').value.trim(); if(!n) return; const L=steamDjs(); if(L.some(d=>d.name.toLowerCase()===n.toLowerCase())) return;
   L.push({name:n,note:document.getElementById('steamNote').value.trim(),at:new Date().toISOString().slice(0,10)}); document.getElementById('steamName').value=''; document.getElementById('steamNote').value=''; dirty=true; render(); });
 document.getElementById('steamList').addEventListener('click',e=>{ const b=e.target.closest('[data-steamdel]'); if(!b) return; const L=steamDjs(), d=L[+b.dataset.steamdel]; if(d&&confirm(`${d.name}을(를) 스팀 데모 허락 목록에서 뺄까요?`)){ L.splice(+b.dataset.steamdel,1); dirty=true; render(); } });

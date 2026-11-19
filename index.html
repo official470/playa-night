@@ -4650,13 +4650,13 @@ async function mcFetch(g){ if(MC.cache[g]&&MC.cache[g].length) return MC.cache[g
   const seen=new Set(), L=lists.flat().filter(c=>mcMusicOnly(c)&&!seen.has(c.key)&&seen.add(c.key));
   L.sort((a,b)=>(b.play_count||0)-(a.play_count||0)); L.length=Math.min(L.length,40);
   for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; } MC.cache[g]=L; return L; }
-async function mcPlay(g,T){ if(typeof STEAM!=='undefined'&&STEAM) return; initAudio(); MC.target=T; MC.genre=g; 
+async function mcPlay(g,T){ if(djOnly()) return; initAudio(); MC.target=T; MC.genre=g; 
   mcStatus(`${MC_G[g][0]} DJ 세트를 찾는 중이에요`);
   MC.list=await mcFetch(g); if(MC.target!==T||MC.genre!==g) return;
   if(!MC.list.length){ mcStatus(''); toast('Mixcloud에 연결하지 못했어요. 인터넷 연결을 확인해 주세요'); mcStop(); return; }
   MC.idx=-1; MC.fails=0; mcNext(); }
 // every play and every skip lands on a random set (never the same one twice in a row)
-function mcNext(){ if(typeof STEAM!=='undefined'&&STEAM) MC.list=MC.list.filter(x=>x&&x.sched&&steamOK(x.user&&x.user.name)); if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null; MC.autoPaused=false;
+function mcNext(){ if(djOnly()) MC.list=MC.list.filter(x=>x&&x.sched&&steamOK(x.user&&x.user.name)); if(!MC.target||!MC.list.length) return; const n=MC.list.length; MC.idx=n<2?0:MC.idx<0?Math.floor(Math.random()*n):(MC.idx+1+Math.floor(Math.random()*(n-1)))%n; const c=MC.list[MC.idx]; MC.cur=c; MC.pos=null; MC.autoPaused=false;
   // once a player has started, load the next set into it: a fresh iframe would need another tap on mobile
   const kind=c.sc?'sc':'mc';
   if(MC.iframe&&MC.live&&MC.kind===kind){ MC.paused=false; const go=!MC.quiet||!MC_NOVOL; if(!go) MC.autoPaused=true; const q=!!MC.quiet; MC.vol=-1; if(kind==='sc'){ const w=MC.w; try{ w.load(c.key,{auto_play:go&&!q,visual:false,show_comments:false,hide_related:true,callback:()=>{ scInfo(w,c); if(q){ try{ w.setVolume(0); MC.vol=0; if(go) w.play(); }catch(e){} } }}); }catch(e){} } else mcCall('load','https://www.mixcloud.com'+c.key,go); mcUi(); if(!MC.quiet) toast(`${MC.target.name} · ${mcTitle()}`); return; }
@@ -7242,7 +7242,9 @@ const SCHEDULE_URL='schedule.json';
 // Steam demo mode (?steam=1, or the desktop build): only sets by DJs who agreed to the game (schedule.json → steam.djs, edited in admin.html) play; genre search playback is off
 const STEAM=isSteam();
 function isSteam(){ if(isSteam.v!==undefined) return isSteam.v; return isSteam.v=(()=>{ try{ if(new URLSearchParams(location.search).get('steam')==='1'||/Electron/i.test(navigator.userAgent)||window.STEAM_BUILD){ sessionStorage.setItem('playa-steam','1'); return true; } return sessionStorage.getItem('playa-steam')==='1'; }catch(e){ return false; } })(); }
-function steamOK(dj){ if(!STEAM) return true; const L=(SCH.sched&&SCH.sched.steam&&SCH.sched.steam.djs)||[]; const n=String(dj||'').trim().toLowerCase(); return !!n&&L.some(x=>String((x&&x.name)||x||'').trim().toLowerCase()===n); }
+// only DJs who agreed: always in the Steam demo; in the iOS app once the admin turns on '앱에도 적용' (schedule.json → steam.app)
+function djOnly(){ try{ if(STEAM) return true; return !!(window.RH_APP&&window.RH_APP.platform==='ios'&&SCH.sched&&SCH.sched.steam&&SCH.sched.steam.app); }catch(e){ return false; } }
+function steamOK(dj){ if(!djOnly()) return true; const L=(SCH.sched&&SCH.sched.steam&&SCH.sched.steam.djs)||[]; const n=String(dj||'').trim().toLowerCase(); return !!n&&L.some(x=>String((x&&x.name)||x||'').trim().toLowerCase()===n); }
 const SCH={url:SCHEDULE_URL,sched:null,skew:0,lastFetch:-99,lastSync:-99,synced:false,fail:0};
 try{ const o=localStorage.getItem('playa-sched-url'); if(o) SCH.url=o; }catch(e){}
 function schNow(){ return Date.now()+SCH.skew; }
