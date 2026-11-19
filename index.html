@@ -5253,7 +5253,7 @@ updaters.push(t=>{ if(FNEW.done||!inGame) return; if(!FNEW.t) FNEW.t=t+6; if(t<F
   if(!$('#sp').hidden||document.body.classList.contains('dressing')) return; const np=document.getElementById('nsPop'); if(np&&!np.hidden) return;
   FNEW.done=true; const L=fashionNew().slice(); if(!L.length) return; for(let i=L.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [L[i],L[j]]=[L[j],L[i]]; }
   const five=L.slice(0,5);
-  openSp('NEW ARRIVALS','',`<div class='fshots'>${five.map((it,k)=>`<figure><canvas data-fs='${KREAM.indexOf(it)}' width='240' height='240' aria-label='${esc(it.b+' '+it.n)}'></canvas></figure>`).join('')}</div><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
+  openSp('NEW ARRIVALS','',`<div class='fshots'>${five.map((it,k)=>`<figure><canvas data-fs='${KREAM.indexOf(it)}' width='240' height='240' aria-label='${esc((kB(it)+' '+kN(it)).trim())}'></canvas></figure>`).join('')}</div><div class='acts'><button data-act='go' class='hot'>스타일룸에서 입어 보기</button><button data-act='x'>나중에</button></div>`,
     a=>{ closeSp(); if(a==='go') $('#dressBtn').click(); }); fshotsSpin(); });
 // the new-arrivals pieces turn slowly in 3D (one shared renderer draws all five canvases)
 function fshotsSpin(){ try{ kpcInit(); }catch(e){ return; } const cvs=[...document.querySelectorAll('canvas[data-fs]')], sc=kStudio(), _dim=sc.children.forEach(l=>{ if(l.isHemisphereLight) l.intensity=.55; else if(l.isDirectionalLight) l.intensity*=.85; }), S=cvs.map(cv=>{ const {P,box}=kProduct(+cv.dataset.fs), cam=new THREE.PerspectiveCamera(30,1,.01,50), c=kFrame(cam,box), hold=new THREE.Group(); P.root.position.x=-c.x; P.root.position.z=-c.z; hold.add(P.root); return {cv,x:cv.getContext('2d'),cam,hold,P}; });
@@ -5349,7 +5349,13 @@ function kreamGear(P,c){ const T=P.torso, H=P.head;
   if(c.kWorn){ kreamBadges(P,c); kreamDetails(P,c); } }
 // brand details: logos and the product's own shape cues, drawn only while that brand item is worn
 const LGM={};
-function lgMat(kind,txt,fg,bg){ const key=kind+txt+fg+bg; if(LGM[key]) return LGM[key]; const cv=document.createElement('canvas'), W=256, Hh=kind==='wide'?64:256; cv.width=W; cv.height=Hh; const x=cv.getContext('2d'); x.textAlign='center'; x.textBaseline='middle';
+// Steam demo: no real brand names or logos. Shop cards show the product only, and model names that are trademarks get a plain description
+const KGEN={'젤 카야노 14 실버':'실버 러닝화','2023 슈퍼 배기 진':'슈퍼 배기 진','무스비 백':'매듭 숄더백','르 시티 백':'스터드 레더 백','안디아모 백 핑크':'위빙 레더 백 핑크','조디 미니':'노트 미니 백','코바라 플랫':'러버 플랫 슈즈','A168WA-1 시계':'디지털 시계 실버','세메터리 롱슬리브':'크로스 프린트 롱슬리브','세메터리 크로스 후디 화이트':'크로스 프린트 후디 화이트','크로스볼 비즈 팔찌':'실버 비즈 팔찌','페이퍼 체인':'실버 링크 체인','포에버 링 레이어드':'레이어드 실버 링 세트','호스슈 포켓 티 화이트':'포켓 티 화이트','호스슈 후디 블랙':'실버 패치 후디 블랙','1DR 숄더백 실버':'메탈릭 숄더백 실버','B-1DR 벨트':'메탈 버클 벨트','1460 8홀 부츠 체리 레드':'8홀 레이스업 부츠 체리 레드','랑 01':'오버사이즈 선글라스','버뮤다 캐주얼':'테리 버킷햇','컬러 모노그램 셔츠':'패턴 프린트 셔츠','타비 앵클부츠':'스플릿 토 앵클부츠','에어맥스 95 빅 버블':'에어 쿠션 러닝화','아이 재킷 리덕스':'스포츠 랩 선글라스','리나일론 재킷':'나일론 재킷 블랙','리에디션 2005 리나일론':'나일론 미니 숄더백','대디오 II':'레트로 메탈 선글라스','스닉스 하이톱':'하이톱 스니커즈 화이트','XT-6 블랙':'트레일 러닝화 블랙','베이직 스투시 티':'베이직 그래픽 티','삼바 OG':'로우 테라스 스니커즈','미니 바스 릴리프 펜던트':'미니 진주 펜던트'};
+// real brand names stay off the Steam build and the iOS app (store rules on trademarks); the website shows them
+function noBrand(){ return isSteam()||!!(window.RH_APP&&window.RH_APP.platform==='ios'); }
+function kN(it){ return noBrand()?(KGEN[it.n]||it.n):it.n; }
+function kB(it){ return noBrand()?'':it.b; }
+function lgMat(kind,txt,fg,bg){ if(noBrand()&&!['mono','weave','num','face'].includes(kind)){ return LGM.__blank||(LGM.__blank=new THREE.MeshLambertMaterial({transparent:true,opacity:0,depthWrite:false})); } const key=kind+txt+fg+bg; if(LGM[key]) return LGM[key]; const cv=document.createElement('canvas'), W=256, Hh=kind==='wide'?64:256; cv.width=W; cv.height=Hh; const x=cv.getContext('2d'); x.textAlign='center'; x.textBaseline='middle';
   const fit=(t,font,max,y)=>{ let sz=200; do{ x.font=font.replace('S',sz+'px'); sz-=4; }while(x.measureText(t).width>max&&sz>8); x.fillText(t,W/2,y); };
   if(kind==='tri'){ x.fillStyle='#c8ccd4'; x.beginPath(); x.moveTo(20,40); x.lineTo(236,40); x.lineTo(128,230); x.fill(); x.fillStyle='#141414'; x.beginPath(); x.moveTo(40,52); x.lineTo(216,52); x.lineTo(128,208); x.fill(); x.fillStyle='#c8ccd4'; fit(txt,'bold S Georgia,serif',120,90); }
   else if(kind==='compass'){ x.fillStyle='#e8d84a'; x.beginPath(); x.arc(128,110,96,Math.PI,0); x.lineTo(224,200); x.lineTo(32,200); x.fill(); x.fillStyle='#2a6a3a'; x.beginPath(); x.arc(128,110,80,Math.PI,0); x.lineTo(208,186); x.lineTo(48,186); x.fill(); x.fillStyle='#e8d84a'; for(let i=0;i<8;i++){ x.save(); x.translate(128,120); x.rotate(i*Math.PI/4); x.beginPath(); x.moveTo(0,-56); x.lineTo(i%2?6:10,0); x.lineTo(i%2?-6:-10,0); x.fill(); x.restore(); } x.fillStyle='#141414'; x.fillRect(32,206,192,40); x.fillStyle='#e8d84a'; fit(txt,'bold S Arial,sans-serif',180,227); }
@@ -5431,7 +5437,7 @@ const KDET={
 function kreamDetails(P,c){ for(const i of Object.values(c.kWorn||{})){ const it=KREAM[i]; if(!it||!it.d||!KDET[it.d]) continue; if(!Object.entries(it.set).every(([k,v])=>c[k]===v)) continue; try{ KDET[it.d](P,c,it); }catch(e){ console.warn('brand detail',it.d,e&&e.message); } } }
 function renderOpts(){ renderOptsBase(); const first=$('#opts .sec'); if(!first) return; const d=document.createElement('div'); d.className='sec';
   const list=KREAM.map((it,i)=>[it,i]).filter(([it])=>kCat==='전체'||it.c===kCat);
-  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset kchip${it.fx?' krare':''}' data-kream='${i}' aria-pressed='${kreamOn(it)}'>${it.fx?`<span class='kbadge'>⚡ 특수 기능</span>`:''}<i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${it.fx&&kCat==='레어'?`<span class='kfx'>${esc(it.fx)}</span>`:''}${kTag(it)}</em></button>`).join('')}</div><p class='hint'>가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
+  d.innerHTML=`<h2>브랜드샵</h2><div class='chips'>${KCATS.map(c=>`<button class='chip' data-kcat='${c}' aria-pressed='${kCat===c}'>${c}</button>`).join('')}</div><div class='chips'>${list.map(([it,i])=>`<button class='chip preset kchip${it.fx?' krare':''}' data-kream='${i}' aria-pressed='${kreamOn(it)}'>${it.fx?`<span class='kbadge'>⚡ 특수 기능</span>`:''}<i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(kB(it))}<small>${esc(kN(it))}</small><em class='kp ${kFree().has(i)?'free':kOwned(it)?'own':''}'>${it.fx&&kCat==='레어'?`<span class='kfx'>${esc(it.fx)}</span>`:''}${kTag(it)}</em></button>`).join('')}</div><p class='hint'>가장 저렴한 10개는 무료, 나머지는 눌러서 입어 본 뒤 코인으로 사요. 사지 않은 아이템은 스타일룸을 나갈 때 벗어요.</p>`;
   first.after(d); addOwnedSec(d); setTimeout(kThumbFill,60); }
 $('#opts').addEventListener('click',e=>{ const btn=e.target.closest('button'); if(!btn) return;
   if(btn.dataset.kcat){ kCat=btn.dataset.kcat; return; }
@@ -5585,7 +5591,7 @@ const KSLOTF={top:['kTop','kPrint','kInk','kRt'],bottom:['kPants','kPantsInk'],o
 function kClear(o,it){ (KSLOTF[kSlot(it)]||[]).forEach(k=>delete o[k]); if(kSlot(it)==='top') kTopOver(o); }
 // the upper body is one slot: picking a top takes off a jacket that would hide it; open-front pieces (track, crop, check, vest, kimono) stay on as a layer
 function kTopOver(o){ if(o.kOuter&&!['track','crop','check'].includes(o.kOuter)){ KSLOTF.outer.forEach(k=>delete o[k]); if(o.kWorn){ o.kWorn=Object.assign({},o.kWorn); delete o.kWorn.outer; } } if(o.outer==='fur') o.outer='none'; }
-function kreamApplyBase(it){ if(kreamOn(it)) Object.keys(it.set).forEach(k=>{ if(k[0]==='k') delete cfg[k]; else if(k==='face') cfg.face='none'; }); else { kClear(cfg,it); Object.assign(cfg,it.set); } refreshOpts(); toast(kreamOn(it)?`${it.b} ${it.n} 착용!`:`${it.n}을(를) 벗었어요`); }
+function kreamApplyBase(it){ if(kreamOn(it)) Object.keys(it.set).forEach(k=>{ if(k[0]==='k') delete cfg[k]; else if(k==='face') cfg.face='none'; }); else { kClear(cfg,it); Object.assign(cfg,it.set); } refreshOpts(); toast(kreamOn(it)?`${(kB(it)+' '+kN(it)).trim()} 착용!`:`${kN(it)}을(를) 벗었어요`); }
 const kKey=it=>'B:'+it.b+'|'+it.n; let KFREE=null;
 function kFree(){ return KFREE||(KFREE=new Set(KREAM.map((it,i)=>[it.c==='레어'?1e9:(it.p||0),i]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]).slice(0,10).map(x=>x[1]))); }
 function kOwned(it){ return kFree().has(KREAM.indexOf(it))||owned.includes(kKey(it)); }
@@ -5595,7 +5601,7 @@ function kWon(p){ return p>=100?(p/100).toLocaleString('ko-KR',{maximumFractionD
 // buying sits in the bottom bar next to "적용하고 돌아가기", so the preview shows only the model
 function kBuyBar(it){ let bt=$('#kBuyBtn'); if(!bt){ bt=document.createElement('button'); bt.id='kBuyBtn'; bt.type='button'; bt.hidden=true; $('#enterBtn').before(bt);
     bt.addEventListener('click',()=>{ const it=KREAM[+bt.dataset.i]; if(!it||kOwned(it)) return; if(coins<it.p){ toast(`코인이 ${it.p-coins}개 모자라요 (보유 ${coins}). 춤추거나 코인을 주워 보세요`); return; }
-      addCoins(-it.p); owned.push(kKey(it)); saveEco(); chime(79,'sine',.08,.5); toast(`${it.b} ${it.n} 구매 완료! 이제 계속 입을 수 있어요`); kBuyBar(it); refreshOpts(); }); }
+      addCoins(-it.p); owned.push(kKey(it)); saveEco(); chime(79,'sine',.08,.5); toast(`${(kB(it)+' '+kN(it)).trim()} 구매 완료! 이제 계속 입을 수 있어요`); kBuyBar(it); refreshOpts(); }); }
   if(!it||kOwned(it)||!kreamOn(it)){ bt.hidden=true; return; } bt.dataset.i=KREAM.indexOf(it); bt.innerHTML=`구매하기<small>${esc(it.n)}</small>`; bt.classList.toggle('poor',coins<it.p); bt.hidden=false; }
 // product shot: only the piece itself (no body), turning slowly, on its own small renderer
 const KPC={R:null,scene:null,cam:null,P:null,raf:0,i:-1};
@@ -5653,11 +5659,11 @@ function kUnowned(){ return KREAM.map((it,i)=>[it,i]).filter(([it])=>!kOwned(it)
 function kAsk(list,one){ let el=$('#kAsk'); if(!el){ el=document.createElement('div'); el.id='kAsk'; document.body.appendChild(el); }
   const sum=list.reduce((a,[it])=>a+it.p,0), poor=coins<sum;
   el.innerHTML=`<div class='box'><h3>구매하시겠습니까?</h3><p>${one?'아직 옷장에 없는 아이템이에요. 구매하면 내 옷장에 들어가고 바로 입어요.':`옷장에 없는 아이템 ${list.length}개를 입고 있어요. 구매해야 입고 나갈 수 있어요.`}</p>
-    <ul>${list.map(([it,i])=>`<li><i style="background-image:url(${kThumb(i)})"></i><span><b>${esc(it.b)}</b>${esc(it.n)}</span><em>🪙 ${it.p}</em></li>`).join('')}</ul>
+    <ul>${list.map(([it,i])=>`<li><i style="background-image:url(${kThumb(i)})"></i><span><b>${esc(kB(it))}</b>${esc(kN(it))}</span><em>🪙 ${it.p}</em></li>`).join('')}</ul>
     <div class='sum'>합계 🪙 ${sum} · 보유 🪙 ${coins}${poor?` · <b>${sum-coins}코인 부족</b>`:''}</div>
     <div class='btns'><button class='buy' ${poor?'disabled':''}>구매하기</button>${one?(list[0][0].fx?`<button class='sim'>⚡ 효과 미리보기</button>`:'')+`<button class='back'>취소</button>`:`<button class='skip'>사지 않고 벗고 나가기</button><button class='back'>계속 고르기</button>`}</div></div>`;
   el.hidden=false; const go=()=>{ el.hidden=true; KPASS=true; $('#enterBtn').click(); KPASS=false; };
-  el.querySelector('.buy').onclick=()=>{ if(coins<sum) return; addCoins(-sum); list.forEach(([it])=>{ if(!owned.includes(kKey(it))) owned.push(kKey(it)); }); saveEco(); try{ chime(79,'sine',.08,.5); }catch(e){} toast(one?`${list[0][0].b} ${list[0][0].n} 구매 완료! 내 옷장에 넣고 바로 입었어요`:`${list.length}개 구매 완료! 내 옷장에 넣고 바로 입었어요`); if(one){ el.hidden=true; one(); } else go(); };
+  el.querySelector('.buy').onclick=()=>{ if(coins<sum) return; addCoins(-sum); list.forEach(([it])=>{ if(!owned.includes(kKey(it))) owned.push(kKey(it)); }); saveEco(); try{ chime(79,'sine',.08,.5); }catch(e){} toast(one?`${(kB(list[0][0])+' '+kN(list[0][0])).trim()} 구매 완료! 내 옷장에 넣고 바로 입었어요`:`${list.length}개 구매 완료! 내 옷장에 넣고 바로 입었어요`); if(one){ el.hidden=true; one(); } else go(); };
   if(one){ const sm=el.querySelector('.sim'); if(sm) sm.onclick=()=>rareSim(list[0][1]); el.querySelector('.back').onclick=()=>{ el.hidden=true; }; el.onclick=e=>{ if(e.target===el) el.hidden=true; }; return; }
   el.querySelector('.skip').onclick=()=>{ const n=kStrip(KSNAP); refreshOpts(); if(n) toast(`사지 않은 아이템 ${n}개는 벗었어요`); go(); };
   el.querySelector('.back').onclick=()=>{ el.hidden=true; };
@@ -5668,7 +5674,7 @@ function kCloseRoom(){ if(!document.body.classList.contains('dressing')) return;
 canvas.addEventListener('pointerdown',()=>{ if(document.body.classList.contains('dressing')&&!$('#creator').hidden) kCloseRoom(); });
 $('#enterBtn').addEventListener('click',e=>{ if(!document.body.classList.contains('dressing')||KPASS) return; const list=kUnowned(); if(!list.length) return; e.stopImmediatePropagation(); e.preventDefault(); kAsk(list); },true);
 function kreamPreview(i){ const it=KREAM[i], worn=kreamOn(it), pc=Object.assign({},cfg); if(!worn){ kClear(pc,it); Object.assign(pc,it.set); } pc.kWorn=Object.assign({},cfg.kWorn||{}); if(!worn) pc.kWorn[kSlot(it)]=i;
-  kpvOpen({brand:it.b+' · 브랜드샵',name:it.n,cat:it.c,cfg:pc,worn,note:worn?'지금 입고 있어요. 벗으려면 아래 버튼을 눌러요.':'드래그해서 돌려 보고, 마음에 들면 입어요. 로고는 그리지 않아요.',apply:()=>kreamApply(it)}); }
+  kpvOpen({brand:kB(it)?kB(it)+' · 브랜드샵':'브랜드샵',name:kN(it),cat:it.c,cfg:pc,worn,note:worn?'지금 입고 있어요. 벗으려면 아래 버튼을 눌러요.':'드래그해서 돌려 보고, 마음에 들면 입어요. 로고는 그리지 않아요.',apply:()=>kreamApply(it)}); }
 function typePreview(btn){ const k=btn.dataset.k, v=btn.dataset.v, worn=cfg[k]===v, pc=Object.assign({},cfg,{[k]:v}); pc.kWorn=Object.assign({},cfg.kWorn||{}); delete pc.kWorn[k]; if(k==='top'&&!worn) kTopOver(pc); if(k==='outer') delete pc.kOuter; if(k==='top') delete pc.kTop; if(k==='head') delete pc.kHead;
   kpvOpen({brand:TYPE_CAT[k],name:btn.textContent.trim(),cat:TYPE_CAT[k],cfg:pc,worn,note:worn?'지금 입고 있는 아이템이에요. 색은 아래 색 버튼으로 바꿔요.':'드래그해서 돌려 보고, 마음에 들면 입어요.',keep:worn,apply:()=>{ if(worn) return; cfg[k]=v; if(k==='top') kTopOver(cfg); if(cfg.kWorn){ cfg.kWorn=Object.assign({},cfg.kWorn); delete cfg.kWorn[k]; } if(k==='outer') delete cfg.kOuter; if(k==='top') delete cfg.kTop; if(k==='head'){ delete cfg.kHead; delete cfg.kRh; } if(k==='face'){ delete cfg.kFace; delete cfg.kRf; } if(k==='bottom') delete cfg.kPants; if(k==='top'){ delete cfg.kPrint; delete cfg.kRt; } if(k==='shoes') delete cfg.kRs; if(k==='outer') delete cfg.kRo; refreshOpts(); toast(`${btn.textContent.trim()} 착용!`); }}); }
 const _kPrev=kreamPreview; kreamPreview=function(i){ _kPrev(i); if(KREAM[i]&&KREAM[i].fx&&kreamOn(KREAM[i])) setTimeout(()=>rareSim(i),120); if(document.body.classList.contains('dressing')) setTimeout(()=>kBuyBar(KREAM[i]),0); };
@@ -5710,7 +5716,7 @@ function addOwnedSec(after){ const own=(typeof owned!=='undefined'?owned:[]).fil
   d.innerHTML=`<h2>내 옷장</h2>`+(own.length?`<div class='chips'>${own.map(k=>`<button class='chip preset' data-own='${esc(k)}' aria-pressed='${setOn(ITEMS[k].set)}'>${esc(k)}<small>${esc(ITEMS[k].d||'')}</small></button>`).join('')}</div>`:`<p class='hint'>아직 산 옷이 없어요. 미라지 부티크, 히피 마켓 같은 상점에서 산 옷이 여기에 모여요.</p>`);
   // brand shop pieces you bought (and the free ones) live here too, ready to wear out
   const mine=KREAM.map((it,i)=>[it,i]).filter(([it])=>owned.includes(kKey(it))), free=[...kFree()].map(i=>[KREAM[i],i]);
-  const chip=([it,i])=>`<button class='chip preset kchip${it.fx?' krare':''}' data-kream='${i}' aria-pressed='${kreamOn(it)}'><i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(it.b)}<small>${esc(it.n)}</small></button>`;
+  const chip=([it,i])=>`<button class='chip preset kchip${it.fx?' krare':''}' data-kream='${i}' aria-pressed='${kreamOn(it)}'><i class='kth${KTH[i]?' done':''}' data-kth='${i}' aria-hidden='true'${KTH[i]?` style='background-image:url(${KTH[i]})'`:''}></i>${esc(kB(it))}<small>${esc(kN(it))}</small></button>`;
   d.innerHTML+=`<h2 style='margin-top:12px'>구매한 브랜드 아이템</h2>`+(mine.length?`<div class='chips'>${mine.map(chip).join('')}</div>`:`<p class='hint'>브랜드샵에서 산 아이템이 여기에 모여요. 산 것만 입고 나갈 수 있어요.</p>`)+`<h2 style='margin-top:12px'>무료 아이템</h2><div class='chips'>${free.map(chip).join('')}</div>`;
   after.after(d); setTimeout(kThumbFill,60); }
 
@@ -5740,7 +5746,7 @@ const BTAG={el:null,key:'',v:new THREE.Vector3()};
 if(false) updaters.push(()=>{ if(!BTAG.el){ BTAG.el=document.createElement('div'); BTAG.el.id='brandTag'; BTAG.el.className='card'; BTAG.el.hidden=true; BTAG.el.setAttribute('aria-hidden','true'); document.body.appendChild(BTAG.el); }
   const W=cfg.kWorn||{}, ids=Object.values(W).filter(i=>KREAM[i]); const el=BTAG.el;
   if(!inGame||!ids.length||!player||!$('#creator').hidden){ if(!el.hidden) el.hidden=true; return; }
-  const key=ids.join(','); if(key!==BTAG.key){ BTAG.key=key; el.innerHTML='<b>🏷 브랜드샵 착용 중</b>'+ids.slice(0,5).map(i=>`<span>${esc(KREAM[i].b)} ${esc(KREAM[i].n)}</span>`).join('')+(ids.length>5?`<span>외 ${ids.length-5}개</span>`:''); }
+  const key=ids.join(','); if(key!==BTAG.key){ BTAG.key=key; el.innerHTML='<b>🏷 브랜드샵 착용 중</b>'+ids.slice(0,5).map(i=>`<span>${esc((kB(KREAM[i])+' '+kN(KREAM[i])).trim())}</span>`).join('')+(ids.length>5?`<span>외 ${ids.length-5}개</span>`:''); }
   BTAG.v.set(pState.x,pState.y+1.25,pState.z).project(camera); if(BTAG.v.z>1){ el.hidden=true; return; }
   const w=el.offsetWidth||150, h=el.offsetHeight||60; let sx=(BTAG.v.x+1)/2*innerWidth+44, sy=(1-BTAG.v.y)/2*innerHeight; sx=Math.min(innerWidth-w-8,Math.max(8,sx)); sy=Math.min(innerHeight-h/2-8,Math.max(h/2+60,sy));
   el.style.transform=`translate(${Math.round(sx)}px,${Math.round(sy)}px) translate(0,-50%)`; if(el.hidden) el.hidden=false; });
@@ -7190,7 +7196,8 @@ function mcPlayItem(it,T){ initAudio(); MC.target=T; MC.genre=''; MC.list=[it]; 
 // 편성표: admin.html이 GitHub 저장소의 schedule.json에 저장하고, 게임은 1분마다 읽어요. 부스마다 시간대별 Mixcloud / SoundCloud 세트
 const SCHEDULE_URL='schedule.json';
 // Steam demo mode (?steam=1, or the desktop build): only sets by DJs who agreed to the game (schedule.json → steam.djs, edited in admin.html) play; genre search playback is off
-const STEAM=(()=>{ try{ if(new URLSearchParams(location.search).get('steam')==='1'||/Electron/i.test(navigator.userAgent)||window.STEAM_BUILD){ sessionStorage.setItem('playa-steam','1'); return true; } return sessionStorage.getItem('playa-steam')==='1'; }catch(e){ return false; } })();
+const STEAM=isSteam();
+function isSteam(){ if(isSteam.v!==undefined) return isSteam.v; return isSteam.v=(()=>{ try{ if(new URLSearchParams(location.search).get('steam')==='1'||/Electron/i.test(navigator.userAgent)||window.STEAM_BUILD){ sessionStorage.setItem('playa-steam','1'); return true; } return sessionStorage.getItem('playa-steam')==='1'; }catch(e){ return false; } })(); }
 function steamOK(dj){ if(!STEAM) return true; const L=(SCH.sched&&SCH.sched.steam&&SCH.sched.steam.djs)||[]; const n=String(dj||'').trim().toLowerCase(); return !!n&&L.some(x=>String((x&&x.name)||x||'').trim().toLowerCase()===n); }
 const SCH={url:SCHEDULE_URL,sched:null,skew:0,lastFetch:-99,lastSync:-99,synced:false,fail:0};
 try{ const o=localStorage.getItem('playa-sched-url'); if(o) SCH.url=o; }catch(e){}
