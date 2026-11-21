@@ -1086,6 +1086,7 @@ body:has(#sp:not([hidden])) #soundFix{display:none}
     <button data-map="itaewon" aria-pressed="false" class="mcard"><i class="cv" style="background-image:url(assets/maps/itaewon.jpg)"></i><b>🇰🇷 한국 이태원</b><small class='loc'>한국 서울</small></button>
     <button data-map="nami" aria-pressed="false" class="mcard"><i class="cv" style="background-image:url(assets/maps/nami.jpg)"></i><b>🌲 동물원점</b><small class='loc'>한국 남이섬</small></button>
     <button data-map="sphere" aria-pressed="false" class="mcard"><i class="cv" style="background-image:url(assets/maps/sphere.jpg)"></i><b>🔮 지구본점</b><small class='loc'>미국 라스베가스</small></button>
+    <button data-map="shanghai" aria-pressed="false" class="mcard"><i class="cv" style="background-image:url(assets/maps/shanghai.jpg)"></i><b>🇨🇳 상하이점</b><small class='loc'>중국 상하이</small></button>
     <button type="button" class="mcard soon" data-soon="berlin"><i class="cv berlin"><em>COMING SOON</em></i><b>🇩🇪 베를린점</b><small class='loc'>독일 베를린 · 오픈 준비중</small></button>
   </div></div>
   <div class="actions">
@@ -3671,7 +3672,7 @@ const PAPER_TR=[
 const IT_TR={3:SHELTER_TR,4:PAPER_TR}, IT_TI={3:0,4:0};
 function inBldg(x,z){ const lx=x-OX; return lx>8.2&&lx<21.8&&z>-8.8&&z<8.8; }
 function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTread(x,z); if(MAP==='itaewon'&&CST.on) return cstY(x-OX); if(MAP==='itaewon'&&IT.floor>0&&inBldg(x,z)) return IT.floorY[IT.floor]; if(MAP==='itaewon'&&RING.st&&ringOnStairs(x,z)) return ringStairY(x-OX); return floorAtBase(x,z); }
-function clampMap(){ if(BM.mode){ bmClamp(); return; } if(pState.z>1500){ clampSphere(); return; } if(pState.x<-1500){ clampNami(); return; } if(pState.x<1500){ const dr=Math.hypot(pState.x,pState.z); if(dr>300){ pState.x*=300/dr; pState.z*=300/dr; } return; }
+function clampMap(){ if(BM.mode){ bmClamp(); return; } if(pState.z<-1500){ clampShanghai(); return; } if(pState.z>1500){ clampSphere(); return; } if(pState.x<-1500){ clampNami(); return; } if(pState.x<1500){ const dr=Math.hypot(pState.x,pState.z); if(dr>300){ pState.x*=300/dr; pState.z*=300/dr; } return; }
   let lx=pState.x-OX, z=pState.z;
   if(TEL.in){ lx=clamp(lx,TEL.X-9.8,TEL.X+7.8); z=clamp(z,-7.8,7.8); if(lx>TEL.X+1.6&&z>5.6) z=5.6; }
   else if(RING.in){ lx=clamp(lx,RING.X-10.5,RING.X+7.9); z=clamp(z,-5,5); if(lx>RING.X-9.9&&lx<RING.X+7.3&&z<-3.1) z=-3.1; }
@@ -3920,7 +3921,7 @@ function telTick(t,dt){ if(TEL.in&&!telInside()) telLeave();
 
 function setClubTrack(f,i){ const Z=f===3?IT.zS:IT.zP, list=IT_TR[f]; IT_TI[f]=(i+list.length)%list.length; Z.tracks[0]=list[IT_TI[f]]; Z.running=false; if(Z.delay) Z.delay.delayTime.value=60/Z.tracks[0].bpm*.75; }
 $('#cnNext').addEventListener('click',()=>{ if(IT.floor===3||IT.floor===4){ setClubTrack(IT.floor,IT_TI[IT.floor]+1); toast(`다음 곡: ${IT_TR[IT.floor][IT_TI[IT.floor]].name}`); } });
-function itTick(t,dt){ const was=MAP; MAP=pState.z>1500?'sphere':(pState.x>1500?'itaewon':(pState.x<-1500?'nami':'playa')); document.body.classList.toggle('itaewon',MAP==='itaewon');
+function itTick(t,dt){ const was=MAP; MAP=pState.z>1500?'sphere':(pState.z<-1500?'shanghai':(pState.x>1500?'itaewon':(pState.x<-1500?'nami':'playa'))); document.body.classList.toggle('itaewon',MAP==='itaewon');
   if(was!==MAP){ CST.on=false; if(MAP==='playa'){ IT.floor=0; applyCut(-1); applyTime(); } renderBoothList(); }
   if(dust) dust.visible=MAP!=='itaewon';
   for(const Z of [IT.zS,IT.zP]){ let v=0; if(MAP==='itaewon'&&hearOn()){ if(CST.on) v=.4*Math.max(0,1-Math.abs(pState.y-IT.floorY[Z.floor])/5); else if(IT.floor===Z.floor) v=.85; else if(IT.floor===0){ const d=Math.hypot(pState.x-(OX+15),pState.z); if(d<45) v=(Z.floor===4?.05+.1*IT.roofOpen:.06)*(1-d/45); } } Z.target=v; if(Z.out&&ac) Z.out.gain.setTargetAtTime(v,ac.currentTime,.2); }
@@ -4600,7 +4601,7 @@ function musicTarget(){ let best=null, bv=.02;
   if(best.kind==='booth') return Object.assign(best,{name:best.b.name+' 부스',key:'booth:'+best.b.id});
   const Z=best.Z, nz=(typeof NM!=='undefined'&&NM.zones||[]).find(z=>z.Z===Z);
   return Object.assign(best,{name:nz?nz.name:(MC_ZN[Z.id]||Z.id),key:'zone:'+Z.id}); }
-const MC_ZN={studio:'익스텐디드 스튜디오',ring:'링',teller:'B1 텔러',shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
+const MC_ZN={'sh-lift':'상하이 화물 엘리베이터','sh-hall':'상하이 4F SYSTEM 홀','sh-green':'상하이 5F 그린 룸',studio:'익스텐디드 스튜디오',ring:'링',teller:'B1 텔러',shelter:'4F 쉘터',paper:'5F 페이퍼',sphere:'스피어',jazz:'재즈 라운지',disco:'디스코',potty:'파티 포티','bm-war':'테크노 아트카','bm-bus':'하우스 아트카 버스'};
 // each genre pulls recent shows from official DJ / label channels
 // each genre: Korean name, official DJ / label channels, and the Mixcloud tag whose most-played mixes join the pool
 const MC_G={techno:['테크노',['residentadvisor','CarlCox'],'techno'],house:['하우스',['Defectedrecords'],'house'],afro:['아프로 하우스',['keinemusik'],'afro-house'],
@@ -4614,7 +4615,7 @@ function mcMusicOnly(c){ const n=c&&c.name||'', a=c&&c.audio_length||0; return !
 const MC_ORIGIN='https://player-widget.mixcloud.com';
 const MC_NOVOL=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const MC={iframe:null,target:null,genre:'',list:[],idx:0,cur:null,playing:false,paused:false,vol:-1,mid:0,fails:0,cache:{},showT:0};
-const MC_DEF={edm:'edm',studio:'house',ring:'house',teller:'techno',techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
+const MC_DEF={edm:'edm','sh-lift':'techno','sh-hall':'techno','sh-green':'house',studio:'house',ring:'house',teller:'techno',techno:'techno',house:'house',afro:'afro',melodic:'melodic',trance:'trance',dnb:'dnb',psy:'psy',dubstep:'dubstep',hardstyle:'hardstyle',
   shelter:'techno',paper:'house',sphere:'edm',jazz:'jazz',disco:'house',potty:'house','nm-jandi':'house','nm-hanok':'afro','nm-soop':'techno','nm-exp':'eclectic','nm-hut':'deephouse','nm-aero':'house','bm-war':'techno','bm-bus':'house'};
 // every stage plays only its own genre
 function mcDefault(T){ return MC_DEF[T.kind==='booth'?T.b.id:T.Z.id]||'deephouse'; }
@@ -4943,7 +4944,7 @@ function goMapNami(m){ if(m!=='nami') return goMapBase(m); if(pState.veh){ if(pS
   IT.floor=0; pState.y=0; pState.vy=0; NM.boat=null; if(NM.admit){ NM.side='island'; pState.x=NX; pState.z=-92; pState.face=0; } else { NM.side='main'; pState.x=NX-150; pState.z=-114; pState.face=Math.PI/2; }
   yaw=pState.face+Math.PI; pitch=.32; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
   toast(NM.admit?'동물원점으로 돌아왔어요':'동물원점 선착장이에요. 매표소에서 신분증과 티켓을 확인하고 배를 타요'); }
-function openMapSel(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-act='itaewon' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원 (쉘터, 페이퍼)</button><button data-act='nami' class='hot' ${MAP==='nami'?'disabled':''}>🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-act='sphere' ${MAP==='sphere'?'disabled':''}>🔮 지구본점 <small class='loc'>미국 라스베가스</small></button><button data-act='berlin' class='soon'>🇩🇪 베를린점 <small class='loc'>독일 베를린 · 오픈 준비중</small></button></div>`,a=>{ if(a==='berlin'){ berlinSoon(); return; } goMap(a); }); }
+function openMapSel(){ openSp('맵 이동','어디로 갈까요?',`<div class='acts' style='grid-template-columns:1fr'><button data-act='playa' ${MAP==='playa'?'disabled':''}>🏜 사막점 <small class='loc'>미국 네바다주</small></button><button data-act='itaewon' ${MAP==='itaewon'?'disabled':''}>🇰🇷 한국 이태원 (쉘터, 페이퍼)</button><button data-act='nami' class='hot' ${MAP==='nami'?'disabled':''}>🌲 동물원점 <small class='loc'>한국 남이섬</small></button><button data-act='sphere' ${MAP==='sphere'?'disabled':''}>🔮 지구본점 <small class='loc'>미국 라스베가스</small></button><button data-act='shanghai' ${MAP==='shanghai'?'disabled':''}>🇨🇳 상하이점 <small class='loc'>중국 상하이 · SYSTEM</small></button><button data-act='berlin' class='soon'>🇩🇪 베를린점 <small class='loc'>독일 베를린 · 오픈 준비중</small></button></div>`,a=>{ if(a==='berlin'){ berlinSoon(); return; } goMap(a); }); }
 // Berlin: shown in both map pickers, not open yet
 function berlinSoon(){ toast('🇩🇪 베를린점은 오픈 준비 중이에요. 곧 만나요!'); }
 document.querySelectorAll('.mapsel [data-soon]').forEach(b=>b.addEventListener('click',berlinSoon));
@@ -5933,9 +5934,9 @@ function goMapSph(m){ if(SPH.seat) sphStand(true); if(m!=='sphere'){ SPH.inside=
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='sphere'&&MAP!=='sphere') setTimeout(()=>goMap('sphere'),70); });
 NM_SPOTS.splice(NM_SPOTS.length-2,0,{n:'지구본점으로',go:'sphere'});
 const SP_SPOTS=[{n:'지구본점 광장',x:0,z:-60},{n:'박스오피스 (입장권)',x:-24,z:-34},{n:'입장 게이트',x:0,z:-12},{n:'좌석 맵 (공연장 안)',seat:1},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'},{n:'동물원점으로',go:'nami'}];
-function renderBoothListSph(){ if(MAP!=='sphere') return renderBoothListNM(); const ul=$('#boothList'); if(ul.hidden) return;
+function renderBoothListSph(){ if(MAP==='shanghai') return renderBoothListSH(); if(MAP!=='sphere') return renderBoothListNM(); const ul=$('#boothList'); if(ul.hidden) return;
   ul.innerHTML=`<li class='cat'><button disabled>🔮 지구본점 · 미국 라스베가스<small>${SP_SPOTS.filter(s=>!s.go).length}곳</small></button></li>`+SP_SPOTS.map((s,i)=>s.go?'':`<li><span class='dot' style='background:${s.go?'#9b6bff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&!SPH.inside?`<small>${Math.round(Math.hypot(SPX+s.x-pState.x,SPZ+s.z-pState.z))}m</small>`:''}</span><button data-sp='${i}'>가기</button></li>`).join(''); }
-function mapsBig(){ return [['playa','🏜','사막점','미국 네바다'],['itaewon','🇰🇷','이태원','한국 서울'],['nami','🌲','동물원점','한국 남이섬'],['sphere','🔮','지구본점','미국 라스베가스'],['berlin','🇩🇪','베를린점','오픈 준비중']]; }
+function mapsBig(){ return [['playa','🏜','사막점','미국 네바다'],['itaewon','🇰🇷','이태원','한국 서울'],['nami','🌲','동물원점','한국 남이섬'],['sphere','🔮','지구본점','미국 라스베가스'],['shanghai','🇨🇳','상하이점','중국 상하이'],['berlin','🇩🇪','베를린점','오픈 준비중']]; }
 const MAPSEC={big:false,det:true};
 function renderBoothList(){ const ul=$('#boothList'); if(ul.hidden) return; renderBoothListSph(); if(!MAPSEC.det) ul.innerHTML=''; const MB=mapsBig(), cur=MB.find(m=>m[0]===MAP)||MB[0];
   ul.insertAdjacentHTML('afterbegin',`<li class='bighd'><button data-msec='big' aria-expanded='${MAPSEC.big}'>🌍 지점 이동 <small><span>지금</span> ${cur[1]} ${cur[2]}</small><i>${MAPSEC.big?'▾':'▸'}</i></button></li>${MAPSEC.big?`<li class='bigrow'>${MB.map(m=>`<button data-big='${m[0]}' class='${m[0]===MAP?'here':''}${m[0]==='berlin'?' soon':''}'><b>${m[1]}</b><span>${m[2]}</span><small>${m[0]===MAP?'지금 여기':m[3]}</small></button>`).join('')}</li>`:''}<li class='bighd det'><button data-msec='det' aria-expanded='${MAPSEC.det}'>📍 ${cur[2]} 이동하기<i>${MAPSEC.det?'▾':'▸'}</i></button></li>`); }
@@ -6272,9 +6273,9 @@ function presListen(){ if(PRES.listening||!AUTH.db) return; PRES.listening=true;
   R.on('child_added',s=>presUpsert(s.key,s.val())); R.on('child_changed',s=>presUpsert(s.key,s.val())); R.on('child_removed',s=>presRemove(s.key)); }
 function presStart(){ if(!AUTH.db||!AUTH.user) return; presListen(); PRES.ref=AUTH.db.ref('presence/'+AUTH.user.uid); PRES.ref.onDisconnect().remove(); PRES.lookSig=''; PRES.lastSent=null; }
 
-function presInside(){ try{ if(MAP==='itaewon'){ if(TEL.in) return 'teller'; if(RING.in) return 'ring'; if(IT.floor===3) return 'shelter'; if(IT.floor===4) return 'paper'; } if(MAP==='sphere'&&SPH.inside) return 'sphere'; }catch(e){} return ''; }
-const IN_NAME={teller:'B1 텔러 안',ring:'링 안',shelter:'4F 쉘터 안',paper:'5F 페이퍼 안',sphere:'지구본점 공연장 안'};
-const MAP_NAME={playa:'🏜 사막점',itaewon:'🇰🇷 이태원',nami:'🌲 동물원점',sphere:'🔮 지구본점'};
+function presInside(){ try{ if(MAP==='itaewon'){ if(TEL.in) return 'teller'; if(RING.in) return 'ring'; if(IT.floor===3) return 'shelter'; if(IT.floor===4) return 'paper'; } if(MAP==='sphere'&&SPH.inside) return 'sphere'; if(MAP==='shanghai'){ const r=shRoomAt(pState.x,pState.z); if(r!=='out') return 'sh-'+r; } }catch(e){} return ''; }
+const IN_NAME={'sh-gal':'상하이 그림전 안','sh-lift':'상하이 화물 엘리베이터 안','sh-hall':'상하이 4F SYSTEM 홀 안','sh-green':'상하이 5F 그린 룸 안',teller:'B1 텔러 안',ring:'링 안',shelter:'4F 쉘터 안',paper:'5F 페이퍼 안',sphere:'지구본점 공연장 안'};
+const MAP_NAME={playa:'🏜 사막점',itaewon:'🇰🇷 이태원',nami:'🌲 동물원점',sphere:'🔮 지구본점',shanghai:'🇨🇳 상하이점'};
 // who is online right now (fresh within 30s), me excluded
 function presOnline(){ const now=Date.now(), me=AUTH.user&&AUTH.user.uid; return Object.entries(PRES.others).filter(([u,v])=>u!==me&&v&&now-(v.t||0)<120000).map(([uid,v])=>({uid,...v})); }
 // nearest stage to someone's spot, so the list can say where they are
@@ -6992,7 +6993,261 @@ function bmTick(t,dt){ if(!BM.mode) return; const pz=BM.mode==='drive'?BM.cz:pSt
   if(BM.ring>0){ BM.ring-=dt; BM.bell.g.rotation.z=Math.sin(t*14)*.4*BM.ring; } }
 const _bmEnter=()=>{ if(BM.firstDone) return; BM.firstDone=true; if(selMap==='playa'&&!BM.admit) setTimeout(bmStart,90); };
 $('#enterBtn').addEventListener('click',_bmEnter);
-function goMap(m){ if(BM.mode&&m!=='playa') bmAbort(); if(m==='playa'&&!BM.admit){ if(BM.mode) return; goMapSph('playa'); bmStart(); return; } goMapSph(m); }
+function goMap(m){ if(BM.mode&&m!=='playa') bmAbort(); if(m==='shanghai'){ goMapSH(); return; } if(m==='playa'&&!BM.admit){ if(BM.mode) return; goMapSph('playa'); bmStart(); return; } goMapSph(m); }
+
+/* ================= SHANGHAI: a SYSTEM night at a riverside art museum on the Huangpu =================
+   Outside: the promenade along the river with the Pudong skyline across the water, the museum (an old power station with its chimney)
+   and a queue of black-clad people more than a kilometre long. Each floor inside is its own room far off to the east:
+   1·2F gallery (Johnny Depp paintings) → freight lift (DJ on oil drums, purple, packed) → 4F hall (experimental techno, white light,
+   giant media-art wall, bar right by the lift) → 5F green room. The room you are in is worked out from where you stand. */
+const SHX=0, SHZ=-3000;
+const SHG={room:'out',ride:null,liftAt:1,zones:{},leds:[],refl:[],boats:[],beams:[],lasers:[],tiles:null,indFl:0};
+const SH_R={ out:{x0:SHX-150,x1:SHX+1100,z0:SHZ-33,z1:SHZ+5},
+  gal:{cx:SHX+3200,cz:SHZ,w:34,d:22,h:9}, lift:{cx:SHX+3300,cz:SHZ,w:7,d:9,h:4.2}, hall:{cx:SHX+3450,cz:SHZ,w:60,d:40,h:13}, green:{cx:SHX+3600,cz:SHZ,w:18,d:14,h:4.2} };
+const SH_TR={
+  lift:{name:'화물칸 애시드',bpm:128,root:31,kick:K4,hat:OFF,clap:CL,bass:'0.0.0.0.0.0.0.0.',bt:'acid',prog:[[0,'min'],[0,'min'],[1,'min'],[0,'min']]},
+  hall:{name:'화이트 노이즈 시스템',bpm:132,root:29,kick:K4,hat:OFF,h16:1,rim:'..x...x...x...x.',bass:'.0.0.0.0.0.0.0.0',bt:'rumble',prog:[[0,'min'],[0,'min'],[-2,'min'],[0,'min']]},
+  green:{name:'그린 룸 그루브',bpm:124,root:34,kick:K4,hat:OFF,oh:OFF,clap:CL,bass:'0.0..0.0..c.0.7.',bt:'pluck',prog:[[0,'min7'],[5,'min7'],[3,'maj7'],[-2,'dom7']],chord:'x..x..x.......x.',ct:'stab'} };
+function shRoomAt(x,z){ for(const k of ['gal','lift','hall','green']){ const R=SH_R[k]; if(Math.abs(x-R.cx)<R.w/2+4&&Math.abs(z-R.cz)<R.d/2+4) return k; } return 'out'; }
+function clampShanghai(){ const r=shRoomAt(pState.x,pState.z);
+  if(r==='out'){ const R=SH_R.out; pState.x=clamp(pState.x,R.x0,R.x1); pState.z=clamp(pState.z,R.z0,R.z1); return; }
+  const R=SH_R[r]; pState.x=clamp(pState.x,R.cx-R.w/2+.45,R.cx+R.w/2-.45); pState.z=clamp(pState.z,R.cz-R.d/2+.45,R.cz+R.d/2-.45); }
+// walk through a door: a quick fade and you are in the next room
+function shGo(room,x,z,face,msg){ closeSp(); const fd=$('#fade'); fd.style.opacity='1';
+  setTimeout(()=>{ pState.x=x; pState.z=z; pState.y=0; pState.vy=0; pState.face=face; yaw=face+Math.PI; pitch=room==='out'?.28:.2; camDist=room==='hall'?7.5:room==='out'?(LOW?8.5:7.5):room==='gal'?6.5:4.8; if(player) player.root.position.set(x,0,z); fd.style.opacity='0'; if(msg) toast(msg); },380); }
+function goMapSH(){ if(pState.veh){ if(pState.veh.alt>.4){ toast('비행 중에는 맵을 바꿀 수 없어요'); return; } exitVehicle(); } if(pState.ride) endRide(); if(pState.art) exitArt(); if(pState.use) clearUse(); closeSp();
+  try{ if(SPH.seat) sphStand(true); SPH.inside=false; SPH.atrium=false; SPH.ga=false; NM.boat=null; if(TEL.in) telLeave(); if(RING.in) ringLeave(); }catch(e){}
+  IT.floor=0; CST.on=false; SHG.ride=null; pState.x=SHX+70; pState.z=SHZ-14; pState.y=0; pState.vy=0; pState.face=Math.atan2(.35,-1); if(!night){ night=true; applyTime(); }
+  yaw=pState.face+Math.PI; pitch=.12; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
+  toast('상하이 황푸강변이에요. 강 건너 푸둥 야경, 미술관 앞에는 SYSTEM 줄이 1km 넘게 늘어서 있어요'); }
+function shTex(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'); draw(x,w,h); const t=new THREE.CanvasTexture(c); return t; }
+// a room seen from inside: walls, floor and ceiling face inward, so the camera can sit outside a wall and still look in
+function shRoom(R,wallM,floorM,ceilM){ const g=new THREE.Group(); g.position.set(R.cx,0,R.cz); scene.add(g); const W=R.w,D=R.d,H=R.h;
+  const P=(m,sx,sy,x,y,z,rx,ry)=>{ const p=new THREE.Mesh(G.plane,m); p.scale.set(sx,sy,1); p.position.set(x,y,z); p.rotation.set(rx,ry,0); g.add(p); return p; };
+  P(floorM,W,D,0,0,0,-Math.PI/2,0); P(ceilM,W,D,0,H,0,Math.PI/2,0);
+  P(wallM,W,H,0,H/2,-D/2,0,0); P(wallM,W,H,0,H/2,D/2,0,Math.PI); P(wallM,D,H,-W/2,H/2,0,0,Math.PI/2); P(wallM,D,H,W/2,H/2,0,0,-Math.PI/2); return g; }
+// expressive painted portraits for the gallery (bold colour, a face, a hat or wild hair, thick strokes)
+function shPaintTex(seed){ let s=seed*9301+49297; const r=()=>((s=(s*9301+49297)%233280)/233280);
+  const PAL=[['#1f3a93','#f2c14e','#e4572e','#f4f1de','#2b2b2b'],['#0b6e4f','#f7d08a','#d1495b','#edae49','#1b1b1e'],['#5f0f40','#fb8b24','#e36414','#0f4c5c','#f5f3f4'],['#22223b','#c9ada7','#9a8c98','#f2e9e4','#d62828'],['#003049','#fcbf49','#f77f00','#d62828','#eae2b7'],['#264653','#e9c46a','#f4a261','#e76f51','#2a9d8f']];
+  const p=PAL[Math.floor(r()*PAL.length)];
+  return shTex(256,320,(x,w,h)=>{ x.fillStyle=p[0]; x.fillRect(0,0,w,h);
+    for(let i=0;i<40;i++){ x.strokeStyle=p[Math.floor(r()*5)]; x.globalAlpha=.25+r()*.4; x.lineWidth=4+r()*14; x.beginPath(); const a=r()*w,b=r()*h; x.moveTo(a,b); x.quadraticCurveTo(a+r()*120-60,b+r()*120-60,a+r()*160-80,b+r()*160-80); x.stroke(); } x.globalAlpha=1;
+    const cx=w/2+(r()-.5)*30, cy=h*.52; x.fillStyle=p[1]; x.beginPath(); x.ellipse(cx,cy,62+r()*16,82+r()*14,(r()-.5)*.3,0,7); x.fill();
+    x.strokeStyle=p[4]; x.lineWidth=5; x.stroke();
+    x.fillStyle=p[3]; [-1,1].forEach(sd=>{ x.beginPath(); x.ellipse(cx+sd*26,cy-14,12,8,0,0,7); x.fill(); x.fillStyle=p[4]; x.beginPath(); x.arc(cx+sd*26+(r()-.5)*6,cy-14,4.5,0,7); x.fill(); x.fillStyle=p[3]; });
+    x.strokeStyle=p[4]; x.lineWidth=4; x.beginPath(); x.moveTo(cx,cy-6); x.lineTo(cx-6,cy+18); x.lineTo(cx+4,cy+20); x.stroke();
+    x.fillStyle=p[2]; x.beginPath(); x.ellipse(cx,cy+40,20,7,0,0,7); x.fill();
+    if(r()<.55){ x.fillStyle=p[4]; x.fillRect(cx-90,cy-120,180,16); x.fillRect(cx-55,cy-178,110,62); x.fillStyle=p[2]; x.fillRect(cx-55,cy-132,110,8); }
+    else { x.strokeStyle=p[4]; x.lineWidth=7; for(let i=0;i<18;i++){ const a=-Math.PI+i/17*Math.PI; x.beginPath(); x.moveTo(cx+Math.cos(a)*60,cy-30+Math.sin(a)*80); x.lineTo(cx+Math.cos(a)*(95+r()*30),cy-30+Math.sin(a)*(110+r()*30)); x.stroke(); } }
+    if(r()<.5){ x.strokeStyle=p[4]; x.lineWidth=4; x.strokeRect(cx-46,cy-26,36,24); x.strokeRect(cx+10,cy-26,36,24); x.beginPath(); x.moveTo(cx-10,cy-14); x.lineTo(cx+10,cy-14); x.stroke(); }
+    x.fillStyle=p[3]; x.font='italic 700 20px Georgia,serif'; x.fillText('J.D.',w-52,h-14); }); }
+function shWordTex(lines,opt){ opt=opt||{}; return shTex(opt.w||1024,opt.h||256,(x,w,h)=>{ x.fillStyle=opt.bg||'rgba(0,0,0,0)'; x.fillRect(0,0,w,h); x.textAlign='center'; x.textBaseline='middle';
+  lines.forEach(([t,f,c,y,blur])=>{ x.font=f; x.fillStyle=c; x.shadowColor=c; x.shadowBlur=blur||0; x.fillText(t,w/2,y*h); }); }); }
+
+function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); scene.add(IG); SHG.g=IG; const L=(x,z)=>({x:SHX+x,z:SHZ+z}), mine=[];
+  // ---------- ground, promenade, river ----------
+  B(1400,.1,60,M('#4a4a52'),475,-.05,-14,IG); B(2600,.1,900,M('#15151b'),475,-.08,480,IG);
+  for(let i=0;i<46;i++) B(1.4,.02,60,M('#55555e'),-140+i*27,.005,-14,IG);
+  const water=new THREE.Mesh(new THREE.PlaneGeometry(3200,1100),new THREE.MeshLambertMaterial({color:0x0a1426})); water.rotation.x=-Math.PI/2; water.position.set(475,-1.2,-34-550); IG.add(water);
+  B(1400,1.4,1.2,M('#3a3a40'),475,-.6,-34,IG); B(1400,.06,.08,M('#c8c8d0'),475,1.08,-33.6,IG); B(1400,1,.03,M('#cfe8ff',{op:.18}),475,.55,-33.6,IG);
+  { const n=LOW?24:44, pg=new THREE.CylinderGeometry(.08,.1,5,6); pg.translate(0,2.5,0); const bg=new THREE.SphereGeometry(.32,10,8); bg.translate(0,5.1,0);
+    const pole=new THREE.InstancedMesh(pg,M('#2a2a30'),n), bulb=new THREE.InstancedMesh(bg,M('#fff1d0',{glow:1.6}),n), d=new THREE.Object3D();
+    for(let i=0;i<n;i++){ d.position.set(-140+i*(1230/(n-1)),0,-31.5); d.updateMatrix(); pole.setMatrixAt(i,d.matrix); bulb.setMatrixAt(i,d.matrix); } IG.add(pole); IG.add(bulb); }
+  // ---------- Pudong skyline across the river ----------
+  const reflTex=shTex(64,256,(x,w,h)=>{ const g=x.createLinearGradient(0,0,0,h); g.addColorStop(0,'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g; x.fillRect(0,0,w,h); x.globalCompositeOperation='destination-out'; for(let j=0;j<h;j+=6){ x.fillStyle=`rgba(0,0,0,${(.3+Math.random()*.6).toFixed(2)})`; x.fillRect(0,j,w,3); } });
+  const refl=(lx,lz,w,col)=>{ const L2=Math.abs(lz)-40, m=new THREE.MeshBasicMaterial({map:reflTex,color:col,transparent:true,opacity:.32,blending:THREE.AdditiveBlending,depthWrite:false}); const p=new THREE.Mesh(G.plane,m); p.scale.set(w,L2,1); p.rotation.x=-Math.PI/2; p.position.set(lx,-1.1,lz+L2/2); IG.add(p); SHG.refl.push({m,ph:Math.random()*6}); };
+  const winMat=(tint,k)=>{ const t=winTex(); t.needsUpdate=true; t.repeat.set(k[0],k[1]); return new THREE.MeshLambertMaterial({map:t,color:tint,emissive:tint,emissiveMap:t,emissiveIntensity:.95}); };
+  // Oriental Pearl Tower: three legs, a column, two pink spheres and a spire
+  { const g=new THREE.Group(); g.position.set(140,0,-400); IG.add(g); const st=M('#b8b8c8'), pk=new THREE.MeshLambertMaterial({color:0xd8508e,emissive:0xb02068,emissiveIntensity:.85});
+    for(let i=0;i<3;i++){ const a=i*Math.PI*2/3, leg=mesh(G.cyl,st,Math.cos(a)*14,34,Math.sin(a)*14,2.2,72,2.2,g); leg.rotation.z=Math.cos(a)*.38; leg.rotation.x=-Math.sin(a)*.38; mesh(G.cyl,st,Math.cos(a)*4,85,Math.sin(a)*4,3,170,3,g); }
+    mesh(G.sph,pk,0,64,0,22,22,22,g); mesh(G.sph,pk,0,148,0,13,13,13,g); mesh(G.sph,pk,0,196,0,4.5,4.5,4.5,g); mesh(G.cyl,st,0,215,0,1.2,60,1.2,g); mesh(G.cyl,M('#ff3060',{glow:2}),0,246,0,.6,4,.6,g);
+    [64,148].forEach((y,j)=>{ for(let k=-2;k<=2;k++){ const r=(j?13:22)*Math.cos(k*.32), ring=new THREE.Mesh(new THREE.TorusGeometry(r,.35,4,40),M('#ffd0e8',{glow:1.8})); ring.rotation.x=Math.PI/2; ring.position.y=y+(j?13:22)*Math.sin(k*.32); g.add(ring); } }); refl(140,-400,26,0xff4fa0); }
+  // Jin Mao: stacked setbacks like a pagoda, golden windows, a spire
+  { const g=new THREE.Group(); g.position.set(270,0,-470); IG.add(g); let y=0; for(let i=0;i<14;i++){ const w=30-i*1.4, h=i<6?22:14-i*.4; const m=mesh(G.box,winMat(0xffd890,[3,4]),0,y+h/2,0,w,h,w,g); y+=h; }
+    mesh(G.cone,M('#e8d8a8',{glow:.6}),0,y+16,0,4,32,4,g); refl(270,-470,22,0xffc860); }
+  // Shanghai World Financial Center: the "bottle opener" with the hole at the top
+  { const g=new THREE.Group(); g.position.set(350,0,-505); IG.add(g); mesh(G.box,winMat(0x9fc8ff,[4,30]),0,120,0,32,240,26,g);
+    [-12,12].forEach(x=>mesh(G.box,winMat(0x9fc8ff,[1,4]),x,256,0,8,32,26,g)); mesh(G.box,M('#9fc8ff',{glow:.8}),0,274,0,32,4,26,g); refl(350,-505,24,0x7fb0ff); }
+  // Shanghai Tower: a twisting triangle-ish glass tower, the tallest
+  { const g=new THREE.Group(); g.position.set(420,0,-455); IG.add(g); const gm=new THREE.MeshLambertMaterial({color:0x6a88a8,emissive:0x23405e,emissiveIntensity:.9}), lm=M('#cfe8ff',{glow:1.6}); const N=LOW?18:28, H=330/N;
+    for(let i=0;i<N;i++){ const r=27-i*(11/N); const m=new THREE.Mesh(new THREE.CylinderGeometry(r*.97,r,H,3),gm); m.position.y=i*H+H/2; m.rotation.y=i*.06; g.add(m); if(i%3===0){ const ring=new THREE.Mesh(new THREE.CylinderGeometry(r+.3,r+.3,.6,3,1,true),lm); ring.position.y=i*H+.3; ring.rotation.y=i*.06; g.add(ring); } }
+    const top=mesh(G.cyl,M('#e8f4ff',{glow:2}),0,336,0,10,8,10,g); SHG.leds.push({m:top.material,base:'#cfe8ff',ph:0}); refl(420,-455,30,0x9fd0ff); }
+  // the rest of Lujiazui and the river front: lit towers, some with colour-changing LED crowns
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  for(let i=0;i<(LOW?26:52);i++){ const lx=rnd(-480,1180), lz=-rnd(360,640); if(Math.abs(lx-300)<170&&lz>-560) continue; const w=rnd(16,38), h=rnd(50,lx>100&&lx<600?210:150);
+    const m=mesh(G.box,winMat(pick([0xffe2b8,0xcfe8ff,0xfff3d0,0xbfd8ff]),[Math.max(1,Math.round(w/8)),Math.round(h/12)]),lx,h/2,lz,w,h,w*rnd(.7,1),IG);
+    if(Math.random()<.35){ const c=mesh(G.box,M('#ffffff',{glow:1.4}),lx,h+1.5,lz,w*.9,3,w*.7,IG); SHG.leds.push({m:c.material,ph:Math.random()*6}); if(Math.random()<.5) refl(lx,lz,w*.5,0xffffff); } }
+  // this side of the river behind the museum: a lower city
+  for(let i=0;i<(LOW?10:22);i++){ const lx=rnd(-200,1150), lz=rnd(70,320), w=rnd(18,40), h=rnd(20,90); if(Math.abs(lx)<70&&lz<120) continue; mesh(G.box,winMat(0xffe2b8,[Math.round(w/8),Math.round(h/10)]),lx,h/2,lz,w,h,w,IG); }
+  // two tour boats with neon outlines going up and down the river
+  [[-150,1,0xff4fa8],[-240,-1,0x46d6ff]].forEach(([lz,dir,col])=>{ const g=new THREE.Group(); g.position.set(dir>0?-300:1250,-.6,lz); IG.add(g); B(34,3,8,M('#1a1a22'),0,1.5,0,g); B(26,3,6.4,M('#2a2a34'),-1,4.5,0,g); B(16,2.4,5.6,M('#2a2a34'),-3,7.2,0,g);
+    const nm=new THREE.MeshBasicMaterial({color:col}); [[0,3.05,4.05,34,.12,.1],[0,3.05,-4.05,34,.12,.1],[-1,6,3.25,26,.12,.1],[-1,6,-3.25,26,.12,.1],[-3,8.4,2.85,16,.12,.1],[-3,8.4,-2.85,16,.12,.1]].forEach(([x,y,z,a,b,c])=>B(a,b,c,nm,x,y,z,g));
+    for(let i=0;i<10;i++) B(1.2,.8,.05,M('#fff3d0',{glow:1.4}),-12+i*2.4,4.6,3.22,g); SHG.boats.push({g,dir,sp:rnd(5,8)}); });
+  // ---------- the museum: a converted power station with its chimney ----------
+  const brick=M('#5a4a44'), steel=M('#2a2a30');
+  B(92,24,44,brick,0,12,28,IG);
+  for(let i=0;i<16;i++) B(.6,24,.6,steel,-45+i*6,12,5.8,IG);
+  B(90,8,.2,M('#ffe8c8',{glow:.7}),0,4,5.9,IG); // the glowing glass lobby
+  for(let i=0;i<15;i++) B(.2,8,.3,steel,-42+i*6,4,5.7,IG);
+  const sys=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['SYSTEM','900 210px "Arial Black",Impact,sans-serif','#ffffff',.5,40]]),transparent:true})); sys.scale.set(46,11.5,1); sys.position.set(0,14.5,5.6); sys.rotation.y=Math.PI; IG.add(sys); SHG.sys=sys;
+  [-30,30].forEach(x=>{ const bn=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['JOHNNY','900 120px Georgia,serif','#1a1a1a',.18],['DEPP','900 150px Georgia,serif','#1a1a1a',.36],['조니 뎁 그림전','700 70px Noto Sans KR,sans-serif','#b01818',.6],['1F – 2F','700 80px sans-serif','#1a1a1a',.8]],{w:512,h:1024,bg:'#f2efe6'})})); bn.scale.set(6,12,1); bn.position.set(x,13,5.5); bn.rotation.y=Math.PI; IG.add(bn); });
+  SHG.win4=M('#ffffff',{glow:1.2}); SHG.win5=M('#3dff6a',{glow:1.2}); B(80,2,.2,SHG.win4,0,20.5,5.65,IG); B(80,1.4,.2,SHG.win5,0,22.8,5.65,IG);
+  { const g=new THREE.Group(); g.position.set(30,24,40); IG.add(g); mesh(G.cyl,M('#6a5a54'),0,50,0,4,100,4.6,g); const ring=mesh(G.cyl,M('#ff3d3d',{glow:2}),0,70,0,4.25,26,4.25,g); SHG.chim=ring.material; for(let k=0;k<8;k++) mesh(G.cyl,M('#2a2a30'),0,60+k*4,0,4.3,.4,4.3,g); }
+  B(14,.4,5,M('#1a1a1e'),0,6.2,3.2,IG); B(6,4.6,.2,M('#ffe8c8',{glow:1}),0,2.3,5.75,IG);
+  const LO=new THREE.PointLight(0xffd8b0,1.2,30); LO.position.set(0,5,-2); IG.add(LO);
+  // ---------- the queue: more than a kilometre of people in black ----------
+  { const path=[[30,3.4],[46,3.4],[49,.8],[1085,.8]], sp=.6, pts=[];
+    for(let i=1;i<path.length;i++){ const [ax,az]=path[i-1],[bx,bz]=path[i], Ln=Math.hypot(bx-ax,bz-az), n=Math.floor(Ln/sp), ux=(bx-ax)/Ln, uz=(bz-az)/Ln;
+      for(let k=0;k<n;k++){ const x=ax+ux*k*sp, z=az+uz*k*sp; for(const c of [-.34,.34]){ if(Math.random()<.07) continue; pts.push([x-uz*c+rnd(-.08,.08),z+ux*c+rnd(-.08,.08),Math.atan2(-ux,-uz)+rnd(-.7,.7),rnd(.92,1.08)]); } } }
+    const n=pts.length, lg=new THREE.BoxGeometry(.34,.82,.22); lg.translate(0,.41,0); const tg=new THREE.BoxGeometry(.46,.64,.27); tg.translate(0,1.14,0); const hg=new THREE.SphereGeometry(.13,8,6); hg.translate(0,1.6,0); const hr=new THREE.SphereGeometry(.142,8,5,0,Math.PI*2,0,Math.PI*.55); hr.translate(0,1.63,0);
+    const mk=g=>{ const m=new THREE.InstancedMesh(g,new THREE.MeshLambertMaterial({color:0xffffff}),n); IG.add(m); return m; }, legs=mk(lg), body=mk(tg), head=mk(hg), hair=mk(hr), d=new THREE.Object3D(), c=new THREE.Color();
+    const SK=['#f1d3b6','#e3b48f','#c68c63','#8d5a3b','#f6dcc4'], BL=['#0c0c0e','#121214','#18181c','#0c0c0e','#202024'], HR=['#141210','#141210','#2a1c14','#d8c49a','#c0c4cc','#141210'];
+    pts.forEach(([x,z,ry,s],i)=>{ d.position.set(x,0,z); d.rotation.set(0,ry,0); d.scale.set(s,s,s); d.updateMatrix(); [legs,body,head,hair].forEach(m=>m.setMatrixAt(i,d.matrix));
+      legs.setColorAt(i,c.set(pick(BL))); body.setColorAt(i,c.set(Math.random()<.05?'#e8e4dc':pick(BL))); head.setColorAt(i,c.set(pick(SK))); hair.setColorAt(i,c.set(pick(HR))); });
+    [legs,body,head,hair].forEach(m=>{ m.instanceMatrix.needsUpdate=true; if(m.instanceColor) m.instanceColor.needsUpdate=true; });
+    // phone screens glowing in the queue
+    const ph=pts.filter(()=>Math.random()<.13), pg=new THREE.PlaneGeometry(.08,.14); pg.translate(.14,1.28,.2); const phones=new THREE.InstancedMesh(pg,new THREE.MeshBasicMaterial({color:0xcfe4ff,side:THREE.DoubleSide}),ph.length);
+    ph.forEach(([x,z,ry,s],i)=>{ d.position.set(x,0,z); d.rotation.set(0,ry,0); d.scale.set(s,s,s); d.updateMatrix(); phones.setMatrixAt(i,d.matrix); }); IG.add(phones);
+    SHG.queueN=n; floatLabel('SYSTEM 줄 끝','여기서부터 입구까지 1km 넘게 기다려요','#ffffff',SHX+1086,4.2,SHZ+.8); }
+  // the head of the queue: real people, stanchions, security at the door
+  for(let i=0;i<9;i++){ B(.08,1,.08,M('#c8c8d0'),4+i*3.2,.5,2.4,IG); B(.08,1,.08,M('#c8c8d0'),4+i*3.2,.5,4.4,IG); } B(26,.04,.04,M('#8a1f2b'),17,.85,2.4,IG); B(26,.04,.04,M('#8a1f2b'),17,.85,4.4,IG);
+  for(let i=0;i<(LOW?12:26);i++){ const x=4+i*1.05+rand(-.2,.2), z=3.4+(i%2?.35:-.35); const S=addNPC(avantLook(),L(x,z),Math.atan2(-1,0)+rand(-.7,.7),'talk',{talk:true}); if(i%4===1) handProp(S.P,i%8===1?'cig':'beer',i%2); mine.push(S.P); }
+  [[-2.8,3.2],[2.8,3.2]].forEach(([x,z])=>mine.push(addNPC({top:'long',topColor:'#101012',outer:'none',bottom:'cargo',bottomColor:'#101012',shoes:'boots',shoeColor:'#101012',head:'none',face:'shades',extra:'none'},L(x,z),Math.PI,'talk',{}).P));
+  for(let i=0;i<(LOW?6:14);i++){ const S=addNPC(avantLook(),L(rand(-120,900),rand(-30,-8)),rand(0,6.28),'talk',{talk:true}); mine.push(S.P); }
+
+  // ---------- 1·2F: the Johnny Depp painting show ----------
+  { const R=SH_R.gal, g=shRoom(R,new THREE.MeshBasicMaterial({color:0xe2e0da}),new THREE.MeshBasicMaterial({color:0x8e8a82}),new THREE.MeshBasicMaterial({color:0xf2f2ef})), W=R.w, D=R.d;
+    const ttl=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['JOHNNY DEPP','900 150px Georgia,serif','#141414',.38],['조니 뎁 그림전  ·  1F – 2F','700 72px Noto Sans KR,sans-serif','#9a1a1a',.78]],{w:1024,h:256,bg:'#ecebe6'})})); ttl.scale.set(10,2.5,1); ttl.position.set(-W/2+7,3.6,-D/2+.03); g.add(ttl);
+    // the mezzanine (2F) along the back wall, with a glass rail
+    B(W,.35,3.4,M('#d8d6d0'),0,4.5,D/2-1.7,g); B(W,1,.04,M('#cfe8ff',{op:.25}),0,5.2,D/2-3.4,g); B(W,.05,.06,M('#2a2a2a'),0,5.72,D/2-3.4,g); for(let i=0;i<8;i++) B(.9,.18,.35,M('#d8d6d0'),-W/2+1.6,.1+i*.56,D/2-4.3-i*.32,g);
+    let k=0; const hang=(x,z,ry,y,sz)=>{ const f=new THREE.Group(); f.position.set(x,y,z); f.rotation.y=ry; g.add(f); const w=sz*.8, h=sz; B(w+.16,h+.16,.06,M('#1c1a18'),0,0,0,f); const p=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shPaintTex(k++ +3)})); p.scale.set(w,h,1); p.position.z=.035; f.add(p); B(.3,.12,.02,M('#f4f1ea'),w/2+.25,-h/2+.1,.03,f); B(.5,.06,.12,M('#2a2a2a'),0,h/2+.5,.3,f); };
+    for(let i=0;i<5;i++) hang(-W/2+.05,-D/2+3+i*3.6,Math.PI/2,2.1,1.8); for(let i=0;i<5;i++) hang(W/2-.05,-D/2+3+i*3.6,-Math.PI/2,2.1,1.8);
+    for(let i=0;i<3;i++) hang(6+i*4,-D/2+.05,0,2.1,1.9); for(let i=0;i<6;i++) hang(-W/2+3+i*4.6,D/2-.05,Math.PI,6.6,1.6); for(let i=0;i<3;i++) hang(-W/2+3+i*4.2,D/2-.05,Math.PI,2.1,1.7);
+    [[-4,0],[4,0]].forEach(([x,z])=>B(3,.45,.8,M('#2a2622'),x,.225,z,g));
+    // the freight lift door at the back right, purple light leaking round it
+    B(4.6,3.9,.2,M('#2a2a30'),W/2-6,1.95,D/2-.12,g); B(4.2,3.5,.06,M('#55555e'),W/2-6,1.75,D/2-.24,g); B(.04,3.5,.08,M('#1a1a1a'),W/2-6,1.75,D/2-.28,g);
+    const hz=shTex(128,16,(x,w,h)=>{ for(let i=0;i<16;i++){ x.fillStyle=i%2?'#ffd400':'#141414'; x.beginPath(); x.moveTo(i*16-8,h); x.lineTo(i*16,0); x.lineTo(i*16+8,0); x.lineTo(i*16,h); x.fill(); } }); hz.wrapS=THREE.RepeatWrapping; hz.repeat.set(3,1);
+    const hzM=new THREE.MeshBasicMaterial({map:hz}); [[0,3.62,4.6,.24]].forEach(([x,y,a,b])=>{ const p=new THREE.Mesh(G.plane,hzM); p.scale.set(a,b,1); p.position.set(W/2-6,y,D/2-.25); p.rotation.y=Math.PI; g.add(p); });
+    B(4.2,.06,.3,M('#b04dff',{glow:2.2}),W/2-6,.03,D/2-.35,g); const lsg=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('화물 엘리베이터 ↑ 4F SYSTEM','#c88aff'),transparent:true})); lsg.scale.set(3.2,.8,1); lsg.position.set(W/2-6,4.05,D/2-.25); lsg.rotation.y=Math.PI; g.add(lsg);
+    const ex=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('EXIT  강변으로','#3dff6a'),transparent:true})); ex.scale.set(2,.5,1); ex.position.set(0,3.4,-D/2+.04); g.add(ex); B(2.4,3,.06,M('#cfe8ff',{op:.3}),0,1.5,-D/2+.05,g);
+    [[-8,-4],[8,-4],[0,5]].forEach(([x,z])=>{ const pl=new THREE.PointLight(0xfff4e0,.9,22); pl.position.set(x,7,z); g.add(pl); });
+    for(let i=0;i<(LOW?6:12);i++){ const side=i%4, x=side===0?-W/2+2.2:side===1?W/2-2.2:rand(-10,10), z=side<2?rand(-8,6):(side===2?-D/2+2.2:D/2-5.6), ry=side===0?-Math.PI/2:side===1?Math.PI/2:side===2?Math.PI:0;
+      const S=addNPC(Math.random()<.5?avantLook():{},{x:R.cx+x,z:R.cz+z},ry,'talk',{talk:true}); mine.push(S.P); } }
+
+  // ---------- the freight lift: DJ on oil drums, purple, packed ----------
+  { const R=SH_R.lift, cor=shTex(256,128,(x,w,h)=>{ for(let i=0;i<w;i+=8){ const g=x.createLinearGradient(i,0,i+8,0); g.addColorStop(0,'#3a3640'); g.addColorStop(.5,'#6a6672'); g.addColorStop(1,'#2a2630'); x.fillStyle=g; x.fillRect(i,0,8,h); } x.fillStyle='rgba(0,0,0,.25)'; for(let k=0;k<30;k++) x.fillRect(Math.random()*w,Math.random()*h,rand(2,20),rand(1,4)); });
+    cor.wrapS=cor.wrapT=THREE.RepeatWrapping; cor.repeat.set(3,1); const plate=shTex(64,64,(x,w,h)=>{ x.fillStyle='#4a4a52'; x.fillRect(0,0,w,h); x.fillStyle='#6a6a74'; for(let i=0;i<4;i++) for(let j=0;j<4;j++){ x.save(); x.translate(i*16+8,j*16+8); x.rotate((i+j)%2?.7:-.7); x.fillRect(-5,-1.5,10,3); x.restore(); } }); plate.wrapS=plate.wrapT=THREE.RepeatWrapping; plate.repeat.set(5,6);
+    const wm=new THREE.MeshLambertMaterial({map:cor,color:0xd8b8ff}), g=shRoom(R,wm,new THREE.MeshLambertMaterial({map:plate,color:0xc8b0e8}),M('#1a1420')); SHG.liftG=g; const W=R.w, D=R.d, H=R.h;
+    SHG.tube=new THREE.MeshBasicMaterial({color:0xb04dff}); [[-W/2+.1,0,.06,.06,D],[W/2-.1,0,.06,.06,D],[0,-D/2+.1,W,.06,.06],[0,D/2-.1,W,.06,.06]].forEach(([x,z,a,b,c])=>B(a,b,c,SHG.tube,x,H-.15,z,g)); for(let i=0;i<4;i++) B(.06,H-.4,.06,SHG.tube,i<2?-W/2+.12:W/2-.12,H/2,i%2?-D/2+1:D/2-1,g);
+    SHG.liftL=new THREE.PointLight(0xa040ff,2.5,14); SHG.liftL.position.set(0,3.4,0); g.add(SHG.liftL); const l2=new THREE.PointLight(0xff40d0,1.2,10); l2.position.set(0,2.4,D/2-1.5); g.add(l2);
+    // the DJ setup: a plank across three oil drums
+    [-1,0,1].forEach((i,k)=>{ const dm=mesh(G.cyl,M(['#1f4fa8','#a84a1f','#2a2a30'][k]),i*.85,.45,D/2-1.3,.32,.9,.32,g); mesh(G.cyl,M('#888890'),i*.85,.6,D/2-1.3,.335,.04,.335,g); mesh(G.cyl,M('#888890'),i*.85,.3,D/2-1.3,.335,.04,.335,g); });
+    B(2.7,.06,.75,M('#6a4a2a'),0,.93,D/2-1.3,g); [-.75,.75].forEach(x=>{ B(.42,.08,.42,M('#101014'),x,1,D/2-1.3,g); mesh(G.cyl,M('#3a3a44'),x,1.05,D/2-1.3,.15,.015,.15,g); }); B(.4,.09,.36,M('#1c1c22'),0,1,D/2-1.3,g);
+    const sm=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('SYSTEM · FREIGHT','#c88aff'),transparent:true})); sm.scale.set(2.4,.6,1); sm.position.set(0,2.9,D/2-.05); sm.rotation.y=Math.PI; g.add(sm);
+    colliders.push({x:R.cx-.85,z:R.cz+D/2-1.3,r:.45},{x:R.cx,z:R.cz+D/2-1.3,r:.45},{x:R.cx+.85,z:R.cz+D/2-1.3,r:.45});
+    // the scissor gate at the front, the call panel on the side, the floor display above the door
+    for(let i=0;i<14;i++){ const b=B(.04,2.6,.04,M('#9a9aa6'),-W/2+.6+i*.45,1.3,-D/2+.15,g); b.rotation.z=i%2?.18:-.18; }
+    B(.3,.5,.06,M('#2a2a30'),W/2-.05,1.35,1,g); mesh(G.sph,M('#ffcf3a',{glow:1.6}),W/2-.1,1.45,1,.05,.05,.05,g); mesh(G.sph,M('#ff3d3d',{glow:1.6}),W/2-.1,1.28,1,.05,.05,.05,g);
+    SHG.indC=document.createElement('canvas'); SHG.indC.width=128; SHG.indC.height=64; SHG.indT=new THREE.CanvasTexture(SHG.indC); const ind=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:SHG.indT})); ind.scale.set(1,.5,1); ind.position.set(0,3.5,-D/2+.04); g.add(ind); shInd(1);
+    SHG.zones.lift=makeZone('sh-lift',R.cx,R.cz,9,SH_TR.lift); SHG.zones.lift.vol=.95;
+    const dj=addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx,z:R.cz+D/2-.55},Math.PI,'dj',{zone:SHG.zones.lift}); mine.push(dj.P);
+    const dn=['pump','headbang','jack','stomp','raise','hands'];
+    for(let i=0;i<(LOW?10:18);i++){ const x=rand(-W/2+.6,W/2-.6), z=rand(-D/2+1.2,D/2-2.4); const S=addNPC(avantLook(),{x:R.cx+x,z:R.cz+z},Math.atan2(-x,D/2-1.3-z)+rand(-.4,.4),'dance',{dance:pick(dn),zone:SHG.zones.lift,talk:true}); mine.push(S.P); } }
+
+  // ---------- 4F: the SYSTEM hall: white light, a media-art wall, experimental techno, the bar right by the lift ----------
+  { const R=SH_R.hall, g=shRoom(R,M('#cfcfcc'),M('#2e2e32'),M('#18181a')), W=R.w, D=R.d, H=R.h;
+    SHG.media=new THREE.ShaderMaterial({uniforms:{uT:{value:0},uB:{value:0}},vertexShader:'varying vec2 v; void main(){ v=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+      fragmentShader:'varying vec2 v; uniform float uT,uB; float h(vec2 p){ return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453); }\n void main(){ vec2 p=v*vec2(4.4,1.); float t=uT*.22, f=0.; for(int i=0;i<4;i++){ float k=float(i); f+=sin(p.x*(2.+k*1.7)+sin(p.y*(3.+k)+t*(1.+k*.3))*2.2+t*(.5+k*.2)); }\n float ln=smoothstep(.9,1.,abs(sin(f*2.6))); float gr=step(.988,fract(p.x*10.))+step(.985,fract(p.y*7.)); float n=h(floor(v*vec2(240.,70.))+floor(uT*14.));\n float sweep=smoothstep(.02,0.,abs(fract(v.x-uT*.07)-.5)-.003);\n vec3 c=vec3(.02)+vec3(ln)*(.75+uB*.6)+gr*.05+n*.05+sweep*.6; gl_FragColor=vec4(min(c,vec3(1.)),1.); }'});
+    const mw=new THREE.Mesh(G.plane,SHG.media); mw.scale.set(D-4,H-3,1); mw.position.set(W/2-.08,H/2+.4,0); mw.rotation.y=-Math.PI/2; g.add(mw);
+    // DJ riser in front of the wall
+    B(5,1.2,10,M('#e8e8e6'),W/2-4,.6,0,g); B(1.2,1.1,3.6,M('#0e0e10'),W/2-4.6,1.75,0,g); B(.05,.05,3.62,M('#ffffff',{glow:2}),W/2-5.22,2.31,0,g); [-1,1].forEach(z=>mesh(G.cyl,M('#2c2c34'),W/2-4.6,2.32,z,.28,.03,.28,g)); colliders.push({x:R.cx+W/2-4,z:R.cz-3,r:2.6},{x:R.cx+W/2-4,z:R.cz+3,r:2.6},{x:R.cx+W/2-4,z:R.cz,r:2.6});
+    // white moving beams from a ceiling truss, and a strobe
+    for(let i=0;i<4;i++) B(W-6,.25,.25,M('#3a3a3e'),0,H-1.2,-12+i*8,g);
+    const cg=new THREE.ConeGeometry(2.2,H-1.5,18,1,true); cg.translate(0,-(H-1.5)/2,0);
+    for(let i=0;i<(LOW?8:14);i++){ const p=new THREE.Group(); p.position.set(-W/2+8+(i%7)*7.5,H-1.3,-12+Math.floor(i/7)*24); g.add(p); const m=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.07,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}); p.add(new THREE.Mesh(cg,m)); mesh(G.cyl,M('#f4f4f4',{glow:2}),0,0,0,.3,.3,.3,p); SHG.beams.push({p,m,ph:i*.9}); }
+    SHG.strobe=new THREE.PointLight(0xffffff,0,60); SHG.strobe.position.set(W/2-10,H-2,0); g.add(SHG.strobe); const fill=new THREE.PointLight(0xe8eeff,1.1,70); fill.position.set(0,H-3,0); g.add(fill);
+    // the bar: as soon as you step out of the lift
+    B(1,1.1,7,M('#101012'),-W/2+6,.55,-D/2+5.5,g); B(1.06,.05,7.06,M('#ffffff',{glow:1.4}),-W/2+6,1.12,-D/2+5.5,g); B(6,1.1,1,M('#101012'),-W/2+3,.55,-D/2+9,g); B(6.06,.05,1.06,M('#ffffff',{glow:1.4}),-W/2+3,1.12,-D/2+9,g);
+    [1.5,2.2].forEach(y=>{ B(.3,.04,7,M('#2a2a2e'),-W/2+.4,y,-D/2+5,g); for(let i=0;i<9;i++) bottle(g,-W/2+.4,y+.03,-D/2+2+i*.7,pick(['#3d7a3a','#8a4a22','#f4efe6','#9fd8ff','#e8e8e8']),.24); });
+    const bs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('SYSTEM BAR','#ffffff'),transparent:true})); bs.scale.set(3,.75,1); bs.position.set(-W/2+.06,3.2,-D/2+5.5); bs.rotation.y=Math.PI/2; g.add(bs);
+    colliders.push({x:R.cx-W/2+6,z:R.cz-D/2+3,r:.7},{x:R.cx-W/2+6,z:R.cz-D/2+5.5,r:.7},{x:R.cx-W/2+6,z:R.cz-D/2+8,r:.7},{x:R.cx-W/2+3.5,z:R.cz-D/2+9,r:.7},{x:R.cx-W/2+1.5,z:R.cz-D/2+9,r:.7});
+    mine.push(addNPC({top:'tee',topColor:'#141414',extra:'none'},{x:R.cx-W/2+4.5,z:R.cz-D/2+5},Math.PI/2,'talk',{talk:true}).P);
+    // the lift doors in the end wall, and the stairs up to 5F
+    B(.2,3.9,4.6,M('#2a2a30'),-W/2+.12,1.95,-D/2+12,g); B(.06,3.5,4.2,M('#55555e'),-W/2+.24,1.75,-D/2+12,g); B(.3,.06,4.2,M('#b04dff',{glow:2.2}),-W/2+.35,.03,-D/2+12,g);
+    const ls=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('화물 엘리베이터 ↓ 1F','#c88aff'),transparent:true})); ls.scale.set(3,.75,1); ls.position.set(-W/2+.08,4.3,-D/2+12); ls.rotation.y=Math.PI/2; g.add(ls);
+    B(3,3.6,.2,M('#0a0a0c'),-W/2+18,1.8,D/2-.12,g); B(2.6,3.2,.05,M('#3dff6a',{glow:.8}),-W/2+18,1.7,D/2-.25,g); const gs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('5F ↑ GREEN ROOM','#3dff6a'),transparent:true})); gs.scale.set(3,.75,1); gs.position.set(-W/2+18,4.2,D/2-.06); gs.rotation.y=Math.PI; g.add(gs);
+    const hs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['SYSTEM','900 170px "Arial Black",Impact,sans-serif','#ffffff',.5,30]]),transparent:true})); hs.scale.set(12,3,1); hs.position.set(0,H-2.6,-D/2+.06); g.add(hs);
+    SHG.zones.hall=makeZone('sh-hall',R.cx+12,R.cz,52,SH_TR.hall); SHG.zones.hall.vol=.95;
+    const dj=addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx+W/2-3.6,z:R.cz},-Math.PI/2,'dj',{zone:SHG.zones.hall,y:1.2}); mine.push(dj.P);
+    const dn=['headbang','stomp','robot','pump','hakken','popping','sway'];
+    for(let i=0;i<(LOW?22:46);i++){ const x=rand(-W/2+10,W/2-9), z=rand(-D/2+3,D/2-3); const S=addNPC(avantLook(),{x:R.cx+x,z:R.cz+z},Math.atan2(W/2-4.6-x,-z)+rand(-.3,.3),'dance',{dance:pick(dn),zone:SHG.zones.hall,talk:true}); mine.push(S.P); }
+    for(let i=0;i<5;i++){ const S=addNPC(avantLook(),{x:R.cx-W/2+8+rand(0,3),z:R.cz-D/2+3+rand(0,6)},rand(0,6.28),'talk',{talk:true}); if(i%2) handProp(S.P,'beer',0); mine.push(S.P); } }
+
+  // ---------- 5F: the small green room ----------
+  { const R=SH_R.green, g=shRoom(R,M('#0c0e0c'),M('#0a0a0a'),M('#050605')), W=R.w, D=R.d, H=R.h;
+    const tg=new THREE.BoxGeometry(1.36,.04,1.36), nx=Math.floor((W-2)/1.4), nz=Math.floor((D-3)/1.4); const tm=new THREE.InstancedMesh(tg,new THREE.MeshBasicMaterial({color:0xffffff}),nx*nz), d=new THREE.Object3D(), c=new THREE.Color(0x0a3a14);
+    for(let i=0;i<nx;i++) for(let j=0;j<nz;j++){ d.position.set(-((nx-1)*1.4)/2+i*1.4,.02,-D/2+1+((j)*1.4)+.7); d.updateMatrix(); tm.setMatrixAt(i*nz+j,d.matrix); tm.setColorAt(i*nz+j,c); } g.add(tm); SHG.tiles={m:tm,n:nx*nz,c};
+    B(4,1.1,1.1,M('#0e0e10'),0,.55,D/2-1.1,g); B(4.02,.05,1.12,M('#3dff6a',{glow:2}),0,1.12,D/2-1.1,g); colliders.push({x:R.cx-1.4,z:R.cz+D/2-1.1,r:.8},{x:R.cx+1.4,z:R.cz+D/2-1.1,r:.8},{x:R.cx,z:R.cz+D/2-1.1,r:.8});
+    const lg=new THREE.BoxGeometry(.03,.03,14); lg.translate(0,0,7); SHG.lm=new THREE.MeshBasicMaterial({color:0x3dff6a,transparent:true,opacity:.55,blending:THREE.AdditiveBlending,depthWrite:false});
+    for(let i=0;i<(LOW?5:9);i++){ const L2=new THREE.Mesh(lg,SHG.lm); L2.position.set(0,2.6,D/2-.6); g.add(L2); SHG.lasers.push({l:L2,ph:i*.7,k:i}); }
+    SHG.greenL=new THREE.PointLight(0x2bff6a,2,22); SHG.greenL.position.set(0,3.6,0); g.add(SHG.greenL);
+    const st=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('계단 ↓ 4F SYSTEM','#3dff6a'),transparent:true})); st.scale.set(2.6,.65,1); st.position.set(0,3.2,-D/2+.05); g.add(st);
+    const gn=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['GREEN ROOM','900 120px "Arial Black",Impact,sans-serif','#3dff6a',.5,30]]),transparent:true})); gn.scale.set(8,2,1); gn.position.set(0,3.2,D/2-.06); gn.rotation.y=Math.PI; g.add(gn);
+    SHG.zones.green=makeZone('sh-green',R.cx,R.cz,14,SH_TR.green); SHG.zones.green.vol=.95;
+    const dj=addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx,z:R.cz+D/2-.4},Math.PI,'dj',{zone:SHG.zones.green}); mine.push(dj.P);
+    const dn=['jack','twostep','pump','hands','raise','toprock','sway'];
+    for(let i=0;i<(LOW?10:18);i++){ const x=rand(-W/2+1,W/2-1), z=rand(-D/2+2,D/2-2.4); const S=addNPC(avantLook(),{x:R.cx+x,z:R.cz+z},Math.atan2(-x,D/2-1.1-z)+rand(-.4,.4),'dance',{dance:pick(dn),zone:SHG.zones.green,talk:true}); mine.push(S.P); } }
+  mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); if(!TALKP.includes(P)) TALKP.push(P); });
+
+  // ---------- doors and buttons ----------
+  const at=(room,x,z)=>()=>MAP==='shanghai'&&inGame&&SHG.room===room?{x,z}:FARV, G_=SH_R.gal, Lf=SH_R.lift, Hl=SH_R.hall, Gr=SH_R.green;
+  INTER.push({pos:at('out',SHX,SHZ+3.6),r:4,prio:2,label:'SYSTEM 입장 · 미술관으로 들어가기',act:()=>shGo('gal',G_.cx,G_.cz-G_.d/2+2,0,'게스트 리스트 확인! 1·2층은 조니 뎁 그림전이에요. 안쪽 화물 엘리베이터를 타면 4층 SYSTEM이에요')});
+  INTER.push({pos:at('gal',G_.cx,G_.cz-G_.d/2+1),r:2.4,label:'강변으로 나가기',act:()=>shGo('out',SHX,SHZ+1,Math.PI,'황푸강변이에요')});
+  INTER.push({pos:at('gal',G_.cx+G_.w/2-6,G_.cz+G_.d/2-1.2),r:2.6,label:'화물 엘리베이터 타기 (4F SYSTEM)',act:()=>{ SHG.liftAt=1; shInd(1); shGo('lift',Lf.cx,Lf.cz-Lf.d/2+1.2,0,'보라색 화물 엘리베이터 안이에요. 드럼통 위에서 DJ가 틀어요. 옆 패널 버튼을 누르면 4층으로 올라가요'); }});
+  INTER.push({pos:at('lift',Lf.cx+Lf.w/2-.6,Lf.cz+1),r:1.6,prio:1,get label(){ return SHG.ride?'운행 중이에요':SHG.liftAt===1?'4층 버튼 누르기':'1층 버튼 누르기'; },act:shRide});
+  INTER.push({pos:at('lift',Lf.cx,Lf.cz-Lf.d/2+.6),r:1.8,get label(){ return SHG.liftAt===1?'내리기 · 1·2F 그림전':'내리기 · 4F SYSTEM'; },act:()=>{ if(SHG.ride){ toast('엘리베이터가 움직이고 있어요'); return; }
+    if(SHG.liftAt===1) shGo('gal',G_.cx+G_.w/2-6,G_.cz+G_.d/2-2.2,Math.PI,'1·2층 조니 뎁 그림전이에요');
+    else shGo('hall',Hl.cx-Hl.w/2+2.2,Hl.cz-Hl.d/2+12,Math.PI/2,'4F SYSTEM. 내리자마자 바가 있어요. 하얀 조명 아래 실험적인 테크노'); }});
+  INTER.push({pos:at('hall',Hl.cx-Hl.w/2+1.2,Hl.cz-Hl.d/2+12),r:2.2,label:'화물 엘리베이터 타기 (1층으로)',act:()=>{ SHG.liftAt=4; shInd(4); shGo('lift',Lf.cx,Lf.cz-Lf.d/2+1.2,0,'화물 엘리베이터예요. 패널 버튼을 누르면 1층으로 내려가요'); }});
+  INTER.push({pos:at('hall',Hl.cx-Hl.w/2+7.2,Hl.cz-Hl.d/2+5.5),r:2.2,label:'SYSTEM 바',act:()=>openShop({id:'shbar',name:'SYSTEM 바',sub:'맥주, 샷, 칵테일, 물',items:[ITEMS['플라야 라거'],ITEMS['데킬라 샷'],ITEMS['선셋 칵테일'],ITEMS['생수']].filter(Boolean)})});
+  INTER.push({pos:at('hall',Hl.cx-Hl.w/2+18,Hl.cz+Hl.d/2-1.2),r:2.4,label:'5층 그린 룸으로 올라가기',act:()=>shGo('green',Gr.cx,Gr.cz-Gr.d/2+1.3,0,'5F 그린 룸. 작지만 제일 신나는 플로어예요')});
+  INTER.push({pos:at('green',Gr.cx,Gr.cz-Gr.d/2+.8),r:2,label:'4층으로 내려가기',act:()=>shGo('hall',Hl.cx-Hl.w/2+18,Hl.cz+Hl.d/2-2.4,Math.PI,'4F SYSTEM 홀')});
+  updaters.push(shTick); }
+// the floor display above the lift door
+function shInd(f){ const x=SHG.indC&&SHG.indC.getContext('2d'); if(!x) return; SHG.indFl=f; x.fillStyle='#0a0610'; x.fillRect(0,0,128,64); x.fillStyle='#ff3df0'; x.shadowColor='#ff3df0'; x.shadowBlur=12; x.font='900 40px monospace'; x.textAlign='center'; x.textBaseline='middle';
+  x.fillText((SHG.ride?(SHG.ride.to>SHG.ride.from?'▲':'▼'):'')+f+'F',64,34); x.shadowBlur=0; SHG.indT.needsUpdate=true; }
+function shRide(){ if(SHG.ride) return; const from=SHG.liftAt, to=from===1?4:1; SHG.ride={t:0,from,to}; shInd(from); toast(to===4?'덜컹! 화물 엘리베이터가 4층으로 올라가요':'덜컹! 1층으로 내려가요'); }
+function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggle('shanghai',inS);
+  if(SHG.ride){ const R=SHG.ride; R.t+=dt; const f=Math.round(R.from+(R.to-R.from)*Math.min(1,R.t/9)); if(f!==SHG.indFl) shInd(f); if(SHG.liftG) SHG.liftG.position.y=Math.sin(t*38)*.025*(R.t<9?1:0);
+    if(R.t>=9){ SHG.liftAt=R.to; SHG.ride=null; shInd(SHG.liftAt); if(SHG.liftG) SHG.liftG.position.y=0; if(inS&&SHG.room==='lift') toast(SHG.liftAt===4?'4층이에요. 문 쪽으로 가서 내리면 바로 바예요':'1층이에요. 내리면 그림전이에요'); } }
+  if(!inS) return;
+  if(dust) dust.visible=false; stormNext=Math.max(stormNext,30); if(stormOn){ stormOn=false; stormLeft=0; }
+  const room=shRoomAt(pState.x,pState.z); SHG.room=room; const u=sky.material.uniforms;
+  if(room==='out'){ u.top.value.set(0x03040c); u.hor.value.set(0x3a2448); u.bot.value.set(0x0a0a14); scene.fog.color.set(0x12142a); scene.fog.near=180; scene.fog.far=LOW?650:1300; hemi.intensity=.5; }
+  else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x0b0b0d,green:0x020a04}[room]); scene.fog.near=room==='gal'?60:30; scene.fog.far=room==='hall'?200:room==='gal'?160:110; hemi.intensity=room==='gal'?.9:.35; }
+  renderer.setClearColor(scene.fog.color);
+  if(room==='out'){ SHG.leds.forEach((L,i)=>{ if(L.base) return; L.m.color.setHSL((t*.05+L.ph*.16)%1,.85,.6); }); SHG.refl.forEach(R=>{ R.m.opacity=.24+.1*Math.sin(t*1.6+R.ph); });
+    SHG.boats.forEach(B_=>{ const p=B_.g.position; p.x+=B_.dir*B_.sp*dt; if(p.x>1300) p.x=-350; if(p.x<-350) p.x=1300; B_.g.rotation.y=B_.dir>0?0:Math.PI; });
+    if(SHG.chim) SHG.chim.color.setHSL((t*.03)%1,.9,.55); const b=t*2.2, ph=b%1; SHG.win4.color.setScalar(.5+.5*Math.exp(-ph*5)); SHG.win5.color.setRGB(.1,.5+.5*Math.exp(-ph*4),.2); return; }
+  if(room==='lift'){ const Z=SHG.zones.lift, b=Z.running?boothBeat(Z,t):t*2.13, ph=((b%1)+1)%1, k=Math.exp(-ph*4); SHG.liftL.intensity=1.6+2.4*k; SHG.tube.color.setHSL(.77+.05*Math.sin(t*.7),1,.45+.25*k); return; }
+  if(room==='hall'){ const Z=SHG.zones.hall, b=Z.running?boothBeat(Z,t):t*2.2, ph=((b%1)+1)%1, k=Math.exp(-ph*5), bar=Math.floor(b/4);
+    SHG.media.uniforms.uT.value=t; SHG.media.uniforms.uB.value=k;
+    SHG.beams.forEach(B_=>{ B_.p.rotation.x=Math.sin(t*.5+B_.ph)*.55; B_.p.rotation.z=Math.sin(t*.37+B_.ph*1.3)*.6; B_.m.opacity=.05+.09*k; });
+    SHG.strobe.intensity=(bar%8===7&&ph<.12)?6:0; return; }
+  if(room==='green'){ const Z=SHG.zones.green, b=Z.running?boothBeat(Z,t):t*2.07, ph=((b%1)+1)%1, k=Math.exp(-ph*4), beat=Math.floor(b);
+    SHG.greenL.intensity=1.2+2.2*k; SHG.lm.opacity=.35+.4*k; SHG.lasers.forEach(L=>{ L.l.rotation.y=Math.PI+(L.k-4)*.18+Math.sin(t*.9+L.ph)*.35; L.l.rotation.x=.12+Math.sin(t*.6+L.ph)*.12; });
+    if(SHG.tiles&&SHG.tiles.beat!==beat){ SHG.tiles.beat=beat; const T=SHG.tiles, c=T.c; for(let i=0;i<T.n;i++){ const on=Math.random()<.35; c.setRGB(on?.15:.01,on?1:.12,on?.35:.04); T.m.setColorAt(i,c); } T.m.instanceColor.needsUpdate=true; } } }
+const SH_SPOTS=[{n:'황푸강변 산책로 (푸둥 야경)',x:SHX+120,z:SHZ-24},{n:'미술관 입구 (SYSTEM)',x:SHX+1,z:SHZ+1},{n:'SYSTEM 줄 끝 (1km)',x:SHX+1080,z:SHZ-2},{n:'1·2F 조니 뎁 그림전',room:'gal'},{n:'화물 엘리베이터 (드럼통 DJ)',room:'lift'},{n:'4F SYSTEM 홀 (실험 테크노)',room:'hall'},{n:'5F 그린 룸',room:'green'},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
+function renderBoothListSH(){ const ul=$('#boothList'); if(ul.hidden) return;
+  ul.innerHTML=`<li class='cat'><button disabled>🇨🇳 상하이점 · 중국 상하이<small>${SH_SPOTS.filter(s=>!s.go).length}곳</small></button></li>`+SH_SPOTS.map((s,i)=>s.go?'':`<li><span class='dot' style='background:${s.room==='green'?'#3dff6a':s.room==='lift'?'#b04dff':s.room?'#ffffff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&SHG.room==='out'?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-shs='${i}'>가기</button></li>`).join(''); }
+$('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-shs]'); if(!b) return; const s=SH_SPOTS[+b.dataset.shs]; if(s.go){ goMap(s.go); return; }
+  const G_=SH_R.gal, Lf=SH_R.lift, Hl=SH_R.hall, Gr=SH_R.green;
+  if(s.room==='gal') shGo('gal',G_.cx,G_.cz-G_.d/2+2,0,'1·2층 조니 뎁 그림전이에요');
+  else if(s.room==='lift') shGo('lift',Lf.cx,Lf.cz-Lf.d/2+1.2,0,'화물 엘리베이터 안이에요');
+  else if(s.room==='hall') shGo('hall',Hl.cx-Hl.w/2+2.2,Hl.cz-Hl.d/2+12,Math.PI/2,'4F SYSTEM 홀');
+  else if(s.room==='green') shGo('green',Gr.cx,Gr.cz-Gr.d/2+1.3,0,'5F 그린 룸');
+  else shGo('out',s.x,s.z,s.x>SHX+500?-Math.PI/2:Math.PI,s.n); });
+$('#enterBtn').addEventListener('click',()=>{ if(selMap==='shanghai'&&MAP!=='shanghai') setTimeout(()=>goMap('shanghai'),70); });
 
 /* ================= MUSIC ARBITER: ONLY ONE SONG AT A TIME ================= */
 const MA={cur:null};
@@ -7317,7 +7572,7 @@ const NPC={sig:'',t:0};
 const npEq="<span class='eq' aria-hidden='true'><i></i><i></i><i></i><i></i></span>";
 function npPic(c,big){ const P=c&&c.pictures; const u=P&&(big?(P['320wx320h']||P.large||P.extra_large||P.medium):(P.medium||P.small)); return u?`url("${String(u).replace(/["'()\\\s]/g,'')}")`:''; }
 function npNow(){ const T=musicTarget(), g=mcDefault(T); return {T,g,gn:MC_G[g][0],near:mcNear(T),mine:!!(MC.cur&&MC.target&&MC.target.key===T.key)}; }
-function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff',ring:'#3dff6a',studio:'#bcd0ff'}[T.Z&&T.Z.id]||'#b06bff'); }
+function npColor(T){ return T.kind==='booth'&&T.b.col?T.b.col:({shelter:'#ff3d6e',paper:'#ffd23d',sphere:'#46d6ff',ring:'#3dff6a',studio:'#bcd0ff','sh-lift':'#b04dff','sh-hall':'#ffffff','sh-green':'#3dff6a'}[T.Z&&T.Z.id]||'#b06bff'); }
 function npRender(){ if(!inGame) return; const np=$('#np'); if(!np) return;
   const {T,g,gn,near,mine}=npNow(), c=mine?MC.cur:null; favSync(c,T); const open=!np.classList.contains('collapsed'), col=npColor(T);
   // the card waits until you reach a stage (or a set is playing); it stays out of the way on the desert drive and at the gate
@@ -7351,7 +7606,8 @@ updaters.push((t)=>{ if(t-NPC.t<.35) return; NPC.t=t; npRender(); });
 const LU_AREAS=[['playa','🏜 사막점',[['booth:techno','테크노 부스'],['booth:house','하우스 부스'],['booth:afro','아프로테크 부스'],['booth:hardstyle','딥테크노 부스'],['booth:dubstep','덥스텝 부스'],['booth:edm','EDM 메인 스테이지'],['zone:jazz','재즈 라운지'],['zone:disco','디스코'],['zone:potty','파티 포티']]],
   ['itaewon','🇰🇷 이태원',[['club3','4F 쉘터'],['club4','5F 페이퍼'],['zone:teller','B1 텔러'],['zone:ring','링'],['zone:studio','익스텐디드 스튜디오']]],
   ['nami','🌲 남이섬',[['zone:nm-jandi','JANDI 스테이지'],['zone:nm-hanok','HANOK 스테이지'],['zone:nm-soop','SOOP 스테이지'],['zone:nm-exp','익스페리멘탈 사운드 존'],['zone:nm-hut','명상 오두막'],['zone:nm-aero','에어로빅 코너']]],
-  ['sphere','🔮 라스베가스',[['zone:sphere','스피어']]]];
+  ['sphere','🔮 라스베가스',[['zone:sphere','스피어']]],
+  ['shanghai','🇨🇳 상하이',[['zone:sh-lift','화물 엘리베이터 (드럼통 DJ)'],['zone:sh-hall','4F SYSTEM 홀'],['zone:sh-green','5F 그린 룸']]]];
 const LU_INFO={}; LU_AREAS.forEach(([m,a,L])=>L.forEach(([k,n])=>LU_INFO[k]={map:m,area:a,name:n}));
 const LU={tab:'',sel:null,auto:false};
 const luPad=n=>String(n).padStart(2,'0');
@@ -7499,6 +7755,12 @@ const NEW_SPACES=[
     {img:'assets/news/edm-3.jpg',h:'드롭에는 컨페티와 불꽃',p:'8박마다 CO2가 뿜어져 나오고, 큰 드롭에는 컨페티가 터져요. 밤에는 불꽃놀이도 올라가요.'}],
   route:{pts:[[0,136],[38,166],[93,200]],spot:[90,196],pad:[70,45,45,40],
     steps:[[0,'도착 게이트에서 뒤로 돌아요'],[1,'하늘로 솟은 무지개 빛기둥 쪽으로 걸어가요'],[2,'가장 크고 화려한 무대가 EDM 메인 스테이지예요']]}},
+ {id:'shanghai',map:'shanghai',mapName:'상하이',name:'상하이점 · SYSTEM',kind:'새 지점',opened:Date.parse('2026-11-22T06:00:00Z'),
+  cards:[{img:'assets/news/sh-1.jpg',h:'상하이 황푸강변 미술관에서 SYSTEM이 열려요',p:'강 건너 푸둥 야경이 다 보이는 미술관이에요. 검은 옷을 입은 사람들이 1km 넘게 줄을 서 있어요.'},
+    {img:'assets/news/sh-2.jpg',h:'1·2층 조니 뎁 그림전, 그리고 보라색 화물 엘리베이터',p:'그림을 보고 안쪽 화물 엘리베이터에 타요. 드럼통 위에서 DJ가 틀고, 꽉 찬 사람들이 다 같이 춤춰요.'},
+    {img:'assets/news/sh-3.jpg',h:'4층 SYSTEM 홀과 5층 그린 룸',p:'내리자마자 바가 있어요. 4층은 하얀 조명과 대형 미디어 아트 아래 실험적인 테크노, 5층은 작지만 신나는 초록빛 플로어예요.'}],
+  route:{pts:[[60,-3018],[30,-3012],[8,-3004],[1,-2999.5]],spot:[1,-2999],pad:[24,20,14,30],
+    steps:[[0,'강변 산책로에서 미술관 쪽으로 걸어요'],[1,'줄 맨 앞, SYSTEM 간판 아래 입구로 가요'],[3,'입구에서 들어가면 1·2층 그림전, 안쪽 화물 엘리베이터가 4층으로 가요']]}},
  {id:'studio',map:'itaewon',mapName:'이태원',name:'익스텐디드 스튜디오',kind:'매장',opened:Date.parse('2026-11-13T18:45:00Z'),
   cards:[{img:'assets/news/studio-1.jpg',h:'이태원 길목에 익스텐디드 스튜디오가 생겼어요',p:'횡단보도를 지나면 오른쪽, 링 맞은편에 하얗게 빛나는 둥근 간판이 보여요.'},
     {img:'assets/news/studio-2.jpg',h:'창문 너머 DJ 부스',p:'매장 안에는 들어갈 수 없어요. 창문 바로 뒤에서 DJ가 틀고, 벽에는 후디와 옷이 걸려 있어요.'},
@@ -7532,7 +7794,12 @@ function nsNews(s){ const el=$('#nsPop'); NS.cur=s; NS.mode='news'; const n=s.ca
   const tr_=el.querySelector('.ns-track'); tr_.addEventListener('scroll',()=>{ const i=Math.round(tr_.scrollLeft/Math.max(1,tr_.clientWidth)); el.querySelectorAll('.ns-dots i').forEach((d,k)=>d.classList.toggle('on',k===i)); },{passive:true});
   el.hidden=false; }
 // top-down sketch of a map for the route popup (x grows to the LEFT, the way you see the street walking in)
-const NS_DRAW={itaewon(x,P,k){ const R=(x0,z0,x1,z1,c)=>{ const a=P(x0,z0), b=P(x1,z1); x.fillStyle=c; x.fillRect(Math.min(a[0],b[0]),Math.min(a[1],b[1]),Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1])); };
+const NS_DRAW={shanghai(x,P,k){ const R=(x0,z0,x1,z1,c)=>{ const a=P(x0,z0), b=P(x1,z1); x.fillStyle=c; x.fillRect(Math.min(a[0],b[0]),Math.min(a[1],b[1]),Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1])); };
+    const T=(s,lx,z,c,f)=>{ const p=P(lx,z); x.fillStyle=c; x.font=f||'600 24px sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(s,p[0],p[1]); };
+    R(-200,-3200,300,-3034,'#0c1a30'); R(-200,-3034,300,-2995,'#3b3944'); R(-45,-2994,45,-2950,'#2a2632'); x.strokeStyle='#ffffff'; x.lineWidth=4; { const a=P(45,-2994), b=P(-45,-2950); x.strokeRect(a[0],b[1],b[0]-a[0],a[1]-b[1]); }
+    for(let i=0;i<60;i++){ const p=P(4+i*1.6,-2996.6-(i>26?2.6:0)); x.fillStyle='#111'; x.beginPath(); x.arc(p[0],p[1],5,0,7); x.fill(); x.strokeStyle='#555'; x.lineWidth=1; x.stroke(); }
+    T('SYSTEM',0,-2975,'#ffffff','900 56px sans-serif'); T('황푸강',20,-3045,'#7fb0ff','700 26px sans-serif'); T('1km 줄 →',50,-2992,'#cfcfd8','600 22px sans-serif'); },
+ itaewon(x,P,k){ const R=(x0,z0,x1,z1,c)=>{ const a=P(x0,z0), b=P(x1,z1); x.fillStyle=c; x.fillRect(Math.min(a[0],b[0]),Math.min(a[1],b[1]),Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1])); };
     const T=(s,lx,z,c,f,al)=>{ const p=P(lx,z); x.fillStyle=c; x.font=f||'600 24px sans-serif'; x.textAlign=al||'center'; x.textBaseline='middle'; x.fillText(s,p[0],p[1]); };
     R(-7,-64,7,34,'#3b3944'); R(-4,-64,4,34,'#24232b'); x.setLineDash([6,6]); x.strokeStyle='#c9a53a'; x.lineWidth=3; x.beginPath(); x.moveTo(...P(0,-64)); x.lineTo(...P(0,34)); x.stroke(); x.setLineDash([]);
     for(let i=0;i<7;i++) R(-3.4+i*1,-30.9,-2.8+i*1,-29.1,'#e9e6df');
@@ -7547,7 +7814,7 @@ NS_DRAW.playa=function(x,P,k){ const T=(s,lx,z,c,f)=>{ const p=P(lx,z); x.fillSt
   { const c=P(0,0); x.fillStyle='#3a2f3a'; x.beginPath(); x.arc(c[0],c[1],300*k,0,6.3); x.fill(); x.fillStyle='#ffb347'; x.beginPath(); x.arc(c[0],c[1],5,0,6.3); x.fill(); }
   BOOTHS.forEach(b=>{ const p=P(b.pos.x,b.pos.z), me=b.id==='edm'; x.fillStyle=me?'#ff3df0':b.col; x.beginPath(); x.arc(p[0],p[1],me?26:11,0,6.3); x.fill(); if(me){ x.strokeStyle='#3dff6a'; x.lineWidth=5; x.stroke(); } T(me?'EDM':b.name,b.pos.x,b.pos.z-(me?-13:9),me?'#fff':'#cfd0d8',me?'900 30px sans-serif':'600 20px sans-serif'); });
   { const p=P(0,136); x.fillStyle='#8a6a4a'; x.fillRect(p[0]-26,p[1]-5,52,10); T('도착 게이트',0,125,'#e9e6df','600 22px sans-serif'); } };
-const NS_ORG={itaewon:()=>OX,nami:()=>NX,sphere:()=>SPX,playa:()=>0};
+const NS_ORG={itaewon:()=>OX,nami:()=>NX,sphere:()=>SPX,playa:()=>0,shanghai:()=>SHX};
 function nsRoute(s){ const el=$('#nsPop'); NS.cur=s; NS.mode='route'; const R=s.route;
   el.querySelector('.ns-in').innerHTML=`<div class='ns-head'><b><span class='tag'>NEW</span>${esc(s.name)} 가는 길</b><button class='ns-x' data-ns='x'>닫기</button></div>
    <canvas class='ns-map' width='720' height='720'></canvas>
@@ -7591,7 +7858,7 @@ updaters.push(t=>{ if(t-(NS.ck||0)<.5) return; NS.ck=t; const A=nsActive();
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
   for(let i=BOOTHS.length-1;i>=0;i--) if(BOOTH_CUT.includes(BOOTHS[i].id)) BOOTHS.splice(i,1);
-  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); buildClubStairs(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildStudio(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
+  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); buildClubStairs(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildStudio(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); buildShanghai(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }
