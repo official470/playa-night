@@ -7095,6 +7095,8 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
   for(let i=0;i<(LOW?26:52);i++){ const lx=rnd(-480,1180), lz=-rnd(360,640); if(Math.abs(lx-300)<170&&lz>-560) continue; const w=rnd(16,38), h=rnd(50,lx>100&&lx<600?210:150);
     const m=mesh(G.box,winMat(pick([0xffe2b8,0xcfe8ff,0xfff3d0,0xbfd8ff]),[Math.max(1,Math.round(w/8)),Math.round(h/12)]),lx,h/2,lz,w,h,w*rnd(.7,1),IG);
     if(Math.random()<.35){ const c=mesh(G.box,M('#ffffff',{glow:1.4}).clone(),lx,h+1.5,lz,w*.9,3,w*.7,IG); SHG.leds.push({m:c.material,ph:Math.random()*6}); if(Math.random()<.5) refl(lx,lz,w*.5,0xffffff); } }
+  // ---------- sights on the riverside: the Bund heritage row, Nanjing Road's neon, the Bund Bull, a Yu Garden pavilion, Waibaidu Bridge, a Pudong LED screen ----------
+  shSights(IG);
   // this side of the river behind the museum: a lower city
   for(let i=0;i<(LOW?10:22);i++){ const lx=rnd(-200,1150), lz=rnd(70,320), w=rnd(18,40), h=rnd(20,90); if(Math.abs(lx)<70&&lz<120) continue; mesh(G.box,winMat(0xffe2b8,[Math.round(w/8),Math.round(h/10)]),lx,h/2,lz,w,h,w,IG); }
   // two tour boats with neon outlines going up and down the river
@@ -7331,6 +7333,67 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
   updaters.push(shTick); }
 function shCoin(c){ let x,z; if(c.gal){ const R=SH_R.gal; x=R.cx+rand(-R.w/2+2,R.w/2-2); z=R.cz+rand(-R.d/2+2,R.d/2-4.5); c.room='gal'; }
   else { do{ x=SHX+rand(-110,260); z=SHZ+rand(-31,-1); }while(Math.abs(x-SHX)<6&&z>SHZ-4); c.room='out'; } c.m.position.set(x,1.1,z); c.m.visible=true; c.wait=0; }
+// the riverside sights (local coordinates: x along the promenade, z toward the land; the river is at z < -34)
+function shSights(IG){ const L=(x,z)=>({x:SHX+x,z:SHZ+z}); SHG.sights=[];
+  const sight=(x,z,title,sub,col,fact,ly)=>{ floatLabel(title,sub,col,SHX+x,ly||14,SHZ+z); SHG.sights.push({x:SHX+x,z:SHZ+z,fact,seen:false}); };
+  // --- the Bund: a row of floodlit 1920s stone buildings behind the queue ---
+  const facade=(cols,rows,arch)=>shTex(256,256,(x,w,h)=>{ const g=x.createLinearGradient(0,0,0,h); g.addColorStop(0,'#e8c890'); g.addColorStop(1,'#b8925a'); x.fillStyle=g; x.fillRect(0,0,w,h);
+    x.fillStyle='rgba(90,60,30,.35)'; for(let r=1;r<rows;r++) x.fillRect(0,r*h/rows-2,w,3); x.fillRect(0,0,w,8);
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){ const cx=(c+.5)*w/cols, cy=(r+.55)*h/rows, ww=w/cols*.42, hh=h/rows*.6; x.fillStyle=Math.random()<.8?pick(['#fff0b8','#ffe08a','#ffd070']):'#5a4028'; if(arch&&r===rows-1){ x.beginPath(); x.moveTo(cx-ww/2,cy+hh/2); x.lineTo(cx-ww/2,cy-hh/4); x.arc(cx,cy-hh/4,ww/2,Math.PI,0); x.lineTo(cx+ww/2,cy+hh/2); x.fill(); } else x.fillRect(cx-ww/2,cy-hh/2,ww,hh);
+      x.fillStyle='rgba(120,90,50,.55)'; x.fillRect(cx+ww/2+2,cy-hh/2-4,4,hh+8); } });
+  const stone=M('#a88a5e'), bund=(x0,w,h,d,rows,cols,top)=>{ const g=new THREE.Group(); g.position.set(x0+w/2,0,9+d/2); IG.add(g);
+    mesh(G.box,stone,0,h/2,0,w,h,d,g); const f=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:facade(cols,rows,true),color:0xffe8c0})); f.scale.set(w,h,1); f.position.set(0,h/2,-d/2-.05); f.rotation.y=Math.PI; g.add(f);
+    B(w+.6,.8,1,M('#c8a874'),0,h+.4,-d/2+.2,g); return g; };
+  // Customs House with its clock tower
+  { const g=bund(70,30,26,18,6,8); B(10,16,10,stone,0,34,-2,g); const ck=shTex(128,128,(x,w,h)=>{ x.fillStyle='#f4ecd8'; x.beginPath(); x.arc(64,64,60,0,7); x.fill(); x.strokeStyle='#2a1a0a'; x.lineWidth=5; x.stroke(); for(let i=0;i<12;i++){ const a=i/12*Math.PI*2; x.fillRect(64+Math.sin(a)*48-2,64-Math.cos(a)*48-2,4,4); } });
+    SHG.clock=[]; [0].forEach(()=>{ const c=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:ck})); c.scale.set(6,6,1); c.position.set(0,36,-7.1); c.rotation.y=Math.PI; g.add(c); const pv=new THREE.Group(); pv.position.set(0,36,-7.2); pv.rotation.y=Math.PI; g.add(pv); const hp=new THREE.Group(), mp=new THREE.Group(); pv.add(hp); pv.add(mp); B(.35,1.8,.1,M('#1a1008'),0,.9,.03,hp); B(.25,2.6,.1,M('#1a1008'),0,1.3,.06,mp); SHG.clock.push({hh:hp,mm:mp}); });
+    mesh(G.cone,M('#8a7a5a'),0,47,-2,6,6,6,g); mesh(G.cyl,M('#ffe08a',{glow:1.4}),0,51,-2,.3,2.5,.3,g);
+    sight(85,6,'세관 시계탑','와이탄 · 1927','#ffd890','와이탄 세관 건물이에요. 시계탑 종이 매시 정각 동방홍을 울려요'); }
+  // HSBC building with its dome
+  { const g=bund(108,40,24,20,6,10); mesh(G.cyl,stone,0,26,0,9,4,9,g); const dm=new THREE.Mesh(new THREE.SphereGeometry(8,24,12,0,Math.PI*2,0,Math.PI/2),M('#9a8a70')); dm.position.set(0,28,0); g.add(dm); mesh(G.cyl,M('#ffe08a',{glow:1.2}),0,36.4,0,.6,1.4,.6,g);
+    sight(128,6,'HSBC 빌딩','와이탄 · 돔 지붕','#ffd890','와이탄에서 제일 큰 돔이에요. 지금은 푸둥발전은행 건물이에요'); }
+  // Peace Hotel with the green pyramid roof
+  { const g=bund(330,26,30,20,7,7); B(12,10,12,stone,0,35,-2,g); const pr=new THREE.Mesh(new THREE.ConeGeometry(8.6,12,4),M('#2a8a6a',{glow:.35})); pr.position.set(0,46,-2); pr.rotation.y=Math.PI/4; g.add(pr);
+    sight(343,6,'화평반점 (Peace Hotel)','와이탄 · 초록 피라미드 지붕','#7fffd0','초록 피라미드 지붕의 화평반점이에요. 1929년에 문을 연 재즈 바로 유명해요'); }
+  // the rest of the row
+  [[150,30,22,5,7],[182,24,26,6,6],[208,34,20,5,8],[244,28,24,6,7],[274,22,28,7,5],[298,30,22,5,7],[358,26,24,6,6],[386,34,20,5,8],[422,28,26,6,7],[452,24,22,5,6]].forEach(([x,w,h,r,c])=>bund(x,w,h,18,r,c));
+  for(let x=150;x<480;x+=22) mesh(G.cyl,M('#fff0c0',{glow:1.8}),x,.3,6.2,.15,.6,.15,IG); // floodlights at the foot of the row
+  sight(260,4,'와이탄 (The Bund)','1920년대 석조 건물 거리','#ffd890','와이탄이에요. 강을 따라 1920년대 서양식 건물 52채가 늘어서 있어요');
+  // --- Nanjing Road: the neon gate into the pedestrian street ---
+  { const g=new THREE.Group(); g.position.set(500,0,8); IG.add(g); const neon=(txt,col)=>shTex(64,512,(x,w,h)=>{ x.fillStyle='#0a0608'; x.fillRect(0,0,w,h); x.strokeStyle=col; x.lineWidth=4; x.strokeRect(3,3,w-6,h-6); x.fillStyle=col; x.shadowColor=col; x.shadowBlur=14; x.font='900 44px sans-serif'; x.textAlign='center'; [...txt].forEach((ch,i)=>x.fillText(ch,32,60+i*62)); });
+    [[-9,'南京路步行街','#ff3a4a'],[-6,'中华老字号','#ffd23d'],[6,'上海百货','#46d6ff'],[9,'霓虹不夜城','#ff4fd0']].forEach(([x,t,c])=>{ const v=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:neon(t,c)})); v.scale.set(2,16,1); v.position.set(x,12,-.2); v.rotation.y=Math.PI; g.add(v); B(2.2,16.2,.3,M('#0a0608'),x,12,0,g); });
+    const arch=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['南京东路','900 150px sans-serif','#ffe08a',.55,24]],{w:1024,h:256,bg:'#2a0a0a'})})); arch.scale.set(14,3.5,1); arch.position.set(0,21,-.2); arch.rotation.y=Math.PI; g.add(arch);
+    for(let i=0;i<10;i++){ const b=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({color:new THREE.Color().setHSL(Math.random(),1,.55)})); b.scale.set(rand(1.5,3.5),rand(.6,1.4),1); b.position.set(rand(-4.5,4.5),rand(4,18),8+rand(0,12)); b.rotation.y=Math.PI; g.add(b); }
+    sight(500,4,'난징루 보행가','네온 거리 입구','#ff4fd0','난징루예요. 상하이에서 가장 붐비는 쇼핑 거리, 밤이면 네온이 가득해요'); }
+  // --- the Bund Bull on the promenade ---
+  { const g=new THREE.Group(); g.position.set(180,0,-20); g.rotation.y=-.6; IG.add(g); const br=new THREE.MeshPhongMaterial({color:0x8a5a2a,shininess:90,specular:0xffd8a0});
+    B(4.4,1,2.2,M('#3a3a40'),0,.5,0,g); mesh(G.sph,br,0,2.1,0,1.7,.9,.8,g); mesh(G.sph,br,1.5,2.3,0,.7,.6,.55,g); [[-1,.5],[1,.5],[-1,-.5],[1,-.5]].forEach(([x,z])=>{ const l=mesh(G.cyl,br,x*.9,1.35,z*.6,.16,.9,.16,g); l.rotation.z=x*.3; });
+    [1,-1].forEach(sd=>{ const h=mesh(G.cone,M('#d8c8a0'),2.1,2.85,sd*.38,.09,.7,.09,g); h.rotation.z=-1; h.rotation.x=sd*.4; }); const tl=mesh(G.cyl,br,-1.8,2.6,0,.06,1.3,.06,g); tl.rotation.z=.9;
+    const pl=new THREE.PointLight(0xffc880,1,8); pl.position.set(0,4,-2); g.add(pl); colliders.push({x:SHX+180,z:SHZ-20,r:2.4});
+    sight(180,-20,'와이탄 황소상','만지면 행운이 온대요','#ffc880','와이탄 황소상이에요. 뿔을 만지면 돈이 들어온대요',5.5); }
+  // --- a Yu Garden style pavilion with red lanterns at the west end ---
+  { const g=new THREE.Group(); g.position.set(-112,0,-18); IG.add(g); const red=M('#a8201a'), roof=M('#2a2a30');
+    B(9,.5,9,M('#6a6a70'),0,.25,0,g); for(let i=0;i<6;i++){ const a=i/6*Math.PI*2; mesh(G.cyl,red,Math.cos(a)*3.4,2.3,Math.sin(a)*3.4,.18,4,.18,g); }
+    const r1=new THREE.Mesh(new THREE.ConeGeometry(5.6,2.4,6),roof); r1.position.y=5.4; g.add(r1); const r2=new THREE.Mesh(new THREE.ConeGeometry(3.4,2,6),roof); r2.position.y=7.2; g.add(r2); mesh(G.sph,M('#d8a83a',{glow:.6}),0,8.4,0,.35,.5,.35,g);
+    for(let i=0;i<6;i++){ const a=i/6*Math.PI*2+Math.PI/6; mesh(G.cone,roof,Math.cos(a)*5.5,4.6,Math.sin(a)*5.5,.18,.9,.18,g); const ln=mesh(G.sph,M('#ff2a1a',{glow:1.5}),Math.cos(a)*4.4,3.6,Math.sin(a)*4.4,.38,.48,.38,g); B(.02,.4,.02,M('#2a1a10'),Math.cos(a)*4.4,4.05,Math.sin(a)*4.4,g); }
+    const pond=new THREE.Mesh(new THREE.CircleGeometry(6,24),new THREE.MeshLambertMaterial({color:0x0a2a3a,emissive:0x082030})); pond.rotation.x=-Math.PI/2; pond.position.set(8,.04,6); g.add(pond);
+    for(let i=0;i<5;i++) B(1.6,.3,1,M('#8a5a3a'),4+i*1.3,.4,3+(i%2?.9:-.2),g);
+    const pl=new THREE.PointLight(0xff4a2a,1.4,16); pl.position.set(0,3,0); g.add(pl); colliders.push({x:SHX-112,z:SHZ-18,r:4.6});
+    sight(-112,-18,'예원 정자','붉은 등이 걸린 옛 정원','#ff4a2a','예원 같은 옛 정자예요. 상하이 구시가지의 붉은 등이 걸린 정원이에요',10.5); }
+  // --- Waibaidu Bridge at the end of the walk: a steel truss bridge over Suzhou Creek ---
+  { const g=new THREE.Group(); g.position.set(1060,0,-14); g.rotation.y=Math.PI/2; IG.add(g); const st=M('#4a5058',{glow:.05});
+    [-1,1].forEach(sd=>{ const c=new THREE.CatmullRomCurve3([new THREE.Vector3(-22,1,sd*4),new THREE.Vector3(-11,7,sd*4),new THREE.Vector3(0,1.5,sd*4),new THREE.Vector3(11,7,sd*4),new THREE.Vector3(22,1,sd*4)]); g.add(new THREE.Mesh(new THREE.TubeGeometry(c,60,.28,6,false),st));
+      for(let i=-21;i<=21;i+=2.2){ const yy=1+6*Math.abs(Math.sin((i+22)/22*Math.PI)); B(.18,yy,.18,st,i,yy/2+.4,sd*4,g); }
+      for(let i=-21;i<=21;i+=3) mesh(G.sph,M('#fff0c0',{glow:1.8}),i,1.2+5.6*Math.abs(Math.sin((i+22)/22*Math.PI)),sd*4.2,.14,.14,.14,g); });
+    B(44,.6,8.6,M('#2a2a30'),0,.6,0,g); for(let i=-20;i<=20;i+=5) B(.3,.3,8.6,st,i,6.5*Math.abs(Math.sin((i+22)/22*Math.PI))+1,0,g);
+    sight(1060,-14,'와이바이두 다리','1907년 강철 다리','#cfe8ff','와이바이두 다리예요. 1907년에 놓인 중국 최초의 강철 트러스 다리예요',11); }
+  // --- across the river: a Pudong tower turned into a giant LED screen ---
+  { const cv=document.createElement('canvas'); cv.width=512; cv.height=256; SHG.ledC=cv; SHG.ledT=new THREE.CanvasTexture(cv); const sc=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:SHG.ledT})); sc.scale.set(90,45,1); sc.position.set(620,85,-372); IG.add(sc); B(94,49,8,M('#0a0a12'),620,85,-377,IG); B(40,60,30,M('#141420'),620,30,-385,IG); }
+  // --- a viewing plaque at the railing, naming the skyline across the water ---
+  { const pq=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['푸둥 야경','900 60px Noto Sans KR,sans-serif','#ffffff',.22],['동방명주 · 진마오 · 상하이 국제금융센터 · 상하이 타워','700 36px Noto Sans KR,sans-serif','#cfe8ff',.55],['PUDONG SKYLINE · 浦东','700 34px sans-serif','#ffd890',.82]],{w:1024,h:256,bg:'rgba(10,12,24,.9)'})}));
+    pq.scale.set(6,1.5,1); pq.position.set(100,1.6,-32.6); IG.add(pq); B(6.2,1.7,.1,M('#2a2a30'),100,1.55,-32.5,IG); SHG.sights.push({x:SHX+100,z:SHZ-30,fact:'강 건너 왼쪽부터 동방명주, 진마오, 상하이 국제금융센터, 가장 높은 상하이 타워예요',seen:false}); }
+  // a few people strolling and taking photos of it all
+  for(let i=0;i<(LOW?6:14);i++){ const x=rand(-100,600), z=rand(-30,-10); const S=addNPC(Math.random()<.5?avantLook():{},L(x,z),Math.PI+rand(-.6,.6),'talk',{talk:true}); if(i%3===0) handProp(S.P,'bottle',1); ALLP.push(S.P); TALKP.push(S.P); } }
 // the floor display above the lift door
 function shInd(f){ const x=SHG.indC&&SHG.indC.getContext('2d'); if(!x) return; SHG.indFl=f; x.fillStyle='#0a0610'; x.fillRect(0,0,128,64); x.fillStyle='#ff3df0'; x.shadowColor='#ff3df0'; x.shadowBlur=12; x.font='900 40px monospace'; x.textAlign='center'; x.textBaseline='middle';
   x.fillText((SHG.ride?(SHG.ride.to>SHG.ride.from?'▲':'▼'):'')+f+'F',64,34); x.shadowBlur=0; SHG.indT.needsUpdate=true; }
@@ -7372,6 +7435,10 @@ function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggl
   if(room==='out'){ u.top.value.set(0x03040c); u.hor.value.set(0x3a2448); u.bot.value.set(0x0a0a14); scene.fog.color.set(0x12142a); scene.fog.near=180; scene.fog.far=LOW?650:1300; hemi.intensity=.5; }
   else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x111113,green:0x4a7a62}[room]); scene.fog.near=room==='gal'?60:room==='hall'?3:room==='green'?1:30; scene.fog.far=room==='hall'?58:room==='gal'?160:room==='green'?19:110; hemi.intensity=room==='gal'?.9:room==='hall'?.16:.35; }
   renderer.setClearColor(scene.fog.color);
+  if(room==='out'&&SHG.sights){ for(const S of SHG.sights){ if(S.seen) continue; if(Math.hypot(S.x-pState.x,S.z-pState.z)<11){ S.seen=true; toast(S.fact); break; } }
+    if(SHG.clock){ const d=new Date(); SHG.clock.forEach(C=>{ C.mm.rotation.z=-d.getMinutes()/60*Math.PI*2; C.hh.rotation.z=-(d.getHours()%12+d.getMinutes()/60)/12*Math.PI*2; }); }
+    if(SHG.ledC&&t-(SHG.ledT0||0)>.08){ SHG.ledT0=t; const x=SHG.ledC.getContext('2d'), w=512, h=256, ph=t*.6; const g=x.createLinearGradient(0,0,w,h); g.addColorStop(0,`hsl(${(ph*40)%360},90%,45%)`); g.addColorStop(1,`hsl(${(ph*40+140)%360},90%,35%)`); x.fillStyle=g; x.fillRect(0,0,w,h);
+      x.fillStyle='rgba(0,0,0,.25)'; for(let i=0;i<h;i+=4) x.fillRect(0,i,w,1); x.fillStyle='#fff'; x.font='900 120px sans-serif'; x.textBaseline='middle'; const msg='I ♥ 上海   SYSTEM   浦东   ', mw=x.measureText(msg).width; const off=-((t*120)%mw); for(let k=0;k<3;k++) x.fillText(msg,off+k*mw,h/2); SHG.ledT.needsUpdate=true; } }
   if(room==='out'){ SHG.leds.forEach((L,i)=>{ if(L.base) return; L.m.color.setHSL((t*.05+L.ph*.16)%1,.85,.6); }); SHG.refl.forEach(R=>{ R.m.opacity=.24+.1*Math.sin(t*1.6+R.ph); });
     SHG.boats.forEach(B_=>{ const p=B_.g.position; p.x+=B_.dir*B_.sp*dt; if(p.x>1300) p.x=-350; if(p.x<-350) p.x=1300; B_.g.rotation.y=B_.dir>0?0:Math.PI; });
     if(SHG.chim) SHG.chim.color.setHSL((t*.03)%1,.9,.55); const b=t*2.2, ph=b%1; SHG.win4.color.setScalar(.5+.5*Math.exp(-ph*5)); SHG.win5.color.setRGB(.1,.5+.5*Math.exp(-ph*4),.2); return; }
@@ -7385,7 +7452,7 @@ function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggl
   if(room==='green'){ const Z=SHG.zones.green, b=Z.running?boothBeat(Z,t):t*2.07, ph=((b%1)+1)%1, k=Math.exp(-ph*4), beat=Math.floor(b);
     SHG.greenL.intensity=1.1+1.1*k; SHG.lm.opacity=0; if(SHG.fuzz) SHG.fuzz.uniforms.uT.value=t; if(SHG.pink) SHG.pink.opacity=.55+.35*k; SHG.lasers.forEach(L=>{ L.l.rotation.y=Math.PI+(L.k-4)*.18+Math.sin(t*.9+L.ph)*.35; L.l.rotation.x=.12+Math.sin(t*.6+L.ph)*.12; });
     if(SHG.tiles&&SHG.tiles.beat!==beat){ SHG.tiles.beat=beat; const T=SHG.tiles, c=T.c; for(let i=0;i<T.n;i++){ const on=Math.random()<.35; c.setRGB(on?.15:.01,on?1:.12,on?.35:.04); T.m.setColorAt(i,c.multiplyScalar(.45)); } T.m.instanceColor.needsUpdate=true; } } }
-const SH_SPOTS=[{n:'황푸강변 산책로 (푸둥 야경)',x:SHX+120,z:SHZ-24},{n:'미술관 입구 (SYSTEM)',x:SHX+1,z:SHZ+1},{n:'SYSTEM 줄 끝 (1km)',x:SHX+1080,z:SHZ-2},{n:'1·2F 조니 뎁 그림전',room:'gal'},{n:'화물 엘리베이터 (드럼통 DJ)',room:'lift'},{n:'4F SYSTEM 메인 스테이지',room:'hall'},{n:'5F 그린 룸 (계단)',room:'green'},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
+const SH_SPOTS=[{n:'황푸강변 산책로 (푸둥 야경)',x:SHX+120,z:SHZ-24},{n:'와이탄 · 세관 시계탑',x:SHX+90,z:SHZ-6},{n:'와이탄 황소상',x:SHX+174,z:SHZ-24},{n:'난징루 네온 거리',x:SHX+500,z:SHZ-6},{n:'예원 정자 (붉은 등)',x:SHX-100,z:SHZ-26},{n:'와이바이두 다리',x:SHX+1040,z:SHZ-20},{n:'미술관 입구 (SYSTEM)',x:SHX+1,z:SHZ+1},{n:'SYSTEM 줄 끝 (1km)',x:SHX+1080,z:SHZ-2},{n:'1·2F 조니 뎁 그림전',room:'gal'},{n:'화물 엘리베이터 (드럼통 DJ)',room:'lift'},{n:'4F SYSTEM 메인 스테이지',room:'hall'},{n:'5F 그린 룸 (계단)',room:'green'},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
 function renderBoothListSH(){ const ul=$('#boothList'); if(ul.hidden) return;
   ul.innerHTML=`<li class='cat'><button disabled>🇨🇳 상하이점 · 중국 상하이<small>${SH_SPOTS.filter(s=>!s.go).length}곳</small></button></li>`+SH_SPOTS.map((s,i)=>s.go?'':`<li><span class='dot' style='background:${s.room==='green'?'#3dff6a':s.room==='lift'?'#b04dff':s.room?'#ffffff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&SHG.room==='out'?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-shs='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-shs]'); if(!b) return; const s=SH_SPOTS[+b.dataset.shs]; if(s.go){ goMap(s.go); return; }
