@@ -1986,7 +1986,7 @@ let player=null;
 const pState={x:0,z:136,y:0,vy:0,face:Math.PI,ride:null,bounce:0};
 function rebuildPlayer(){
   if(player) scene.remove(player.root);
-  const wc=typeof kWearable==='function'?kWearable():cfg; try{ localStorage.setItem('playa-look',JSON.stringify(wc)); }catch(e){}
+  const wc=typeof kWearable==='function'?kWearable():cfg; try{ localStorage.setItem('playa-look',JSON.stringify(wc)); }catch(e){} try{ lookPush(wc); }catch(e){}
   player=buildCharacter(wc); player.dance=myDance; player.seed=0; scene.add(player.root);
   player.root.position.set(pState.x,pState.y,pState.z); player.root.rotation.y=pState.face;
   try{ backPrint(); }catch(e){} // AUTH may not exist yet during the first build
@@ -2381,7 +2381,11 @@ function ecoPush(){ try{ if(!AUTH.db||!AUTH.user||ECO.uid!==AUTH.user.uid) retur
 // after login: whichever is more (this device or the account) wins, bought pieces are merged, then the account is kept up to date
 async function ecoLoad(){ try{ if(!AUTH.db||!AUTH.user) return; const uid=AUTH.user.uid; if(ECO.uid===uid) return; const s=await AUTH.db.ref('private/'+uid+'/eco').once('value'); const v=s.val(), before=coins;
   if(v){ coins=Math.max(coins,Math.floor(+v.coins||0)); if(Array.isArray(v.owned)) v.owned.forEach(k=>{ if(!owned.includes(k)) owned.push(k); }); }
-  ECO.uid=uid; saveEco(); renderCoins(); if(coins>before) toast(`계정에 저장된 코인을 불러왔어요 (${coins}코인)`); }catch(e){ try{ ECO.uid=AUTH.user&&AUTH.user.uid; }catch(_){} } }
+  ECO.uid=uid; saveEco(); renderCoins(); if(coins>before) toast(`계정에 저장된 코인을 불러왔어요 (${coins}코인)`);
+  // the outfit you last wore on any device comes back on this one
+  try{ const ls=await AUTH.db.ref('private/'+uid+'/look').once('value'), lk=ls.val(); if(lk&&typeof lk==='object'&&lk.top){ Object.assign(cfg,lk); rebuildPlayer(); if(typeof renderOpts==='function') renderOpts(); } else lookPush(typeof kWearable==='function'?kWearable():cfg); }catch(e){} }catch(e){ try{ ECO.uid=AUTH.user&&AUTH.user.uid; }catch(_){} } }
+var LOOK={timer:0};
+function lookPush(wc){ try{ if(!AUTH.db||!AUTH.user||ECO.uid!==AUTH.user.uid) return; const uid=AUTH.user.uid, v=JSON.parse(JSON.stringify(wc)); clearTimeout(LOOK.timer); LOOK.timer=setTimeout(()=>{ try{ AUTH.db.ref('private/'+uid+'/look').set(v).catch(()=>{}); }catch(e){} },1500); }catch(e){} }
 function addCoins(n){ if(n>0&&luckT>0) n*=2; coins=Math.max(0,coins+n); saveEco(); renderCoins(n); }
 function renderCoins(delta){ $('#coinN').textContent=coins; if(delta){ const s=document.createElement('span'); s.className='plus'+(delta<0?' minus':''); s.textContent=(delta>0?'+':'')+delta; $('#coinHud').appendChild(s); setTimeout(()=>s.remove(),1000); } if(!$('#shop').hidden) $('#shopCoins').textContent=coins; }
 function danceEarn(dt,mult){ /* 5초 보상은 꺼두고, 스테이지 1분 보너스(10코인)만 써요 */ }
@@ -5586,7 +5590,7 @@ function optGroupOf(t){ if(OPT_DROP.includes(t)) return -1; const g=OPT_GROUPS.f
 function renderOptNav(){ const secs=[...document.querySelectorAll('#opts .sec')];
   $('#optNav').innerHTML=OPT_GROUPS.map((G,i)=>`<button data-grp='${i}' title='${G[1]}' aria-label='${G[1]}' role='tab' aria-selected='${i===optG}' class='${i===optG?'on':''}'><b>${G[0]==='WARDROBE'?WARDROBE_SVG:G[0]}</b>${G[1]}</button>`).join('');
   secs.forEach(sec=>{ const h=sec.querySelector('h2'), t=h?h.textContent:''; sec.hidden=optGroupOf(t)<0||(optG!==0&&optGroupOf(t)!==optG); }); }
-$('#optNav').addEventListener('click',e=>{ const b=e.target.closest('[data-grp]'); if(!b) return; optG=+b.dataset.grp; renderOptNav(); const o=$('#opts'); o.scrollTop=0; o.style.setProperty('display','none','important'); void o.offsetHeight; o.style.removeProperty('display'); setTimeout(kThumbFill,30); }); // force a repaint: some phone browsers kept showing the old (hidden) list
+$('#optNav').addEventListener('click',e=>{ const b=e.target.closest('[data-grp]'); if(!b) return; optG=+b.dataset.grp; renderOptNav(); const o=$('#opts'); o.scrollTop=0; o.style.setProperty('display','none','important'); void o.offsetHeight; o.style.removeProperty('display'); requestAnimationFrame(()=>{ o.scrollTop=1; o.scrollTop=0; o.style.transform='translateZ(0)'; requestAnimationFrame(()=>{ o.style.transform=''; }); }); setTimeout(kThumbFill,30); }); // force a repaint: some phone browsers kept showing the old (hidden) list
 new MutationObserver(renderOptNav).observe($('#opts'),{childList:true});
 $('#dressBtn').addEventListener('click',()=>{ document.body.classList.add('dressing'); selMap=MAP; $('#creator h1').textContent='스타일 꾸미기'; const p=$('#creator header p'); if(p) p.textContent='고르면 바로 캐릭터에 입혀져요. 화면을 드래그하면 캐릭터를 돌려 볼 수 있어요.'; $('#enterBtn').textContent='적용하고 돌아가기'; const c=$('#creator'); if(c.classList.contains('min')) $('#sheetToggle').click(); $('#opts').scrollTop=0; });
 $('#enterBtn').addEventListener('click',()=>{ document.body.classList.remove('dressing'); });
