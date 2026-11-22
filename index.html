@@ -7244,19 +7244,32 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
       SHG.crowd={L,P,put,near:[],nt:0}; } }
 
   // ---------- 5F: the green room: a ceiling of ivy, green haze, the DJ lit red ----------
-  { const R=SH_R.green, g=shRoom(R,M('#0c140e'),M('#0a0a0a'),M('#0a1a0e')), W=R.w, D=R.d, H=R.h;
-    const tg=new THREE.BoxGeometry(1.36,.04,1.36), nx=Math.floor((W-2)/1.4), nz=Math.floor((D-3)/1.4); const tm=new THREE.InstancedMesh(tg,new THREE.MeshBasicMaterial({color:0xffffff}),nx*nz), d=new THREE.Object3D(), c=new THREE.Color(0x0a3a14);
-    for(let i=0;i<nx;i++) for(let j=0;j<nz;j++){ d.position.set(-((nx-1)*1.4)/2+i*1.4,.02,-D/2+1+((j)*1.4)+.7); d.updateMatrix(); tm.setMatrixAt(i*nz+j,d.matrix); tm.setColorAt(i*nz+j,c); } g.add(tm); SHG.tiles={m:tm,n:nx*nz,c};
+  { const R=SH_R.green, g=shRoom(R,M('#1c3a2a'),M('#0c100e'),new THREE.MeshBasicMaterial({color:0x8fe8bc})), W=R.w, D=R.d, H=R.h, d=new THREE.Object3D();
     // ivy hanging from the whole ceiling
     const leaf=shTex(64,64,(x,w,h)=>{ x.fillStyle='#ffffff'; x.beginPath(); x.moveTo(32,60); x.bezierCurveTo(6,48,2,26,14,14); x.lineTo(22,22); x.lineTo(32,4); x.lineTo(42,22); x.lineTo(50,14); x.bezierCurveTo(62,26,58,48,32,60); x.fill(); x.strokeStyle='rgba(0,0,0,.35)'; x.lineWidth=2; x.beginPath(); x.moveTo(32,58); x.lineTo(32,14); x.moveTo(32,40); x.lineTo(16,24); x.moveTo(32,40); x.lineTo(48,24); x.stroke(); });
-    const lg=new THREE.PlaneGeometry(.42,.42), ln=LOW?380:900, ivy=new THREE.InstancedMesh(lg,new THREE.MeshLambertMaterial({map:leaf,transparent:true,alphaTest:.45,side:THREE.DoubleSide,color:0xffffff}),ln), cc=new THREE.Color();
-    for(let i=0;i<ln;i++){ const x=rand(-W/2+.3,W/2-.3), z=rand(-D/2+.3,D/2-.3), drop=Math.pow(Math.random(),2.2)*(z>D/2-2.6?.6:1.9); d.position.set(x,H-.15-drop,z); d.rotation.set(rand(-1.2,1.2),rand(0,6.28),rand(-.6,.6)); const s=rand(.7,1.35); d.scale.set(s,s,s); d.updateMatrix(); ivy.setMatrixAt(i,d.matrix); ivy.setColorAt(i,cc.setRGB(rand(.04,.12),rand(.22,.42),rand(.08,.16))); }
+    const lg=new THREE.PlaneGeometry(.46,.46), ln=LOW?700:1700, ivy=new THREE.InstancedMesh(lg,new THREE.MeshLambertMaterial({map:leaf,transparent:true,alphaTest:.45,side:THREE.DoubleSide,color:0xffffff}),ln), cc=new THREE.Color();
+    for(let i=0;i<ln;i++){ const x=rand(-W/2+.3,W/2-.3), z=rand(-D/2+.3,D/2-.3), drop=Math.pow(Math.random(),2.4)*(z>D/2-2.6?.9:2.1); d.position.set(x,H-.08-drop,z); d.rotation.set(rand(-1.2,1.2),rand(0,6.28),rand(-.6,.6)); const s=rand(.7,1.35); d.scale.set(s,s,s); d.updateMatrix(); ivy.setMatrixAt(i,d.matrix); ivy.setColorAt(i,cc.setRGB(rand(.02,.07),rand(.07,.16),rand(.04,.08))); }
     g.add(ivy); for(let i=0;i<(LOW?10:24);i++){ const v=B(.02,rand(.8,2.4),.02,M('#1a3a1e'),rand(-W/2+1,W/2-1),H-1.2,rand(-D/2+1,D/2-3),g); v.position.y=H-v.scale.y/2; }
     B(4,1.1,1.1,M('#0e0e10'),0,.55,D/2-1.1,g); B(4.02,.05,1.12,M('#3dff6a',{glow:2}),0,1.12,D/2-1.1,g); colliders.push({x:R.cx-1.4,z:R.cz+D/2-1.1,r:.8},{x:R.cx+1.4,z:R.cz+D/2-1.1,r:.8},{x:R.cx,z:R.cz+D/2-1.1,r:.8});
-    const red=new THREE.PointLight(0xff3020,2.2,6); red.position.set(0,2.3,D/2-1.6); g.add(red);
-    const lz=new THREE.BoxGeometry(.03,.03,14); lz.translate(0,0,7); SHG.lm=new THREE.MeshBasicMaterial({color:0x3dff6a,transparent:true,opacity:.4,blending:THREE.AdditiveBlending,depthWrite:false});
-    for(let i=0;i<(LOW?4:7);i++){ const L2=new THREE.Mesh(lz,SHG.lm); L2.position.set(0,2.4,D/2-.6); g.add(L2); SHG.lasers.push({l:L2,ph:i*.7,k:i+1}); }
-    SHG.greenL=new THREE.PointLight(0x2bff6a,2,22); SHG.greenL.position.set(0,3.6,0); g.add(SHG.greenL);
+    const red=new THREE.PointLight(0xff3050,3,7); red.position.set(0,2.2,D/2-1.9); g.add(red);
+    SHG.lm=new THREE.MeshBasicMaterial({color:0x3dff6a,transparent:true,opacity:0});
+    // a pink-red glow in the haze behind the DJ
+    const glow=shTex(128,128,(x,w,h)=>{ const gr=x.createRadialGradient(64,64,4,64,64,64); gr.addColorStop(0,'rgba(255,90,110,.85)'); gr.addColorStop(.5,'rgba(255,60,120,.3)'); gr.addColorStop(1,'rgba(255,60,120,0)'); x.fillStyle=gr; x.fillRect(0,0,w,h); });
+    SHG.pink=new THREE.MeshBasicMaterial({map:glow,transparent:true,opacity:.8,blending:THREE.AdditiveBlending,depthWrite:false}); shPlane(g,SHG.pink,6,4,0,1.9,D/2-.12,Math.PI);
+    // the fuzzy light sculpture in the corner: a furry glowing pillow on a blue furry tube, red furry loops, a wire-mesh fence behind
+    { const A=new THREE.Group(); A.position.set(-W/2+2.4,0,-D/2+3.2); A.rotation.y=.7; g.add(A);
+      const mesh2=wireTex(); mesh2.repeat.set(3,3); const fence=new THREE.MeshBasicMaterial({map:mesh2,transparent:true,color:0x3a3a48,side:THREE.DoubleSide}); [-1.1,1.1].forEach(x=>shPlane(A,fence,2.1,2.2,x,1.1,-.6,0)); [-2.15,0,2.15].forEach(x=>B(.05,2.2,.05,M('#2a2a30'),x,1.1,-.6,A));
+      const fur=shTex(128,64,(x,w,h)=>{ x.fillStyle='#000'; x.fillRect(0,0,w,h); for(let i=0;i<900;i++){ x.strokeStyle=`rgba(255,255,255,${(Math.random()*.5).toFixed(2)})`; x.lineWidth=1; const a=Math.random()*w, b=Math.random()*h, t=Math.random()*6.28; x.beginPath(); x.moveTo(a,b); x.lineTo(a+Math.cos(t)*5,b+Math.sin(t)*5); x.stroke(); } });
+      SHG.fuzz=new THREE.ShaderMaterial({uniforms:{uT:{value:0},uF:{value:fur}},vertexShader:'varying vec2 v; varying vec3 n; void main(){ v=uv; n=normal; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+        fragmentShader:'varying vec2 v; varying vec3 n; uniform float uT; uniform sampler2D uF; float h(vec2 p){ return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453); } float ns(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+1.),f.x),f.y); }\n void main(){ vec2 p=v*vec2(5.,2.5)+vec2(uT*.25,-uT*.12); float a=ns(p), b=ns(p*1.7+3.1), c=ns(p*.9+7.3); vec3 col=vec3(.35,1.,.2); col=mix(col,vec3(1.,.12,.12),smoothstep(.55,.75,a)); col=mix(col,vec3(.15,.25,1.),smoothstep(.6,.8,b)); col=mix(col,vec3(.75,.2,1.),smoothstep(.7,.85,c)*.7);\n float f=texture2D(uF,v*vec2(2.,1.)).r; float edge=smoothstep(.0,.12,v.x)*smoothstep(1.,.88,v.x)*smoothstep(0.,.15,v.y)*smoothstep(1.,.85,v.y); col*=.75+.55*f; col=mix(vec3(.35,1.,.25)*1.1,col,edge); gl_FragColor=vec4(col,1.); }'});
+      const pil=new THREE.Mesh(new THREE.BoxGeometry(1.5,.75,.36),SHG.fuzz); pil.position.set(0,1.75,0); A.add(pil);
+      const tubeM=new THREE.MeshBasicMaterial({color:0x2a3cff}), redM=new THREE.MeshBasicMaterial({color:0xff3a3a});
+      const tb=(pts,r,m)=>{ const c=new THREE.CatmullRomCurve3(pts.map(([x,y,z])=>new THREE.Vector3(x,y,z))); A.add(new THREE.Mesh(new THREE.TubeGeometry(c,40,r,8,false),m)); };
+      tb([[0,1.38,0],[0,.9,.05],[-.05,.35,.08],[.2,.08,.1],[.55,.7,.05],[.8,1.05,0],[1.05,.6,-.05],[1.2,.05,0]],.07,tubeM);
+      tb([[-1.3,.2,.3],[-1.6,.7,.2],[-1.5,1.4,.1],[-1.15,1.9,.15],[-1.35,2.25,.25],[-1.7,1.9,.3]],.075,redM);
+      tb([[-1.2,.05,.45],[-1.55,.35,.4],[-1.45,.8,.35],[-1.15,.95,.45]],.075,redM);
+      const al=new THREE.PointLight(0x5a40ff,1.4,5); al.position.set(.2,1.2,.8); A.add(al); }
+    SHG.greenL=new THREE.PointLight(0x7fffb0,1.6,24); SHG.greenL.position.set(0,4.2,0); g.add(SHG.greenL);
     const st=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('계단 ↓ 4F SYSTEM','#3dff6a'),transparent:true})); st.scale.set(2.6,.65,1); st.position.set(0,2.9,-D/2+.05); g.add(st); shPlane(g,M('#3dff6a',{glow:.6}),2.2,2.6,0,1.3,-D/2+.03,0);
     const gn=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['GREEN ROOM','900 120px "Arial Black",Impact,sans-serif','#3dff6a',.5,30]]),transparent:true})); gn.scale.set(7,1.75,1); gn.position.set(0,2.6,D/2-.06); gn.rotation.y=Math.PI; g.add(gn);
     SHG.zones.green=makeZone('sh-green',R.cx,R.cz,14,SH_TR.green); SHG.zones.green.vol=.95;
@@ -7314,7 +7327,7 @@ function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggl
   if(dust) dust.visible=false; stormNext=Math.max(stormNext,30); if(stormOn){ stormOn=false; stormLeft=0; }
   const room=shRoomAt(pState.x,pState.z); SHG.room=room; const u=sky.material.uniforms;
   if(room==='out'){ u.top.value.set(0x03040c); u.hor.value.set(0x3a2448); u.bot.value.set(0x0a0a14); scene.fog.color.set(0x12142a); scene.fog.near=180; scene.fog.far=LOW?650:1300; hemi.intensity=.5; }
-  else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x111113,green:0x0c3418}[room]); scene.fog.near=room==='gal'?60:room==='hall'?3:room==='green'?2:30; scene.fog.far=room==='hall'?58:room==='gal'?160:room==='green'?26:110; hemi.intensity=room==='gal'?.9:room==='hall'?.16:.35; }
+  else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x111113,green:0x4a7a62}[room]); scene.fog.near=room==='gal'?60:room==='hall'?3:room==='green'?1:30; scene.fog.far=room==='hall'?58:room==='gal'?160:room==='green'?19:110; hemi.intensity=room==='gal'?.9:room==='hall'?.16:.35; }
   renderer.setClearColor(scene.fog.color);
   if(room==='out'){ SHG.leds.forEach((L,i)=>{ if(L.base) return; L.m.color.setHSL((t*.05+L.ph*.16)%1,.85,.6); }); SHG.refl.forEach(R=>{ R.m.opacity=.24+.1*Math.sin(t*1.6+R.ph); });
     SHG.boats.forEach(B_=>{ const p=B_.g.position; p.x+=B_.dir*B_.sp*dt; if(p.x>1300) p.x=-350; if(p.x<-350) p.x=1300; B_.g.rotation.y=B_.dir>0?0:Math.PI; });
@@ -7327,7 +7340,7 @@ function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggl
       for(const i of C.near){ const q=C.P[i]; C.put(i,Math.abs(Math.sin((b+q.ph)*Math.PI))*.09); } C.L.forEach(m=>m.instanceMatrix.needsUpdate=true); }
     SHG.strobe.intensity=(bar%8===7&&ph<.12)?6:0; const hit=bar%4===3; SHG.blind.forEach((m,i)=>m.color.setScalar(hit?(.35+.65*k):(.18+.2*Math.max(0,Math.sin(t*1.3+i))))); return; }
   if(room==='green'){ const Z=SHG.zones.green, b=Z.running?boothBeat(Z,t):t*2.07, ph=((b%1)+1)%1, k=Math.exp(-ph*4), beat=Math.floor(b);
-    SHG.greenL.intensity=1.2+2.2*k; SHG.lm.opacity=.35+.4*k; SHG.lasers.forEach(L=>{ L.l.rotation.y=Math.PI+(L.k-4)*.18+Math.sin(t*.9+L.ph)*.35; L.l.rotation.x=.12+Math.sin(t*.6+L.ph)*.12; });
+    SHG.greenL.intensity=1.1+1.1*k; SHG.lm.opacity=0; if(SHG.fuzz) SHG.fuzz.uniforms.uT.value=t; if(SHG.pink) SHG.pink.opacity=.55+.35*k; SHG.lasers.forEach(L=>{ L.l.rotation.y=Math.PI+(L.k-4)*.18+Math.sin(t*.9+L.ph)*.35; L.l.rotation.x=.12+Math.sin(t*.6+L.ph)*.12; });
     if(SHG.tiles&&SHG.tiles.beat!==beat){ SHG.tiles.beat=beat; const T=SHG.tiles, c=T.c; for(let i=0;i<T.n;i++){ const on=Math.random()<.35; c.setRGB(on?.15:.01,on?1:.12,on?.35:.04); T.m.setColorAt(i,c.multiplyScalar(.45)); } T.m.instanceColor.needsUpdate=true; } } }
 const SH_SPOTS=[{n:'황푸강변 산책로 (푸둥 야경)',x:SHX+120,z:SHZ-24},{n:'미술관 입구 (SYSTEM)',x:SHX+1,z:SHZ+1},{n:'SYSTEM 줄 끝 (1km)',x:SHX+1080,z:SHZ-2},{n:'1·2F 조니 뎁 그림전',room:'gal'},{n:'화물 엘리베이터 (드럼통 DJ)',room:'lift'},{n:'4F SYSTEM 메인 스테이지',room:'hall'},{n:'5F 그린 룸 (계단)',room:'green'},{n:'사막점으로',go:'playa'},{n:'이태원으로',go:'itaewon'}];
 function renderBoothListSH(){ const ul=$('#boothList'); if(ul.hidden) return;
