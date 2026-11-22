@@ -2352,7 +2352,7 @@ function loop(){
       const op=Math.max(pitch,.04), up=Math.max(0,-pitch), dist=(camDist+vehCam())*(1-up*.4), cp=Math.cos(op);
       camera.position.set(tx+Math.sin(yaw)*dist*cp, Math.max(pState.y+.35, ty+Math.sin(op)*dist+.4-up*1.4), tz+Math.cos(yaw)*dist*cp);
       if(MAP==='sphere'&&SPH.inside){ const fy=sphCamFloor(camera.position.x,camera.position.z); if(camera.position.y<fy) camera.position.y=fy; }
-      if(MAP==='itaewon'&&(RING.in||RING.al)) ringCam(); else if(MAP==='itaewon'&&CST.on) cstCam();
+      if(MAP==='itaewon'&&(RING.in||RING.al)) ringCam(); else if(MAP==='itaewon'&&CST.on) cstCam(); else if(MAP==='shanghai') shCam();
       camera.lookAt(tx, ty+Math.tan(Math.min(up,1.3))*dist*cp, tz); }
       if(tipsy>0) camera.rotateZ(Math.sin(t*.9)*.035*Math.min(tipsy,6));
       listT-=dt; if(listT<=0){ listT=.6; renderBoothList(); const nb=nearest(); if(nb.b!==npBooth) npBooth=nb.b; }
@@ -7008,6 +7008,8 @@ const SH_TR={
   lift:{name:'화물칸 애시드',bpm:128,root:31,kick:K4,hat:OFF,clap:CL,bass:'0.0.0.0.0.0.0.0.',bt:'acid',prog:[[0,'min'],[0,'min'],[1,'min'],[0,'min']]},
   hall:{name:'화이트 노이즈 시스템',bpm:132,root:29,kick:K4,hat:OFF,h16:1,rim:'..x...x...x...x.',bass:'.0.0.0.0.0.0.0.0',bt:'rumble',prog:[[0,'min'],[0,'min'],[-2,'min'],[0,'min']]},
   green:{name:'그린 룸 그루브',bpm:124,root:34,kick:K4,hat:OFF,oh:OFF,clap:CL,bass:'0.0..0.0..c.0.7.',bt:'pluck',prog:[[0,'min7'],[5,'min7'],[3,'maj7'],[-2,'dom7']],chord:'x..x..x.......x.',ct:'stab'} };
+// the camera may sit behind a wall (the walls only show from inside) but never above the ceiling or among the ivy
+function shCam(){ const r=SHG.room; if(r==='out') return; const R=SH_R[r], c=camera.position, top=r==='green'?3.05:r==='lift'?R.h-.35:r==='gal'?4.1:R.h-2.2; if(c.y>top) c.y=top; if(c.y<pState.y+.6) c.y=pState.y+.6; }
 function shRoomAt(x,z){ for(const k of ['gal','lift','hall','green']){ const R=SH_R[k]; if(Math.abs(x-R.cx)<R.w/2+4&&Math.abs(z-R.cz)<R.d/2+4) return k; } return 'out'; }
 function clampShanghai(){ const r=shRoomAt(pState.x,pState.z);
   if(r==='out'){ const R=SH_R.out; pState.x=clamp(pState.x,R.x0,R.x1); pState.z=clamp(pState.z,R.z0,R.z1); return; }
@@ -7027,6 +7029,7 @@ function goMapSH(){ if(pState.veh){ if(pState.veh.alt>.4){ toast('비행 중에�
   IT.floor=0; CST.on=false; SHG.ride=null; pState.x=SHX+70; pState.z=SHZ-14; pState.y=0; pState.vy=0; pState.face=Math.atan2(.35,-1); if(!night){ night=true; applyTime(); }
   yaw=pState.face+Math.PI; pitch=.12; camDist=LOW?8.5:7.5; if(player) player.root.position.set(pState.x,0,pState.z);
   toast('상하이 황푸강변이에요. 강 건너 푸둥 야경, 미술관 앞에는 SYSTEM 줄이 1km 넘게 늘어서 있어요'); }
+function shPlane(par,mat,w,h,x,y,z,ry){ const p=new THREE.Mesh(G.plane,mat); p.scale.set(w,h,1); p.position.set(x,y,z); p.rotation.y=ry||0; par.add(p); return p; }
 function shTex(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'); draw(x,w,h); const t=new THREE.CanvasTexture(c); return t; }
 // a room seen from inside: walls, floor and ceiling face inward, so the camera can sit outside a wall and still look in
 function shRoom(R,wallM,floorM,ceilM){ const g=new THREE.Group(); g.position.set(R.cx,0,R.cz); scene.add(g); const W=R.w,D=R.d,H=R.h;
@@ -7083,7 +7086,7 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
   const rnd=(a,b)=>a+Math.random()*(b-a);
   for(let i=0;i<(LOW?26:52);i++){ const lx=rnd(-480,1180), lz=-rnd(360,640); if(Math.abs(lx-300)<170&&lz>-560) continue; const w=rnd(16,38), h=rnd(50,lx>100&&lx<600?210:150);
     const m=mesh(G.box,winMat(pick([0xffe2b8,0xcfe8ff,0xfff3d0,0xbfd8ff]),[Math.max(1,Math.round(w/8)),Math.round(h/12)]),lx,h/2,lz,w,h,w*rnd(.7,1),IG);
-    if(Math.random()<.35){ const c=mesh(G.box,M('#ffffff',{glow:1.4}),lx,h+1.5,lz,w*.9,3,w*.7,IG); SHG.leds.push({m:c.material,ph:Math.random()*6}); if(Math.random()<.5) refl(lx,lz,w*.5,0xffffff); } }
+    if(Math.random()<.35){ const c=mesh(G.box,M('#ffffff',{glow:1.4}).clone(),lx,h+1.5,lz,w*.9,3,w*.7,IG); SHG.leds.push({m:c.material,ph:Math.random()*6}); if(Math.random()<.5) refl(lx,lz,w*.5,0xffffff); } }
   // this side of the river behind the museum: a lower city
   for(let i=0;i<(LOW?10:22);i++){ const lx=rnd(-200,1150), lz=rnd(70,320), w=rnd(18,40), h=rnd(20,90); if(Math.abs(lx)<70&&lz<120) continue; mesh(G.box,winMat(0xffe2b8,[Math.round(w/8),Math.round(h/10)]),lx,h/2,lz,w,h,w,IG); }
   // two tour boats with neon outlines going up and down the river
@@ -7093,14 +7096,14 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
   // ---------- the museum: a converted power station with its chimney ----------
   const brick=M('#5a4a44'), steel=M('#2a2a30');
   B(92,24,44,brick,0,12,28,IG);
-  for(let i=0;i<16;i++) B(.6,24,.6,steel,-45+i*6,12,5.8,IG);
-  B(90,8,.2,M('#ffe8c8',{glow:.7}),0,4,5.9,IG); // the glowing glass lobby
-  for(let i=0;i<15;i++) B(.2,8,.3,steel,-42+i*6,4,5.7,IG);
+  for(let i=0;i<16;i++) shPlane(IG,steel,.6,24,-45+i*6,12,5.5,Math.PI);
+  shPlane(IG,M('#ffe8c8',{glow:.7}),90,8,0,4,5.8,Math.PI); // the glowing glass lobby
+  for(let i=0;i<15;i++) shPlane(IG,steel,.2,8,-42+i*6,4,5.7,Math.PI);
   const sys=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['SYSTEM','900 210px "Arial Black",Impact,sans-serif','#ffffff',.5,40]]),transparent:true})); sys.scale.set(46,11.5,1); sys.position.set(0,14.5,5.6); sys.rotation.y=Math.PI; IG.add(sys); SHG.sys=sys;
   [-30,30].forEach(x=>{ const bn=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['JOHNNY','900 120px Georgia,serif','#1a1a1a',.18],['DEPP','900 150px Georgia,serif','#1a1a1a',.36],['조니 뎁 그림전','700 70px Noto Sans KR,sans-serif','#b01818',.6],['1F – 2F','700 80px sans-serif','#1a1a1a',.8]],{w:512,h:1024,bg:'#f2efe6'})})); bn.scale.set(6,12,1); bn.position.set(x,13,5.5); bn.rotation.y=Math.PI; IG.add(bn); });
-  SHG.win4=M('#ffffff',{glow:1.2}); SHG.win5=M('#3dff6a',{glow:1.2}); B(80,2,.2,SHG.win4,0,20.5,5.65,IG); B(80,1.4,.2,SHG.win5,0,22.8,5.65,IG);
-  { const g=new THREE.Group(); g.position.set(30,24,40); IG.add(g); mesh(G.cyl,M('#6a5a54'),0,50,0,4,100,4.6,g); const ring=mesh(G.cyl,M('#ff3d3d',{glow:2}),0,70,0,4.25,26,4.25,g); SHG.chim=ring.material; for(let k=0;k<8;k++) mesh(G.cyl,M('#2a2a30'),0,60+k*4,0,4.3,.4,4.3,g); }
-  B(14,.4,5,M('#1a1a1e'),0,6.2,3.2,IG); B(6,4.6,.2,M('#ffe8c8',{glow:1}),0,2.3,5.75,IG);
+  SHG.win4=M('#ffffff',{glow:1.2}).clone(); SHG.win5=M('#3dff6a',{glow:1.2}).clone(); B(80,2,.2,SHG.win4,0,20.5,5.65,IG); B(80,1.4,.2,SHG.win5,0,22.8,5.65,IG);
+  { const g=new THREE.Group(); g.position.set(30,24,40); IG.add(g); mesh(G.cyl,M('#6a5a54'),0,50,0,4,100,4.6,g); const ring=mesh(G.cyl,M('#ff3d3d',{glow:2}).clone(),0,70,0,4.25,26,4.25,g); SHG.chim=ring.material; for(let k=0;k<8;k++) mesh(G.cyl,M('#2a2a30'),0,60+k*4,0,4.3,.4,4.3,g); }
+  B(14,.4,5,M('#1a1a1e'),0,6.2,3.2,IG); shPlane(IG,M('#ffe8c8',{glow:1}),6,4.6,0,2.3,5.6,Math.PI);
   const LO=new THREE.PointLight(0xffd8b0,1.2,30); LO.position.set(0,5,-2); IG.add(LO);
   // ---------- the queue: more than a kilometre of people in black ----------
   { const path=[[30,3.4],[46,3.4],[49,.8],[1085,.8]], sp=.6, pts=[];
@@ -7127,12 +7130,12 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     const ttl=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['JOHNNY DEPP','900 150px Georgia,serif','#141414',.38],['조니 뎁 그림전  ·  1F – 2F','700 72px Noto Sans KR,sans-serif','#9a1a1a',.78]],{w:1024,h:256,bg:'#ecebe6'})})); ttl.scale.set(10,2.5,1); ttl.position.set(-W/2+7,3.6,-D/2+.03); g.add(ttl);
     // the mezzanine (2F) along the back wall, with a glass rail
     B(W,.35,3.4,M('#d8d6d0'),0,4.5,D/2-1.7,g); B(W,1,.04,M('#cfe8ff',{op:.25}),0,5.2,D/2-3.4,g); B(W,.05,.06,M('#2a2a2a'),0,5.72,D/2-3.4,g); for(let i=0;i<8;i++) B(.9,.18,.35,M('#d8d6d0'),-W/2+1.6,.1+i*.56,D/2-4.3-i*.32,g);
-    let k=0; const hang=(x,z,ry,y,sz)=>{ const f=new THREE.Group(); f.position.set(x,y,z); f.rotation.y=ry; g.add(f); const w=sz*.8, h=sz; B(w+.16,h+.16,.06,M('#1c1a18'),0,0,0,f); const p=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shPaintTex(k++ +3)})); p.scale.set(w,h,1); p.position.z=.035; f.add(p); B(.3,.12,.02,M('#f4f1ea'),w/2+.25,-h/2+.1,.03,f); B(.5,.06,.12,M('#2a2a2a'),0,h/2+.5,.3,f); };
+    let k=0; const hang=(x,z,ry,y,sz)=>{ const f=new THREE.Group(); f.position.set(x,y,z); f.rotation.y=ry; g.add(f); const w=sz*.8, h=sz; shPlane(f,M('#1c1a18'),w+.16,h+.16,0,0,.01); const p=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shPaintTex(k++ +3)})); p.scale.set(w,h,1); p.position.z=.035; f.add(p); B(.3,.12,.02,M('#f4f1ea'),w/2+.25,-h/2+.1,.03,f); B(.5,.06,.12,M('#2a2a2a'),0,h/2+.5,.3,f); };
     for(let i=0;i<5;i++) hang(-W/2+.05,-D/2+3+i*3.6,Math.PI/2,2.1,1.8); for(let i=0;i<5;i++) hang(W/2-.05,-D/2+3+i*3.6,-Math.PI/2,2.1,1.8);
     for(let i=0;i<3;i++) hang(6+i*4,-D/2+.05,0,2.1,1.9); for(let i=0;i<6;i++) hang(-W/2+3+i*4.6,D/2-.05,Math.PI,6.6,1.6); for(let i=0;i<3;i++) hang(-W/2+3+i*4.2,D/2-.05,Math.PI,2.1,1.7);
     [[-4,0],[4,0]].forEach(([x,z])=>B(3,.45,.8,M('#2a2622'),x,.225,z,g));
     // the freight lift door at the back right, purple light leaking round it
-    B(4.6,3.9,.2,M('#2a2a30'),W/2-6,1.95,D/2-.12,g); B(4.2,3.5,.06,M('#55555e'),W/2-6,1.75,D/2-.24,g); B(.04,3.5,.08,M('#1a1a1a'),W/2-6,1.75,D/2-.28,g);
+    shPlane(g,M('#2a2a30'),4.6,3.9,W/2-6,1.95,D/2-.04,Math.PI); shPlane(g,M('#55555e'),4.2,3.5,W/2-6,1.75,D/2-.07,Math.PI); shPlane(g,M('#1a1a1a'),.05,3.5,W/2-6,1.75,D/2-.09,Math.PI);
     const hz=shTex(128,16,(x,w,h)=>{ for(let i=0;i<16;i++){ x.fillStyle=i%2?'#ffd400':'#141414'; x.beginPath(); x.moveTo(i*16-8,h); x.lineTo(i*16,0); x.lineTo(i*16+8,0); x.lineTo(i*16,h); x.fill(); } }); hz.wrapS=THREE.RepeatWrapping; hz.repeat.set(3,1);
     const hzM=new THREE.MeshBasicMaterial({map:hz}); [[0,3.62,4.6,.24]].forEach(([x,y,a,b])=>{ const p=new THREE.Mesh(G.plane,hzM); p.scale.set(a,b,1); p.position.set(W/2-6,y,D/2-.25); p.rotation.y=Math.PI; g.add(p); });
     B(4.2,.06,.3,M('#b04dff',{glow:2.2}),W/2-6,.03,D/2-.35,g); const lsg=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('화물 엘리베이터 ↑ 4F SYSTEM','#c88aff'),transparent:true})); lsg.scale.set(3.2,.8,1); lsg.position.set(W/2-6,4.05,D/2-.25); lsg.rotation.y=Math.PI; g.add(lsg);
@@ -7172,13 +7175,13 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
 
   // ---------- 4F: the SYSTEM hall. Step out of the lift and the big stage is right ahead: haze, a truss of white blinders,
   //            a wide LED screen of burning clouds behind the DJs, speakers on poles, the bar by the lift, stairs up to 5F ----------
-  { const R=SH_R.hall, g=shRoom(R,M('#bdbcb8'),M('#2a2a2e'),M('#c8c8c4')), W=R.w, D=R.d, H=R.h, SX=W/2-5;
+  { const R=SH_R.hall, g=shRoom(R,M('#4a4a4e'),M('#151517'),M('#2a2a2e')), W=R.w, D=R.d, H=R.h, SX=W/2-5;
     // ceiling: black ducts and round fittings, like a museum hall
     [-10,0,10].forEach(z=>{ const d=mesh(G.cyl,M('#1a1a1c'),0,H-.9,z,.55,W-2,.55,g); d.rotation.z=Math.PI/2; for(let i=0;i<6;i++) mesh(G.cyl,M('#e8e8e8'),-W/2+5+i*7,H-1.5,z,.3,.12,.3,g); });
     for(let i=0;i<5;i++) B(.12,.12,D-1,M('#2a2a2e'),-W/2+6+i*8,H-.3,0,g);
     // up-lights painting soft cones on the high walls
     const cone=shTex(64,256,(x,w,h)=>{ const g2=x.createLinearGradient(0,h,0,0); g2.addColorStop(0,'rgba(255,255,255,.75)'); g2.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=g2; x.beginPath(); x.moveTo(w*.42,h); x.lineTo(w*.58,h); x.lineTo(w,0); x.lineTo(0,0); x.fill(); });
-    const coneM=new THREE.MeshBasicMaterial({map:cone,transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending});
+    const coneM=new THREE.MeshBasicMaterial({map:cone,transparent:true,opacity:.22,depthWrite:false,blending:THREE.AdditiveBlending});
     for(let i=0;i<7;i++){ const p=new THREE.Mesh(G.plane,coneM); p.scale.set(3,6,1); p.position.set(SX+4.9,H-4.6,-D/2+4+i*4.6); p.rotation.y=-Math.PI/2; g.add(p); }
     for(let i=0;i<6;i++) [-1,1].forEach(sd=>{ const p=new THREE.Mesh(G.plane,coneM); p.scale.set(3,5,1); p.position.set(-W/2+10+i*6,H-4.2,sd*(D/2-.06)); p.rotation.y=sd>0?Math.PI:0; g.add(p); });
     // the LED screen: burning pink and orange clouds with thin white lines
@@ -7199,7 +7202,7 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     SHG.blind=[]; for(let i=0;i<10;i++){ const z=-12.6+i*2.8, m=new THREE.MeshBasicMaterial({color:0xfff6e8}); B(.5,.5,.7,M('#1a1a1c'),SX-4.3,8.2,z,g); const f=B(.04,.42,.58,m,SX-4.56,8.2,z,g); SHG.blind.push(m); }
     const cg=new THREE.ConeGeometry(2,11,18,1,true); cg.translate(0,-5.5,0);
     for(let i=0;i<(LOW?6:10);i++){ const p=new THREE.Group(); p.position.set(SX-4.3,9.9,-12+i*(24/((LOW?6:10)-1))); g.add(p); const m=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.07,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}); p.add(new THREE.Mesh(cg,m)); SHG.beams.push({p,m,ph:i*.9}); }
-    SHG.strobe=new THREE.PointLight(0xffffff,0,60); SHG.strobe.position.set(SX-6,8,0); g.add(SHG.strobe); const fill=new THREE.PointLight(0xfff0e8,1.3,60); fill.position.set(SX-8,6,0); g.add(fill); const fill2=new THREE.PointLight(0xe8eeff,.7,50); fill2.position.set(-W/2+8,8,0); g.add(fill2);
+    SHG.strobe=new THREE.PointLight(0xffffff,0,60); SHG.strobe.position.set(SX-6,8,0); g.add(SHG.strobe); const fill=new THREE.PointLight(0xfff0e8,.75,40); fill.position.set(SX-6,6,0); g.add(fill); const fill2=new THREE.PointLight(0xe8eeff,.12,40); fill2.position.set(-W/2+8,8,0); g.add(fill2);
     // the bar, as soon as you step out of the lift
     B(1,1.1,6,M('#101012'),-W/2+6,.55,-D/2+5,g); B(1.06,.05,6.06,M('#ffffff',{glow:1.4}),-W/2+6,1.12,-D/2+5,g); B(5.6,1.1,1,M('#101012'),-W/2+3.2,.55,-D/2+8,g); B(5.66,.05,1.06,M('#ffffff',{glow:1.4}),-W/2+3.2,1.12,-D/2+8,g);
     [1.5,2.2].forEach(y=>{ B(.3,.04,6,M('#2a2a2e'),-W/2+.4,y,-D/2+4.4,g); for(let i=0;i<8;i++) bottle(g,-W/2+.4,y+.03,-D/2+1.8+i*.7,pick(['#3d7a3a','#8a4a22','#f4efe6','#9fd8ff','#e8e8e8']),.24); });
@@ -7207,15 +7210,15 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     colliders.push({x:R.cx-W/2+6,z:R.cz-D/2+2.6,r:.7},{x:R.cx-W/2+6,z:R.cz-D/2+5,r:.7},{x:R.cx-W/2+6,z:R.cz-D/2+7.4,r:.7},{x:R.cx-W/2+3.5,z:R.cz-D/2+8,r:.7},{x:R.cx-W/2+1.4,z:R.cz-D/2+8,r:.7});
     mine.push(addNPC({top:'tee',topColor:'#141414',extra:'none'},{x:R.cx-W/2+4.6,z:R.cz-D/2+4.6},Math.PI/2,'talk',{talk:true}).P);
     // the lift doors in the end wall
-    B(.2,3.9,4.6,M('#2a2a30'),-W/2+.12,1.95,-D/2+12,g); B(.06,3.5,4.2,M('#55555e'),-W/2+.24,1.75,-D/2+12,g); B(.3,.06,4.2,M('#b04dff',{glow:2.2}),-W/2+.35,.03,-D/2+12,g);
+    shPlane(g,M('#2a2a30'),4.6,3.9,-W/2+.04,1.95,-D/2+12,Math.PI/2); shPlane(g,M('#55555e'),4.2,3.5,-W/2+.07,1.75,-D/2+12,Math.PI/2); B(.3,.04,4.2,M('#b04dff',{glow:2.2}),-W/2+.35,.02,-D/2+12,g);
     const ls=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('화물 엘리베이터 ↓ 1F','#c88aff'),transparent:true})); ls.scale.set(3,.75,1); ls.position.set(-W/2+.08,4.3,-D/2+12); ls.rotation.y=Math.PI/2; g.add(ls);
     // stairs up to 5F along the back wall: steps, a glass rail on the open side, a landing and the green door
     { const S=shStair(), n=22, run=(S.x1-S.x0)/n, zc=(S.zb+S.zt)/2+.2, wd=S.zt-S.zb+.4;
-      for(let i=0;i<n;i++){ const top=S.h*(i+1)/n; B(run+.02,top,wd,M('#6a6a70'),S.x0+(i+.5)*run,top/2,zc,g); B(run,.03,.05,M('#3dff6a',{glow:.8}),S.x0+(i+.5)*run,top+.01,S.zb+.05,g); }
-      B(3.4,S.h,wd,M('#6a6a70'),S.x1+1.7,S.h/2,zc,g);
+      const stM=M('#3a3a40'); B(S.x1-S.x0+3.4,.12,.1,stM,(S.x0+S.x1)/2+1.7,.06,S.zb,g); for(let i=0;i<n;i++){ const top=S.h*(i+1)/n; B(run+.04,.07,wd,stM,S.x0+(i+.5)*run,top-.035,zc,g); if(i%4===2) B(.08,top,.08,stM,S.x0+(i+.5)*run,top/2,S.zb+.1,g); B(run,.03,.05,M('#3dff6a',{glow:.8}),S.x0+(i+.5)*run,top+.01,S.zb+.05,g); }
+      B(3.4,.14,wd,stM,S.x1+1.7,S.h-.07,zc,g); [[S.x1+.2,S.zb+.1],[S.x1+3.2,S.zb+.1]].forEach(([x,z])=>B(.1,S.h,.1,stM,x,S.h/2,z,g));
       const len=Math.hypot(S.x1-S.x0,S.h), rail=B(len,1,.04,M('#cfe8ff',{op:.25}),(S.x0+S.x1)/2,S.h/2+.55,S.zb,g); rail.rotation.z=Math.atan2(S.h,S.x1-S.x0); const top=B(len,.05,.07,M('#c8c8d0'),(S.x0+S.x1)/2,S.h/2+1.08,S.zb,g); top.rotation.z=rail.rotation.z;
       B(3.4,1,.04,M('#cfe8ff',{op:.25}),S.x1+1.7,S.h+.55,S.zb,g);
-      B(2.4,3.2,.1,M('#0a0a0c'),S.x1+1.9,S.h+1.6,D/2-.08,g); B(2.1,2.9,.05,M('#3dff6a',{glow:.9}),S.x1+1.9,S.h+1.5,D/2-.14,g);
+      shPlane(g,M('#0a0a0c'),2.4,3.2,S.x1+1.9,S.h+1.6,D/2-.04,Math.PI); shPlane(g,M('#3dff6a',{glow:.9}),2.1,2.9,S.x1+1.9,S.h+1.5,D/2-.07,Math.PI);
       const gs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('5F GREEN ROOM ↑','#3dff6a'),transparent:true})); gs.scale.set(3,.75,1); gs.position.set(S.x0-1.2,3,D/2-.06); gs.rotation.y=Math.PI; g.add(gs); }
     const hs=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['SYSTEM','900 170px "Arial Black",Impact,sans-serif','#ffffff',.5,30]]),transparent:true})); hs.scale.set(12,3,1); hs.position.set(0,H-3,-D/2+.06); g.add(hs);
     SHG.zones.hall=makeZone('sh-hall',R.cx+8,R.cz,46,SH_TR.hall); SHG.zones.hall.vol=.95;
@@ -7224,7 +7227,21 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     // a packed floor: thickest right in front of the stage
     const dn=['headbang','stomp','robot','pump','hakken','popping','sway'], n=LOW?34:70;
     for(let i=0;i<n;i++){ const d=Math.pow(Math.random(),1.6), x=SX-5-d*(W-16), z=rand(-14,14)*(.55+.45*d); const S=addNPC(avantLook(),{x:R.cx+x,z:R.cz+z},Math.atan2(SX-x,-z*.4)+rand(-.3,.3),'dance',{dance:pick(dn),zone:SHG.zones.hall,talk:true}); mine.push(S.P); }
-    for(let i=0;i<5;i++){ const S=addNPC(avantLook(),{x:R.cx-W/2+8+rand(0,3),z:R.cz-D/2+3+rand(0,5)},rand(0,6.28),'talk',{talk:true}); if(i%2) handProp(S.P,'beer',0); mine.push(S.P); } }
+    for(let i=0;i<5;i++){ const S=addNPC(avantLook(),{x:R.cx-W/2+8+rand(0,3),z:R.cz-D/2+3+rand(0,5)},rand(0,6.28),'talk',{talk:true}); if(i%2) handProp(S.P,'beer',0); mine.push(S.P); }
+    { const sp=LOW?.95:.68, pts=[], St=shStair();
+      for(let x=-W/2+7.5;x<SX-3.8;x+=sp) for(let z=-D/2+1;z<D/2-.8;z+=sp){ const jx=x+rand(-.22,.22), jz=z+rand(-.22,.22);
+        if(jz>St.zb-.5&&jx<St.x1+4) continue; /* the stairs */ if(jx<-W/2+10&&jz<-D/2+10) continue; /* the bar */ if(jx<-W/2+11&&Math.abs(jz-(-D/2+12))<3) continue; /* out of the lift */
+        if(Math.random()<.06) continue; pts.push([jx,jz]); }
+      const n=pts.length, mk=(geo)=>{ const m=new THREE.InstancedMesh(geo,new THREE.MeshLambertMaterial({color:0xffffff}),n); m.position.set(R.cx,0,R.cz); scene.add(m); return m; };
+      const lg=new THREE.BoxGeometry(.34,.82,.22); lg.translate(0,.41,0); const tg=new THREE.BoxGeometry(.46,.64,.27); tg.translate(0,1.14,0); const hg=new THREE.SphereGeometry(.13,8,6); hg.translate(0,1.6,0); const hr=new THREE.SphereGeometry(.142,8,5,0,Math.PI*2,0,Math.PI*.55); hr.translate(0,1.63,0);
+      const arms=new THREE.BoxGeometry(.62,.62,.1); { const a1=new THREE.BoxGeometry(.09,.6,.09); a1.translate(-.27,1.72,0); const a2=new THREE.BoxGeometry(.09,.6,.09); a2.translate(.27,1.72,0); const pos=[...a1.attributes.position.array,...a2.attributes.position.array], nor=[...a1.attributes.normal.array,...a2.attributes.normal.array], idx=[...a1.index.array,...a2.index.array.map(v=>v+a1.attributes.position.count)];
+        arms.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); arms.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3)); arms.setIndex(idx); arms.deleteAttribute('uv'); }
+      const L=[mk(lg),mk(tg),mk(hg),mk(hr),mk(arms)], d=new THREE.Object3D(), c=new THREE.Color(), SK=['#c69a7a','#a8764e','#7a5238','#d8b090','#5a3a26'], BL=['#0a0a0c','#101012','#16161a','#0a0a0c','#1c1c20'];
+      const P=pts.map(([x,z],i)=>{ const q={x,z,ry:Math.atan2(SX-x,-z*.25)+rand(-.5,.5),s:rand(.92,1.08),ph:Math.random()*6,up:Math.random()<.35};
+        L[0].setColorAt(i,c.set(pick(BL))); L[1].setColorAt(i,c.set(Math.random()<.04?'#d8d4cc':pick(BL))); L[2].setColorAt(i,c.set(pick(SK))); L[3].setColorAt(i,c.set(pick(['#0c0a08','#0c0a08','#2a1c14','#c8b48a']))); L[4].setColorAt(i,c.set(pick(SK))); return q; });
+      const put=(i,b)=>{ const q=P[i]; d.position.set(q.x,b,q.z); d.rotation.set(0,q.ry,Math.sin(b*9+q.ph)*.05); d.scale.set(q.s,q.s,q.s); d.updateMatrix(); for(let k=0;k<4;k++) L[k].setMatrixAt(i,d.matrix); if(!q.up) d.scale.set(0,0,0), d.updateMatrix(); L[4].setMatrixAt(i,d.matrix); };
+      P.forEach((q,i)=>put(i,0)); L.forEach(m=>{ m.instanceMatrix.needsUpdate=true; if(m.instanceColor) m.instanceColor.needsUpdate=true; });
+      SHG.crowd={L,P,put,near:[],nt:0}; } }
 
   // ---------- 5F: the green room: a ceiling of ivy, green haze, the DJ lit red ----------
   { const R=SH_R.green, g=shRoom(R,M('#0c140e'),M('#0a0a0a'),M('#0a1a0e')), W=R.w, D=R.d, H=R.h;
@@ -7240,7 +7257,7 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     const lz=new THREE.BoxGeometry(.03,.03,14); lz.translate(0,0,7); SHG.lm=new THREE.MeshBasicMaterial({color:0x3dff6a,transparent:true,opacity:.4,blending:THREE.AdditiveBlending,depthWrite:false});
     for(let i=0;i<(LOW?4:7);i++){ const L2=new THREE.Mesh(lz,SHG.lm); L2.position.set(0,2.4,D/2-.6); g.add(L2); SHG.lasers.push({l:L2,ph:i*.7,k:i+1}); }
     SHG.greenL=new THREE.PointLight(0x2bff6a,2,22); SHG.greenL.position.set(0,3.6,0); g.add(SHG.greenL);
-    const st=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('계단 ↓ 4F SYSTEM','#3dff6a'),transparent:true})); st.scale.set(2.6,.65,1); st.position.set(0,2.9,-D/2+.05); g.add(st); B(2.2,2.6,.06,M('#3dff6a',{glow:.6}),0,1.3,-D/2+.04,g);
+    const st=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('계단 ↓ 4F SYSTEM','#3dff6a'),transparent:true})); st.scale.set(2.6,.65,1); st.position.set(0,2.9,-D/2+.05); g.add(st); shPlane(g,M('#3dff6a',{glow:.6}),2.2,2.6,0,1.3,-D/2+.03,0);
     const gn=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['GREEN ROOM','900 120px "Arial Black",Impact,sans-serif','#3dff6a',.5,30]]),transparent:true})); gn.scale.set(7,1.75,1); gn.position.set(0,2.6,D/2-.06); gn.rotation.y=Math.PI; g.add(gn);
     SHG.zones.green=makeZone('sh-green',R.cx,R.cz,14,SH_TR.green); SHG.zones.green.vol=.95;
     const dj=addNPC(Object.assign(avantLook(),{extra:'none',topColor:'#d8d0c8'}),{x:R.cx,z:R.cz+D/2-.4},Math.PI,'dj',{zone:SHG.zones.green}); mine.push(dj.P);
@@ -7297,15 +7314,17 @@ function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggl
   if(dust) dust.visible=false; stormNext=Math.max(stormNext,30); if(stormOn){ stormOn=false; stormLeft=0; }
   const room=shRoomAt(pState.x,pState.z); SHG.room=room; const u=sky.material.uniforms;
   if(room==='out'){ u.top.value.set(0x03040c); u.hor.value.set(0x3a2448); u.bot.value.set(0x0a0a14); scene.fog.color.set(0x12142a); scene.fog.near=180; scene.fog.far=LOW?650:1300; hemi.intensity=.5; }
-  else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x3a3a3c,green:0x0c3418}[room]); scene.fog.near=room==='gal'?60:room==='hall'?6:room==='green'?2:30; scene.fog.far=room==='hall'?75:room==='gal'?160:room==='green'?26:110; hemi.intensity=room==='gal'?.9:.35; }
+  else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x111113,green:0x0c3418}[room]); scene.fog.near=room==='gal'?60:room==='hall'?3:room==='green'?2:30; scene.fog.far=room==='hall'?58:room==='gal'?160:room==='green'?26:110; hemi.intensity=room==='gal'?.9:room==='hall'?.16:.35; }
   renderer.setClearColor(scene.fog.color);
   if(room==='out'){ SHG.leds.forEach((L,i)=>{ if(L.base) return; L.m.color.setHSL((t*.05+L.ph*.16)%1,.85,.6); }); SHG.refl.forEach(R=>{ R.m.opacity=.24+.1*Math.sin(t*1.6+R.ph); });
     SHG.boats.forEach(B_=>{ const p=B_.g.position; p.x+=B_.dir*B_.sp*dt; if(p.x>1300) p.x=-350; if(p.x<-350) p.x=1300; B_.g.rotation.y=B_.dir>0?0:Math.PI; });
     if(SHG.chim) SHG.chim.color.setHSL((t*.03)%1,.9,.55); const b=t*2.2, ph=b%1; SHG.win4.color.setScalar(.5+.5*Math.exp(-ph*5)); SHG.win5.color.setRGB(.1,.5+.5*Math.exp(-ph*4),.2); return; }
   if(room==='lift'){ const Z=SHG.zones.lift, b=Z.running?boothBeat(Z,t):t*2.13, ph=((b%1)+1)%1, k=Math.exp(-ph*4); SHG.liftL.intensity=1.6+2.4*k; SHG.tube.color.setHSL(.77+.05*Math.sin(t*.7),1,.45+.25*k); return; }
-  if(room==='hall'){ const Z=SHG.zones.hall, b=Z.running?boothBeat(Z,t):t*2.2, ph=((b%1)+1)%1, k=Math.exp(-ph*5), bar=Math.floor(b/4);
+  if(room==='hall'){ const R_H=SH_R.hall, Z=SHG.zones.hall, b=Z.running?boothBeat(Z,t):t*2.2, ph=((b%1)+1)%1, k=Math.exp(-ph*5), bar=Math.floor(b/4);
     SHG.media.uniforms.uT.value=t; SHG.media.uniforms.uB.value=k;
     SHG.beams.forEach(B_=>{ B_.p.rotation.x=Math.sin(t*.5+B_.ph)*.55; B_.p.rotation.z=Math.sin(t*.37+B_.ph*1.3)*.6; B_.m.opacity=.05+.09*k; });
+    const C=SHG.crowd; if(C){ if(t-C.nt>1){ C.nt=t; const lx=pState.x-R_H.cx, lz=pState.z-R_H.cz, r2=(LOW?6:9)**2; C.near=[]; C.P.forEach((q,i)=>{ if((q.x-lx)**2+(q.z-lz)**2<r2) C.near.push(i); }); }
+      for(const i of C.near){ const q=C.P[i]; C.put(i,Math.abs(Math.sin((b+q.ph)*Math.PI))*.09); } C.L.forEach(m=>m.instanceMatrix.needsUpdate=true); }
     SHG.strobe.intensity=(bar%8===7&&ph<.12)?6:0; const hit=bar%4===3; SHG.blind.forEach((m,i)=>m.color.setScalar(hit?(.35+.65*k):(.18+.2*Math.max(0,Math.sin(t*1.3+i))))); return; }
   if(room==='green'){ const Z=SHG.zones.green, b=Z.running?boothBeat(Z,t):t*2.07, ph=((b%1)+1)%1, k=Math.exp(-ph*4), beat=Math.floor(b);
     SHG.greenL.intensity=1.2+2.2*k; SHG.lm.opacity=.35+.4*k; SHG.lasers.forEach(L=>{ L.l.rotation.y=Math.PI+(L.k-4)*.18+Math.sin(t*.9+L.ph)*.35; L.l.rotation.x=.12+Math.sin(t*.6+L.ph)*.12; });
