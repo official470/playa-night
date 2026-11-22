@@ -2208,7 +2208,11 @@
 "📱 알리페이로 결제 · 80코인": "📱 Pagar con Alipay · 80 monedas",
 "입장료 80코인이 모자라요. 춤추고 놀면서 코인을 모아 와요": "Te faltan monedas para los 80 de la entrada. Baila y junta monedas",
 "SYSTEM 입장 (알리페이 80코인)": "Entrada SYSTEM (Alipay, 80 monedas)",
-"미술관 안은 입장료 80코인을 내고 들어가요": "Al museo se entra pagando 80 monedas en la puerta"
+"미술관 안은 입장료 80코인을 내고 들어가요": "Al museo se entra pagando 80 monedas en la puerta",
+"입장료는 80코인이에요": "La entrada cuesta 80 monedas",
+"🪙 80코인 내고 입장하기": "🪙 Pagar 80 monedas y entrar",
+"80코인 결제 완료! 손목에 SYSTEM 밴드를 채워 줘요": "¡80 monedas pagadas! Te ponen una pulsera de SYSTEM",
+"SYSTEM 입장 (80코인)": "Entrada SYSTEM (80 monedas)"
 },
 "patterns": {
 ". 코인 +{0}": ". +{0} monedas",
