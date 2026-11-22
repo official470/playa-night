@@ -7325,7 +7325,12 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
   INTER.push({pos:at('hall',Hl.cx-Hl.w/2+1.8,Hl.cz-Hl.d/2+12),r:2.2,label:'화물 엘리베이터 타기',act:()=>shDoor('hallLift')});
   INTER.push({pos:at('hall',Hl.cx-Hl.w/2+7.2,Hl.cz-Hl.d/2+5),r:2.2,label:'SYSTEM 바',act:()=>openShop({id:'shbar',name:'SYSTEM 바',sub:'맥주, 샷, 칵테일, 물',items:[ITEMS['플라야 라거'],ITEMS['데킬라 샷'],ITEMS['선셋 칵테일'],ITEMS['생수']].filter(Boolean)})});
   INTER.push({pos:at('green',SH_R.green.cx,SH_R.green.cz-SH_R.green.d/2+1.2),r:2,label:'계단으로 4층 내려가기',act:()=>shDoor('greenDown')});
+  // coins on the ground floor: along the riverside walk by the museum, and a few in the 1·2F gallery (10 each, back after 40 s)
+  { const cg=new THREE.CylinderGeometry(.42,.42,.09,14), cm=M('#ffcf3a',{glow:.9}); SHG.coins=[];
+    for(let i=0;i<(LOW?16:24);i++){ const m=new THREE.Mesh(cg,cm); m.rotation.set(0,0,Math.PI/2); scene.add(m); const c={m,wait:0,ph:Math.random()*6,gal:i<5}; shCoin(c); SHG.coins.push(c); } }
   updaters.push(shTick); }
+function shCoin(c){ let x,z; if(c.gal){ const R=SH_R.gal; x=R.cx+rand(-R.w/2+2,R.w/2-2); z=R.cz+rand(-R.d/2+2,R.d/2-4.5); c.room='gal'; }
+  else { do{ x=SHX+rand(-110,260); z=SHZ+rand(-31,-1); }while(Math.abs(x-SHX)<6&&z>SHZ-4); c.room='out'; } c.m.position.set(x,1.1,z); c.m.visible=true; c.wait=0; }
 // the floor display above the lift door
 function shInd(f){ const x=SHG.indC&&SHG.indC.getContext('2d'); if(!x) return; SHG.indFl=f; x.fillStyle='#0a0610'; x.fillRect(0,0,128,64); x.fillStyle='#ff3df0'; x.shadowColor='#ff3df0'; x.shadowBlur=12; x.font='900 40px monospace'; x.textAlign='center'; x.textBaseline='middle';
   x.fillText((SHG.ride?(SHG.ride.to>SHG.ride.from?'▲':'▼'):'')+f+'F',64,34); x.shadowBlur=0; SHG.indT.needsUpdate=true; }
@@ -7358,6 +7363,8 @@ function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggl
     if(R.t>=9){ SHG.liftAt=R.to; SHG.ride=null; SHG.openT=0; shInd(SHG.liftAt); if(SHG.liftG) SHG.liftG.position.y=0; if(inS&&SHG.room==='lift') toast(SHG.liftAt===4?'4층이에요. 문이 열렸어요. 앞쪽 문으로 걸어 나가면 바로 메인 스테이지예요':'1층이에요. 문이 열렸어요. 걸어 나가면 그림전이에요'); } }
   if(inS&&SHG.room==='lift'&&!SHG.ride){ SHG.openT+=dt; if(SHG.openT>10) shRide(); }
   if(SHG.gate.length){ const open=!SHG.ride; SHG.gate.forEach((b,i)=>{ b.visible=!open||i<2||i>11; }); }
+  if(SHG.coins) for(const c of SHG.coins){ if(c.wait>0){ c.wait-=dt; if(c.wait<=0) shCoin(c); c.m.visible=false; continue; } const here=inS&&SHG.room===c.room; c.m.visible=here; if(!here) continue;
+    c.m.rotation.y=t*2.4+c.ph; c.m.position.y=1.1+Math.sin(t*2+c.ph)*.12; const dx=c.m.position.x-pState.x, dz=c.m.position.z-pState.z; if(dx*dx+dz*dz<2){ c.m.visible=false; c.wait=40; addCoins(10); chime(88,'sine',.08,.3); } }
   if(!inS) return;
   { const dk=shDoorAt(); if(!dk) SHG.arm=true; else if(SHG.arm&&$('#sp').hidden&&$('#fade').style.opacity!=='1'){ SHG.arm=false; if(dk==='museum') shEntry(); else if(dk==='liftOut'&&SHG.ride){ toast('엘리베이터가 움직이고 있어요. 문이 열리면 내려요'); } else shDoor(dk); } }
   if(dust) dust.visible=false; stormNext=Math.max(stormNext,30); if(stormOn){ stormOn=false; stormLeft=0; }
