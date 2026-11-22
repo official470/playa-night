@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795295580000,
-    "dur": 179,
-    "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
-    "title": "Recorded at Houghton - Nicolas Lutz (2022)",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-XHeC6dnHfNj0SNXy-gNnOWg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795306320000,
     "dur": 122,
     "url": "https://soundcloud.com/platform/dax-j-boiler-room-x-eristoff-into-the-darkdj-set",
@@ -245,18 +233,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795295700000,
-    "dur": 183,
-    "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
-    "title": "BLACK COFFEE Spiritual DJ Set @ Mixmag Live, London",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-lSIyiaGdaN19Z5mK-QmjtpQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795306680000,
     "dur": 178,
     "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
@@ -474,18 +450,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795300020000,
-    "dur": 96,
-    "url": "https://soundcloud.com/deadbeatsrecords/300-deadbeats-radio-with-zeds-dead-live-from-electric-forest-afters-edition",
-    "title": "#300 Deadbeats Radio with Zeds Dead | After Hours Set Live from Electric Forest EVOL Renegade",
-    "dj": "Zeds Dead",
-    "art": "https://i1.sndcdn.com/artworks-e31EeM0tgaoa6Y6T-Zs41hQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795305780000,
     "dur": 74,
@@ -833,21 +797,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:house": [
+   },
    {
-    "start": 1795300380000,
-    "dur": 71,
-    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
-    "title": "S.O.N.S: The Ransom Note Mix",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
+    "start": 1795436580000,
+    "dur": 90,
+    "url": "https://soundcloud.com/block9official/sub-focus-live-from-iicon-2025",
+    "title": "Sub Focus Live from IICON",
+    "dj": "Sub Focus",
+    "art": "https://i1.sndcdn.com/artworks-AUjV4n0S9C03LLAz-LMMcQQ-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795441980000,
+    "dur": 62,
+    "url": "https://soundcloud.com/vvvfrankie/skrillex-live-ultra-music-festival-2015-diplo-justine-biber-jack-u-kiesza-p-diddy-dj-snake",
+    "title": "SKRILLEX LIVE @ ULTRA MUSIC FESTIVAL 2015 FULL SET (Diplo Justin Bieber Jack U Kiesza Dj Snake)",
+    "dj": "Skrillex",
+    "art": "https://i1.sndcdn.com/artworks-000124856288-whf3x3-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795445700000,
+    "dur": 59,
+    "url": "https://soundcloud.com/bass_cave/chase-and-status-ultra-music-festival-2025-full-set",
+    "title": "Chase and Status - Ultra Music Festival 2025 [FULL SET]",
+    "dj": "Chase & Status",
+    "art": "https://i1.sndcdn.com/artworks-VZ9IOQvB4wMFbXQE-lLuiEg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795449240000,
+    "dur": 96,
+    "url": "https://soundcloud.com/deadbeatsrecords/300-deadbeats-radio-with-zeds-dead-live-from-electric-forest-afters-edition",
+    "title": "#300 Deadbeats Radio with Zeds Dead | After Hours Set Live from Electric Forest EVOL Renegade",
+    "dj": "Zeds Dead",
+    "art": "https://i1.sndcdn.com/artworks-e31EeM0tgaoa6Y6T-Zs41hQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795455000000,
+    "dur": 74,
+    "url": "https://soundcloud.com/elivesets/rl-grime-live-edc-las-vegas",
+    "title": "RL Grime - Live @ EDC Las Vegas 2025",
+    "dj": "RL Grime",
+    "art": "https://i1.sndcdn.com/artworks-YOY9tUwmTufNNjtR-pcEGdA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:house": [
    {
     "start": 1795304640000,
     "dur": 83,
@@ -1961,18 +1973,6 @@
   ],
   "zone:potty": [
    {
-    "start": 1795301460000,
-    "dur": 86,
-    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
-    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
-    "dj": "Purple Disco Machine",
-    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795306620000,
     "dur": 60,
     "url": "https://soundcloud.com/platform/mall-grab",
@@ -2275,18 +2275,6 @@
   ],
   "club3": [
    {
-    "start": 1795299240000,
-    "dur": 96,
-    "url": "https://soundcloud.com/oho990828/april-haze",
-    "title": "April Haze",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795305000000,
     "dur": 119,
     "url": "https://soundcloud.com/postervoyage/here061226",
@@ -2521,6 +2509,66 @@
     "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
     "dj": "Reinier Zonneveld",
     "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795434660000,
+    "dur": 64,
+    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
+    "title": "EOS Radio - Minkyu 28.07.2024",
+    "dj": "Minkyu",
+    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795438500000,
+    "dur": 54,
+    "url": "https://soundcloud.com/oho990828/oho-nothing-in",
+    "title": "Nothing in",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795441740000,
+    "dur": 96,
+    "url": "https://soundcloud.com/oho990828/april-haze",
+    "title": "April Haze",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795447500000,
+    "dur": 149,
+    "url": "https://soundcloud.com/oho990828/teller-seoul-26-07-16",
+    "title": "Oho @Teller 26.07.16",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-grA9JcbDWWI5SNLf-zEvC5Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795456440000,
+    "dur": 192,
+    "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
+    "title": "Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025",
+    "dj": "Minkyu",
+    "art": "https://i1.sndcdn.com/artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -2806,18 +2854,6 @@
    }
   ],
   "zone:teller": [
-   {
-    "start": 1795299180000,
-    "dur": 90,
-    "url": "https://soundcloud.com/avidmuzikfan-725076808/amelie-lens-live-ultra-miami-2024",
-    "title": "Amelie Lens - Live @ Ultra Miami 2024",
-    "dj": "Amelie Lens",
-    "art": "https://i1.sndcdn.com/artworks-PsVOWRBbOAayhFPm-MtaVRQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795304580000,
     "dur": 192,
@@ -3315,18 +3351,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795300380000,
-    "dur": 77,
-    "url": "https://soundcloud.com/postervoyage/journey_to_oases",
-    "title": "JOURNEY_TO_OASES",
-    "dj": "Kyuchan",
-    "art": "https://i1.sndcdn.com/artworks-JtbOu0kYEFThI8ml-QrvyjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795305000000,
     "dur": 89,
     "url": "https://soundcloud.com/johnsummit/everything-always-live-ultra-miami-2025",
@@ -3592,18 +3616,6 @@
    }
   ],
   "zone:nm-jandi": [
-   {
-    "start": 1795302540000,
-    "dur": 68,
-    "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
-    "title": "BLANK STATE PODCAST 10 / KABUTO",
-    "dj": "KABUTO",
-    "art": "https://i1.sndcdn.com/artworks-000626950369-r6ifep-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795306620000,
     "dur": 86,
@@ -4149,18 +4161,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795296720000,
-    "dur": 135,
-    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
-    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795304820000,
     "dur": 106,
     "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
@@ -4402,18 +4402,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795301640000,
-    "dur": 44,
-    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
-    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795304280000,
     "dur": 75,
@@ -4704,18 +4692,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795302060000,
-    "dur": 73,
-    "url": "https://soundcloud.com/platform/tycho",
-    "title": "Tycho Boiler Room San Francisco Live Set",
-    "dj": "Tycho",
-    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795306440000,
     "dur": 62,
@@ -5027,21 +5003,81 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-aero": [
+   },
    {
-    "start": 1795300320000,
-    "dur": 80,
-    "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
-    "title": "Honey Dijon Live @ Le Bain April 12, 2014",
-    "dj": "Honey Dijon",
-    "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
+    "start": 1795434300000,
+    "dur": 112,
+    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
+    "title": "'Infinite' Ambient Mix",
+    "dj": "Ambient",
+    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795441020000,
+    "dur": 62,
+    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
+    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795444740000,
+    "dur": 75,
+    "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
+    "title": "Aphex Twin - Selected Ambient Works 85-92 (1992)",
+    "dj": "Aphex Twin",
+    "art": "https://i1.sndcdn.com/artworks-znkQvfJ9Vrp35isG-BIIycA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795449240000,
+    "dur": 73,
+    "url": "https://soundcloud.com/platform/tycho",
+    "title": "Tycho Boiler Room San Francisco Live Set",
+    "dj": "Tycho",
+    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795453620000,
+    "dur": 44,
+    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
+    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795456260000,
+    "dur": 79,
+    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
+    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
+    "dj": "Harrison Divecha",
+    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-aero": [
    {
     "start": 1795305120000,
     "dur": 203,
@@ -5332,18 +5368,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795301280000,
-    "dur": 76,
-    "url": "https://soundcloud.com/blasterjaxx/blasterjaxx-live-tomorrowland-2025-the-great-library-stage-full-set",
-    "title": "Blasterjaxx | LIVE @ Tomorrowland 2025 - The Great Library Stage [FULL SET]",
-    "dj": "Blasterjaxx",
-    "art": "https://i1.sndcdn.com/artworks-Q6x97hehifsqplas-re0WiA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795305840000,
     "dur": 75,
@@ -5659,18 +5683,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795303260000,
-    "dur": 63,
-    "url": "https://soundcloud.com/platform/reinier-zonneveld",
-    "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795307040000,
     "dur": 76,
     "url": "https://soundcloud.com/platform/boiler-room-berlin-nina-kraviz",
@@ -5936,18 +5948,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795297680000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795305000000,
     "dur": 182,
@@ -6226,18 +6226,6 @@
    }
   ],
   "zone:sh-green": [
-   {
-    "start": 1795297680000,
-    "dur": 109,
-    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
-    "title": "Four Tet | Live from Lost Village 2025",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795304220000,
     "dur": 61,
@@ -6528,5 +6516,5 @@
    }
   ]
  },
- "updated": "2026-11-22T11:31:16.829Z"
+ "updated": "2026-11-22T12:31:19.943Z"
 }
