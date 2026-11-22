@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795279440000,
-    "dur": 135,
-    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
-    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795287540000,
     "dur": 71,
     "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
@@ -229,21 +217,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:afro": [
+   },
    {
-    "start": 1795280580000,
-    "dur": 131,
-    "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
-    "title": "BLACK COFFEE LIVE BRASIL FULL SET 2023.mp3",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-4Ot9YdJsKtKzOzy8-RpqEaA-t500x500.jpg",
+    "start": 1795416900000,
+    "dur": 135,
+    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
+    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795425000000,
+    "dur": 121,
+    "url": "https://soundcloud.com/fabric/027-nicolas-lutz-recorded-live-from-fabric",
+    "title": "027 - Nicolas Lutz - Recorded live from fabric",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-uCj3tahKTmKvbmfB-IZPvaQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795432260000,
+    "dur": 68,
+    "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
+    "title": "259 - Jeff Mills ‎– Live At The Liquid Room - Tokyo (1996)",
+    "dj": "Jeff Mills",
+    "art": "https://i1.sndcdn.com/artworks-000186620556-mhd0z7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795436340000,
+    "dur": 106,
+    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
+    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
+    "dj": "Dax J",
+    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:afro": [
    {
     "start": 1795288440000,
     "dur": 121,
@@ -435,21 +459,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:dubstep": [
+   },
    {
-    "start": 1795283760000,
-    "dur": 60,
-    "url": "https://soundcloud.com/ravetapes/subtronics-edc-las-vegas-2022-live-set-circuitgrounds",
-    "title": "Subtronics EDC Las Vegas 2022 Live Set - CircuitGrounds",
-    "dj": "Subtronics",
-    "art": "https://i1.sndcdn.com/artworks-QjRg04SDvpN98L5u-vNA53A-t500x500.jpg",
+    "start": 1795418760000,
+    "dur": 178,
+    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
+    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
+    "dj": "Caiiro",
+    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795429440000,
+    "dur": 89,
+    "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
+    "title": "APACHE live at RAMPA [Keinemusik] & Friends F1 Miami",
+    "dj": "Apache",
+    "art": "https://i1.sndcdn.com/artworks-A6jt9h6iIQwqrz2B-BAiCcg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795434780000,
+    "dur": 59,
+    "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
+    "title": "Karma Karma Radio 100 - Shimza live from Scorpios, Mykonos",
+    "dj": "Shimza",
+    "art": "https://i1.sndcdn.com/artworks-NgYHQtHgQOEnkaNU-6Td2kw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795438320000,
+    "dur": 131,
+    "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
+    "title": "BLACK COFFEE LIVE BRASIL FULL SET 2023.mp3",
+    "dj": "Black Coffee",
+    "art": "https://i1.sndcdn.com/artworks-4Ot9YdJsKtKzOzy8-RpqEaA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:dubstep": [
    {
     "start": 1795287360000,
     "dur": 90,
@@ -849,18 +909,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795285500000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795289040000,
     "dur": 72,
     "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
@@ -1090,18 +1138,6 @@
    }
   ],
   "booth:hardstyle": [
-   {
-    "start": 1795283280000,
-    "dur": 68,
-    "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
-    "title": "259 - Jeff Mills ‎– Live At The Liquid Room - Tokyo (1996)",
-    "dj": "Jeff Mills",
-    "art": "https://i1.sndcdn.com/artworks-000186620556-mhd0z7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795287360000,
     "dur": 61,
@@ -1404,18 +1440,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795283040000,
-    "dur": 59,
-    "url": "https://soundcloud.com/mayank-bisht-649299172/zedd-live-ultra-music-festival",
-    "title": "ZEDD LIVE @ ULTRA MUSIC FESTIVAL MIAMI (2025)",
-    "dj": "Zedd",
-    "art": "https://i1.sndcdn.com/artworks-mcIyBVAGmajyFTL8-akkbmA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795286580000,
     "dur": 72,
@@ -2371,18 +2395,6 @@
   ],
   "club3": [
    {
-    "start": 1795283220000,
-    "dur": 54,
-    "url": "https://soundcloud.com/oho990828/oho-nothing-in",
-    "title": "Nothing in",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795286460000,
     "dur": 149,
     "url": "https://soundcloud.com/oho990828/teller-seoul-26-07-16",
@@ -2974,18 +2986,6 @@
    }
   ],
   "zone:teller": [
-   {
-    "start": 1795280640000,
-    "dur": 106,
-    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
-    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
-    "dj": "Dax J",
-    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795287000000,
     "dur": 61,
@@ -3881,18 +3881,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795282980000,
-    "dur": 89,
-    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
-    "title": "Up The Stuss Radio 02 By Chris Stussy",
-    "dj": "Chris Stussy",
-    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795288320000,
     "dur": 178,
     "url": "https://soundcloud.com/warningberlin/100-sons",
@@ -4497,18 +4485,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795282440000,
-    "dur": 82,
-    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
-    "title": "Phonica Mix Series 65: S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795287360000,
     "dur": 80,
     "url": "https://soundcloud.com/platform/stephan-bodzin",
@@ -4726,18 +4702,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795278240000,
-    "dur": 134,
-    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
-    "title": "Vajra Mind - Ambient mix by AMANI",
-    "dj": "Desert Dwellers",
-    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795286280000,
     "dur": 73,
@@ -5076,18 +5040,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795282560000,
-    "dur": 112,
-    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
-    "title": "'Infinite' Ambient Mix",
-    "dj": "Ambient",
-    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795289280000,
     "dur": 79,
@@ -5439,18 +5391,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795282140000,
-    "dur": 121,
-    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
-    "title": "Live from Lost Village — Four Tet [2023]",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795289400000,
     "dur": 61,
     "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
@@ -5728,18 +5668,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795285680000,
-    "dur": 62,
-    "url": "https://soundcloud.com/vvvfrankie/skrillex-live-ultra-music-festival-2015-diplo-justine-biber-jack-u-kiesza-p-diddy-dj-snake",
-    "title": "SKRILLEX LIVE @ ULTRA MUSIC FESTIVAL 2015 FULL SET (Diplo Justin Bieber Jack U Kiesza Dj Snake)",
-    "dj": "Skrillex",
-    "art": "https://i1.sndcdn.com/artworks-000124856288-whf3x3-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795289400000,
     "dur": 60,
@@ -6900,5 +6828,5 @@
    }
   ]
  },
- "updated": "2026-11-22T06:31:03.501Z"
+ "updated": "2026-11-22T07:31:06.468Z"
 }
