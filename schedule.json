@@ -439,18 +439,6 @@
   ],
   "booth:dubstep": [
    {
-    "start": 1795337100000,
-    "dur": 90,
-    "url": "https://soundcloud.com/block9official/sub-focus-live-from-iicon-2025",
-    "title": "Sub Focus Live from IICON",
-    "dj": "Sub Focus",
-    "art": "https://i1.sndcdn.com/artworks-AUjV4n0S9C03LLAz-LMMcQQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795342500000,
     "dur": 62,
     "url": "https://soundcloud.com/vvvfrankie/skrillex-live-ultra-music-festival-2015-diplo-justine-biber-jack-u-kiesza-p-diddy-dj-snake",
@@ -837,18 +825,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795337160000,
-    "dur": 89,
-    "url": "https://soundcloud.com/johnsummit/everything-always-live-ultra-miami-2025",
-    "title": "Everything Always (Dom Dolla & John Summit) Live @ Ultra Music Festival 2025",
-    "dj": "Everything Always (Dom Dolla & John Summit)",
-    "art": "https://i1.sndcdn.com/artworks-SnnzOZhvt3kJ5Ou8-onWFpg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795342500000,
     "dur": 430,
     "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
@@ -1103,18 +1079,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795335240000,
-    "dur": 124,
-    "url": "https://soundcloud.com/dkmntl/dekmantel-mix-513-nicolas-lutz",
-    "title": "Dekmantel Mix 513 - Nicolas Lutz",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-jgUL4Pr8wVcguzZu-DSppFQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795342680000,
     "dur": 213,
     "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
@@ -1332,18 +1296,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795338240000,
-    "dur": 62,
-    "url": "https://soundcloud.com/vvvfrankie/skrillex-live-ultra-music-festival-2015-diplo-justine-biber-jack-u-kiesza-p-diddy-dj-snake",
-    "title": "SKRILLEX LIVE @ ULTRA MUSIC FESTIVAL 2015 FULL SET (Diplo Justin Bieber Jack U Kiesza Dj Snake)",
-    "dj": "Skrillex",
-    "art": "https://i1.sndcdn.com/artworks-000124856288-whf3x3-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795341960000,
     "dur": 77,
@@ -1948,18 +1900,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795336860000,
-    "dur": 89,
-    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
-    "title": "Up The Stuss Radio 02 By Chris Stussy",
-    "dj": "Chris Stussy",
-    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795342200000,
     "dur": 117,
@@ -3689,18 +3629,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795338900000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/jayda-g-dekmantel",
-    "title": "Jayda G Boiler Room x Dekmantel Festival DJ Set",
-    "dj": "Jayda G",
-    "art": "https://i1.sndcdn.com/artworks-000241631043-cexmtj-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795342500000,
     "dur": 62,
     "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
@@ -3978,18 +3906,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795338900000,
-    "dur": 76,
-    "url": "https://soundcloud.com/at_the_plowman/ben-boehmer-live-at-sonar-2024",
-    "title": "Ben Böhmer - live at Sónar 2024",
-    "dj": "Ben Böhmer",
-    "art": "https://i1.sndcdn.com/artworks-cah2y4vJFmluWCcV-1KcqPQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795343460000,
     "dur": 89,
@@ -4483,21 +4399,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-exp": [
+   },
    {
-    "start": 1795332420000,
-    "dur": 134,
-    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
-    "title": "Vajra Mind - Ambient mix by AMANI",
-    "dj": "Desert Dwellers",
-    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
+    "start": 1795471380000,
+    "dur": 69,
+    "url": "https://soundcloud.com/tiefundton/baumannshoehle",
+    "title": "TIEFUNDTON LIVE @ BAUMANNSHÖHLE | TECHNO VIDEO SET",
+    "dj": "Tiefundton",
+    "art": "https://i1.sndcdn.com/artworks-rziqEoannr2aGM1t-YRrRuw-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795475520000,
+    "dur": 77,
+    "url": "https://soundcloud.com/rufusdusol/rufus-du-sol-dj-setat-lib-2017",
+    "title": "RÜFÜS DU SOL (DJ Set)recorded live at LIB 2017",
+    "dj": "RÜFÜS DU SOL",
+    "art": "https://i1.sndcdn.com/artworks-000236262771-5jm2m4-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795480140000,
+    "dur": 61,
+    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
+    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795483800000,
+    "dur": 167,
+    "url": "https://soundcloud.com/adriatique/adriatique-watergate",
+    "title": "Adriatique - DJ-Set Live @ Watergate - 2013-08-23",
+    "dj": "Adriatique",
+    "art": "https://i1.sndcdn.com/artworks-000056268597-51ajb4-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795493820000,
+    "dur": 83,
+    "url": "https://soundcloud.com/cerclelive/artbat-cercle-odyssey",
+    "title": "ARTBAT live at Cercle Odyssey, Paris, France",
+    "dj": "ARTBAT",
+    "art": "https://i1.sndcdn.com/artworks-Bvue3zr1lMZKJLfw-WfcXqQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-exp": [
    {
     "start": 1795340460000,
     "dur": 109,
@@ -4824,18 +4788,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795336800000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795340520000,
     "dur": 73,
@@ -5186,18 +5138,6 @@
    }
   ],
   "zone:nm-aero": [
-   {
-    "start": 1795339320000,
-    "dur": 63,
-    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
-    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
-    "dj": "Franky Rizardo",
-    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795343100000,
     "dur": 118,
@@ -5779,18 +5719,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795330320000,
-    "dur": 203,
-    "url": "https://soundcloud.com/outransa/outransa-chronicles-three-kensa-nicky-macha",
-    "title": "Chronicle #3: Kensa & Nicky Macha",
-    "dj": "Kensa",
-    "art": "https://i1.sndcdn.com/artworks-tQh94747jysBdFIW-wuptQg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795342500000,
     "dur": 122,
     "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
@@ -6044,18 +5972,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795333920000,
-    "dur": 120,
-    "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
-    "title": "DCR827 – Drumcode Radio Live - Adam Beyer live from Drumcode Mallorca",
-    "dj": "Adam Beyer",
-    "art": "https://i1.sndcdn.com/artworks-zzH6JpXaBEqTGwM8-ExoDZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795341120000,
     "dur": 84,
@@ -6335,18 +6251,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795331280000,
-    "dur": 150,
-    "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
-    "title": "Comfort Mix 004 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-ly0csIMhZDf2yqym-C8QKzg-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795340280000,
     "dur": 90,
     "url": "https://soundcloud.com/lost-village-festival/live-from-the-village-horse-meat-disco",
@@ -6600,5 +6504,5 @@
    }
   ]
  },
- "updated": "2026-11-22T21:31:44.266Z"
+ "updated": "2026-11-22T22:31:47.251Z"
 }
