@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795287540000,
-    "dur": 71,
-    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
-    "title": "S.O.N.S: The Ransom Note Mix",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795291800000,
     "dur": 63,
     "url": "https://soundcloud.com/platform/reinier-zonneveld",
@@ -510,18 +498,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795287360000,
-    "dur": 90,
-    "url": "https://soundcloud.com/block9official/sub-focus-live-from-iicon-2025",
-    "title": "Sub Focus Live from IICON",
-    "dj": "Sub Focus",
-    "art": "https://i1.sndcdn.com/artworks-AUjV4n0S9C03LLAz-LMMcQQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795292760000,
     "dur": 62,
@@ -1139,18 +1115,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795287360000,
-    "dur": 61,
-    "url": "https://soundcloud.com/verzila/petre-inspirescu-live-super-dommune-tokyo-japan-03042025",
-    "title": "Petre Inspirescu Live @ SUPER DOMMUNE (Tokyo, Japan) 03/04/2025",
-    "dj": "Petre Inspirescu",
-    "art": "https://i1.sndcdn.com/artworks-nbpCmnhEL3OVPeb7-HKyDeA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795291020000,
     "dur": 74,
     "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
@@ -1440,18 +1404,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795286580000,
-    "dur": 72,
-    "url": "https://soundcloud.com/officialswedishhousemafia/mafia-live-from-miami",
-    "title": "SWEDISH HOUSE MAFIA LIVE FROM ULTRA MIAMI 2023",
-    "dj": "Swedish House Mafia",
-    "art": "https://i1.sndcdn.com/artworks-msZEB7o4jRxwkhv5-3oR5aA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795290900000,
     "dur": 62,
@@ -2032,18 +1984,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795283160000,
-    "dur": 122,
-    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
-    "title": "EOS Radio - November 2021",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795290480000,
     "dur": 62,
@@ -2987,18 +2927,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795287000000,
-    "dur": 61,
-    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
-    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795290660000,
     "dur": 88,
     "url": "https://soundcloud.com/platform/boiler-room-berlin-ben-klock",
@@ -3252,18 +3180,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795283520000,
-    "dur": 119,
-    "url": "https://soundcloud.com/postervoyage/here061226",
-    "title": "@here June/12/2026",
-    "dj": "Kyuchan",
-    "art": "https://i1.sndcdn.com/artworks-YGf2c8hdyi8BI78A-RgR3yA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795290660000,
     "dur": 77,
@@ -3566,18 +3482,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795284240000,
-    "dur": 91,
-    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
-    "title": "Boiler Room Set Melbourne '22",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795289700000,
     "dur": 60,
@@ -4485,18 +4389,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795287360000,
-    "dur": 80,
-    "url": "https://soundcloud.com/platform/stephan-bodzin",
-    "title": "Stephan Bodzin Boiler Room Berlin Live Set",
-    "dj": "Stephan Bodzin",
-    "art": "https://i1.sndcdn.com/artworks-000132066481-7ill9d-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795292160000,
     "dur": 76,
     "url": "https://soundcloud.com/at_the_plowman/ben-boehmer-live-at-sonar-2024",
@@ -4699,11 +4591,9 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-exp": [
+   },
    {
-    "start": 1795286280000,
+    "start": 1795421400000,
     "dur": 73,
     "url": "https://soundcloud.com/platform/tycho",
     "title": "Tycho Boiler Room San Francisco Live Set",
@@ -4714,6 +4604,56 @@
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795425780000,
+    "dur": 106,
+    "url": "https://soundcloud.com/mayanwarriorofficial/rufus-du-sol-dj-set-mayan-warrior-burning-man-2024",
+    "title": "RÜFÜS DU SOL (DJ SET) - Mayan Warrior - Burning Man 2024",
+    "dj": "RÜFÜS DU SOL",
+    "art": "https://i1.sndcdn.com/artworks-NNZ3BazbZUJ0mFOx-x6j7XQ-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795432140000,
+    "dur": 102,
+    "url": "https://soundcloud.com/dau_ra/ring_seoul",
+    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795438260000,
+    "dur": 60,
+    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
+    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
+    "dj": "Layton Giordani",
+    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795441860000,
+    "dur": 90,
+    "url": "https://soundcloud.com/avidmuzikfan-725076808/amelie-lens-live-ultra-miami-2024",
+    "title": "Amelie Lens - Live @ Ultra Miami 2024",
+    "dj": "Amelie Lens",
+    "art": "https://i1.sndcdn.com/artworks-PsVOWRBbOAayhFPm-MtaVRQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-exp": [
    {
     "start": 1795290660000,
     "dur": 121,
@@ -5391,18 +5331,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795289400000,
-    "dur": 61,
-    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
-    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
-    "dj": "Dam Swindle",
-    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795293060000,
     "dur": 121,
     "url": "https://soundcloud.com/platform/jayda-g",
@@ -5668,18 +5596,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795289400000,
-    "dur": 60,
-    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
-    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
-    "dj": "Layton Giordani",
-    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795293000000,
     "dur": 76,
@@ -6297,18 +6213,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795287000000,
-    "dur": 63,
-    "url": "https://soundcloud.com/platform/reinier-zonneveld",
-    "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795290780000,
     "dur": 115,
     "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
@@ -6563,18 +6467,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795287000000,
-    "dur": 87,
-    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
-    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
-    "dj": "Todd Terje",
-    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795292220000,
     "dur": 91,
     "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
@@ -6828,5 +6720,5 @@
    }
   ]
  },
- "updated": "2026-11-22T07:31:06.468Z"
+ "updated": "2026-11-22T08:31:09.194Z"
 }
