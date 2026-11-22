@@ -837,18 +837,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795293360000,
-    "dur": 117,
-    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
-    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795300380000,
     "dur": 71,
     "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
@@ -1054,18 +1042,6 @@
    }
   ],
   "booth:hardstyle": [
-   {
-    "start": 1795295460000,
-    "dur": 106,
-    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
-    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
-    "dj": "Dax J",
-    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795301820000,
     "dur": 129,
@@ -1332,18 +1308,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795294620000,
-    "dur": 115,
-    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
-    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
-    "dj": "Vintage Culture b2b Mochakk",
-    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795301520000,
     "dur": 123,
@@ -1671,18 +1635,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795297020000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/jayda-g-dekmantel",
-    "title": "Jayda G Boiler Room x Dekmantel Festival DJ Set",
-    "dj": "Jayda G",
-    "art": "https://i1.sndcdn.com/artworks-000241631043-cexmtj-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795300620000,
     "dur": 121,
     "url": "https://soundcloud.com/platform/jayda-g",
@@ -1945,21 +1897,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:potty": [
+   },
    {
-    "start": 1795297740000,
-    "dur": 62,
-    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
-    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
-    "dj": "Oliver Heldens",
-    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
+    "start": 1795430760000,
+    "dur": 86,
+    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
+    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
+    "dj": "Purple Disco Machine",
+    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795435920000,
+    "dur": 62,
+    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
+    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
+    "dj": "ANOTR",
+    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795439640000,
+    "dur": 122,
+    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
+    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795446960000,
+    "dur": 87,
+    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
+    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
+    "dj": "Todd Terje",
+    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795452180000,
+    "dur": 59,
+    "url": "https://soundcloud.com/platform/peggy-gou",
+    "title": "Peggy Gou Boiler Room x Dekmantel Festival DJ Set",
+    "dj": "Peggy Gou",
+    "art": "https://i1.sndcdn.com/artworks-000241463822-16r29o-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:potty": [
    {
     "start": 1795301460000,
     "dur": 86,
@@ -2529,18 +2529,6 @@
   ],
   "club4": [
    {
-    "start": 1795299780000,
-    "dur": 64,
-    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
-    "title": "EOS Radio - Minkyu 28.07.2024",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795303620000,
     "dur": 149,
     "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
@@ -3049,18 +3037,6 @@
   ],
   "zone:ring": [
    {
-    "start": 1795295280000,
-    "dur": 120,
-    "url": "https://soundcloud.com/domdolla/sydney",
-    "title": "Dom Dolla Live @ Allianz Stadium, Sydney 2025",
-    "dj": "Dom Dolla",
-    "art": "https://i1.sndcdn.com/artworks-vcG6hK83U1EWXGFV-O4yiAA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795302480000,
     "dur": 89,
     "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
@@ -3338,18 +3314,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795293300000,
-    "dur": 118,
-    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
-    "title": "Unai Trotti - Live from Dimensions 23'",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795300380000,
     "dur": 77,
@@ -3629,18 +3593,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795299000000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795302540000,
     "dur": 68,
     "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
@@ -3918,18 +3870,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795300080000,
-    "dur": 60,
-    "url": "https://soundcloud.com/thisman1/tale-of-us-gta-online-after-hours-full-liveset-2018",
-    "title": "Tale Of Us - GTA Online (After Hours) [Full Liveset 2018]",
-    "dj": "Tale Of Us",
-    "art": "https://i1.sndcdn.com/artworks-000382999770-xrmhdc-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795303680000,
     "dur": 92,
@@ -4463,18 +4403,6 @@
   ],
   "zone:nm-exp": [
    {
-    "start": 1795297920000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795301640000,
     "dur": 44,
     "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
@@ -4776,18 +4704,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795294020000,
-    "dur": 134,
-    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
-    "title": "Vajra Mind - Ambient mix by AMANI",
-    "dj": "Desert Dwellers",
-    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795302060000,
     "dur": 73,
@@ -5115,18 +5031,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795293060000,
-    "dur": 121,
-    "url": "https://soundcloud.com/platform/jayda-g",
-    "title": "Jayda G Boiler Room London Studio DJ Set",
-    "dj": "Jayda G",
-    "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795300320000,
     "dur": 80,
     "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
@@ -5377,21 +5281,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:sphere": [
+   },
    {
-    "start": 1795297560000,
-    "dur": 62,
-    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
-    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
-    "dj": "ANOTR",
-    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
+    "start": 1795430880000,
+    "dur": 109,
+    "url": "https://soundcloud.com/dfp/dimitri-from-paris-live-slide",
+    "title": "Dimitri From Paris Live @ Brixton Clubhouse, London for Slide On The Terrace 3-6-12",
+    "dj": "Dimitri From Paris",
+    "art": "https://i1.sndcdn.com/artworks-000025559591-89qtbu-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795437420000,
+    "dur": 117,
+    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
+    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795444440000,
+    "dur": 61,
+    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
+    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
+    "dj": "Dam Swindle",
+    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795448100000,
+    "dur": 122,
+    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
+    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:sphere": [
    {
     "start": 1795301280000,
     "dur": 76,
@@ -5718,18 +5658,6 @@
    }
   ],
   "zone:sh-lift": [
-   {
-    "start": 1795294260000,
-    "dur": 150,
-    "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
-    "title": "Comfort Mix 004 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-ly0csIMhZDf2yqym-C8QKzg-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795303260000,
     "dur": 63,
@@ -6600,5 +6528,5 @@
    }
   ]
  },
- "updated": "2026-11-22T10:31:13.614Z"
+ "updated": "2026-11-22T11:31:16.829Z"
 }
