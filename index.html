@@ -7175,7 +7175,7 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
 
   // ---------- 4F: the SYSTEM hall. Step out of the lift and the big stage is right ahead: haze, a truss of white blinders,
   //            a wide LED screen of burning clouds behind the DJs, speakers on poles, the bar by the lift, stairs up to 5F ----------
-  { const R=SH_R.hall, g=shRoom(R,M('#4a4a4e'),M('#151517'),M('#2a2a2e')), W=R.w, D=R.d, H=R.h, SX=W/2-5;
+  { const R=SH_R.hall, g=shRoom(R,M('#2a2a2c'),M('#121214'),M('#1e1e20')), W=R.w, D=R.d, H=R.h, SX=W/2-5;
     // ceiling: black ducts and round fittings, like a museum hall
     [-10,0,10].forEach(z=>{ const d=mesh(G.cyl,M('#1a1a1c'),0,H-.9,z,.55,W-2,.55,g); d.rotation.z=Math.PI/2; for(let i=0;i<6;i++) mesh(G.cyl,M('#e8e8e8'),-W/2+5+i*7,H-1.5,z,.3,.12,.3,g); });
     for(let i=0;i<5;i++) B(.12,.12,D-1,M('#2a2a2e'),-W/2+6+i*8,H-.3,0,g);
@@ -7210,7 +7210,7 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     colliders.push({x:R.cx-W/2+6,z:R.cz-D/2+2.6,r:.7},{x:R.cx-W/2+6,z:R.cz-D/2+5,r:.7},{x:R.cx-W/2+6,z:R.cz-D/2+7.4,r:.7},{x:R.cx-W/2+3.5,z:R.cz-D/2+8,r:.7},{x:R.cx-W/2+1.4,z:R.cz-D/2+8,r:.7});
     mine.push(addNPC({top:'tee',topColor:'#141414',extra:'none'},{x:R.cx-W/2+4.6,z:R.cz-D/2+4.6},Math.PI/2,'talk',{talk:true}).P);
     // the lift doors in the end wall
-    shPlane(g,M('#2a2a30'),4.6,3.9,-W/2+.04,1.95,-D/2+12,Math.PI/2); shPlane(g,M('#55555e'),4.2,3.5,-W/2+.07,1.75,-D/2+12,Math.PI/2); B(.3,.04,4.2,M('#b04dff',{glow:2.2}),-W/2+.35,.02,-D/2+12,g);
+    shPlane(g,M('#2a2a30'),4.6,3.9,-W/2+.04,1.95,-D/2+12,Math.PI/2); shPlane(g,M('#55555e'),4.2,3.5,-W/2+.07,1.75,-D/2+12,Math.PI/2); shPlane(g,M('#b04dff',{glow:1.4}),4.2,.12,-W/2+.06,.06,-D/2+12,Math.PI/2);
     const ls=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('화물 엘리베이터 ↓ 1F','#c88aff'),transparent:true})); ls.scale.set(3,.75,1); ls.position.set(-W/2+.08,4.3,-D/2+12); ls.rotation.y=Math.PI/2; g.add(ls);
     // stairs up to 5F along the back wall: steps, a glass rail on the open side, a landing and the green door
     { const S=shStair(), n=22, run=(S.x1-S.x0)/n, zc=(S.zb+S.zt)/2+.2, wd=S.zt-S.zb+.4;
@@ -7224,24 +7224,37 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     SHG.zones.hall=makeZone('sh-hall',R.cx+8,R.cz,46,SH_TR.hall); SHG.zones.hall.vol=.95;
     const dj=addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx+SX-.4,z:R.cz-.6},-Math.PI/2,'dj',{zone:SHG.zones.hall,y:.9}); mine.push(dj.P);
     const dj2=addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx+SX-.4,z:R.cz+.8},-Math.PI/2,'dj',{zone:SHG.zones.hall,y:.9}); mine.push(dj2.P);
-    // a packed floor: thickest right in front of the stage
-    const dn=['headbang','stomp','robot','pump','hakken','popping','sway'], n=LOW?34:70;
-    for(let i=0;i<n;i++){ const d=Math.pow(Math.random(),1.6), x=SX-5-d*(W-16), z=rand(-14,14)*(.55+.45*d); const S=addNPC(avantLook(),{x:R.cx+x,z:R.cz+z},Math.atan2(SX-x,-z*.4)+rand(-.3,.3),'dance',{dance:pick(dn),zone:SHG.zones.hall,talk:true}); mine.push(S.P); }
+    // a packed floor: a third of it full characters dancing, the rest simpler figures filling every gap
+    const dn=['headbang','stomp','robot','pump','hakken','popping','sway','jack','raise','hands'];
     for(let i=0;i<5;i++){ const S=addNPC(avantLook(),{x:R.cx-W/2+8+rand(0,3),z:R.cz-D/2+3+rand(0,5)},rand(0,6.28),'talk',{talk:true}); if(i%2) handProp(S.P,'beer',0); mine.push(S.P); }
-    { const sp=LOW?.95:.68, pts=[], St=shStair();
+    { const sp=LOW?.95:.72, pts=[], St=shStair();
       for(let x=-W/2+7.5;x<SX-3.8;x+=sp) for(let z=-D/2+1;z<D/2-.8;z+=sp){ const jx=x+rand(-.22,.22), jz=z+rand(-.22,.22);
         if(jz>St.zb-.5&&jx<St.x1+4) continue; /* the stairs */ if(jx<-W/2+10&&jz<-D/2+10) continue; /* the bar */ if(jx<-W/2+11&&Math.abs(jz-(-D/2+12))<3) continue; /* out of the lift */
-        if(Math.random()<.06) continue; pts.push([jx,jz]); }
-      const n=pts.length, mk=(geo)=>{ const m=new THREE.InstancedMesh(geo,new THREE.MeshLambertMaterial({color:0xffffff}),n); m.position.set(R.cx,0,R.cz); scene.add(m); return m; };
-      const lg=new THREE.BoxGeometry(.34,.82,.22); lg.translate(0,.41,0); const tg=new THREE.BoxGeometry(.46,.64,.27); tg.translate(0,1.14,0); const hg=new THREE.SphereGeometry(.13,8,6); hg.translate(0,1.6,0); const hr=new THREE.SphereGeometry(.142,8,5,0,Math.PI*2,0,Math.PI*.55); hr.translate(0,1.63,0);
-      const arms=new THREE.BoxGeometry(.62,.62,.1); { const a1=new THREE.BoxGeometry(.09,.6,.09); a1.translate(-.27,1.72,0); const a2=new THREE.BoxGeometry(.09,.6,.09); a2.translate(.27,1.72,0); const pos=[...a1.attributes.position.array,...a2.attributes.position.array], nor=[...a1.attributes.normal.array,...a2.attributes.normal.array], idx=[...a1.index.array,...a2.index.array.map(v=>v+a1.attributes.position.count)];
-        arms.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); arms.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3)); arms.setIndex(idx); arms.deleteAttribute('uv'); }
-      const L=[mk(lg),mk(tg),mk(hg),mk(hr),mk(arms)], d=new THREE.Object3D(), c=new THREE.Color(), SK=['#c69a7a','#a8764e','#7a5238','#d8b090','#5a3a26'], BL=['#0a0a0c','#101012','#16161a','#0a0a0c','#1c1c20'];
-      const P=pts.map(([x,z],i)=>{ const q={x,z,ry:Math.atan2(SX-x,-z*.25)+rand(-.5,.5),s:rand(.92,1.08),ph:Math.random()*6,up:Math.random()<.35};
-        L[0].setColorAt(i,c.set(pick(BL))); L[1].setColorAt(i,c.set(Math.random()<.04?'#d8d4cc':pick(BL))); L[2].setColorAt(i,c.set(pick(SK))); L[3].setColorAt(i,c.set(pick(['#0c0a08','#0c0a08','#2a1c14','#c8b48a']))); L[4].setColorAt(i,c.set(pick(SK))); return q; });
-      const put=(i,b)=>{ const q=P[i]; d.position.set(q.x,b,q.z); d.rotation.set(0,q.ry,Math.sin(b*9+q.ph)*.05); d.scale.set(q.s,q.s,q.s); d.updateMatrix(); for(let k=0;k<4;k++) L[k].setMatrixAt(i,d.matrix); if(!q.up) d.scale.set(0,0,0), d.updateMatrix(); L[4].setMatrixAt(i,d.matrix); };
-      P.forEach((q,i)=>put(i,0)); L.forEach(m=>{ m.instanceMatrix.needsUpdate=true; if(m.instanceColor) m.instanceColor.needsUpdate=true; });
-      SHG.crowd={L,P,put,near:[],nt:0}; } }
+        if(Math.random()<.04) continue; pts.push([jx,jz]); }
+      // the full characters: spread over the floor, more of them toward the stage and near the lift where you first look
+      const want=LOW?80:230; pts.forEach(q=>{ const toStage=(q[0]-(-W/2+7.5))/(SX-3.8-(-W/2+7.5)), nearLift=Math.hypot(q[0]-(-W/2+12),q[1]-(-D/2+12))<9; q.w=.18+.5*toStage+(nearLift?.5:0); });
+      pts.forEach(q=>{ q.r=q.w*Math.random(); q.inst=1; }); const keep=pts.slice().sort((a,b)=>b.r-a.r).slice(0,want); keep.forEach(q=>{ q.inst=0; });
+      for(const [x,z] of keep){ const S=addNPC(avantLook(),{x:R.cx+x,z:R.cz+z},Math.atan2(SX-x,-z*.3)+rand(-.35,.35),'dance',{dance:pick(dn),zone:SHG.zones.hall,talk:true}); if(Math.random()<.12) handProp(S.P,Math.random()<.5?'beer':'bottle',Math.random()<.5?0:1); mine.push(S.P); }
+      const ip=pts.filter(q=>q.inst), n=ip.length, mk=(geo,mat)=>{ const m=new THREE.InstancedMesh(geo,mat||new THREE.MeshLambertMaterial({color:0xffffff}),n); m.position.set(R.cx,0,R.cz); scene.add(m); return m; };
+      const merge=(parts)=>{ const pos=[], nor=[], idx=[]; let o=0; parts.forEach(gm=>{ pos.push(...gm.attributes.position.array); nor.push(...gm.attributes.normal.array); idx.push(...Array.from(gm.index.array,v=>v+o)); o+=gm.attributes.position.count; }); const g2=new THREE.BufferGeometry(); g2.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g2.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3)); g2.setIndex(idx); return g2; };
+      const bx=(w,h,dd,x,y,z,rz)=>{ const b=new THREE.BoxGeometry(w,h,dd); if(rz) b.rotateZ(rz); b.translate(x,y,z); return b; };
+      const lg=merge([bx(.15,.8,.2,-.09,.42,0),bx(.15,.8,.2,.09,.42,0)]), tg=bx(.46,.64,.27,0,1.14,0), hg=new THREE.SphereGeometry(.13,10,8); hg.translate(0,1.6,0);
+      const hr=new THREE.SphereGeometry(.142,10,6,0,Math.PI*2,0,Math.PI*.55); hr.translate(0,1.63,0); const hrL=merge([hr.clone(),bx(.3,.36,.12,0,1.5,-.1)]);
+      const shoe=merge([bx(.15,.1,.28,-.09,.05,.04),bx(.15,.1,.28,.09,.05,.04)]);
+      const aUp=merge([bx(.09,.62,.09,-.28,1.74,0,.15),bx(.09,.62,.09,.28,1.74,0,-.15)]), aDn=merge([bx(.09,.6,.09,-.3,1.08,0,-.08),bx(.09,.6,.09,.3,1.08,0,.08)]), aOne=merge([bx(.09,.62,.09,.28,1.74,0,-.15),bx(.09,.6,.09,-.3,1.08,0,-.08)]);
+      const hat=merge([new THREE.CylinderGeometry(.16,.17,.12,10).translate(0,1.76,0),new THREE.CylinderGeometry(.24,.24,.02,12).translate(0,1.7,0)]), cap=merge([new THREE.SphereGeometry(.15,10,6,0,Math.PI*2,0,Math.PI*.5).translate(0,1.66,0),bx(.2,.02,.14,0,1.68,.16)]);
+      const bag=bx(.08,.42,.3,.26,1.05,.05), glas=bx(.24,.05,.03,0,1.62,.13);
+      const L={legs:mk(lg),body:mk(tg),head:mk(hg),hair:mk(hr),hairL:mk(hrL),shoe:mk(shoe),up:mk(aUp),dn:mk(aDn),one:mk(aOne),hat:mk(hat),cap:mk(cap),bag:mk(bag),glas:mk(glas,new THREE.MeshBasicMaterial({color:0x0a0a0a}))};
+      const d=new THREE.Object3D(), c=new THREE.Color(), SK=['#c69a7a','#a8764e','#7a5238','#d8b090','#5a3a26','#e8c4a8'], BL=['#0a0a0c','#101012','#16161a','#0a0a0c','#1c1c20'], TOP=['#0a0a0c','#101012','#16161a','#1c1c20','#3a3a40','#5a5a60','#d8d4cc','#2a3a2a','#3a2a2a','#2a2a3a'];
+      const P=ip.map(([x,z],i)=>{ const q={x,z,ry:Math.atan2(SX-x,-z*.25)+rand(-.5,.5),s:rand(.9,1.1),ph:Math.random()*6,arm:Math.random()<.17?'up':Math.random()<.16?'one':'dn',hair:Math.random()<.35?'hairL':'hair',top:Math.random()<.12?'hat':Math.random()<.14?'cap':'',bag:Math.random()<.15,gl:Math.random()<.2};
+        L.legs.setColorAt(i,c.set(pick(BL))); L.body.setColorAt(i,c.set(Math.random()<.7?pick(BL):pick(TOP))); L.head.setColorAt(i,c.set(pick(SK))); const hc=pick(['#0c0a08','#0c0a08','#2a1c14','#c8b48a','#8a8a90','#3a1a10']); L.hair.setColorAt(i,c.set(hc)); L.hairL.setColorAt(i,c.set(hc));
+        L.shoe.setColorAt(i,c.set(Math.random()<.3?'#e8e8e4':'#0a0a0a')); const sk=pick(SK); ['up','dn','one'].forEach(k=>L[k].setColorAt(i,c.set(q.arm==='dn'&&Math.random()<.5?pick(BL):sk))); L.hat.setColorAt(i,c.set(pick(['#0a0a0c','#1c1c20','#3a3a40']))); L.cap.setColorAt(i,c.set(pick(['#0a0a0c','#e8e4dc','#2a2a30']))); L.bag.setColorAt(i,c.set(pick(['#0a0a0c','#2a2a30','#5a4a3a']))); L.glas.setColorAt(i,c.set('#0a0a0a'));
+        return q; });
+      const Z0=new THREE.Matrix4().makeScale(0,0,0), only=(k,q)=>k==='legs'||k==='body'||k==='head'||k==='shoe'||k===q.hair||k===q.arm||k===q.top||(k==='bag'&&q.bag)||(k==='glas'&&q.gl);
+      const keys=Object.keys(L);
+      const put=(i,b)=>{ const q=P[i]; d.position.set(q.x,b,q.z); d.rotation.set(0,q.ry,Math.sin(b*9+q.ph)*.05); d.scale.set(q.s,q.s,q.s); d.updateMatrix(); for(const k of keys) L[k].setMatrixAt(i,only(k,q)?d.matrix:Z0); };
+      P.forEach((q,i)=>put(i,0)); keys.forEach(k=>{ const m=L[k]; m.instanceMatrix.needsUpdate=true; if(m.instanceColor) m.instanceColor.needsUpdate=true; });
+      SHG.crowd={L:keys.map(k=>L[k]),P,put,near:[],nt:0}; } }
 
   // ---------- 5F: the green room: a ceiling of ivy, green haze, the DJ lit red ----------
   { const R=SH_R.green, g=shRoom(R,M('#1c3a2a'),M('#0c100e'),new THREE.MeshBasicMaterial({color:0x8fe8bc})), W=R.w, D=R.d, H=R.h, d=new THREE.Object3D();
@@ -7253,6 +7266,22 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
     B(4,1.1,1.1,M('#0e0e10'),0,.55,D/2-1.1,g); B(4.02,.05,1.12,M('#3dff6a',{glow:2}),0,1.12,D/2-1.1,g); colliders.push({x:R.cx-1.4,z:R.cz+D/2-1.1,r:.8},{x:R.cx+1.4,z:R.cz+D/2-1.1,r:.8},{x:R.cx,z:R.cz+D/2-1.1,r:.8});
     const red=new THREE.PointLight(0xff3050,3,7); red.position.set(0,2.2,D/2-1.9); g.add(red);
     SHG.lm=new THREE.MeshBasicMaterial({color:0x3dff6a,transparent:true,opacity:0});
+    // the back wall is glass: the Pudong skyline across the river at night, through tall window frames
+    { const view=shTex(1024,320,(x,w,h)=>{ const sky=x.createLinearGradient(0,0,0,h); sky.addColorStop(0,'#05061a'); sky.addColorStop(.62,'#2a1a3e'); sky.addColorStop(.7,'#0a1020'); sky.addColorStop(1,'#04060c'); x.fillStyle=sky; x.fillRect(0,0,w,h);
+        for(let i=0;i<60;i++){ x.fillStyle=`rgba(255,255,255,${(Math.random()*.6).toFixed(2)})`; x.fillRect(Math.random()*w,Math.random()*h*.4,1.2,1.2); }
+        const hz=h*.7, tw=(cx,bw,th,col)=>{ x.fillStyle='#0c0e18'; x.fillRect(cx-bw/2,hz-th,bw,th); for(let yy=hz-th+4;yy<hz-3;yy+=6) for(let xx=cx-bw/2+3;xx<cx+bw/2-3;xx+=5) if(Math.random()<.55){ x.fillStyle=col||pick(['#ffe2b8','#fff3d0','#cfe8ff','#ffd890']); x.fillRect(xx,yy,2.5,3); }
+          x.globalAlpha=.25; x.fillStyle=col||'#ffe2b8'; x.fillRect(cx-bw/2,hz+2,bw,(th*.35)); x.globalAlpha=1; };
+        for(let i=0;i<38;i++) tw(Math.random()*w,rand(14,34),rand(30,110));
+        tw(470,36,150,'#ffd890'); x.fillStyle='#e8d8a8'; x.beginPath(); x.moveTo(462,hz-150); x.lineTo(470,hz-185); x.lineTo(478,hz-150); x.fill();
+        tw(560,40,175,'#9fc8ff'); x.fillStyle='#04060c'; x.fillRect(552,hz-170,16,14);
+        x.fillStyle='#1a2a3e'; x.beginPath(); x.moveTo(628,hz); x.lineTo(634,hz-215); x.lineTo(652,hz-222); x.lineTo(660,hz); x.fill(); for(let yy=hz-210;yy<hz;yy+=12){ x.fillStyle='rgba(200,230,255,.55)'; x.fillRect(632,yy,26,1.5); } x.fillStyle='#e8f4ff'; x.fillRect(636,hz-226,14,5);
+        x.strokeStyle='#8a7a9a'; x.lineWidth=3; [[340,0],[352,0],[346,0]].forEach(([px])=>{ x.beginPath(); x.moveTo(px,hz); x.lineTo(346,hz-150); x.stroke(); }); x.beginPath(); x.moveTo(346,hz-150); x.lineTo(346,hz-200); x.stroke();
+        [[hz-45,18],[hz-112,11],[hz-140,4]].forEach(([yy,r])=>{ x.fillStyle='#e04a96'; x.beginPath(); x.arc(346,yy,r,0,7); x.fill(); x.fillStyle='#ffc0e0'; x.fillRect(346-r,yy-1,r*2,2); });
+        x.globalAlpha=.35; x.fillStyle='#e04a96'; x.fillRect(338,hz+4,16,60); x.fillStyle='#9fc8ff'; x.fillRect(630,hz+4,24,70); x.fillStyle='#ffd890'; x.fillRect(456,hz+4,28,64); x.globalAlpha=1;
+        x.fillStyle='rgba(255,255,255,.08)'; for(let yy=hz+6;yy<h;yy+=5) x.fillRect(0,yy,w,1); });
+      const vm=new THREE.MeshBasicMaterial({map:view,fog:false}); shPlane(g,vm,W-1.2,H-1.2,0,H/2+.1,D/2-.05,Math.PI);
+      const frm=M('#101412'); for(let i=0;i<=6;i++) shPlane(g,frm,.12,H-1.1,-(W-1.2)/2+i*(W-1.2)/6,H/2+.1,D/2-.08,Math.PI); shPlane(g,frm,W-1.1,.14,0,1.2,D/2-.08,Math.PI); shPlane(g,frm,W-1.1,.14,0,H-.5,D/2-.08,Math.PI);
+      shPlane(g,new THREE.MeshBasicMaterial({color:0xcfe8ff,transparent:true,opacity:.06,depthWrite:false}),W-1.2,H-1.2,0,H/2+.1,D/2-.1,Math.PI); }
     // a pink-red glow in the haze behind the DJ
     const glow=shTex(128,128,(x,w,h)=>{ const gr=x.createRadialGradient(64,64,4,64,64,64); gr.addColorStop(0,'rgba(255,90,110,.85)'); gr.addColorStop(.5,'rgba(255,60,120,.3)'); gr.addColorStop(1,'rgba(255,60,120,0)'); x.fillStyle=gr; x.fillRect(0,0,w,h); });
     SHG.pink=new THREE.MeshBasicMaterial({map:glow,transparent:true,opacity:.8,blending:THREE.AdditiveBlending,depthWrite:false}); shPlane(g,SHG.pink,6,4,0,1.9,D/2-.12,Math.PI);
@@ -7271,7 +7300,7 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
       const al=new THREE.PointLight(0x5a40ff,1.4,5); al.position.set(.2,1.2,.8); A.add(al); }
     SHG.greenL=new THREE.PointLight(0x7fffb0,1.6,24); SHG.greenL.position.set(0,4.2,0); g.add(SHG.greenL);
     const st=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:smallSign('계단 ↓ 4F SYSTEM','#3dff6a'),transparent:true})); st.scale.set(2.6,.65,1); st.position.set(0,2.9,-D/2+.05); g.add(st); shPlane(g,M('#3dff6a',{glow:.6}),2.2,2.6,0,1.3,-D/2+.03,0);
-    const gn=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['GREEN ROOM','900 120px "Arial Black",Impact,sans-serif','#3dff6a',.5,30]]),transparent:true})); gn.scale.set(7,1.75,1); gn.position.set(0,2.6,D/2-.06); gn.rotation.y=Math.PI; g.add(gn);
+    const gn=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shWordTex([['GREEN ROOM','900 120px "Arial Black",Impact,sans-serif','#3dff6a',.5,30]]),transparent:true})); gn.scale.set(6,1.5,1); gn.position.set(W/2-.06,2.9,0); gn.rotation.y=-Math.PI/2; g.add(gn);
     SHG.zones.green=makeZone('sh-green',R.cx,R.cz,14,SH_TR.green); SHG.zones.green.vol=.95;
     const dj=addNPC(Object.assign(avantLook(),{extra:'none',topColor:'#d8d0c8'}),{x:R.cx,z:R.cz+D/2-.4},Math.PI,'dj',{zone:SHG.zones.green}); mine.push(dj.P);
     const dn=['jack','twostep','pump','hands','raise','toprock','sway'];
