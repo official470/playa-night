@@ -2374,7 +2374,14 @@ function loop(){
 let coins=50, owned=[], ageOk=false, tipsy=0, boostT=0, danceAcc=0, holdUp=false, holdDown=false, curShop=null, engine=null;
 try{ const c=localStorage.getItem('playa-coins'); if(c!==null) coins=Math.max(0,+c||0); owned=JSON.parse(localStorage.getItem('playa-owned')||'[]'); if(!Array.isArray(owned)) owned=[]; }catch(e){ owned=[]; }
 const _w=new THREE.Vector3(); const meterEl=$('#danceMeter'), statusEl=$('#statusTxt');
-function saveEco(){ try{ localStorage.setItem('playa-coins',String(coins)); localStorage.setItem('playa-owned',JSON.stringify(owned)); }catch(e){} }
+function saveEco(){ try{ localStorage.setItem('playa-coins',String(coins)); localStorage.setItem('playa-owned',JSON.stringify(owned)); }catch(e){} ecoPush(); }
+// coins and bought clothes also live in the account (private/<uid>/eco), so they come back on any device after login
+var ECO={uid:null,timer:0};
+function ecoPush(){ try{ if(!AUTH.db||!AUTH.user||ECO.uid!==AUTH.user.uid) return; const uid=AUTH.user.uid; clearTimeout(ECO.timer); ECO.timer=setTimeout(()=>{ try{ AUTH.db.ref('private/'+uid+'/eco').set({coins:Math.floor(coins),owned:owned.slice(0,600),t:Date.now()}).catch(()=>{}); }catch(e){} },1200); }catch(e){} }
+// after login: whichever is more (this device or the account) wins, bought pieces are merged, then the account is kept up to date
+async function ecoLoad(){ try{ if(!AUTH.db||!AUTH.user) return; const uid=AUTH.user.uid; if(ECO.uid===uid) return; const s=await AUTH.db.ref('private/'+uid+'/eco').once('value'); const v=s.val(), before=coins;
+  if(v){ coins=Math.max(coins,Math.floor(+v.coins||0)); if(Array.isArray(v.owned)) v.owned.forEach(k=>{ if(!owned.includes(k)) owned.push(k); }); }
+  ECO.uid=uid; saveEco(); renderCoins(); if(coins>before) toast(`계정에 저장된 코인을 불러왔어요 (${coins}코인)`); }catch(e){ try{ ECO.uid=AUTH.user&&AUTH.user.uid; }catch(_){} } }
 function addCoins(n){ if(n>0&&luckT>0) n*=2; coins=Math.max(0,coins+n); saveEco(); renderCoins(n); }
 function renderCoins(delta){ $('#coinN').textContent=coins; if(delta){ const s=document.createElement('span'); s.className='plus'+(delta<0?' minus':''); s.textContent=(delta>0?'+':'')+delta; $('#coinHud').appendChild(s); setTimeout(()=>s.remove(),1000); } if(!$('#shop').hidden) $('#shopCoins').textContent=coins; }
 function danceEarn(dt,mult){ /* 5초 보상은 꺼두고, 스테이지 1분 보너스(10코인)만 써요 */ }
@@ -6183,10 +6190,10 @@ async function kakaoReturn(){ const q=new URLSearchParams(location.search), code
     AUTH.kakao={id:String(me.id),name:p.nickname||'카카오 버너',pic:p.thumbnail_image_url||''}; try{ localStorage.setItem('playa-kakao',JSON.stringify(AUTH.kakao)); }catch(e){} setTimeout(()=>{ try{ stepSync(); }catch(e){} },400);
     if(!AUTH.user||!AUTH.user.isAnonymous){ const r=await AUTH.auth.signInAnonymously(); AUTH.user=r.user; }
     authAfterLogin(); }catch(e){ console.warn('kakao',e); toast('카카오 로그인에 실패했어요'); } }
-async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; favLoad(); presStart(); try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
+async function authLoadProfile(){ if(!AUTH.db||!AUTH.user) return; favLoad(); presStart(); ecoLoad(); try{ const s=await AUTH.db.ref('profiles/'+AUTH.user.uid).once('value'); AUTH.prof=s.val(); authRender(); backPrint(); }catch(e){} }
 function authAfterLogin(){ const n=authName();
   if(AUTH.db&&AUTH.user) AUTH.db.ref('profiles/'+AUTH.user.uid).transaction(v=>v||{name:n.slice(0,20),photo:'',provider:authProvider(),created:Date.now(),updated:Date.now()}).catch(()=>{}); const pn=$('#pname'); if(pn&&(!pn.value||pn.value==='Dusty')) pn.value=n.slice(0,12); toast(`${n}님, 반가워요!`); authRender(); termsGate().then(ok=>{ if(ok) authLoadProfile().then(()=>profOpen(true)); }); }
-async function logout(){ presStop(); if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); toast('로그아웃했어요'); }
+async function logout(){ presStop(); ECO.uid=null; if(AUTH.auth) await AUTH.auth.signOut(); AUTH.kakao=null; AUTH.prof=null; try{ localStorage.removeItem('playa-kakao'); }catch(e){} authRender(); backPrint(); setTimeout(()=>{ try{ stepSync(); }catch(e){} },400); toast('로그아웃했어요'); }
 // login row on the start screen + "내 프로필" in the menu
 function authRender(){ const box=document.getElementById('authBox'); if(box){ const u=AUTH.user;
     box.innerHTML=u?`<div class='authme'>${AUTH.prof&&AUTH.prof.photo?`<img src='${AUTH.prof.photo}' alt=''>`:`<i>${{kakao:'💬',apple:'',email:'✉️'}[authProvider()]||'G'}</i>`}<span><b>${esc(authName())}</b><small>${authLabel()}로 로그인됨</small></span><button type='button' data-auth='prof'>프로필</button><button type='button' data-auth='out' class='ghost'>로그아웃</button></div>`

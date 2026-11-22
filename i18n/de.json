@@ -2384,6 +2384,7 @@
 "{0} 님은 지구본점 공연장 안에 있어요. 입장권을 사면 만나요": "{0} ist in der Globe-Halle. Kauf ein Ticket, dann triffst du die Person",
 "{0} 로그인 · 취향 사진 {1}장": "{0} Anmeldung · {1} Geschmacksfotos",
 "옷장에 없는 아이템 {0}개를 입고 있어요. 구매해야 입고 나갈 수 있어요.": "Du trägst {0} Items, die nicht im Kleiderschrank sind. Kaufen musst du sie, um sie draußen zu tragen.",
-"{0}코인 부족": "{0} Münzen fehlen"
+"{0}코인 부족": "{0} Münzen fehlen",
+"계정에 저장된 코인을 불러왔어요 ({0}코인)": "Münzen aus deinem Konto geladen ({0} Münzen)"
 }
 }
