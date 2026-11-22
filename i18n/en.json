@@ -2203,7 +2203,12 @@
 "초대장 QR 확인! 게스트 리스트에 이름이 있어요": "Invitation QR checked! Your name is on the guest list",
 "화물 엘리베이터 안이에요. 드럼통 위에서 DJ가 틀어요. 곧 문이 닫히고 4층으로 올라가요": "Inside the freight lift. A DJ plays on oil drums. The doors close soon and it goes up to 4F",
 "화물 엘리베이터 타기": "Take the freight lift",
-"화물 엘리베이터예요. 곧 문이 닫히고 1층으로 내려가요": "The freight lift. The doors close soon and it goes down to 1F"
+"화물 엘리베이터예요. 곧 문이 닫히고 1층으로 내려가요": "The freight lift. The doors close soon and it goes down to 1F",
+"입장료 80코인이에요. 신분증 대신 알리페이로 결제해요": "Entry is 80 coins. No ID here: pay with Alipay",
+"📱 알리페이로 결제 · 80코인": "📱 Pay with Alipay · 80 coins",
+"입장료 80코인이 모자라요. 춤추고 놀면서 코인을 모아 와요": "Not enough for the 80-coin entry. Dance around and collect coins first",
+"SYSTEM 입장 (알리페이 80코인)": "SYSTEM entry (Alipay, 80 coins)",
+"미술관 안은 입장료 80코인을 내고 들어가요": "Inside the museum is 80 coins at the door"
 },
 "patterns": {
 ". 코인 +{0}": ". Coins +{0}",

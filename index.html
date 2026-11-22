@@ -6292,6 +6292,7 @@ function friendGo(uid){ const v=PRES.others[uid]; if(!v){ toast('그 사람은 �
   const land=()=>{ let x=v.x+(Math.random()-.5)*2.4, z=v.z+1.4, y=0, msg=`${v.n||'버너'} 님 곁으로 왔어요 👋`;
     if(v.in==='teller'){ x=OX-24; z=24; msg=`${v.n} 님은 B1 텔러 안에 있어요. 입장하면 만나요`; } else if(v.in==='ring'){ x=OX+5.5; z=-17.2; msg=`${v.n} 님은 링 안에 있어요. 입장하면 만나요`; }
     else if(v.in==='shelter'||v.in==='paper'){ x=OX+5.4; z=0; msg=`${v.n} 님은 ${IN_NAME[v.in]}에 있어요. 경호원에게 입장하면 만나요`; } else if(v.in==='sphere'){ x=SPX-24; z=SPZ-34; msg=`${v.n} 님은 지구본점 공연장 안에 있어요. 입장권을 사면 만나요`; }
+    else if(String(v.in).startsWith('sh-')&&!SHG.admit){ x=SHX; z=SHZ+2; msg=`${v.n} 님은 상하이 미술관 안에 있어요. 입장료 80코인을 내면 만나요`; }
     if(MAP==='itaewon'){ try{ if(TEL.in) telLeave(); IT.floor=0; }catch(e){} }
     pState.x=x; pState.z=z; pState.y=y; pState.vy=0; pState.face=Math.atan2(v.x-x,v.z-z)||0; yaw=pState.face+Math.PI; if(player) player.root.position.set(x,y,z); toast(msg); };
   // no shortcut past the door: without admission you arrive at the step before it (the desert gate run, the Nami ticket booth) and meet once you are in
@@ -7309,7 +7310,7 @@ function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ)
 
   // ---------- doors and buttons: walking into a doorway takes you through (E works as well) ----------
   const at=(room,x,z)=>()=>MAP==='shanghai'&&inGame&&SHG.room===room?{x,z}:FARV, Lf=SH_R.lift, Hl=SH_R.hall;
-  INTER.push({pos:at('out',SHX,SHZ+3.6),r:4,prio:2,get label(){ return SHG.admit?'미술관으로 들어가기':'SYSTEM 입장 (알리페이 · 초대장)'; },act:shEntry});
+  INTER.push({pos:at('out',SHX,SHZ+3.6),r:4,prio:2,get label(){ return SHG.admit?'미술관으로 들어가기':'SYSTEM 입장 (알리페이 80코인)'; },act:shEntry});
   INTER.push({pos:at('gal',SH_R.gal.cx,SH_R.gal.cz-SH_R.gal.d/2+1.6),r:2.4,label:'강변으로 나가기',act:()=>shDoor('galOut')});
   INTER.push({pos:at('gal',SH_R.gal.cx+SH_R.gal.w/2-6,SH_R.gal.cz+SH_R.gal.d/2-1.8),r:2.6,label:'화물 엘리베이터 타기',act:()=>shDoor('galLift')});
   INTER.push({pos:at('lift',Lf.cx+Lf.w/2-.6,Lf.cz+1),r:1.6,prio:1,get label(){ return SHG.ride?'운행 중이에요':SHG.liftAt===1?'4층 버튼 누르기':'1층 버튼 누르기'; },act:shRide});
@@ -7323,10 +7324,9 @@ function shInd(f){ const x=SHG.indC&&SHG.indC.getContext('2d'); if(!x) return; S
   x.fillText((SHG.ride?(SHG.ride.to>SHG.ride.from?'▲':'▼'):'')+f+'F',64,34); x.shadowBlur=0; SHG.indT.needsUpdate=true; }
 function shRide(){ if(SHG.ride) return; const from=SHG.liftAt, to=from===1?4:1; SHG.ride={t:0,from,to}; shInd(from); if(SHG.room==='lift') toast(to===4?'덜컹! 문이 닫히고 4층으로 올라가요':'덜컹! 문이 닫히고 1층으로 내려가요'); }
 // the museum door: no ID here; pay with Alipay or show the SYSTEM invitation
-function shEntry(){ if(SHG.admit){ shDoor('in'); return; }
-  openSp('SYSTEM 입장','신분증 대신 알리페이 결제나 SYSTEM 초대장 중 하나를 보여 주세요',`<div class='acts' style='grid-template-columns:1fr'><button data-act='ali' class='hot' ${coins<30?'disabled':''}>📱 알리페이로 결제 · 30코인</button><button data-act='inv'>✉️ SYSTEM 초대장 보여주기</button></div>${coins<30?`<p class='quote'>알리페이 결제는 30코인이 있어야 해요. 초대장으로는 바로 들어갈 수 있어요</p>`:''}`,a=>{
-    if(a==='ali'){ if(coins<30){ toast('코인이 모자라요'); return; } addCoins(-30); SHG.admit=true; toast('알리페이 결제 완료! 손목에 SYSTEM 밴드를 채워 줘요'); setTimeout(()=>shDoor('in'),700); }
-    else if(a==='inv'){ SHG.admit=true; toast('초대장 QR 확인! 게스트 리스트에 이름이 있어요'); setTimeout(()=>shDoor('in'),700); } }); }
+function shEntry(){ if(SHG.admit){ shDoor('in'); return; } const F=80;
+  openSp('SYSTEM 입장','입장료 80코인이에요. 신분증 대신 알리페이로 결제해요',`<div class='acts' style='grid-template-columns:1fr'><button data-act='ali' class='hot' ${coins<F?'disabled':''}>📱 알리페이로 결제 · 80코인</button></div>${coins<F?`<p class='quote'>${tr('입장료 80코인이 모자라요. 춤추고 놀면서 코인을 모아 와요')}</p>`:''}`,a=>{
+    if(a==='ali'){ if(coins<F){ toast('코인이 모자라요'); return; } addCoins(-F); SHG.admit=true; toast('알리페이 결제 완료! 손목에 SYSTEM 밴드를 채워 줘요'); setTimeout(()=>shDoor('in'),700); } }); }
 // every doorway in one place: where it leads and what you hear
 function shDoor(k){ const G_=SH_R.gal, Lf=SH_R.lift, Hl=SH_R.hall, Gr=SH_R.green, S=shStair();
   if(k==='in') shGo('gal',G_.cx,G_.cz-G_.d/2+2.4,0,'1·2층은 조니 뎁 그림전이에요. 안쪽 화물 엘리베이터를 타면 4층 SYSTEM이에요');
@@ -7376,6 +7376,7 @@ function renderBoothListSH(){ const ul=$('#boothList'); if(ul.hidden) return;
   ul.innerHTML=`<li class='cat'><button disabled>🇨🇳 상하이점 · 중국 상하이<small>${SH_SPOTS.filter(s=>!s.go).length}곳</small></button></li>`+SH_SPOTS.map((s,i)=>s.go?'':`<li><span class='dot' style='background:${s.room==='green'?'#3dff6a':s.room==='lift'?'#b04dff':s.room?'#ffffff':'#46d6ff'}'></span><span class='nm'>${s.n}${s.x!==undefined&&SHG.room==='out'?`<small>${Math.round(Math.hypot(s.x-pState.x,s.z-pState.z))}m</small>`:''}</span><button data-shs='${i}'>가기</button></li>`).join(''); }
 $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-shs]'); if(!b) return; const s=SH_SPOTS[+b.dataset.shs]; if(s.go){ goMap(s.go); return; }
   const G_=SH_R.gal, Lf=SH_R.lift, Hl=SH_R.hall, Gr=SH_R.green; SHG.st=false;
+  if(s.room&&!SHG.admit){ shGo('out',SHX,SHZ+2,0,'미술관 안은 입장료 80코인을 내고 들어가요'); return; }
   if(s.room==='lift'&&!SHG.ride){ SHG.liftAt=1; SHG.openT=0; shInd(1); }
   if(s.room==='gal') shGo('gal',G_.cx,G_.cz-G_.d/2+2,0,'1·2층 조니 뎁 그림전이에요');
   else if(s.room==='lift') shGo('lift',Lf.cx,Lf.cz-Lf.d/2+1.9,0,'화물 엘리베이터 안이에요');
