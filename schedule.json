@@ -269,18 +269,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795389120000,
-    "dur": 59,
-    "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
-    "title": "Karma Karma Radio 100 - Shimza live from Scorpios, Mykonos",
-    "dj": "Shimza",
-    "art": "https://i1.sndcdn.com/artworks-NgYHQtHgQOEnkaNU-6Td2kw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795392660000,
     "dur": 131,
     "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
@@ -486,18 +474,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795386840000,
-    "dur": 90,
-    "url": "https://soundcloud.com/block9official/sub-focus-live-from-iicon-2025",
-    "title": "Sub Focus Live from IICON",
-    "dj": "Sub Focus",
-    "art": "https://i1.sndcdn.com/artworks-AUjV4n0S9C03LLAz-LMMcQQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795392240000,
     "dur": 62,
@@ -885,18 +861,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795386300000,
-    "dur": 89,
-    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
-    "title": "Up The Stuss Radio 02 By Chris Stussy",
-    "dj": "Chris Stussy",
-    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795391640000,
     "dur": 121,
     "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
@@ -1210,18 +1174,6 @@
    }
   ],
   "booth:hardstyle": [
-   {
-    "start": 1795389060000,
-    "dur": 60,
-    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
-    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
-    "dj": "Layton Giordani",
-    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795392660000,
     "dur": 61,
@@ -1755,18 +1707,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795389720000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/mall-grab",
-    "title": "Mall Grab Boiler Room Paris DJ set",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-000173714296-ig7f1e-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795393320000,
     "dur": 213,
     "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
@@ -2020,18 +1960,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795387260000,
-    "dur": 61,
-    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
-    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795390920000,
     "dur": 123,
@@ -2322,18 +2250,6 @@
    }
   ],
   "club3": [
-   {
-    "start": 1795386480000,
-    "dur": 68,
-    "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
-    "title": "BLANK STATE PODCAST 10 / KABUTO",
-    "dj": "KABUTO",
-    "art": "https://i1.sndcdn.com/artworks-000626950369-r6ifep-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795390560000,
     "dur": 76,
@@ -2811,6 +2727,66 @@
     "title": "Chronicle #3: Kensa & Nicky Macha",
     "dj": "Kensa",
     "art": "https://i1.sndcdn.com/artworks-tQh94747jysBdFIW-wuptQg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795522680000,
+    "dur": 71,
+    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
+    "title": "S.O.N.S: The Ransom Note Mix",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795526940000,
+    "dur": 87,
+    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
+    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
+    "dj": "Todd Terje",
+    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795532160000,
+    "dur": 86,
+    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
+    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
+    "dj": "Purple Disco Machine",
+    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795537320000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set",
+    "title": "Honey Dijon Boiler Room Sugar Mountain Melbourne DJ Set",
+    "dj": "Honey Dijon",
+    "art": "https://i1.sndcdn.com/artworks-000312169044-um407k-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795540920000,
+    "dur": 123,
+    "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
+    "title": "PAWSA ESSENTIAL MIX 2024",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-tM9XyF5Nj0MznBQY-3Aae9g-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -3374,18 +3350,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795386900000,
-    "dur": 63,
-    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
-    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
-    "dj": "Franky Rizardo",
-    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795390680000,
     "dur": 59,
@@ -3978,18 +3942,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795383240000,
-    "dur": 178,
-    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
-    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
-    "dj": "Caiiro",
-    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795393920000,
     "dur": 77,
@@ -4896,18 +4848,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795386780000,
-    "dur": 79,
-    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
-    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
-    "dj": "Harrison Divecha",
-    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795391520000,
     "dur": 134,
@@ -5851,18 +5791,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795387560000,
-    "dur": 80,
-    "url": "https://soundcloud.com/platform/stephan-bodzin",
-    "title": "Stephan Bodzin Boiler Room Berlin Live Set",
-    "dj": "Stephan Bodzin",
-    "art": "https://i1.sndcdn.com/artworks-000132066481-7ill9d-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795392360000,
     "dur": 117,
     "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
@@ -6117,18 +6045,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795385700000,
-    "dur": 119,
-    "url": "https://soundcloud.com/gelipon/bonobo-mixmag-live-2017",
-    "title": "BONOBO Mixmag Live 2017 (DJ Set)",
-    "dj": "Bonobo",
-    "art": "https://i1.sndcdn.com/artworks-000211145196-uihtmk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795392840000,
     "dur": 88,
     "url": "https://soundcloud.com/platform/boiler-room-berlin-ben-klock",
@@ -6339,6 +6255,54 @@
     "title": "Nicolas Lutz - Live at WOMBTOKYO 22/03/2025",
     "dj": "Nicolas Lutz",
     "art": "https://i1.sndcdn.com/artworks-yw81kfmVFs9OPYGy-WDz41Q-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795522740000,
+    "dur": 121,
+    "url": "https://soundcloud.com/fabric/027-nicolas-lutz-recorded-live-from-fabric",
+    "title": "027 - Nicolas Lutz - Recorded live from fabric",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-uCj3tahKTmKvbmfB-IZPvaQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795530000000,
+    "dur": 74,
+    "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
+    "title": "Charlotte de Witte - Live at EDC Las Vegas 2026",
+    "dj": "Charlotte de Witte",
+    "art": "https://i1.sndcdn.com/artworks-WsVBkyeHGQBHzuk2-JQT02Q-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795534440000,
+    "dur": 109,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
+    "title": "Four Tet | Live from Lost Village 2025",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795540980000,
+    "dur": 179,
+    "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
+    "title": "Recorded at Houghton - Nicolas Lutz (2022)",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-XHeC6dnHfNj0SNXy-gNnOWg-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -6624,5 +6588,5 @@
    }
   ]
  },
- "updated": "2026-11-23T11:32:26.133Z"
+ "updated": "2026-11-23T12:32:29.426Z"
 }
