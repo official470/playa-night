@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795402140000,
-    "dur": 124,
-    "url": "https://soundcloud.com/dkmntl/dekmantel-mix-513-nicolas-lutz",
-    "title": "Dekmantel Mix 513 - Nicolas Lutz",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-jgUL4Pr8wVcguzZu-DSppFQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795409580000,
     "dur": 122,
     "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
@@ -474,18 +462,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795405260000,
-    "dur": 74,
-    "url": "https://soundcloud.com/elivesets/rl-grime-live-edc-las-vegas",
-    "title": "RL Grime - Live @ EDC Las Vegas 2025",
-    "dj": "RL Grime",
-    "art": "https://i1.sndcdn.com/artworks-YOY9tUwmTufNNjtR-pcEGdA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795409700000,
     "dur": 70,
@@ -1179,6 +1155,66 @@
     "title": "Honey Dijon Live @ Le Bain April 12, 2014",
     "dj": "Honey Dijon",
     "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795538400000,
+    "dur": 68,
+    "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
+    "title": "BLANK STATE PODCAST 10 / KABUTO",
+    "dj": "KABUTO",
+    "art": "https://i1.sndcdn.com/artworks-000626950369-r6ifep-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795542480000,
+    "dur": 117,
+    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
+    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795549500000,
+    "dur": 63,
+    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
+    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
+    "dj": "Franky Rizardo",
+    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795553280000,
+    "dur": 82,
+    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
+    "title": "Phonica Mix Series 65: S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795558200000,
+    "dur": 123,
+    "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
+    "title": "PAWSA ESSENTIAL MIX 2024",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-tM9XyF5Nj0MznBQY-3Aae9g-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -2395,18 +2431,6 @@
   ],
   "club3": [
    {
-    "start": 1795402380000,
-    "dur": 102,
-    "url": "https://soundcloud.com/dau_ra/ring_seoul",
-    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795408500000,
     "dur": 60,
     "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
@@ -2660,18 +2684,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795403280000,
-    "dur": 117,
-    "url": "https://soundcloud.com/solomun-destino-ibiza/solomun-live-solomun-live-destino-ibiza-25-08-2016",
-    "title": "Solomun - Live @ Solomun + Live (Destino, Ibiza) - 25-08-2016",
-    "dj": "Solomun",
-    "art": "https://i1.sndcdn.com/artworks-000180455302-62upcl-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795410300000,
     "dur": 77,
@@ -3435,18 +3447,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795406520000,
-    "dur": 89,
-    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
-    "title": "Up The Stuss Radio 02 By Chris Stussy",
-    "dj": "Chris Stussy",
-    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795411860000,
     "dur": 60,
     "url": "https://soundcloud.com/traxsource/live-395-kerri-chandler",
@@ -3688,18 +3688,6 @@
    }
   ],
   "zone:nm-jandi": [
-   {
-    "start": 1795405020000,
-    "dur": 91,
-    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
-    "title": "Boiler Room Set Melbourne '22",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795410480000,
     "dur": 83,
@@ -3955,18 +3943,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795404780000,
-    "dur": 84,
-    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
-    "title": "Jon Hopkins - Live at Glastonbury 2019",
-    "dj": "Jon Hopkins",
-    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795409820000,
     "dur": 125,
     "url": "https://soundcloud.com/eric-prydz/eric-prydz-live-from-history-toronto-2025",
@@ -4217,21 +4193,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-soop": [
+   },
    {
-    "start": 1795401240000,
-    "dur": 149,
-    "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
-    "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
+    "start": 1795540980000,
+    "dur": 106,
+    "url": "https://soundcloud.com/mayanwarriorofficial/rufus-du-sol-dj-set-mayan-warrior-burning-man-2024",
+    "title": "RÜFÜS DU SOL (DJ SET) - Mayan Warrior - Burning Man 2024",
+    "dj": "RÜFÜS DU SOL",
+    "art": "https://i1.sndcdn.com/artworks-NNZ3BazbZUJ0mFOx-x6j7XQ-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795547340000,
+    "dur": 104,
+    "url": "https://soundcloud.com/cerclelive/monolink-live-at-cercle-odyssey-paris-france",
+    "title": "Monolink live at Cercle Odyssey, Paris, France",
+    "dj": "Monolink",
+    "art": "https://i1.sndcdn.com/artworks-nwlERxrkg0EN5sf8-qskzVQ-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795553580000,
+    "dur": 178,
+    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
+    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
+    "dj": "Caiiro",
+    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-soop": [
    {
     "start": 1795410180000,
     "dur": 63,
@@ -4837,18 +4837,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795406280000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795410000000,
     "dur": 75,
     "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
@@ -5223,18 +5211,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795406700000,
-    "dur": 62,
-    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
-    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
-    "dj": "ANOTR",
-    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795410420000,
     "dur": 121,
     "url": "https://soundcloud.com/loveintfestival/live-from-the-adriatic-2026",
@@ -5488,18 +5464,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795408020000,
-    "dur": 58,
-    "url": "https://soundcloud.com/hardwell/hardwell-tomorrowland-2015-full-liveset-intro",
-    "title": "Hardwell Tomorrowland 2015 Full Liveset + Intro",
-    "dj": "Hardwell",
-    "art": "https://i1.sndcdn.com/artworks-000124503255-2y6t7o-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795411500000,
     "dur": 62,
@@ -6013,6 +5977,66 @@
     "title": "Ben Klock Boiler Room Berlin DJ Set",
     "dj": "Ben Klock",
     "art": "https://i1.sndcdn.com/artworks-000041329677-78q9sa-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795538880000,
+    "dur": 59,
+    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
+    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795542420000,
+    "dur": 120,
+    "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
+    "title": "DCR827 – Drumcode Radio Live - Adam Beyer live from Drumcode Mallorca",
+    "dj": "Adam Beyer",
+    "art": "https://i1.sndcdn.com/artworks-zzH6JpXaBEqTGwM8-ExoDZw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795549620000,
+    "dur": 117,
+    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
+    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795556640000,
+    "dur": 68,
+    "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
+    "title": "BLANK STATE PODCAST 10 / KABUTO",
+    "dj": "KABUTO",
+    "art": "https://i1.sndcdn.com/artworks-000626950369-r6ifep-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795560720000,
+    "dur": 69,
+    "url": "https://soundcloud.com/tiefundton/baumannshoehle",
+    "title": "TIEFUNDTON LIVE @ BAUMANNSHÖHLE | TECHNO VIDEO SET",
+    "dj": "Tiefundton",
+    "art": "https://i1.sndcdn.com/artworks-rziqEoannr2aGM1t-YRrRuw-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -6564,5 +6588,5 @@
    }
   ]
  },
- "updated": "2026-11-23T16:32:41.609Z"
+ "updated": "2026-11-23T17:32:45.396Z"
 }
