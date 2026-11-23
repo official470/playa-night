@@ -7476,6 +7476,17 @@ $('#boothList').addEventListener('click',e=>{ const b=e.target.closest('[data-sh
   else shGo('out',s.x,s.z,s.x>SHX+500?-Math.PI/2:Math.PI,s.n); });
 $('#enterBtn').addEventListener('click',()=>{ if(selMap==='shanghai'&&MAP!=='shanghai') setTimeout(()=>goMap('shanghai'),70); });
 
+/* ================= TICKETS LAST 12 HOURS =================
+   Any entry you paid for or got stamped (desert gate, Itaewon stamp, Ring, Teller, Nami ticket, Las Vegas ticket, Shanghai 80 coins)
+   is remembered on this device for 12 hours, so a reload or a crash does not make you pay or queue again. */
+const ADM_H=12, ADM=[['desert',()=>BM.admit,()=>{ BM.admit=true; BM.ticket=true; }],['itaewon',()=>IT.stamped,()=>{ IT.stamped=true; }],['ring',()=>RING.admitted,()=>{ RING.admitted=true; }],
+  ['teller',()=>TEL.admitted,()=>{ TEL.admitted=true; }],['nami',()=>NM.admit,()=>{ NM.paid=true; NM.admit=true; }],['sphere',()=>SPH.ticket,()=>{ SPH.ticket=true; }],['shanghai',()=>SHG.admit,()=>{ SHG.admit=true; }]];
+function admLoad(){ try{ const v=JSON.parse(localStorage.getItem('playa-tickets')||'{}'); return v&&typeof v==='object'?v:{}; }catch(e){ return {}; } }
+function admRestore(){ const T=admLoad(), now=Date.now(); let n=0; for(const [k,,set] of ADM){ if(T[k]&&T[k]>now){ try{ set(); n++; }catch(e){} } else delete T[k]; } try{ localStorage.setItem('playa-tickets',JSON.stringify(T)); }catch(e){} return n; }
+function admTick(t){ if(t-(admTick.t||0)<1) return; admTick.t=t; const T=admLoad(), now=Date.now(); let ch=false;
+  for(const [k,get] of ADM){ let on=false; try{ on=!!get(); }catch(e){} if(on&&!(T[k]>now)){ T[k]=now+ADM_H*3600000; ch=true; } }
+  if(ch) try{ localStorage.setItem('playa-tickets',JSON.stringify(T)); }catch(e){} }
+
 /* ================= MUSIC ARBITER: ONLY ONE SONG AT A TIME ================= */
 const MA={cur:null};
 function musicArbiter(){ if(!ac) return; const L=[]; for(const b of BOOTHS) if(b.out) L.push(b); for(const Z of ZONES) if(Z.out) L.push(Z);
@@ -8085,7 +8096,7 @@ updaters.push(t=>{ if(t-(NS.ck||0)<.5) return; NS.ck=t; const A=nsActive();
 const fontsReady=Promise.race([Promise.all([document.fonts?document.fonts.ready:null,document.fonts?document.fonts.load('130px "Black Han Sans"').catch(()=>{}):null,I18N.ready]),new Promise(r=>setTimeout(r,4000))]);
 fontsReady.then(()=>{
   for(let i=BOOTHS.length-1;i>=0;i--) if(BOOTH_CUT.includes(BOOTHS[i].id)) BOOTHS.splice(i,1);
-  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); buildClubStairs(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildStudio(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); buildShanghai(); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
+  buildWorld(); buildInstallations(); buildMarket(); buildCamp(); spawnNPCs(); buildSpaces(); initBurn(); initArt2(); buildCrowd(); postRave(); postSocial(); buildItaewon(); upgradeShelter(); upgradePaper(); buildClubStairs(); updaters.push(mcTick); buildITStreet(); buildTeller(); buildRing(); buildItaewonExtras(); buildStudio(); buildNami(); buildHut(); buildSphere(); buildSphereExtras(); buildSphereShow(); buildOasis(); buildShanghai(); admRestore(); updaters.push(admTick); updaters.push(musicArbiter); applyTime(); rebuildPlayer(); renderOpts();
   npBooth=nearest().b; renderTracks();
   { const L=$('#loading'), wait=Math.max(0,1400-performance.now()); setTimeout(()=>{ L.classList.add('out'); setTimeout(()=>{ L.hidden=true; },520); },wait); } $('#creator').hidden=false;
   if(innerWidth<=760 && innerHeight<720){ $('#creator').classList.add('min'); $('#sheetToggle').textContent='펼치기'; $('#sheetToggle').setAttribute('aria-expanded','false'); }
