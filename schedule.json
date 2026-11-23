@@ -487,18 +487,6 @@
   ],
   "booth:dubstep": [
    {
-    "start": 1795417200000,
-    "dur": 62,
-    "url": "https://soundcloud.com/brokenfuture/shambhala2025",
-    "title": "Broken Future & STUND - Shambhala 2025 Pagoda Stage",
-    "dj": "Broken Future & STUND",
-    "art": "https://i1.sndcdn.com/artworks-He7ztWKzVVEHeEqT-MqsdRA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795420920000,
     "dur": 118,
     "url": "https://soundcloud.com/zedsdead/zeds-dead-live-at-fabric",
@@ -872,18 +860,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795415760000,
-    "dur": 115,
-    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
-    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
-    "dj": "Vintage Culture b2b Mochakk",
-    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795422660000,
     "dur": 102,
@@ -1767,18 +1743,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795415880000,
-    "dur": 68,
-    "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
-    "title": "BLANK STATE PODCAST 10 / KABUTO",
-    "dj": "KABUTO",
-    "art": "https://i1.sndcdn.com/artworks-000626950369-r6ifep-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795419960000,
     "dur": 91,
     "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
@@ -2044,18 +2008,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795417440000,
-    "dur": 71,
-    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
-    "title": "S.O.N.S: The Ransom Note Mix",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795421700000,
     "dur": 120,
@@ -2588,18 +2540,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795418460000,
-    "dur": 63,
-    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
-    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
-    "dj": "Franky Rizardo",
-    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795422240000,
     "dur": 60,
@@ -3423,18 +3363,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795415460000,
-    "dur": 83,
-    "url": "https://soundcloud.com/resident-advisor/ra-live-20160617-kerri-chandler-sonar-festival-barcelona",
-    "title": "RA Live - 2016.06.17 - Kerri Chandler, Sónar Festival, Barcelona",
-    "dj": "Kerri Chandler",
-    "art": "https://i1.sndcdn.com/artworks-000170334203-77jk64-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795420440000,
     "dur": 109,
     "url": "https://soundcloud.com/dfp/dimitri-from-paris-live-slide",
@@ -3725,18 +3653,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795415460000,
-    "dur": 80,
-    "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
-    "title": "Honey Dijon Live @ Le Bain April 12, 2014",
-    "dj": "Honey Dijon",
-    "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795420260000,
     "dur": 123,
     "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
@@ -4015,18 +3931,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795417320000,
-    "dur": 67,
-    "url": "https://soundcloud.com/platform/david-august",
-    "title": "David August Boiler Room Berlin Live Set",
-    "dj": "David August",
-    "art": "https://i1.sndcdn.com/artworks-000077248621-cch89g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795421340000,
     "dur": 59,
     "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
@@ -4292,18 +4196,6 @@
    }
   ],
   "zone:nm-soop": [
-   {
-    "start": 1795413960000,
-    "dur": 124,
-    "url": "https://soundcloud.com/dkmntl/dekmantel-mix-513-nicolas-lutz",
-    "title": "Dekmantel Mix 513 - Nicolas Lutz",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-jgUL4Pr8wVcguzZu-DSppFQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795421400000,
     "dur": 73,
@@ -4582,18 +4474,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795412100000,
-    "dur": 121,
-    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
-    "title": "Live from Lost Village — Four Tet [2023]",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795419360000,
     "dur": 75,
@@ -4944,18 +4824,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795418880000,
-    "dur": 44,
-    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
-    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795421520000,
     "dur": 79,
@@ -6093,18 +5961,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795412220000,
-    "dur": 117,
-    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
-    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795419240000,
     "dur": 149,
     "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
@@ -6307,21 +6163,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:sh-green": [
+   },
    {
-    "start": 1795414980000,
-    "dur": 118,
-    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
-    "title": "Unai Trotti - Live from Dimensions 23'",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
+    "start": 1795551720000,
+    "dur": 72,
+    "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
+    "title": "404 [Frankfurt, 09 April 2023]",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-sNbnpmczvk82KoyY-aoTXNQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795556040000,
+    "dur": 76,
+    "url": "https://soundcloud.com/platform/boiler-room-berlin-nina-kraviz",
+    "title": "Nina Kraviz Boiler Room Berlin DJ Set",
+    "dj": "Nina Kraviz",
+    "art": "https://i1.sndcdn.com/artworks-000041355784-ik7zlb-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795560600000,
+    "dur": 68,
+    "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
+    "title": "259 - Jeff Mills ‎– Live At The Liquid Room - Tokyo (1996)",
+    "dj": "Jeff Mills",
+    "art": "https://i1.sndcdn.com/artworks-000186620556-mhd0z7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795564680000,
+    "dur": 106,
+    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
+    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
+    "dj": "Dax J",
+    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795571040000,
+    "dur": 124,
+    "url": "https://soundcloud.com/dkmntl/dekmantel-mix-513-nicolas-lutz",
+    "title": "Dekmantel Mix 513 - Nicolas Lutz",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-jgUL4Pr8wVcguzZu-DSppFQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:sh-green": [
    {
     "start": 1795422060000,
     "dur": 129,
@@ -6612,5 +6516,5 @@
    }
   ]
  },
- "updated": "2026-11-23T19:32:51.646Z"
+ "updated": "2026-11-23T20:32:54.887Z"
 }
