@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795343760000,
-    "dur": 346,
-    "url": "https://soundcloud.com/nicolaslutz/womb_250322_nicolas-lutz",
-    "title": "Nicolas Lutz - Live at WOMBTOKYO 22/03/2025",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-yw81kfmVFs9OPYGy-WDz41Q-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795364520000,
     "dur": 120,
     "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
@@ -217,21 +205,81 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:afro": [
+   },
    {
-    "start": 1795351740000,
-    "dur": 183,
-    "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
-    "title": "BLACK COFFEE Spiritual DJ Set @ Mixmag Live, London",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-lSIyiaGdaN19Z5mK-QmjtpQ-t500x500.jpg",
+    "start": 1795491600000,
+    "dur": 63,
+    "url": "https://soundcloud.com/platform/reinier-zonneveld",
+    "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795495380000,
+    "dur": 74,
+    "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
+    "title": "Charlotte de Witte - Live at EDC Las Vegas 2026",
+    "dj": "Charlotte de Witte",
+    "art": "https://i1.sndcdn.com/artworks-WsVBkyeHGQBHzuk2-JQT02Q-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795499820000,
+    "dur": 80,
+    "url": "https://soundcloud.com/platform/stephan-bodzin",
+    "title": "Stephan Bodzin Boiler Room Berlin Live Set",
+    "dj": "Stephan Bodzin",
+    "art": "https://i1.sndcdn.com/artworks-000132066481-7ill9d-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795504620000,
+    "dur": 69,
+    "url": "https://soundcloud.com/tiefundton/baumannshoehle",
+    "title": "TIEFUNDTON LIVE @ BAUMANNSHÖHLE | TECHNO VIDEO SET",
+    "dj": "Tiefundton",
+    "art": "https://i1.sndcdn.com/artworks-rziqEoannr2aGM1t-YRrRuw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795508760000,
+    "dur": 71,
+    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
+    "title": "S.O.N.S: The Ransom Note Mix",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795513020000,
+    "dur": 82,
+    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
+    "title": "Phonica Mix Series 65: S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:afro": [
    {
     "start": 1795362720000,
     "dur": 178,
@@ -450,18 +498,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795359960000,
-    "dur": 70,
-    "url": "https://soundcloud.com/johnnykham-745185291/subtronics-edc-las-vegas-2026",
-    "title": "Subtronics - EDC Las Vegas 2026 (Full Set)",
-    "dj": "Subtronics",
-    "art": "https://i1.sndcdn.com/artworks-mmVONtRPHsBhzlFV-zNZfxw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795364160000,
     "dur": 55,
@@ -1151,18 +1187,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795355460000,
-    "dur": 137,
-    "url": "https://soundcloud.com/fabric/020-sonja-moonear-recorded-live-from-fabric",
-    "title": "020 - Sonja Moonear - Recorded live from fabric",
-    "dj": "Sonja Moonear",
-    "art": "https://i1.sndcdn.com/artworks-D2JEinczm8arMU33-wQs38w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795363680000,
     "dur": 89,
     "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
@@ -1416,18 +1440,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795357980000,
-    "dur": 114,
-    "url": "https://soundcloud.com/tanniix/anymagenesys",
-    "title": "ANYMA: THE END OF GENESY II FINALE @ SPHERE ft. Cassian & John Summit 02-25 (Live Set Inspired Mix)",
-    "dj": "Anyma",
-    "art": "https://i1.sndcdn.com/artworks-MGrLnKk8DX92aHEc-ldULCg-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795364820000,
     "dur": 67,
@@ -2045,18 +2057,6 @@
   ],
   "zone:potty": [
    {
-    "start": 1795357860000,
-    "dur": 63,
-    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
-    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
-    "dj": "Franky Rizardo",
-    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795361640000,
     "dur": 121,
     "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
@@ -2600,18 +2600,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795354920000,
-    "dur": 123,
-    "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
-    "title": "PAWSA ESSENTIAL MIX 2024",
-    "dj": "PAWSA",
-    "art": "https://i1.sndcdn.com/artworks-tM9XyF5Nj0MznBQY-3Aae9g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795362300000,
     "dur": 61,
@@ -3439,6 +3427,66 @@
     "title": "April Haze",
     "dj": "Oho.",
     "art": "https://i1.sndcdn.com/artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795491540000,
+    "dur": 54,
+    "url": "https://soundcloud.com/oho990828/oho-nothing-in",
+    "title": "Nothing in",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795494780000,
+    "dur": 149,
+    "url": "https://soundcloud.com/oho990828/teller-seoul-26-07-16",
+    "title": "Oho @Teller 26.07.16",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-grA9JcbDWWI5SNLf-zEvC5Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795503720000,
+    "dur": 77,
+    "url": "https://soundcloud.com/postervoyage/journey_to_oases",
+    "title": "JOURNEY_TO_OASES",
+    "dj": "Kyuchan",
+    "art": "https://i1.sndcdn.com/artworks-JtbOu0kYEFThI8ml-QrvyjQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795508340000,
+    "dur": 118,
+    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
+    "title": "Unai Trotti - Live from Dimensions 23'",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795515420000,
+    "dur": 64,
+    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
+    "title": "EOS Radio - Minkyu 28.07.2024",
+    "dj": "Minkyu",
+    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -4571,30 +4619,6 @@
   ],
   "zone:nm-exp": [
    {
-    "start": 1795358640000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
-    "start": 1795362360000,
-    "dur": 44,
-    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
-    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795365000000,
     "dur": 75,
     "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
@@ -4932,18 +4956,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795356780000,
-    "dur": 134,
-    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
-    "title": "Vajra Mind - Ambient mix by AMANI",
-    "dj": "Desert Dwellers",
-    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795364820000,
     "dur": 112,
@@ -5295,18 +5307,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795359240000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795362780000,
     "dur": 149,
     "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
@@ -5596,18 +5596,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795361400000,
-    "dur": 59,
-    "url": "https://soundcloud.com/hexagon/don-diablo-live-at-ultra-miami-2016",
-    "title": "Don Diablo Live at ULTRA Miami 2016",
-    "dj": "Don Diablo",
-    "art": "https://i1.sndcdn.com/artworks-000153657330-9h9b6j-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795364940000,
     "dur": 71,
@@ -6165,18 +6153,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795352400000,
-    "dur": 178,
-    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
-    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795363080000,
     "dur": 135,
     "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
@@ -6455,18 +6431,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795358700000,
-    "dur": 80,
-    "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
-    "title": "Honey Dijon Live @ Le Bain April 12, 2014",
-    "dj": "Honey Dijon",
-    "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795363500000,
     "dur": 59,
     "url": "https://soundcloud.com/platform/peggy-gou",
@@ -6732,5 +6696,5 @@
    }
   ]
  },
- "updated": "2026-11-23T03:32:02.045Z"
+ "updated": "2026-11-23T04:32:04.880Z"
 }
