@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795409580000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795416900000,
     "dur": 135,
     "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
@@ -229,21 +217,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:afro": [
+   },
    {
-    "start": 1795407780000,
-    "dur": 183,
-    "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
-    "title": "BLACK COFFEE Spiritual DJ Set @ Mixmag Live, London",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-lSIyiaGdaN19Z5mK-QmjtpQ-t500x500.jpg",
+    "start": 1795546020000,
+    "dur": 178,
+    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
+    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795556700000,
+    "dur": 90,
+    "url": "https://soundcloud.com/avidmuzikfan-725076808/amelie-lens-live-ultra-miami-2024",
+    "title": "Amelie Lens - Live @ Ultra Miami 2024",
+    "dj": "Amelie Lens",
+    "art": "https://i1.sndcdn.com/artworks-PsVOWRBbOAayhFPm-MtaVRQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795562100000,
+    "dur": 61,
+    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
+    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795565760000,
+    "dur": 117,
+    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
+    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:afro": [
    {
     "start": 1795418760000,
     "dur": 178,
@@ -462,18 +486,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795413900000,
-    "dur": 55,
-    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
-    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795417200000,
     "dur": 62,
@@ -860,18 +872,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795412040000,
-    "dur": 62,
-    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
-    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
-    "dj": "Oliver Heldens",
-    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795415760000,
     "dur": 115,
@@ -1767,18 +1767,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795412280000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set",
-    "title": "Honey Dijon Boiler Room Sugar Mountain Melbourne DJ Set",
-    "dj": "Honey Dijon",
-    "art": "https://i1.sndcdn.com/artworks-000312169044-um407k-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795415880000,
     "dur": 68,
     "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
@@ -2056,18 +2044,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795412100000,
-    "dur": 89,
-    "url": "https://soundcloud.com/dfp/the-sound-of-glitterbox-dimitri-from-paris-live",
-    "title": "Live from Glitterbox - Dimitri From Paris",
-    "dj": "Dimitri From Paris",
-    "art": "https://i1.sndcdn.com/artworks-000086444238-kdwn52-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795417440000,
     "dur": 71,
@@ -2613,18 +2589,6 @@
   ],
   "club4": [
    {
-    "start": 1795414920000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795418460000,
     "dur": 63,
     "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
@@ -2863,21 +2827,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:teller": [
+   },
    {
-    "start": 1795412400000,
-    "dur": 72,
-    "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
-    "title": "404 [Frankfurt, 09 April 2023]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-sNbnpmczvk82KoyY-aoTXNQ-t500x500.jpg",
+    "start": 1795548300000,
+    "dur": 77,
+    "url": "https://soundcloud.com/postervoyage/journey_to_oases",
+    "title": "JOURNEY_TO_OASES",
+    "dj": "Kyuchan",
+    "art": "https://i1.sndcdn.com/artworks-JtbOu0kYEFThI8ml-QrvyjQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795552920000,
+    "dur": 88,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-horse-meat-disco",
+    "title": "Horse Meat Disco | Live from Lost Village 2025",
+    "dj": "Horse Meat Disco",
+    "art": "https://i1.sndcdn.com/artworks-CJxTeLLgtzvfETIC-Ei55Ow-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795558200000,
+    "dur": 91,
+    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
+    "title": "Boiler Room Set Melbourne '22",
+    "dj": "Mall Grab",
+    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795563660000,
+    "dur": 149,
+    "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
+    "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:teller": [
    {
     "start": 1795416720000,
     "dur": 346,
@@ -3089,6 +3089,54 @@
     "title": "S.O.N.S. at WUS2022",
     "dj": "S.O.N.S",
     "art": "https://i1.sndcdn.com/artworks-Y87UL9bxFTAdmcxe-w1txyg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795545960000,
+    "dur": 121,
+    "url": "https://soundcloud.com/fabric/027-nicolas-lutz-recorded-live-from-fabric",
+    "title": "027 - Nicolas Lutz - Recorded live from fabric",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-uCj3tahKTmKvbmfB-IZPvaQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795553220000,
+    "dur": 179,
+    "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
+    "title": "Recorded at Houghton - Nicolas Lutz (2022)",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-XHeC6dnHfNj0SNXy-gNnOWg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795563960000,
+    "dur": 88,
+    "url": "https://soundcloud.com/platform/boiler-room-berlin-ben-klock",
+    "title": "Ben Klock Boiler Room Berlin DJ Set",
+    "dj": "Ben Klock",
+    "art": "https://i1.sndcdn.com/artworks-000041329677-78q9sa-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795569240000,
+    "dur": 193,
+    "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
+    "title": "DCR501 – Drumcode Radio Live – Adam Beyer B2B Maceo Plex live [3 hour set] from Resistance in Ibiza",
+    "dj": "Adam Beyer",
+    "art": "https://i1.sndcdn.com/artworks-Snjbmip2VZKRsaxq-KywTyA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -3601,6 +3649,78 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795545960000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/jayda-g-dekmantel",
+    "title": "Jayda G Boiler Room x Dekmantel Festival DJ Set",
+    "dj": "Jayda G",
+    "art": "https://i1.sndcdn.com/artworks-000241631043-cexmtj-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795549560000,
+    "dur": 89,
+    "url": "https://soundcloud.com/dfp/the-sound-of-glitterbox-dimitri-from-paris-live",
+    "title": "Live from Glitterbox - Dimitri From Paris",
+    "dj": "Dimitri From Paris",
+    "art": "https://i1.sndcdn.com/artworks-000086444238-kdwn52-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795554900000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set",
+    "title": "Honey Dijon Boiler Room Sugar Mountain Melbourne DJ Set",
+    "dj": "Honey Dijon",
+    "art": "https://i1.sndcdn.com/artworks-000312169044-um407k-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795558500000,
+    "dur": 63,
+    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
+    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
+    "dj": "Franky Rizardo",
+    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795562280000,
+    "dur": 121,
+    "url": "https://soundcloud.com/platform/jayda-g",
+    "title": "Jayda G Boiler Room London Studio DJ Set",
+    "dj": "Jayda G",
+    "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795569540000,
+    "dur": 91,
+    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
+    "title": "Boiler Room Set Melbourne '22",
+    "dj": "Mall Grab",
+    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:nm-jandi": [
@@ -3894,18 +4014,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795409820000,
-    "dur": 125,
-    "url": "https://soundcloud.com/eric-prydz/eric-prydz-live-from-history-toronto-2025",
-    "title": "Eric Prydz - Live from History Toronto 2025 (FULL SET)",
-    "dj": "Eric Prydz",
-    "art": "https://i1.sndcdn.com/artworks-xfusFeCezq2zyAzt-l42Tmw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795417320000,
     "dur": 67,
@@ -4837,18 +4945,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795414500000,
-    "dur": 73,
-    "url": "https://soundcloud.com/platform/tycho",
-    "title": "Tycho Boiler Room San Francisco Live Set",
-    "dj": "Tycho",
-    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795418880000,
     "dur": 44,
     "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
@@ -5199,18 +5295,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795410420000,
-    "dur": 121,
-    "url": "https://soundcloud.com/loveintfestival/live-from-the-adriatic-2026",
-    "title": "Live from the Adriatic 2026: Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-j3dvrrsIze8KHyJ9-rgMmCQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795417680000,
     "dur": 160,
     "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
@@ -5464,18 +5548,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795415220000,
-    "dur": 60,
-    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
-    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
-    "dj": "Layton Giordani",
-    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795418820000,
     "dur": 76,
@@ -5754,18 +5826,6 @@
    }
   ],
   "zone:sh-lift": [
-   {
-    "start": 1795407600000,
-    "dur": 180,
-    "url": "https://soundcloud.com/resident-advisor/raresh-houghton-2025",
-    "title": "RA Live - Raresh - Houghton, 2025",
-    "dj": "Raresh",
-    "art": "https://i1.sndcdn.com/artworks-f5W4LLLT5ztyU1qK-9futRA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795418400000,
     "dur": 137,
@@ -6552,5 +6612,5 @@
    }
   ]
  },
- "updated": "2026-11-23T18:32:48.468Z"
+ "updated": "2026-11-23T19:32:51.646Z"
 }
