@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795495380000,
-    "dur": 74,
-    "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
-    "title": "Charlotte de Witte - Live at EDC Las Vegas 2026",
-    "dj": "Charlotte de Witte",
-    "art": "https://i1.sndcdn.com/artworks-WsVBkyeHGQBHzuk2-JQT02Q-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795499820000,
     "dur": 80,
     "url": "https://soundcloud.com/platform/stephan-bodzin",
@@ -241,6 +229,54 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795629060000,
+    "dur": 63,
+    "url": "https://soundcloud.com/platform/reinier-zonneveld",
+    "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795632840000,
+    "dur": 193,
+    "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
+    "title": "DCR501 – Drumcode Radio Live – Adam Beyer B2B Maceo Plex live [3 hour set] from Resistance in Ibiza",
+    "dj": "Adam Beyer",
+    "art": "https://i1.sndcdn.com/artworks-Snjbmip2VZKRsaxq-KywTyA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795644420000,
+    "dur": 115,
+    "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
+    "title": "Dômesicle #5 - MUTEK 09.08.2020",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-iAONL0OrSeNmicrJ-TAbSPQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795651320000,
+    "dur": 149,
+    "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
+    "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "booth:afro": [
@@ -462,18 +498,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795495440000,
-    "dur": 59,
-    "url": "https://soundcloud.com/bass_cave/chase-and-status-ultra-music-festival-2025-full-set",
-    "title": "Chase and Status - Ultra Music Festival 2025 [FULL SET]",
-    "dj": "Chase & Status",
-    "art": "https://i1.sndcdn.com/artworks-VZ9IOQvB4wMFbXQE-lLuiEg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795498980000,
     "dur": 96,
@@ -2009,18 +2033,6 @@
   ],
   "zone:potty": [
    {
-    "start": 1795488360000,
-    "dur": 213,
-    "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
-    "title": "Outransa - Cartulis Podcast 057",
-    "dj": "Kensa",
-    "art": "https://i1.sndcdn.com/artworks-N1OTGQBqWriyoCU6-mxPb9w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795501140000,
     "dur": 63,
     "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
@@ -2323,18 +2335,6 @@
   ],
   "club3": [
    {
-    "start": 1795496340000,
-    "dur": 69,
-    "url": "https://soundcloud.com/tiefundton/baumannshoehle",
-    "title": "TIEFUNDTON LIVE @ BAUMANNSHÖHLE | TECHNO VIDEO SET",
-    "dj": "Tiefundton",
-    "art": "https://i1.sndcdn.com/artworks-rziqEoannr2aGM1t-YRrRuw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795500480000,
     "dur": 106,
     "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
@@ -2576,18 +2576,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795489620000,
-    "dur": 178,
-    "url": "https://soundcloud.com/warningberlin/100-sons",
-    "title": "Warning #100 S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-iJJs7urNQ4PPwWAY-eoM4sA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795500300000,
     "dur": 109,
@@ -2878,18 +2866,6 @@
    }
   ],
   "zone:teller": [
-   {
-    "start": 1795489860000,
-    "dur": 192,
-    "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
-    "title": "Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795501380000,
     "dur": 68,
@@ -3435,18 +3411,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795495920000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795499460000,
     "dur": 61,
     "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
@@ -3712,18 +3676,6 @@
    }
   ],
   "zone:nm-jandi": [
-   {
-    "start": 1795496460000,
-    "dur": 86,
-    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
-    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
-    "dj": "Purple Disco Machine",
-    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795501620000,
     "dur": 121,
@@ -4039,18 +3991,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795496700000,
-    "dur": 76,
-    "url": "https://soundcloud.com/at_the_plowman/ben-boehmer-live-at-sonar-2024",
-    "title": "Ben Böhmer - live at Sónar 2024",
-    "dj": "Ben Böhmer",
-    "art": "https://i1.sndcdn.com/artworks-cah2y4vJFmluWCcV-1KcqPQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795501260000,
     "dur": 183,
     "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
@@ -4317,18 +4257,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795493820000,
-    "dur": 83,
-    "url": "https://soundcloud.com/cerclelive/artbat-cercle-odyssey",
-    "title": "ARTBAT live at Cercle Odyssey, Paris, France",
-    "dj": "ARTBAT",
-    "art": "https://i1.sndcdn.com/artworks-Bvue3zr1lMZKJLfw-WfcXqQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795498800000,
     "dur": 64,
     "url": "https://soundcloud.com/innellea/live-set-recorded-off-barcelona",
@@ -4582,18 +4510,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795495860000,
-    "dur": 79,
-    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
-    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
-    "dj": "Harrison Divecha",
-    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795500600000,
     "dur": 73,
@@ -5839,18 +5755,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795492380000,
-    "dur": 135,
-    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
-    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795500480000,
     "dur": 150,
     "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
@@ -6129,18 +6033,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795495860000,
-    "dur": 102,
-    "url": "https://soundcloud.com/dau_ra/ring_seoul",
-    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795501980000,
     "dur": 346,
     "url": "https://soundcloud.com/nicolaslutz/womb_250322_nicolas-lutz",
@@ -6351,6 +6243,54 @@
     "title": "RA Live - Nicolas Lutz - Houghton, 2025",
     "dj": "Nicolas Lutz",
     "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795630080000,
+    "dur": 122,
+    "url": "https://soundcloud.com/platform/dax-j-boiler-room-x-eristoff-into-the-darkdj-set",
+    "title": "Dax J Boiler Room x Eristoff \"Into The Dark\"DJ Set",
+    "dj": "Dax J",
+    "art": "https://i1.sndcdn.com/artworks-000337647888-yt7u4m-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795637400000,
+    "dur": 135,
+    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
+    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795645500000,
+    "dur": 102,
+    "url": "https://soundcloud.com/dau_ra/ring_seoul",
+    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795651620000,
+    "dur": 63,
+    "url": "https://soundcloud.com/platform/reinier-zonneveld",
+    "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -6636,5 +6576,5 @@
    }
   ]
  },
- "updated": "2026-11-24T17:34:00.191Z"
+ "updated": "2026-11-24T18:34:03.904Z"
 }
