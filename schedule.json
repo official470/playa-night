@@ -463,18 +463,6 @@
   ],
   "booth:dubstep": [
    {
-    "start": 1795449240000,
-    "dur": 96,
-    "url": "https://soundcloud.com/deadbeatsrecords/300-deadbeats-radio-with-zeds-dead-live-from-electric-forest-afters-edition",
-    "title": "#300 Deadbeats Radio with Zeds Dead | After Hours Set Live from Electric Forest EVOL Renegade",
-    "dj": "Zeds Dead",
-    "art": "https://i1.sndcdn.com/artworks-e31EeM0tgaoa6Y6T-Zs41hQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795455000000,
     "dur": 74,
     "url": "https://soundcloud.com/elivesets/rl-grime-live-edc-las-vegas",
@@ -824,18 +812,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795448580000,
-    "dur": 86,
-    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
-    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
-    "dj": "Purple Disco Machine",
-    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795453740000,
     "dur": 59,
@@ -1429,18 +1405,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795446240000,
-    "dur": 115,
-    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
-    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
-    "dj": "Vintage Culture b2b Mochakk",
-    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795453140000,
     "dur": 60,
     "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
@@ -1755,18 +1719,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795446960000,
-    "dur": 87,
-    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
-    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
-    "dj": "Todd Terje",
-    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795452180000,
     "dur": 59,
     "url": "https://soundcloud.com/platform/peggy-gou",
@@ -2020,18 +1972,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795448820000,
-    "dur": 82,
-    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
-    "title": "Phonica Mix Series 65: S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795453740000,
     "dur": 60,
@@ -2307,6 +2247,66 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795583040000,
+    "dur": 87,
+    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
+    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
+    "dj": "Todd Terje",
+    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795588260000,
+    "dur": 62,
+    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
+    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
+    "dj": "ANOTR",
+    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795591980000,
+    "dur": 117,
+    "url": "https://soundcloud.com/solomun-destino-ibiza/solomun-live-solomun-live-destino-ibiza-25-08-2016",
+    "title": "Solomun - Live @ Solomun + Live (Destino, Ibiza) - 25-08-2016",
+    "dj": "Solomun",
+    "art": "https://i1.sndcdn.com/artworks-000180455302-62upcl-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795599000000,
+    "dur": 59,
+    "url": "https://soundcloud.com/platform/peggy-gou",
+    "title": "Peggy Gou Boiler Room x Dekmantel Festival DJ Set",
+    "dj": "Peggy Gou",
+    "art": "https://i1.sndcdn.com/artworks-000241463822-16r29o-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795602540000,
+    "dur": 71,
+    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
+    "title": "S.O.N.S: The Ransom Note Mix",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "club3": [
@@ -2533,6 +2533,66 @@
     "title": "Live from the Adriatic 2026: Unai Trotti",
     "dj": "Unai Trotti",
     "art": "https://i1.sndcdn.com/artworks-j3dvrrsIze8KHyJ9-rgMmCQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795582980000,
+    "dur": 64,
+    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
+    "title": "EOS Radio - Minkyu 28.07.2024",
+    "dj": "Minkyu",
+    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795586820000,
+    "dur": 96,
+    "url": "https://soundcloud.com/oho990828/april-haze",
+    "title": "April Haze",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795592580000,
+    "dur": 54,
+    "url": "https://soundcloud.com/oho990828/oho-nothing-in",
+    "title": "Nothing in",
+    "dj": "Oho.",
+    "art": "https://i1.sndcdn.com/artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795595820000,
+    "dur": 135,
+    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
+    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795603920000,
+    "dur": 122,
+    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
+    "title": "EOS Radio - November 2021",
+    "dj": "KINO",
+    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -2819,18 +2879,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795450200000,
-    "dur": 61,
-    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
-    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795453860000,
     "dur": 115,
     "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
@@ -3096,18 +3144,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795445760000,
-    "dur": 129,
-    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
-    "title": "RA.1017 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795453500000,
     "dur": 121,
@@ -3919,18 +3955,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795449360000,
-    "dur": 83,
-    "url": "https://soundcloud.com/cerclelive/artbat-cercle-odyssey",
-    "title": "ARTBAT live at Cercle Odyssey, Paris, France",
-    "dj": "ARTBAT",
-    "art": "https://i1.sndcdn.com/artworks-Bvue3zr1lMZKJLfw-WfcXqQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795454340000,
     "dur": 80,
     "url": "https://soundcloud.com/platform/stephan-bodzin",
@@ -4184,18 +4208,6 @@
    }
   ],
   "zone:nm-soop": [
-   {
-    "start": 1795447260000,
-    "dur": 91,
-    "url": "https://soundcloud.com/cerclelive/monolink-live-at-gaatafushi-island-in-the-maldives-for-cercle-and-w-hotels",
-    "title": "Monolink live at Gaatafushi Island, in the Maldives for Cercle and W Hotels",
-    "dj": "Monolink",
-    "art": "https://i1.sndcdn.com/artworks-pwf4myqQ8CsRYZPM-aQR59Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795452720000,
     "dur": 84,
@@ -4764,18 +4776,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795449240000,
-    "dur": 73,
-    "url": "https://soundcloud.com/platform/tycho",
-    "title": "Tycho Boiler Room San Francisco Live Set",
-    "dj": "Tycho",
-    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795453620000,
     "dur": 44,
@@ -5357,18 +5357,6 @@
   ],
   "zone:sphere": [
    {
-    "start": 1795427100000,
-    "dur": 430,
-    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
-    "title": "PAWSA IN THE PARK LONDON 2025",
-    "dj": "PAWSA",
-    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795452900000,
     "dur": 77,
     "url": "https://soundcloud.com/jackedradio/afrojack-presents-jacked-radio-649-live-set-ultra-music-festival-2024",
@@ -5687,6 +5675,54 @@
     "title": "AFROJACK Presents JACKED Radio – 649 (Live set Ultra Music Festival 2024)",
     "dj": "Afrojack",
     "art": "https://i1.sndcdn.com/artworks-6Lidmuivll3yryi8-ye8DJQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795583340000,
+    "dur": 75,
+    "url": "https://soundcloud.com/user-311822035/alesso-live-edc-las-vegas-2016-full-set-free-download",
+    "title": "Alesso - Live @ EDC Las Vegas 2016 (Full Set) [Free Download]",
+    "dj": "Alesso",
+    "art": "https://i1.sndcdn.com/artworks-000168193787-1q16rb-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795587840000,
+    "dur": 114,
+    "url": "https://soundcloud.com/tanniix/anymagenesys",
+    "title": "ANYMA: THE END OF GENESY II FINALE @ SPHERE ft. Cassian & John Summit 02-25 (Live Set Inspired Mix)",
+    "dj": "Anyma",
+    "art": "https://i1.sndcdn.com/artworks-MGrLnKk8DX92aHEc-ldULCg-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795594680000,
+    "dur": 76,
+    "url": "https://soundcloud.com/blasterjaxx/blasterjaxx-live-tomorrowland-2025-the-great-library-stage-full-set",
+    "title": "Blasterjaxx | LIVE @ Tomorrowland 2025 - The Great Library Stage [FULL SET]",
+    "dj": "Blasterjaxx",
+    "art": "https://i1.sndcdn.com/artworks-Q6x97hehifsqplas-re0WiA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795599240000,
+    "dur": 430,
+    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
+    "title": "PAWSA IN THE PARK LONDON 2025",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -6528,5 +6564,5 @@
    }
   ]
  },
- "updated": "2026-11-24T04:33:20.189Z"
+ "updated": "2026-11-24T05:33:23.537Z"
 }
