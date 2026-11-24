@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795479420000,
-    "dur": 88,
-    "url": "https://soundcloud.com/platform/boiler-room-berlin-ben-klock",
-    "title": "Ben Klock Boiler Room Berlin DJ Set",
-    "dj": "Ben Klock",
-    "art": "https://i1.sndcdn.com/artworks-000041329677-78q9sa-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795484700000,
     "dur": 115,
     "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
@@ -281,18 +269,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795474800000,
-    "dur": 178,
-    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
-    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
-    "dj": "Caiiro",
-    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795485480000,
     "dur": 89,
     "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
@@ -495,21 +471,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:dubstep": [
+   },
    {
-    "start": 1795482720000,
-    "dur": 60,
-    "url": "https://soundcloud.com/ravetapes/subtronics-edc-las-vegas-2022-live-set-circuitgrounds",
-    "title": "Subtronics EDC Las Vegas 2022 Live Set - CircuitGrounds",
-    "dj": "Subtronics",
-    "art": "https://i1.sndcdn.com/artworks-QjRg04SDvpN98L5u-vNA53A-t500x500.jpg",
+    "start": 1795614300000,
+    "dur": 173,
+    "url": "https://soundcloud.com/shimza/shimza-live-ammo-ammo-greece",
+    "title": "Shimza Live @ Ammo Ammo Greece 3 Hour Set",
+    "dj": "Shimza",
+    "art": "https://i1.sndcdn.com/artworks-000388880328-jxvhrj-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795624680000,
+    "dur": 121,
+    "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
+    "title": "Keinemusik Radio Show 100 live at Else Berlin by &ME, Rampa, Reznik, Adam Port",
+    "dj": "Keinemusik (&ME, Rampa, Adam Port)",
+    "art": "https://i1.sndcdn.com/artworks-000176184477-601nwg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795631940000,
+    "dur": 183,
+    "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
+    "title": "BLACK COFFEE Spiritual DJ Set @ Mixmag Live, London",
+    "dj": "Black Coffee",
+    "art": "https://i1.sndcdn.com/artworks-lSIyiaGdaN19Z5mK-QmjtpQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:dubstep": [
    {
     "start": 1795486320000,
     "dur": 90,
@@ -908,18 +908,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795482420000,
-    "dur": 61,
-    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
-    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
-    "dj": "Dam Swindle",
-    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795486080000,
     "dur": 71,
@@ -1477,18 +1465,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795483260000,
-    "dur": 62,
-    "url": "https://soundcloud.com/vvvfrankie/skrillex-live-ultra-music-festival-2015-diplo-justine-biber-jack-u-kiesza-p-diddy-dj-snake",
-    "title": "SKRILLEX LIVE @ ULTRA MUSIC FESTIVAL 2015 FULL SET (Diplo Justin Bieber Jack U Kiesza Dj Snake)",
-    "dj": "Skrillex",
-    "art": "https://i1.sndcdn.com/artworks-000124856288-whf3x3-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795486980000,
     "dur": 125,
     "url": "https://soundcloud.com/eric-prydz/eric-prydz-live-from-history-toronto-2025",
@@ -2017,6 +1993,66 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795613940000,
+    "dur": 80,
+    "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
+    "title": "Honey Dijon Live @ Le Bain April 12, 2014",
+    "dj": "Honey Dijon",
+    "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795618740000,
+    "dur": 82,
+    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
+    "title": "Phonica Mix Series 65: S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795623660000,
+    "dur": 121,
+    "url": "https://soundcloud.com/platform/jayda-g",
+    "title": "Jayda G Boiler Room London Studio DJ Set",
+    "dj": "Jayda G",
+    "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795630920000,
+    "dur": 83,
+    "url": "https://soundcloud.com/resident-advisor/ra-live-20160617-kerri-chandler-sonar-festival-barcelona",
+    "title": "RA Live - 2016.06.17 - Kerri Chandler, Sónar Festival, Barcelona",
+    "dj": "Kerri Chandler",
+    "art": "https://i1.sndcdn.com/artworks-000170334203-77jk64-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795635900000,
+    "dur": 91,
+    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
+    "title": "Boiler Room Set Melbourne '22",
+    "dj": "Mall Grab",
+    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:potty": [
@@ -2346,18 +2382,6 @@
    }
   ],
   "club3": [
-   {
-    "start": 1795479720000,
-    "dur": 74,
-    "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
-    "title": "Charlotte de Witte - Live at EDC Las Vegas 2026",
-    "dj": "Charlotte de Witte",
-    "art": "https://i1.sndcdn.com/artworks-WsVBkyeHGQBHzuk2-JQT02Q-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795484160000,
     "dur": 203,
@@ -2903,18 +2927,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795478700000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795486020000,
     "dur": 64,
     "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
@@ -3180,18 +3192,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795475100000,
-    "dur": 178,
-    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
-    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795485780000,
     "dur": 96,
@@ -3749,18 +3749,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795474140000,
-    "dur": 191,
-    "url": "https://soundcloud.com/kettamabro/kettama-b2b-mall-grab-live-from-crssd-festival-san-diego-usa",
-    "title": "KETTAMA B2B Mall Grab (Live From CRSSD Festival, San Diego USA 2023)",
-    "dj": "KETTAMA b2b Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-4md67zyos1io9G9H-ky0cWw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795485600000,
     "dur": 59,
     "url": "https://soundcloud.com/dannyhowarddj/danny-howard-live-ushuaia-ibiza",
@@ -4051,18 +4039,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795481400000,
-    "dur": 74,
-    "url": "https://soundcloud.com/platform/hvob",
-    "title": "HVOB Boiler Room Vienna Live Set",
-    "dj": "HVOB",
-    "art": "https://i1.sndcdn.com/artworks-000120990274-tcyelb-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795485840000,
     "dur": 92,
     "url": "https://soundcloud.com/cerclelive/whomadewho-cercle-odyssey",
@@ -4301,6 +4277,66 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795615920000,
+    "dur": 60,
+    "url": "https://soundcloud.com/thisman1/tale-of-us-gta-online-after-hours-full-liveset-2018",
+    "title": "Tale Of Us - GTA Online (After Hours) [Full Liveset 2018]",
+    "dj": "Tale Of Us",
+    "art": "https://i1.sndcdn.com/artworks-000382999770-xrmhdc-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795619520000,
+    "dur": 73,
+    "url": "https://soundcloud.com/platform/tycho",
+    "title": "Tycho Boiler Room San Francisco Live Set",
+    "dj": "Tycho",
+    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795623900000,
+    "dur": 83,
+    "url": "https://soundcloud.com/cerclelive/artbat-cercle-odyssey",
+    "title": "ARTBAT live at Cercle Odyssey, Paris, France",
+    "dj": "ARTBAT",
+    "art": "https://i1.sndcdn.com/artworks-Bvue3zr1lMZKJLfw-WfcXqQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795628880000,
+    "dur": 91,
+    "url": "https://soundcloud.com/cerclelive/monolink-live-at-gaatafushi-island-in-the-maldives-for-cercle-and-w-hotels",
+    "title": "Monolink live at Gaatafushi Island, in the Maldives for Cercle and W Hotels",
+    "dj": "Monolink",
+    "art": "https://i1.sndcdn.com/artworks-pwf4myqQ8CsRYZPM-aQR59Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795634340000,
+    "dur": 84,
+    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
+    "title": "Jon Hopkins - Live at Glastonbury 2019",
+    "dj": "Jon Hopkins",
+    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:nm-soop": [
@@ -4534,18 +4570,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795477320000,
-    "dur": 119,
-    "url": "https://soundcloud.com/gelipon/bonobo-mixmag-live-2017",
-    "title": "BONOBO Mixmag Live 2017 (DJ Set)",
-    "dj": "Bonobo",
-    "art": "https://i1.sndcdn.com/artworks-000211145196-uihtmk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795484460000,
     "dur": 62,
@@ -5171,21 +5195,81 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-aero": [
+   },
    {
-    "start": 1795482180000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
-    "title": "Folamour | Boiler Room x Sugar Mountain 2024",
-    "dj": "Folamour",
-    "art": "https://i1.sndcdn.com/artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg",
+    "start": 1795614720000,
+    "dur": 75,
+    "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
+    "title": "Aphex Twin - Selected Ambient Works 85-92 (1992)",
+    "dj": "Aphex Twin",
+    "art": "https://i1.sndcdn.com/artworks-znkQvfJ9Vrp35isG-BIIycA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795619220000,
+    "dur": 62,
+    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
+    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795622940000,
+    "dur": 44,
+    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
+    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795625580000,
+    "dur": 73,
+    "url": "https://soundcloud.com/platform/tycho",
+    "title": "Tycho Boiler Room San Francisco Live Set",
+    "dj": "Tycho",
+    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795629960000,
+    "dur": 134,
+    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
+    "title": "Vajra Mind - Ambient mix by AMANI",
+    "dj": "Desert Dwellers",
+    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795638000000,
+    "dur": 79,
+    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
+    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
+    "dj": "Harrison Divecha",
+    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-aero": [
    {
     "start": 1795485780000,
     "dur": 88,
@@ -6215,18 +6299,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795480980000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/mall-grab",
-    "title": "Mall Grab Boiler Room Paris DJ set",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-000173714296-ig7f1e-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795484580000,
     "dur": 60,
     "url": "https://soundcloud.com/platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set",
@@ -6480,5 +6552,5 @@
    }
   ]
  },
- "updated": "2026-11-24T13:33:47.264Z"
+ "updated": "2026-11-24T14:33:50.475Z"
 }
