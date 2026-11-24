@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795513020000,
-    "dur": 82,
-    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
-    "title": "Phonica Mix Series 65: S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795517940000,
     "dur": 122,
     "url": "https://soundcloud.com/platform/dax-j-boiler-room-x-eristoff-into-the-darkdj-set",
@@ -245,18 +233,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795512600000,
-    "dur": 121,
-    "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
-    "title": "Keinemusik Radio Show 100 live at Else Berlin by &ME, Rampa, Reznik, Adam Port",
-    "dj": "Keinemusik (&ME, Rampa, Adam Port)",
-    "art": "https://i1.sndcdn.com/artworks-000176184477-601nwg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795519860000,
     "dur": 183,
     "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
@@ -486,18 +462,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795513380000,
-    "dur": 55,
-    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
-    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795516680000,
     "dur": 118,
@@ -885,18 +849,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795513620000,
-    "dur": 62,
-    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
-    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
-    "dj": "ANOTR",
-    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795517340000,
     "dur": 59,
     "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
@@ -1163,18 +1115,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795513140000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795516680000,
     "dur": 68,
     "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
@@ -1440,18 +1380,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795513860000,
-    "dur": 60,
-    "url": "https://soundcloud.com/nickyromero/nicky-romero-classic-set-live-at-tomorrowland-planaxis-2025",
-    "title": "Nicky Romero Classic Set LIVE at Tomorrowland Planaxis 2025",
-    "dj": "Nicky Romero",
-    "art": "https://i1.sndcdn.com/artworks-J4DskQ7ioLdZVZ8m-0we3IQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795517460000,
     "dur": 59,
@@ -2371,18 +2299,6 @@
   ],
   "club3": [
    {
-    "start": 1795506840000,
-    "dur": 179,
-    "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
-    "title": "Recorded at Houghton - Nicolas Lutz (2022)",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-XHeC6dnHfNj0SNXy-gNnOWg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795517580000,
     "dur": 137,
     "url": "https://soundcloud.com/fabric/020-sonja-moonear-recorded-live-from-fabric",
@@ -3169,18 +3085,6 @@
   ],
   "zone:ring": [
    {
-    "start": 1795515420000,
-    "dur": 64,
-    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
-    "title": "EOS Radio - Minkyu 28.07.2024",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795519260000,
     "dur": 61,
     "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
@@ -3434,18 +3338,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795514640000,
-    "dur": 86,
-    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
-    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
-    "dj": "Purple Disco Machine",
-    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795519800000,
     "dur": 64,
@@ -3737,18 +3629,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795508880000,
-    "dur": 149,
-    "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
-    "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795517820000,
     "dur": 122,
     "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
@@ -4038,18 +3918,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795512240000,
-    "dur": 117,
-    "url": "https://soundcloud.com/solomun-destino-ibiza/solomun-live-solomun-live-destino-ibiza-25-08-2016",
-    "title": "Solomun - Live @ Solomun + Live (Destino, Ibiza) - 25-08-2016",
-    "dj": "Solomun",
-    "art": "https://i1.sndcdn.com/artworks-000180455302-62upcl-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795519260000,
     "dur": 64,
@@ -4341,18 +4209,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795507200000,
-    "dur": 193,
-    "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
-    "title": "DCR501 – Drumcode Radio Live – Adam Beyer B2B Maceo Plex live [3 hour set] from Resistance in Ibiza",
-    "dj": "Adam Beyer",
-    "art": "https://i1.sndcdn.com/artworks-Snjbmip2VZKRsaxq-KywTyA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795518780000,
     "dur": 120,
     "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
@@ -4567,21 +4423,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-exp": [
+   },
    {
-    "start": 1795511700000,
-    "dur": 121,
-    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
-    "title": "Live from Lost Village — Four Tet [2023]",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
+    "start": 1795647360000,
+    "dur": 238,
+    "url": "https://soundcloud.com/thisneverhappenedlabel/lane-8-summer-2026-mixtape",
+    "title": "Lane 8 Summer 2026 Mixtape (Live from the Mishawaka, Bellvue CO)",
+    "dj": "Lane 8",
+    "art": "https://i1.sndcdn.com/artworks-4Uk61zNHaIBzUXyy-HVYtYQ-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795661640000,
+    "dur": 71,
+    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
+    "title": "S.O.N.S: The Ransom Note Mix",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795665900000,
+    "dur": 67,
+    "url": "https://soundcloud.com/umftv2016/deadmau5-live-ultra-2016-asot-stage-full-set-free-download",
+    "title": "deadmau5 - Live @ Ultra 2016 (ASOT Stage) [Full Set] [Free Download]",
+    "dj": "deadmau5",
+    "art": "https://i1.sndcdn.com/artworks-000153717656-2owv02-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795669920000,
+    "dur": 60,
+    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
+    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
+    "dj": "Layton Giordani",
+    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-exp": [
    {
     "start": 1795518960000,
     "dur": 109,
@@ -4872,18 +4764,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795514220000,
-    "dur": 75,
-    "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
-    "title": "Aphex Twin - Selected Ambient Works 85-92 (1992)",
-    "dj": "Aphex Twin",
-    "art": "https://i1.sndcdn.com/artworks-znkQvfJ9Vrp35isG-BIIycA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795518720000,
     "dur": 73,
@@ -5259,18 +5139,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795512420000,
-    "dur": 89,
-    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
-    "title": "Up The Stuss Radio 02 By Chris Stussy",
-    "dj": "Chris Stussy",
-    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795517760000,
     "dur": 121,
     "url": "https://soundcloud.com/platform/jayda-g",
@@ -5524,18 +5392,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795514640000,
-    "dur": 62,
-    "url": "https://soundcloud.com/brokenfuture/shambhala2025",
-    "title": "Broken Future & STUND - Shambhala 2025 Pagoda Stage",
-    "dj": "Broken Future & STUND",
-    "art": "https://i1.sndcdn.com/artworks-He7ztWKzVVEHeEqT-MqsdRA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795518360000,
     "dur": 71,
@@ -5827,18 +5683,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795514880000,
-    "dur": 77,
-    "url": "https://soundcloud.com/user-105919562/ricardo-villalobos-live-from",
-    "title": "Ricardo Villalobos - Live from Circoloco DC-10 Ibiza (20.07.26 Garden)",
-    "dj": "Ricardo Villalobos",
-    "art": "https://i1.sndcdn.com/artworks-qputnArtcOedzLwK-NAvLVw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795519500000,
     "dur": 72,
     "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
@@ -6073,6 +5917,54 @@
     "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
     "dj": "S.O.N.S",
     "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795649160000,
+    "dur": 118,
+    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
+    "title": "Unai Trotti - Live from Dimensions 23'",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795656240000,
+    "dur": 135,
+    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
+    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795664340000,
+    "dur": 61,
+    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
+    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795668000000,
+    "dur": 63,
+    "url": "https://soundcloud.com/chris-lukasz-jankowski/zip-live-dj-set-6-years-of-sunrise-perlon-party-buchares-2007-1",
+    "title": "Zip Live Dj Set - 6 Years Of Sunrise Perlon Party, Buchares 2007 (1)",
+    "dj": "Zip",
+    "art": "https://i1.sndcdn.com/avatars-000114199523-oucknx-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -6648,5 +6540,5 @@
    }
   ]
  },
- "updated": "2026-11-24T22:34:17.174Z"
+ "updated": "2026-11-24T23:34:20.146Z"
 }
