@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795565760000,
-    "dur": 117,
-    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
-    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795572780000,
     "dur": 72,
     "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
@@ -511,18 +499,6 @@
   ],
   "booth:dubstep": [
    {
-    "start": 1795566420000,
-    "dur": 118,
-    "url": "https://soundcloud.com/zedsdead/zeds-dead-live-at-fabric",
-    "title": "Zeds Dead - Live at fabric London",
-    "dj": "Zeds Dead",
-    "art": "https://i1.sndcdn.com/artworks-wcAyRDsREr4z1CJ3-Q9sHcw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795573500000,
     "dur": 62,
     "url": "https://soundcloud.com/brokenfuture/shambhala2025",
@@ -908,18 +884,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795565580000,
-    "dur": 118,
-    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
-    "title": "Unai Trotti - Live from Dimensions 23'",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795572660000,
     "dur": 60,
@@ -1429,18 +1393,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795568340000,
-    "dur": 62,
-    "url": "https://soundcloud.com/dimitrivegasandlikemike/tl-dvlm-2012-live",
-    "title": "Dimitri Vegas & Like Mike - Live at Tomorrowland ( 28/07/2012 )",
-    "dj": "Dimitri Vegas & Like Mike",
-    "art": "https://i1.sndcdn.com/artworks-000028184106-1qqa7h-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795572060000,
     "dur": 430,
     "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
@@ -1715,21 +1667,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:disco": [
+   },
    {
-    "start": 1795567380000,
-    "dur": 60,
-    "url": "https://soundcloud.com/traxsource/live-395-kerri-chandler",
-    "title": "Traxsource LIVE! #395 with Kerri Chandler",
-    "dj": "Kerri Chandler",
-    "art": "https://i1.sndcdn.com/artworks-G3XP33D1DOTX7o6w-3Sby4A-t500x500.jpg",
+    "start": 1795701360000,
+    "dur": 62,
+    "url": "https://soundcloud.com/dimitrivegasandlikemike/tl-dvlm-2012-live",
+    "title": "Dimitri Vegas & Like Mike - Live at Tomorrowland ( 28/07/2012 )",
+    "dj": "Dimitri Vegas & Like Mike",
+    "art": "https://i1.sndcdn.com/artworks-000028184106-1qqa7h-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795705080000,
+    "dur": 59,
+    "url": "https://soundcloud.com/mayank-bisht-649299172/zedd-live-ultra-music-festival",
+    "title": "ZEDD LIVE @ ULTRA MUSIC FESTIVAL MIAMI (2025)",
+    "dj": "Zedd",
+    "art": "https://i1.sndcdn.com/artworks-mcIyBVAGmajyFTL8-akkbmA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795708620000,
+    "dur": 131,
+    "url": "https://soundcloud.com/tiesto/tiesto-live-at-clublife-500",
+    "title": "Tiësto presents Clublife 500 (Live Set)",
+    "dj": "Tiësto",
+    "art": "https://i1.sndcdn.com/artworks-000190916397-9bztep-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795716480000,
+    "dur": 120,
+    "url": "https://soundcloud.com/domdolla/sydney",
+    "title": "Dom Dolla Live @ Allianz Stadium, Sydney 2025",
+    "dj": "Dom Dolla",
+    "art": "https://i1.sndcdn.com/artworks-vcG6hK83U1EWXGFV-O4yiAA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795723680000,
+    "dur": 62,
+    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
+    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
+    "dj": "ANOTR",
+    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:disco": [
    {
     "start": 1795570980000,
     "dur": 191,
@@ -2660,18 +2660,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795563660000,
-    "dur": 149,
-    "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
-    "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795572600000,
     "dur": 115,
@@ -3725,18 +3713,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795565160000,
-    "dur": 115,
-    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
-    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
-    "dj": "Vintage Culture b2b Mochakk",
-    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795572060000,
     "dur": 83,
     "url": "https://soundcloud.com/resident-advisor/ra-live-20160617-kerri-chandler-sonar-festival-barcelona",
@@ -4014,18 +3990,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795564260000,
-    "dur": 131,
-    "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
-    "title": "BLACK COFFEE LIVE BRASIL FULL SET 2023.mp3",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-4Ot9YdJsKtKzOzy8-RpqEaA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795572120000,
     "dur": 59,
@@ -4583,18 +4547,6 @@
   ],
   "zone:nm-exp": [
    {
-    "start": 1795565700000,
-    "dur": 112,
-    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
-    "title": "'Infinite' Ambient Mix",
-    "dj": "Ambient",
-    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795572420000,
     "dur": 121,
     "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
@@ -4869,21 +4821,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-hut": [
+   },
    {
-    "start": 1795568520000,
-    "dur": 79,
-    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
-    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
-    "dj": "Harrison Divecha",
-    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
+    "start": 1795700460000,
+    "dur": 73,
+    "url": "https://soundcloud.com/platform/tycho",
+    "title": "Tycho Boiler Room San Francisco Live Set",
+    "dj": "Tycho",
+    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795704840000,
+    "dur": 75,
+    "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
+    "title": "Aphex Twin - Selected Ambient Works 85-92 (1992)",
+    "dj": "Aphex Twin",
+    "art": "https://i1.sndcdn.com/artworks-znkQvfJ9Vrp35isG-BIIycA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795709340000,
+    "dur": 134,
+    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
+    "title": "Vajra Mind - Ambient mix by AMANI",
+    "dj": "Desert Dwellers",
+    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795717380000,
+    "dur": 119,
+    "url": "https://soundcloud.com/gelipon/bonobo-mixmag-live-2017",
+    "title": "BONOBO Mixmag Live 2017 (DJ Set)",
+    "dj": "Bonobo",
+    "art": "https://i1.sndcdn.com/artworks-000211145196-uihtmk-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795724520000,
+    "dur": 109,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
+    "title": "Four Tet | Live from Lost Village 2025",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-hut": [
    {
     "start": 1795573260000,
     "dur": 112,
@@ -5247,18 +5247,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795569000000,
-    "dur": 80,
-    "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
-    "title": "Honey Dijon Live @ Le Bain April 12, 2014",
-    "dj": "Honey Dijon",
-    "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795573800000,
     "dur": 87,
     "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
@@ -5573,18 +5561,6 @@
   ],
   "zone:sphere": [
    {
-    "start": 1795566840000,
-    "dur": 62,
-    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
-    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
-    "dj": "ANOTR",
-    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795570560000,
     "dur": 60,
     "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
@@ -5862,18 +5838,6 @@
    }
   ],
   "zone:sh-lift": [
-   {
-    "start": 1795564860000,
-    "dur": 129,
-    "url": "https://soundcloud.com/user-863396657/ricardo-villalobos-full-live-set-sundeck-chile-2019",
-    "title": "Ricardo Villalobos Full Live Set @ Sundeck Chile 2019",
-    "dj": "Ricardo Villalobos",
-    "art": "https://i1.sndcdn.com/artworks-ezVgVyUPQW5Nkqwg-zz358g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795572600000,
     "dur": 137,
@@ -6164,18 +6128,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795564680000,
-    "dur": 106,
-    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
-    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
-    "dj": "Dax J",
-    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795571040000,
     "dur": 124,
@@ -6720,5 +6672,5 @@
    }
   ]
  },
- "updated": "2026-11-25T13:35:04.976Z"
+ "updated": "2026-11-25T14:35:08.178Z"
 }
