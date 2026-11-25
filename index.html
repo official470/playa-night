@@ -6111,7 +6111,9 @@ async function stepSync(){ if(SB.busy) return; SB.busy=true; SB.t=0;
 updaters.push((t,dt)=>{ if(!inGame) return; SB.t+=dt; if((SB.k&&stepKey()!==SB.k&&SB.t>2)||(SB.t>(STEPS.open?20:45)&&(STEPS.open||Math.floor(STEPS.n)!==SB.sent))) stepSync(); });
 // every 100 steps: the count pops up over your head with a fanfare and confetti (every 1000: fireworks too)
 const SP_FX=[];
-function stepParty(v){ if(!player||!player.root) return; const big=v%1000===0;
+// a happy moment: inside the iOS app, ask once in a while for an App Store rating (the app decides if it is the right time)
+function rhReviewHint(){ try{ const h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.review; if(h) h.postMessage('milestone'); }catch(e){} }
+function stepParty(v){ if(!player||!player.root) return; const big=v%1000===0; if(v>=300) rhReviewHint();
   const c=document.createElement('canvas'); c.width=512; c.height=224; const x=c.getContext('2d'); x.textAlign='center'; x.lineJoin='round';
   x.font='900 120px sans-serif'; x.lineWidth=18; x.strokeStyle='#1a0f08'; x.strokeText(v.toLocaleString(),256,118); const gr=x.createLinearGradient(0,20,0,124); gr.addColorStop(0,'#fff3a8'); gr.addColorStop(1,big?'#ff4fa8':'#ffb02a'); x.fillStyle=gr; x.fillText(v.toLocaleString(),256,118);
   x.font='800 44px Noto Sans KR, sans-serif'; x.lineWidth=10; const sub='🎉 '+tr('걸음 돌파!'); x.strokeText(sub,256,190); x.fillStyle='#fff'; x.fillText(sub,256,190);
