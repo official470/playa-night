@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795596180000,
-    "dur": 68,
-    "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
-    "title": "259 - Jeff Mills ‎– Live At The Liquid Room - Tokyo (1996)",
-    "dj": "Jeff Mills",
-    "art": "https://i1.sndcdn.com/artworks-000186620556-mhd0z7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795600260000,
     "dur": 106,
     "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
@@ -256,18 +244,6 @@
    }
   ],
   "booth:afro": [
-   {
-    "start": 1795597560000,
-    "dur": 89,
-    "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
-    "title": "APACHE live at RAMPA [Keinemusik] & Friends F1 Miami",
-    "dj": "Apache",
-    "art": "https://i1.sndcdn.com/artworks-A6jt9h6iIQwqrz2B-BAiCcg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795602900000,
     "dur": 59,
@@ -1103,18 +1079,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795598520000,
-    "dur": 61,
-    "url": "https://soundcloud.com/verzila/petre-inspirescu-live-super-dommune-tokyo-japan-03042025",
-    "title": "Petre Inspirescu Live @ SUPER DOMMUNE (Tokyo, Japan) 03/04/2025",
-    "dj": "Petre Inspirescu",
-    "art": "https://i1.sndcdn.com/artworks-nbpCmnhEL3OVPeb7-HKyDeA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795602180000,
     "dur": 88,
     "url": "https://soundcloud.com/platform/boiler-room-berlin-ben-klock",
@@ -1380,18 +1344,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795597860000,
-    "dur": 62,
-    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
-    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
-    "dj": "ANOTR",
-    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795601580000,
     "dur": 115,
@@ -1767,18 +1719,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795593900000,
-    "dur": 121,
-    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
-    "title": "Live from Lost Village — Four Tet [2023]",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795601160000,
     "dur": 68,
     "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
@@ -2092,18 +2032,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795599000000,
-    "dur": 59,
-    "url": "https://soundcloud.com/platform/peggy-gou",
-    "title": "Peggy Gou Boiler Room x Dekmantel Festival DJ Set",
-    "dj": "Peggy Gou",
-    "art": "https://i1.sndcdn.com/artworks-000241463822-16r29o-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795602540000,
     "dur": 71,
@@ -2935,21 +2863,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:teller": [
+   },
    {
-    "start": 1795595820000,
-    "dur": 74,
-    "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
-    "title": "Charlotte de Witte - Live at EDC Las Vegas 2026",
-    "dj": "Charlotte de Witte",
-    "art": "https://i1.sndcdn.com/artworks-WsVBkyeHGQBHzuk2-JQT02Q-t500x500.png",
+    "start": 1795729260000,
+    "dur": 109,
+    "url": "https://soundcloud.com/dfp/dimitri-from-paris-live-slide",
+    "title": "Dimitri From Paris Live @ Brixton Clubhouse, London for Slide On The Terrace 3-6-12",
+    "dj": "Dimitri From Paris",
+    "art": "https://i1.sndcdn.com/artworks-000025559591-89qtbu-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795735800000,
+    "dur": 63,
+    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
+    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
+    "dj": "Franky Rizardo",
+    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795739580000,
+    "dur": 61,
+    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
+    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
+    "dj": "Dam Swindle",
+    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795743240000,
+    "dur": 87,
+    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
+    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
+    "dj": "Todd Terje",
+    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795748460000,
+    "dur": 118,
+    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
+    "title": "Unai Trotti - Live from Dimensions 23'",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:teller": [
    {
     "start": 1795600260000,
     "dur": 120,
@@ -3725,18 +3701,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795598220000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795601760000,
     "dur": 60,
     "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
@@ -4268,18 +4232,6 @@
    }
   ],
   "zone:nm-soop": [
-   {
-    "start": 1795596480000,
-    "dur": 84,
-    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
-    "title": "Jon Hopkins - Live at Glastonbury 2019",
-    "dj": "Jon Hopkins",
-    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795601520000,
     "dur": 117,
@@ -4829,6 +4781,78 @@
     "title": "Four Tet | Live from Lost Village 2025",
     "dj": "Four Tet",
     "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795731060000,
+    "dur": 84,
+    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
+    "title": "Jon Hopkins - Live at Glastonbury 2019",
+    "dj": "Jon Hopkins",
+    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795736100000,
+    "dur": 44,
+    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
+    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795738740000,
+    "dur": 62,
+    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
+    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795742460000,
+    "dur": 112,
+    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
+    "title": "'Infinite' Ambient Mix",
+    "dj": "Ambient",
+    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795749180000,
+    "dur": 79,
+    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
+    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
+    "dj": "Harrison Divecha",
+    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795753920000,
+    "dur": 121,
+    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
+    "title": "Live from Lost Village — Four Tet [2023]",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -5743,18 +5767,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795593000000,
-    "dur": 121,
-    "url": "https://soundcloud.com/fabric/027-nicolas-lutz-recorded-live-from-fabric",
-    "title": "027 - Nicolas Lutz - Recorded live from fabric",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-uCj3tahKTmKvbmfB-IZPvaQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795600260000,
     "dur": 193,
     "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
@@ -6056,18 +6068,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795598160000,
-    "dur": 71,
-    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
-    "title": "S.O.N.S: The Ransom Note Mix",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795602420000,
     "dur": 44,
@@ -6612,5 +6612,5 @@
    }
   ]
  },
- "updated": "2026-11-25T21:35:32.466Z"
+ "updated": "2026-11-25T22:35:35.534Z"
 }
