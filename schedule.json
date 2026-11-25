@@ -269,18 +269,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795558260000,
-    "dur": 173,
-    "url": "https://soundcloud.com/shimza/shimza-live-ammo-ammo-greece",
-    "title": "Shimza Live @ Ammo Ammo Greece 3 Hour Set",
-    "dj": "Shimza",
-    "art": "https://i1.sndcdn.com/artworks-000388880328-jxvhrj-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795568640000,
     "dur": 121,
     "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
@@ -467,6 +455,54 @@
     "title": "BLACK COFFEE Spiritual DJ Set @ Mixmag Live, London",
     "dj": "Black Coffee",
     "art": "https://i1.sndcdn.com/artworks-lSIyiaGdaN19Z5mK-QmjtpQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795698960000,
+    "dur": 178,
+    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
+    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
+    "dj": "Caiiro",
+    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795709640000,
+    "dur": 89,
+    "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
+    "title": "APACHE live at RAMPA [Keinemusik] & Friends F1 Miami",
+    "dj": "Apache",
+    "art": "https://i1.sndcdn.com/artworks-A6jt9h6iIQwqrz2B-BAiCcg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795714980000,
+    "dur": 59,
+    "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
+    "title": "Karma Karma Radio 100 - Shimza live from Scorpios, Mykonos",
+    "dj": "Shimza",
+    "art": "https://i1.sndcdn.com/artworks-NgYHQtHgQOEnkaNU-6Td2kw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795718520000,
+    "dur": 131,
+    "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
+    "title": "BLACK COFFEE LIVE BRASIL FULL SET 2023.mp3",
+    "dj": "Black Coffee",
+    "art": "https://i1.sndcdn.com/artworks-4Ot9YdJsKtKzOzy8-RpqEaA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -1393,18 +1429,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795564800000,
-    "dur": 59,
-    "url": "https://soundcloud.com/mayank-bisht-649299172/zedd-live-ultra-music-festival",
-    "title": "ZEDD LIVE @ ULTRA MUSIC FESTIVAL MIAMI (2025)",
-    "dj": "Zedd",
-    "art": "https://i1.sndcdn.com/artworks-mcIyBVAGmajyFTL8-akkbmA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795568340000,
     "dur": 62,
     "url": "https://soundcloud.com/dimitrivegasandlikemike/tl-dvlm-2012-live",
@@ -1695,18 +1719,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795563780000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/mall-grab",
-    "title": "Mall Grab Boiler Room Paris DJ set",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-000173714296-ig7f1e-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795567380000,
     "dur": 60,
     "url": "https://soundcloud.com/traxsource/live-395-kerri-chandler",
@@ -1969,11 +1981,33 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:potty": [
+   },
    {
-    "start": 1795563480000,
+    "start": 1795698900000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
+    "title": "Folamour | Boiler Room x Sugar Mountain 2024",
+    "dj": "Folamour",
+    "art": "https://i1.sndcdn.com/artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795702500000,
+    "dur": 117,
+    "url": "https://soundcloud.com/solomun-destino-ibiza/solomun-live-solomun-live-destino-ibiza-25-08-2016",
+    "title": "Solomun - Live @ Solomun + Live (Destino, Ibiza) - 25-08-2016",
+    "dj": "Solomun",
+    "art": "https://i1.sndcdn.com/artworks-000180455302-62upcl-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795709520000,
     "dur": 109,
     "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
     "title": "Four Tet | Live from Lost Village 2025",
@@ -1984,6 +2018,32 @@
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795716060000,
+    "dur": 71,
+    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
+    "title": "S.O.N.S: The Ransom Note Mix",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795720320000,
+    "dur": 87,
+    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
+    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
+    "dj": "Todd Terje",
+    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:potty": [
    {
     "start": 1795570020000,
     "dur": 89,
@@ -2259,21 +2319,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "club3": [
+   },
    {
-    "start": 1795560600000,
-    "dur": 150,
-    "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
-    "title": "Comfort Mix 004 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-ly0csIMhZDf2yqym-C8QKzg-t500x500.png",
+    "start": 1795697580000,
+    "dur": 109,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
+    "title": "Four Tet | Live from Lost Village 2025",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795704120000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/mall-grab",
+    "title": "Mall Grab Boiler Room Paris DJ set",
+    "dj": "Mall Grab",
+    "art": "https://i1.sndcdn.com/artworks-000173714296-ig7f1e-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795707720000,
+    "dur": 91,
+    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
+    "title": "Boiler Room Set Melbourne '22",
+    "dj": "Mall Grab",
+    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795713180000,
+    "dur": 59,
+    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
+    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795716720000,
+    "dur": 123,
+    "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
+    "title": "PAWSA ESSENTIAL MIX 2024",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-tM9XyF5Nj0MznBQY-3Aae9g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "club3": [
    {
     "start": 1795569600000,
     "dur": 102,
@@ -2831,18 +2939,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795563960000,
-    "dur": 88,
-    "url": "https://soundcloud.com/platform/boiler-room-berlin-ben-klock",
-    "title": "Ben Klock Boiler Room Berlin DJ Set",
-    "dj": "Ben Klock",
-    "art": "https://i1.sndcdn.com/artworks-000041329677-78q9sa-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795569240000,
     "dur": 193,
     "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
@@ -3108,18 +3204,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795558680000,
-    "dur": 160,
-    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
-    "title": "Phonotheque 2020 Live Recording",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795568280000,
     "dur": 103,
@@ -3398,18 +3482,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795562280000,
-    "dur": 121,
-    "url": "https://soundcloud.com/platform/jayda-g",
-    "title": "Jayda G Boiler Room London Studio DJ Set",
-    "dj": "Jayda G",
-    "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795569540000,
     "dur": 91,
@@ -4193,21 +4265,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-soop": [
+   },
    {
-    "start": 1795547100000,
-    "dur": 346,
-    "url": "https://soundcloud.com/nicolaslutz/womb_250322_nicolas-lutz",
-    "title": "Nicolas Lutz - Live at WOMBTOKYO 22/03/2025",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-yw81kfmVFs9OPYGy-WDz41Q-t500x500.png",
+    "start": 1795698960000,
+    "dur": 89,
+    "url": "https://soundcloud.com/cerclelive/wmw-abu-simbel",
+    "title": "WhoMadeWho live at Abu Simbel, Egypt for Cercle",
+    "dj": "WhoMadeWho",
+    "art": "https://i1.sndcdn.com/artworks-SUxt4SORoy5z4PAk-3Bxjbw-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795704300000,
+    "dur": 119,
+    "url": "https://soundcloud.com/gelipon/bonobo-mixmag-live-2017",
+    "title": "BONOBO Mixmag Live 2017 (DJ Set)",
+    "dj": "Bonobo",
+    "art": "https://i1.sndcdn.com/artworks-000211145196-uihtmk-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795711440000,
+    "dur": 178,
+    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
+    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
+    "dj": "Caiiro",
+    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-soop": [
    {
     "start": 1795567860000,
     "dur": 178,
@@ -4431,6 +4527,54 @@
     "title": "Warning #100 S.O.N.S",
     "dj": "S.O.N.S",
     "art": "https://i1.sndcdn.com/artworks-iJJs7urNQ4PPwWAY-eoM4sA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795699620000,
+    "dur": 61,
+    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
+    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795703280000,
+    "dur": 104,
+    "url": "https://soundcloud.com/cerclelive/monolink-live-at-cercle-odyssey-paris-france",
+    "title": "Monolink live at Cercle Odyssey, Paris, France",
+    "dj": "Monolink",
+    "art": "https://i1.sndcdn.com/artworks-nwlERxrkg0EN5sf8-qskzVQ-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795709520000,
+    "dur": 135,
+    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
+    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795717620000,
+    "dur": 92,
+    "url": "https://soundcloud.com/cerclelive/whomadewho-cercle-odyssey",
+    "title": "WhoMadeWho live at Cercle Odyssey, Mexico City, Mexico",
+    "dj": "WhoMadeWho",
+    "art": "https://i1.sndcdn.com/artworks-ilK1pfhebAeZb9fI-KVAuSA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -4728,18 +4872,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795560480000,
-    "dur": 134,
-    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
-    "title": "Vajra Mind - Ambient mix by AMANI",
-    "dj": "Desert Dwellers",
-    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795568520000,
     "dur": 79,
@@ -5063,21 +5195,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-aero": [
+   },
    {
-    "start": 1795543200000,
-    "dur": 430,
-    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
-    "title": "PAWSA IN THE PARK LONDON 2025",
-    "dj": "PAWSA",
-    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
+    "start": 1795699440000,
+    "dur": 134,
+    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
+    "title": "Vajra Mind - Ambient mix by AMANI",
+    "dj": "Desert Dwellers",
+    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795707480000,
+    "dur": 79,
+    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
+    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
+    "dj": "Harrison Divecha",
+    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795712220000,
+    "dur": 112,
+    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
+    "title": "'Infinite' Ambient Mix",
+    "dj": "Ambient",
+    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795718940000,
+    "dur": 75,
+    "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
+    "title": "Aphex Twin - Selected Ambient Works 85-92 (1992)",
+    "dj": "Aphex Twin",
+    "art": "https://i1.sndcdn.com/artworks-znkQvfJ9Vrp35isG-BIIycA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-aero": [
    {
     "start": 1795569000000,
     "dur": 80,
@@ -5349,6 +5517,54 @@
     "title": "Dom Dolla Live @ Allianz Stadium, Sydney 2025",
     "dj": "Dom Dolla",
     "art": "https://i1.sndcdn.com/artworks-vcG6hK83U1EWXGFV-O4yiAA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795697820000,
+    "dur": 104,
+    "url": "https://soundcloud.com/johnsummit/john-summit-live-club-space-miami-sunrise-set-1",
+    "title": "John Summit LIVE @ Club Space Miami (Sunrise Set)",
+    "dj": "John Summit",
+    "art": "https://i1.sndcdn.com/artworks-rzgXxMhPyjHzmpym-DfEkwA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795704060000,
+    "dur": 90,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-the-village-horse-meat-disco",
+    "title": "Live from the Village - Horse Meat Disco",
+    "dj": "Horse Meat Disco",
+    "art": "https://i1.sndcdn.com/artworks-wqKIc1djvdQh9irU-8VAXeA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795709460000,
+    "dur": 160,
+    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
+    "title": "Phonotheque 2020 Live Recording",
+    "dj": "KINO",
+    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795719060000,
+    "dur": 430,
+    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
+    "title": "PAWSA IN THE PARK LONDON 2025",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -5881,6 +6097,66 @@
     "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
     "dj": "Unai Trotti",
     "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795698780000,
+    "dur": 102,
+    "url": "https://soundcloud.com/dau_ra/ring_seoul",
+    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795704900000,
+    "dur": 77,
+    "url": "https://soundcloud.com/user-105919562/ricardo-villalobos-live-from",
+    "title": "Ricardo Villalobos - Live from Circoloco DC-10 Ibiza (20.07.26 Garden)",
+    "dj": "Ricardo Villalobos",
+    "art": "https://i1.sndcdn.com/artworks-qputnArtcOedzLwK-NAvLVw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795709520000,
+    "dur": 129,
+    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
+    "title": "RA.1017 Unai Trotti",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795717260000,
+    "dur": 60,
+    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
+    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
+    "dj": "Layton Giordani",
+    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795720860000,
+    "dur": 106,
+    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
+    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
+    "dj": "Dax J",
+    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -6444,5 +6720,5 @@
    }
   ]
  },
- "updated": "2026-11-25T12:35:01.203Z"
+ "updated": "2026-11-25T13:35:04.976Z"
 }
