@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795664700000,
-    "dur": 102,
-    "url": "https://soundcloud.com/dau_ra/ring_seoul",
-    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795670820000,
     "dur": 71,
     "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
@@ -232,18 +220,6 @@
    }
   ],
   "booth:afro": [
-   {
-    "start": 1795662480000,
-    "dur": 131,
-    "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
-    "title": "BLACK COFFEE LIVE BRASIL FULL SET 2023.mp3",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-4Ot9YdJsKtKzOzy8-RpqEaA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795670340000,
     "dur": 173,
@@ -1357,18 +1333,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795663800000,
-    "dur": 71,
-    "url": "https://soundcloud.com/user-640487736/armin-van-buuren-live-edc-las-vegas-2016-full-set-free-download",
-    "title": "Armin Van Buuren - Live @ EDC Las Vegas 2016 (Full Set) [Free Download]",
-    "dj": "Armin van Buuren",
-    "art": "https://i1.sndcdn.com/artworks-000168195679-3ifc2v-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795668060000,
     "dur": 76,
     "url": "https://soundcloud.com/blasterjaxx/blasterjaxx-live-tomorrowland-2025-the-great-library-stage-full-set",
@@ -1631,21 +1595,81 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:disco": [
+   },
    {
-    "start": 1795661400000,
-    "dur": 160,
-    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
-    "title": "Phonotheque 2020 Live Recording",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
+    "start": 1795797720000,
+    "dur": 60,
+    "url": "https://soundcloud.com/nickyromero/nicky-romero-classic-set-live-at-tomorrowland-planaxis-2025",
+    "title": "Nicky Romero Classic Set LIVE at Tomorrowland Planaxis 2025",
+    "dj": "Nicky Romero",
+    "art": "https://i1.sndcdn.com/artworks-J4DskQ7ioLdZVZ8m-0we3IQ-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795801320000,
+    "dur": 114,
+    "url": "https://soundcloud.com/tanniix/anymagenesys",
+    "title": "ANYMA: THE END OF GENESY II FINALE @ SPHERE ft. Cassian & John Summit 02-25 (Live Set Inspired Mix)",
+    "dj": "Anyma",
+    "art": "https://i1.sndcdn.com/artworks-MGrLnKk8DX92aHEc-ldULCg-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795808160000,
+    "dur": 59,
+    "url": "https://soundcloud.com/hexagon/don-diablo-live-at-ultra-miami-2016",
+    "title": "Don Diablo Live at ULTRA Miami 2016",
+    "dj": "Don Diablo",
+    "art": "https://i1.sndcdn.com/artworks-000153657330-9h9b6j-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795811700000,
+    "dur": 71,
+    "url": "https://soundcloud.com/user-640487736/armin-van-buuren-live-edc-las-vegas-2016-full-set-free-download",
+    "title": "Armin Van Buuren - Live @ EDC Las Vegas 2016 (Full Set) [Free Download]",
+    "dj": "Armin van Buuren",
+    "art": "https://i1.sndcdn.com/artworks-000168195679-3ifc2v-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795815960000,
+    "dur": 62,
+    "url": "https://soundcloud.com/vvvfrankie/skrillex-live-ultra-music-festival-2015-diplo-justine-biber-jack-u-kiesza-p-diddy-dj-snake",
+    "title": "SKRILLEX LIVE @ ULTRA MUSIC FESTIVAL 2015 FULL SET (Diplo Justin Bieber Jack U Kiesza Dj Snake)",
+    "dj": "Skrillex",
+    "art": "https://i1.sndcdn.com/artworks-000124856288-whf3x3-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795819680000,
+    "dur": 76,
+    "url": "https://soundcloud.com/blasterjaxx/blasterjaxx-live-tomorrowland-2025-the-great-library-stage-full-set",
+    "title": "Blasterjaxx | LIVE @ Tomorrowland 2025 - The Great Library Stage [FULL SET]",
+    "dj": "Blasterjaxx",
+    "art": "https://i1.sndcdn.com/artworks-Q6x97hehifsqplas-re0WiA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:disco": [
    {
     "start": 1795671000000,
     "dur": 109,
@@ -1924,18 +1948,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795662900000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795670220000,
     "dur": 104,
@@ -3037,18 +3049,6 @@
   ],
   "zone:ring": [
    {
-    "start": 1795659360000,
-    "dur": 149,
-    "url": "https://soundcloud.com/oho990828/teller-seoul-26-07-16",
-    "title": "Oho @Teller 26.07.16",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-grA9JcbDWWI5SNLf-zEvC5Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795668300000,
     "dur": 64,
     "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
@@ -3541,21 +3541,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-jandi": [
+   },
    {
-    "start": 1795664760000,
-    "dur": 86,
-    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
-    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
-    "dj": "Purple Disco Machine",
-    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
+    "start": 1795798620000,
+    "dur": 60,
+    "url": "https://soundcloud.com/traxsource/live-395-kerri-chandler",
+    "title": "Traxsource LIVE! #395 with Kerri Chandler",
+    "dj": "Kerri Chandler",
+    "art": "https://i1.sndcdn.com/artworks-G3XP33D1DOTX7o6w-3Sby4A-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795802220000,
+    "dur": 64,
+    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
+    "title": "EOS Radio - Minkyu 28.07.2024",
+    "dj": "Minkyu",
+    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795806060000,
+    "dur": 122,
+    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
+    "title": "EOS Radio - November 2021",
+    "dj": "KINO",
+    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795813380000,
+    "dur": 119,
+    "url": "https://soundcloud.com/postervoyage/here061226",
+    "title": "@here June/12/2026",
+    "dj": "Kyuchan",
+    "art": "https://i1.sndcdn.com/artworks-YGf2c8hdyi8BI78A-RgR3yA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795820520000,
+    "dur": 63,
+    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
+    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
+    "dj": "Franky Rizardo",
+    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-jandi": [
    {
     "start": 1795669920000,
     "dur": 121,
@@ -3759,21 +3807,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-hanok": [
+   },
    {
-    "start": 1795665420000,
-    "dur": 64,
-    "url": "https://soundcloud.com/innellea/live-set-recorded-off-barcelona",
-    "title": "Live-Set @ OFF-Barcelona | 14.06.17 | Plötzlich Musik Showcase",
-    "dj": "Innellea",
-    "art": "https://i1.sndcdn.com/artworks-000229169989-alazme-t500x500.jpg",
+    "start": 1795799160000,
+    "dur": 59,
+    "url": "https://soundcloud.com/dannyhowarddj/danny-howard-live-ushuaia-ibiza",
+    "title": "Danny Howard (Live DJ Set) Defected @ Ushuaia Ibiza",
+    "dj": "Danny Howard",
+    "art": "https://i1.sndcdn.com/artworks-zrleu0A1V57IMDXV-lYGd6g-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795802700000,
+    "dur": 182,
+    "url": "https://soundcloud.com/wus_fest/sons-2022",
+    "title": "S.O.N.S. at WUS2022",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-Y87UL9bxFTAdmcxe-w1txyg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795813620000,
+    "dur": 213,
+    "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
+    "title": "Outransa - Cartulis Podcast 057",
+    "dj": "Kensa",
+    "art": "https://i1.sndcdn.com/artworks-N1OTGQBqWriyoCU6-mxPb9w-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-hanok": [
    {
     "start": 1795669260000,
     "dur": 74,
@@ -4001,21 +4073,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-soop": [
+   },
    {
-    "start": 1795665900000,
-    "dur": 67,
-    "url": "https://soundcloud.com/umftv2016/deadmau5-live-ultra-2016-asot-stage-full-set-free-download",
-    "title": "deadmau5 - Live @ Ultra 2016 (ASOT Stage) [Full Set] [Free Download]",
-    "dj": "deadmau5",
-    "art": "https://i1.sndcdn.com/artworks-000153717656-2owv02-t500x500.jpg",
+    "start": 1795799940000,
+    "dur": 60,
+    "url": "https://soundcloud.com/thisman1/tale-of-us-gta-online-after-hours-full-liveset-2018",
+    "title": "Tale Of Us - GTA Online (After Hours) [Full Liveset 2018]",
+    "dj": "Tale Of Us",
+    "art": "https://i1.sndcdn.com/artworks-000382999770-xrmhdc-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795803540000,
+    "dur": 121,
+    "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
+    "title": "Keinemusik Radio Show 100 live at Else Berlin by &ME, Rampa, Reznik, Adam Port",
+    "dj": "Keinemusik (&ME, Rampa, Adam Port)",
+    "art": "https://i1.sndcdn.com/artworks-000176184477-601nwg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795810800000,
+    "dur": 80,
+    "url": "https://soundcloud.com/platform/stephan-bodzin",
+    "title": "Stephan Bodzin Boiler Room Berlin Live Set",
+    "dj": "Stephan Bodzin",
+    "art": "https://i1.sndcdn.com/artworks-000132066481-7ill9d-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795815600000,
+    "dur": 73,
+    "url": "https://soundcloud.com/platform/tycho",
+    "title": "Tycho Boiler Room San Francisco Live Set",
+    "dj": "Tycho",
+    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795819980000,
+    "dur": 173,
+    "url": "https://soundcloud.com/shimza/shimza-live-ammo-ammo-greece",
+    "title": "Shimza Live @ Ammo Ammo Greece 3 Hour Set",
+    "dj": "Shimza",
+    "art": "https://i1.sndcdn.com/artworks-000388880328-jxvhrj-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-soop": [
    {
     "start": 1795669920000,
     "dur": 60,
@@ -4267,21 +4387,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-exp": [
+   },
    {
-    "start": 1795663800000,
-    "dur": 109,
-    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
-    "title": "Four Tet | Live from Lost Village 2025",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
+    "start": 1795800180000,
+    "dur": 179,
+    "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
+    "title": "Recorded at Houghton - Nicolas Lutz (2022)",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-XHeC6dnHfNj0SNXy-gNnOWg-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795810920000,
+    "dur": 91,
+    "url": "https://soundcloud.com/cerclelive/monolink-live-at-gaatafushi-island-in-the-maldives-for-cercle-and-w-hotels",
+    "title": "Monolink live at Gaatafushi Island, in the Maldives for Cercle and W Hotels",
+    "dj": "Monolink",
+    "art": "https://i1.sndcdn.com/artworks-pwf4myqQ8CsRYZPM-aQR59Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795816380000,
+    "dur": 182,
+    "url": "https://soundcloud.com/wus_fest/sons-2022",
+    "title": "S.O.N.S. at WUS2022",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-Y87UL9bxFTAdmcxe-w1txyg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-exp": [
    {
     "start": 1795670340000,
     "dur": 84,
@@ -4935,18 +5079,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795661280000,
-    "dur": 129,
-    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
-    "title": "RA.1017 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795669020000,
     "dur": 60,
     "url": "https://soundcloud.com/platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set",
@@ -5224,18 +5356,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795667040000,
-    "dur": 59,
-    "url": "https://soundcloud.com/hexagon/don-diablo-live-at-ultra-miami-2016",
-    "title": "Don Diablo Live at ULTRA Miami 2016",
-    "dj": "Don Diablo",
-    "art": "https://i1.sndcdn.com/artworks-000153657330-9h9b6j-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795670580000,
     "dur": 120,
@@ -5515,18 +5635,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795664340000,
-    "dur": 61,
-    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
-    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795668000000,
     "dur": 63,
     "url": "https://soundcloud.com/chris-lukasz-jankowski/zip-live-dj-set-6-years-of-sunrise-perlon-party-buchares-2007-1",
@@ -5805,18 +5913,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795660680000,
-    "dur": 120,
-    "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
-    "title": "DCR827 – Drumcode Radio Live - Adam Beyer live from Drumcode Mallorca",
-    "dj": "Adam Beyer",
-    "art": "https://i1.sndcdn.com/artworks-zzH6JpXaBEqTGwM8-ExoDZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795667880000,
     "dur": 90,
     "url": "https://soundcloud.com/avidmuzikfan-725076808/amelie-lens-live-ultra-miami-2024",
@@ -6083,18 +6179,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795664400000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
-    "title": "Folamour | Boiler Room x Sugar Mountain 2024",
-    "dj": "Folamour",
-    "art": "https://i1.sndcdn.com/artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795668000000,
     "dur": 91,
     "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
@@ -6360,5 +6444,5 @@
    }
   ]
  },
- "updated": "2026-11-26T16:36:30.200Z"
+ "updated": "2026-11-26T17:36:33.331Z"
 }
