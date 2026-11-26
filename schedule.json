@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795629060000,
-    "dur": 63,
-    "url": "https://soundcloud.com/platform/reinier-zonneveld",
-    "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795632840000,
     "dur": 193,
     "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
@@ -245,18 +233,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795624680000,
-    "dur": 121,
-    "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
-    "title": "Keinemusik Radio Show 100 live at Else Berlin by &ME, Rampa, Reznik, Adam Port",
-    "dj": "Keinemusik (&ME, Rampa, Adam Port)",
-    "art": "https://i1.sndcdn.com/artworks-000176184477-601nwg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795631940000,
     "dur": 183,
     "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
@@ -486,18 +462,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795626960000,
-    "dur": 83,
-    "url": "https://soundcloud.com/hayden-halling/excision-presents-the-thunderdome-2020-live-experience",
-    "title": "Excision Thunderdome 2020 Full Live Set",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-SbwmYxDWR31hMxrJ-lEyttQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795631940000,
     "dur": 60,
@@ -860,18 +824,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795624980000,
-    "dur": 115,
-    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
-    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
-    "dj": "Vintage Culture b2b Mochakk",
-    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795631880000,
     "dur": 61,
@@ -1404,18 +1356,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795630260000,
-    "dur": 77,
-    "url": "https://soundcloud.com/jackedradio/afrojack-presents-jacked-radio-649-live-set-ultra-music-festival-2024",
-    "title": "AFROJACK Presents JACKED Radio – 649 (Live set Ultra Music Festival 2024)",
-    "dj": "Afrojack",
-    "art": "https://i1.sndcdn.com/artworks-6Lidmuivll3yryi8-ye8DJQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795634880000,
     "dur": 125,
@@ -2032,18 +1972,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795627080000,
-    "dur": 121,
-    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
-    "title": "Live from Lost Village — Four Tet [2023]",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795634340000,
     "dur": 60,
@@ -3455,21 +3383,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:studio": [
+   },
    {
-    "start": 1795622580000,
-    "dur": 160,
-    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
-    "title": "Phonotheque 2020 Live Recording",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
+    "start": 1795762920000,
+    "dur": 124,
+    "url": "https://soundcloud.com/dkmntl/dekmantel-mix-513-nicolas-lutz",
+    "title": "Dekmantel Mix 513 - Nicolas Lutz",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-jgUL4Pr8wVcguzZu-DSppFQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795770360000,
+    "dur": 119,
+    "url": "https://soundcloud.com/postervoyage/here061226",
+    "title": "@here June/12/2026",
+    "dj": "Kyuchan",
+    "art": "https://i1.sndcdn.com/artworks-YGf2c8hdyi8BI78A-RgR3yA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795777500000,
+    "dur": 129,
+    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
+    "title": "RA.1017 Unai Trotti",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795785240000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
+    "title": "Folamour | Boiler Room x Sugar Mountain 2024",
+    "dj": "Folamour",
+    "art": "https://i1.sndcdn.com/artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:studio": [
    {
     "start": 1795632180000,
     "dur": 119,
@@ -3918,18 +3882,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795628880000,
-    "dur": 91,
-    "url": "https://soundcloud.com/cerclelive/monolink-live-at-gaatafushi-island-in-the-maldives-for-cercle-and-w-hotels",
-    "title": "Monolink live at Gaatafushi Island, in the Maldives for Cercle and W Hotels",
-    "dj": "Monolink",
-    "art": "https://i1.sndcdn.com/artworks-pwf4myqQ8CsRYZPM-aQR59Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795634340000,
     "dur": 84,
@@ -4450,18 +4402,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795628760000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795632480000,
     "dur": 73,
@@ -5380,18 +5320,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795629360000,
-    "dur": 62,
-    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
-    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
-    "dj": "Oliver Heldens",
-    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795633080000,
     "dur": 104,
@@ -6660,5 +6588,5 @@
    }
   ]
  },
- "updated": "2026-11-26T06:35:56.611Z"
+ "updated": "2026-11-26T07:35:59.861Z"
 }
