@@ -257,18 +257,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795670340000,
-    "dur": 173,
-    "url": "https://soundcloud.com/shimza/shimza-live-ammo-ammo-greece",
-    "title": "Shimza Live @ Ammo Ammo Greece 3 Hour Set",
-    "dj": "Shimza",
-    "art": "https://i1.sndcdn.com/artworks-000388880328-jxvhrj-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795680720000,
     "dur": 121,
     "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
@@ -459,21 +447,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:dubstep": [
+   },
    {
-    "start": 1795676700000,
-    "dur": 83,
-    "url": "https://soundcloud.com/hayden-halling/excision-presents-the-thunderdome-2020-live-experience",
-    "title": "Excision Thunderdome 2020 Full Live Set",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-SbwmYxDWR31hMxrJ-lEyttQ-t500x500.jpg",
+    "start": 1795811040000,
+    "dur": 178,
+    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
+    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
+    "dj": "Caiiro",
+    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795821720000,
+    "dur": 89,
+    "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
+    "title": "APACHE live at RAMPA [Keinemusik] & Friends F1 Miami",
+    "dj": "Apache",
+    "art": "https://i1.sndcdn.com/artworks-A6jt9h6iIQwqrz2B-BAiCcg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795827060000,
+    "dur": 59,
+    "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
+    "title": "Karma Karma Radio 100 - Shimza live from Scorpios, Mykonos",
+    "dj": "Shimza",
+    "art": "https://i1.sndcdn.com/artworks-NgYHQtHgQOEnkaNU-6Td2kw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795830600000,
+    "dur": 131,
+    "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
+    "title": "BLACK COFFEE LIVE BRASIL FULL SET 2023.mp3",
+    "dj": "Black Coffee",
+    "art": "https://i1.sndcdn.com/artworks-4Ot9YdJsKtKzOzy8-RpqEaA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:dubstep": [
    {
     "start": 1795681680000,
     "dur": 60,
@@ -1417,18 +1441,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795676640000,
-    "dur": 89,
-    "url": "https://soundcloud.com/johnsummit/everything-always-live-ultra-miami-2025",
-    "title": "Everything Always (Dom Dolla & John Summit) Live @ Ultra Music Festival 2025",
-    "dj": "Everything Always (Dom Dolla & John Summit)",
-    "art": "https://i1.sndcdn.com/artworks-SnnzOZhvt3kJ5Ou8-onWFpg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795681980000,
     "dur": 75,
     "url": "https://soundcloud.com/user-311822035/alesso-live-edc-las-vegas-2016-full-set-free-download",
@@ -1996,18 +2008,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795676460000,
-    "dur": 59,
-    "url": "https://soundcloud.com/dannyhowarddj/danny-howard-live-ushuaia-ibiza",
-    "title": "Danny Howard (Live DJ Set) Defected @ Ushuaia Ibiza",
-    "dj": "Danny Howard",
-    "art": "https://i1.sndcdn.com/artworks-zrleu0A1V57IMDXV-lYGd6g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795680000000,
     "dur": 80,
@@ -2577,18 +2577,6 @@
   ],
   "club4": [
    {
-    "start": 1795674240000,
-    "dur": 121,
-    "url": "https://soundcloud.com/loveintfestival/live-from-the-adriatic-2026",
-    "title": "Live from the Adriatic 2026: Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-j3dvrrsIze8KHyJ9-rgMmCQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795681500000,
     "dur": 60,
     "url": "https://soundcloud.com/traxsource/live-395-kerri-chandler",
@@ -2843,18 +2831,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795676280000,
-    "dur": 61,
-    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
-    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795679940000,
     "dur": 115,
     "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
@@ -3069,21 +3045,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:ring": [
+   },
    {
-    "start": 1795677300000,
-    "dur": 61,
-    "url": "https://soundcloud.com/verzila/petre-inspirescu-live-super-dommune-tokyo-japan-03042025",
-    "title": "Petre Inspirescu Live @ SUPER DOMMUNE (Tokyo, Japan) 03/04/2025",
-    "dj": "Petre Inspirescu",
-    "art": "https://i1.sndcdn.com/artworks-nbpCmnhEL3OVPeb7-HKyDeA-t500x500.png",
+    "start": 1795810620000,
+    "dur": 192,
+    "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
+    "title": "Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025",
+    "dj": "Minkyu",
+    "art": "https://i1.sndcdn.com/artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795822140000,
+    "dur": 64,
+    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
+    "title": "EOS Radio - Minkyu 28.07.2024",
+    "dj": "Minkyu",
+    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795825980000,
+    "dur": 76,
+    "url": "https://soundcloud.com/platform/boiler-room-berlin-nina-kraviz",
+    "title": "Nina Kraviz Boiler Room Berlin DJ Set",
+    "dj": "Nina Kraviz",
+    "art": "https://i1.sndcdn.com/artworks-000041355784-ik7zlb-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795830540000,
+    "dur": 178,
+    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
+    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:ring": [
    {
     "start": 1795680960000,
     "dur": 192,
@@ -4665,6 +4677,54 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795809900000,
+    "dur": 121,
+    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
+    "title": "Live from Lost Village — Four Tet [2023]",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795817160000,
+    "dur": 79,
+    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
+    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
+    "dj": "Harrison Divecha",
+    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795821900000,
+    "dur": 75,
+    "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
+    "title": "Aphex Twin - Selected Ambient Works 85-92 (1992)",
+    "dj": "Aphex Twin",
+    "art": "https://i1.sndcdn.com/artworks-znkQvfJ9Vrp35isG-BIIycA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795826400000,
+    "dur": 119,
+    "url": "https://soundcloud.com/gelipon/bonobo-mixmag-live-2017",
+    "title": "BONOBO Mixmag Live 2017 (DJ Set)",
+    "dj": "Bonobo",
+    "art": "https://i1.sndcdn.com/artworks-000211145196-uihtmk-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:nm-hut": [
@@ -5030,18 +5090,6 @@
    }
   ],
   "zone:nm-aero": [
-   {
-    "start": 1795676220000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
-    "title": "Folamour | Boiler Room x Sugar Mountain 2024",
-    "dj": "Folamour",
-    "art": "https://i1.sndcdn.com/artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795679820000,
     "dur": 121,
@@ -5865,18 +5913,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795673280000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795680600000,
     "dur": 346,
     "url": "https://soundcloud.com/nicolaslutz/womb_250322_nicolas-lutz",
@@ -6118,18 +6154,6 @@
    }
   ],
   "zone:sh-green": [
-   {
-    "start": 1795673460000,
-    "dur": 90,
-    "url": "https://soundcloud.com/lost-village-festival/live-from-the-village-horse-meat-disco",
-    "title": "Live from the Village - Horse Meat Disco",
-    "dj": "Horse Meat Disco",
-    "art": "https://i1.sndcdn.com/artworks-wqKIc1djvdQh9irU-8VAXeA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795678860000,
     "dur": 60,
@@ -6420,5 +6444,5 @@
    }
   ]
  },
- "updated": "2026-11-26T19:36:39.648Z"
+ "updated": "2026-11-26T20:36:42.775Z"
 }
