@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795660260000,
-    "dur": 74,
-    "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
-    "title": "Charlotte de Witte - Live at EDC Las Vegas 2026",
-    "dj": "Charlotte de Witte",
-    "art": "https://i1.sndcdn.com/artworks-WsVBkyeHGQBHzuk2-JQT02Q-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795664700000,
     "dur": 102,
     "url": "https://soundcloud.com/dau_ra/ring_seoul",
@@ -463,18 +451,6 @@
   ],
   "booth:dubstep": [
    {
-    "start": 1795662600000,
-    "dur": 55,
-    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
-    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795665900000,
     "dur": 118,
     "url": "https://soundcloud.com/zedsdead/zeds-dead-live-at-fabric",
@@ -805,6 +781,78 @@
     "title": "SKRILLEX LIVE @ ULTRA MUSIC FESTIVAL 2015 FULL SET (Diplo Justin Bieber Jack U Kiesza Dj Snake)",
     "dj": "Skrillex",
     "art": "https://i1.sndcdn.com/artworks-000124856288-whf3x3-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795793880000,
+    "dur": 59,
+    "url": "https://soundcloud.com/bass_cave/chase-and-status-ultra-music-festival-2025-full-set",
+    "title": "Chase and Status - Ultra Music Festival 2025 [FULL SET]",
+    "dj": "Chase & Status",
+    "art": "https://i1.sndcdn.com/artworks-VZ9IOQvB4wMFbXQE-lLuiEg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795797420000,
+    "dur": 96,
+    "url": "https://soundcloud.com/deadbeatsrecords/300-deadbeats-radio-with-zeds-dead-live-from-electric-forest-afters-edition",
+    "title": "#300 Deadbeats Radio with Zeds Dead | After Hours Set Live from Electric Forest EVOL Renegade",
+    "dj": "Zeds Dead",
+    "art": "https://i1.sndcdn.com/artworks-e31EeM0tgaoa6Y6T-Zs41hQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795803180000,
+    "dur": 74,
+    "url": "https://soundcloud.com/elivesets/rl-grime-live-edc-las-vegas",
+    "title": "RL Grime - Live @ EDC Las Vegas 2025",
+    "dj": "RL Grime",
+    "art": "https://i1.sndcdn.com/artworks-YOY9tUwmTufNNjtR-pcEGdA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795807620000,
+    "dur": 70,
+    "url": "https://soundcloud.com/johnnykham-745185291/subtronics-edc-las-vegas-2026",
+    "title": "Subtronics - EDC Las Vegas 2026 (Full Set)",
+    "dj": "Subtronics",
+    "art": "https://i1.sndcdn.com/artworks-mmVONtRPHsBhzlFV-zNZfxw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795811820000,
+    "dur": 55,
+    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
+    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
+    "dj": "Excision",
+    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795815120000,
+    "dur": 118,
+    "url": "https://soundcloud.com/zedsdead/zeds-dead-live-at-fabric",
+    "title": "Zeds Dead - Live at fabric London",
+    "dj": "Zeds Dead",
+    "art": "https://i1.sndcdn.com/artworks-wcAyRDsREr4z1CJ3-Q9sHcw-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -2155,18 +2203,6 @@
   ],
   "club3": [
    {
-    "start": 1795660320000,
-    "dur": 117,
-    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
-    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795667340000,
     "dur": 179,
     "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
@@ -2747,18 +2783,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795660620000,
-    "dur": 76,
-    "url": "https://soundcloud.com/platform/boiler-room-berlin-nina-kraviz",
-    "title": "Nina Kraviz Boiler Room Berlin DJ Set",
-    "dj": "Nina Kraviz",
-    "art": "https://i1.sndcdn.com/artworks-000041355784-ik7zlb-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795665180000,
     "dur": 122,
     "url": "https://soundcloud.com/platform/dax-j-boiler-room-x-eristoff-into-the-darkdj-set",
@@ -3303,18 +3327,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795663440000,
-    "dur": 64,
-    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
-    "title": "EOS Radio - Minkyu 28.07.2024",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795667280000,
     "dur": 430,
     "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
@@ -3533,18 +3545,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795638960000,
-    "dur": 430,
-    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
-    "title": "PAWSA IN THE PARK LONDON 2025",
-    "dj": "PAWSA",
-    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795664760000,
     "dur": 86,
     "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
@@ -3762,18 +3762,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795659900000,
-    "dur": 92,
-    "url": "https://soundcloud.com/cerclelive/whomadewho-cercle-odyssey",
-    "title": "WhoMadeWho live at Cercle Odyssey, Mexico City, Mexico",
-    "dj": "WhoMadeWho",
-    "art": "https://i1.sndcdn.com/artworks-ilK1pfhebAeZb9fI-KVAuSA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795665420000,
     "dur": 64,
@@ -4016,18 +4004,6 @@
    }
   ],
   "zone:nm-soop": [
-   {
-    "start": 1795661640000,
-    "dur": 71,
-    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
-    "title": "S.O.N.S: The Ransom Note Mix",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795665900000,
     "dur": 67,
@@ -4621,18 +4597,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795660320000,
-    "dur": 73,
-    "url": "https://soundcloud.com/platform/tycho",
-    "title": "Tycho Boiler Room San Francisco Live Set",
-    "dj": "Tycho",
-    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795664700000,
     "dur": 134,
     "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
@@ -5185,21 +5149,81 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:sphere": [
+   },
    {
-    "start": 1795661700000,
-    "dur": 89,
-    "url": "https://soundcloud.com/johnsummit/everything-always-live-ultra-miami-2025",
-    "title": "Everything Always (Dom Dolla & John Summit) Live @ Ultra Music Festival 2025",
-    "dj": "Everything Always (Dom Dolla & John Summit)",
-    "art": "https://i1.sndcdn.com/artworks-SnnzOZhvt3kJ5Ou8-onWFpg-t500x500.jpg",
+    "start": 1795794420000,
+    "dur": 62,
+    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
+    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
+    "dj": "Oliver Heldens",
+    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795798140000,
+    "dur": 87,
+    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
+    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
+    "dj": "Todd Terje",
+    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795803360000,
+    "dur": 68,
+    "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
+    "title": "BLANK STATE PODCAST 10 / KABUTO",
+    "dj": "KABUTO",
+    "art": "https://i1.sndcdn.com/artworks-000626950369-r6ifep-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795807440000,
+    "dur": 89,
+    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
+    "title": "Up The Stuss Radio 02 By Chris Stussy",
+    "dj": "Chris Stussy",
+    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795812780000,
+    "dur": 63,
+    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
+    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
+    "dj": "Franky Rizardo",
+    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795816560000,
+    "dur": 89,
+    "url": "https://soundcloud.com/dfp/the-sound-of-glitterbox-dimitri-from-paris-live",
+    "title": "Live from Glitterbox - Dimitri From Paris",
+    "dj": "Dimitri From Paris",
+    "art": "https://i1.sndcdn.com/artworks-000086444238-kdwn52-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:sphere": [
    {
     "start": 1795667040000,
     "dur": 59,
@@ -5490,18 +5514,6 @@
    }
   ],
   "zone:sh-lift": [
-   {
-    "start": 1795656240000,
-    "dur": 135,
-    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
-    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795664340000,
     "dur": 61,
@@ -6071,18 +6083,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795660680000,
-    "dur": 62,
-    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
-    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
-    "dj": "Oliver Heldens",
-    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795664400000,
     "dur": 60,
     "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
@@ -6360,5 +6360,5 @@
    }
   ]
  },
- "updated": "2026-11-26T15:36:26.868Z"
+ "updated": "2026-11-26T16:36:30.200Z"
 }
