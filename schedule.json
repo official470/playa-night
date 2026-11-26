@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795606620000,
-    "dur": 135,
-    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
-    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795614720000,
     "dur": 60,
     "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
@@ -233,18 +221,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795606440000,
-    "dur": 131,
-    "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
-    "title": "BLACK COFFEE LIVE BRASIL FULL SET 2023.mp3",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-4Ot9YdJsKtKzOzy8-RpqEaA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795614300000,
     "dur": 173,
     "url": "https://soundcloud.com/shimza/shimza-live-ammo-ammo-greece",
@@ -450,18 +426,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795612860000,
-    "dur": 55,
-    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
-    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795616160000,
     "dur": 118,
@@ -1743,18 +1707,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795608780000,
-    "dur": 86,
-    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
-    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
-    "dj": "Purple Disco Machine",
-    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795613940000,
     "dur": 80,
     "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
@@ -2032,18 +1984,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795606800000,
-    "dur": 129,
-    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
-    "title": "RA.1017 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795614540000,
     "dur": 60,
@@ -2625,18 +2565,6 @@
   ],
   "club4": [
    {
-    "start": 1795608540000,
-    "dur": 90,
-    "url": "https://soundcloud.com/lost-village-festival/live-from-the-village-horse-meat-disco",
-    "title": "Live from the Village - Horse Meat Disco",
-    "dj": "Horse Meat Disco",
-    "art": "https://i1.sndcdn.com/artworks-wqKIc1djvdQh9irU-8VAXeA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795613940000,
     "dur": 213,
     "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
@@ -2915,18 +2843,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795607460000,
-    "dur": 149,
-    "url": "https://soundcloud.com/oho990828/teller-seoul-26-07-16",
-    "title": "Oho @Teller 26.07.16",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-grA9JcbDWWI5SNLf-zEvC5Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795616400000,
     "dur": 54,
     "url": "https://soundcloud.com/oho990828/oho-nothing-in",
@@ -3156,18 +3072,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795613340000,
-    "dur": 62,
-    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
-    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
-    "dj": "ANOTR",
-    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795617060000,
     "dur": 129,
@@ -3931,18 +3835,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795611900000,
-    "dur": 67,
-    "url": "https://soundcloud.com/platform/david-august",
-    "title": "David August Boiler Room Berlin Live Set",
-    "dj": "David August",
-    "art": "https://i1.sndcdn.com/artworks-000077248621-cch89g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795615920000,
     "dur": 60,
     "url": "https://soundcloud.com/thisman1/tale-of-us-gta-online-after-hours-full-liveset-2018",
@@ -4197,18 +4089,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795608540000,
-    "dur": 102,
-    "url": "https://soundcloud.com/dau_ra/ring_seoul",
-    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795614660000,
     "dur": 63,
     "url": "https://soundcloud.com/platform/reinier-zonneveld",
@@ -4450,30 +4330,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795609620000,
-    "dur": 84,
-    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
-    "title": "Jon Hopkins - Live at Glastonbury 2019",
-    "dj": "Jon Hopkins",
-    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
-    "start": 1795614660000,
-    "dur": 44,
-    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
-    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795617300000,
     "dur": 79,
@@ -4788,18 +4644,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795608000000,
-    "dur": 112,
-    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
-    "title": "'Infinite' Ambient Mix",
-    "dj": "Ambient",
-    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795614720000,
     "dur": 75,
@@ -5349,6 +5193,42 @@
     "title": "PAWSA IN THE PARK LONDON 2025",
     "dj": "PAWSA",
     "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795744860000,
+    "dur": 117,
+    "url": "https://soundcloud.com/solomun-destino-ibiza/solomun-live-solomun-live-destino-ibiza-25-08-2016",
+    "title": "Solomun - Live @ Solomun + Live (Destino, Ibiza) - 25-08-2016",
+    "dj": "Solomun",
+    "art": "https://i1.sndcdn.com/artworks-000180455302-62upcl-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795751880000,
+    "dur": 203,
+    "url": "https://soundcloud.com/outransa/outransa-chronicles-three-kensa-nicky-macha",
+    "title": "Chronicle #3: Kensa & Nicky Macha",
+    "dj": "Kensa",
+    "art": "https://i1.sndcdn.com/artworks-tQh94747jysBdFIW-wuptQg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795764060000,
+    "dur": 122,
+    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
+    "title": "EOS Radio - November 2021",
+    "dj": "KINO",
+    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -6561,8 +6441,68 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795745220000,
+    "dur": 89,
+    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
+    "title": "Up The Stuss Radio 02 By Chris Stussy",
+    "dj": "Chris Stussy",
+    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795750560000,
+    "dur": 104,
+    "url": "https://soundcloud.com/johnsummit/john-summit-live-club-space-miami-sunrise-set-1",
+    "title": "John Summit LIVE @ Club Space Miami (Sunrise Set)",
+    "dj": "John Summit",
+    "art": "https://i1.sndcdn.com/artworks-rzgXxMhPyjHzmpym-DfEkwA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795756800000,
+    "dur": 61,
+    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
+    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
+    "dj": "Dam Swindle",
+    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795760460000,
+    "dur": 59,
+    "url": "https://soundcloud.com/dannyhowarddj/danny-howard-live-ushuaia-ibiza",
+    "title": "Danny Howard (Live DJ Set) Defected @ Ushuaia Ibiza",
+    "dj": "Danny Howard",
+    "art": "https://i1.sndcdn.com/artworks-zrleu0A1V57IMDXV-lYGd6g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795764000000,
+    "dur": 160,
+    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
+    "title": "Phonotheque 2020 Live Recording",
+    "dj": "KINO",
+    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ]
  },
- "updated": "2026-11-26T01:35:42.785Z"
+ "updated": "2026-11-26T02:35:46.002Z"
 }
