@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795764780000,
-    "dur": 60,
-    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
-    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
-    "dj": "Layton Giordani",
-    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795768380000,
     "dur": 76,
     "url": "https://soundcloud.com/platform/boiler-room-berlin-nina-kraviz",
@@ -293,18 +281,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795755000000,
-    "dur": 178,
-    "url": "https://soundcloud.com/caiirosa/caiiro-here-at-outernet-2025",
-    "title": "Caiiro -  Full Live Set | HERE at Outernet | 22.11.2025",
-    "dj": "Caiiro",
-    "art": "https://i1.sndcdn.com/artworks-U1Xjt0U75EyphCdJ-ga1ZGg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795765680000,
     "dur": 89,
     "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
@@ -546,18 +522,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795762080000,
-    "dur": 55,
-    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
-    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795765380000,
     "dur": 118,
@@ -905,21 +869,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:house": [
+   },
    {
-    "start": 1795762980000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/jayda-g-dekmantel",
-    "title": "Jayda G Boiler Room x Dekmantel Festival DJ Set",
-    "dj": "Jayda G",
-    "art": "https://i1.sndcdn.com/artworks-000241631043-cexmtj-t500x500.jpg",
+    "start": 1795896900000,
+    "dur": 96,
+    "url": "https://soundcloud.com/deadbeatsrecords/300-deadbeats-radio-with-zeds-dead-live-from-electric-forest-afters-edition",
+    "title": "#300 Deadbeats Radio with Zeds Dead | After Hours Set Live from Electric Forest EVOL Renegade",
+    "dj": "Zeds Dead",
+    "art": "https://i1.sndcdn.com/artworks-e31EeM0tgaoa6Y6T-Zs41hQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795902660000,
+    "dur": 74,
+    "url": "https://soundcloud.com/elivesets/rl-grime-live-edc-las-vegas",
+    "title": "RL Grime - Live @ EDC Las Vegas 2025",
+    "dj": "RL Grime",
+    "art": "https://i1.sndcdn.com/artworks-YOY9tUwmTufNNjtR-pcEGdA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795907100000,
+    "dur": 70,
+    "url": "https://soundcloud.com/johnnykham-745185291/subtronics-edc-las-vegas-2026",
+    "title": "Subtronics - EDC Las Vegas 2026 (Full Set)",
+    "dj": "Subtronics",
+    "art": "https://i1.sndcdn.com/artworks-mmVONtRPHsBhzlFV-zNZfxw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795911300000,
+    "dur": 55,
+    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
+    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
+    "dj": "Excision",
+    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795914600000,
+    "dur": 118,
+    "url": "https://soundcloud.com/zedsdead/zeds-dead-live-at-fabric",
+    "title": "Zeds Dead - Live at fabric London",
+    "dj": "Zeds Dead",
+    "art": "https://i1.sndcdn.com/artworks-wcAyRDsREr4z1CJ3-Q9sHcw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:house": [
    {
     "start": 1795766580000,
     "dur": 121,
@@ -1174,18 +1186,6 @@
    }
   ],
   "booth:hardstyle": [
-   {
-    "start": 1795762020000,
-    "dur": 72,
-    "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
-    "title": "404 [Frankfurt, 09 April 2023]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-sNbnpmczvk82KoyY-aoTXNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795766340000,
     "dur": 82,
@@ -1754,18 +1754,6 @@
    }
   ],
   "zone:disco": [
-   {
-    "start": 1795763700000,
-    "dur": 61,
-    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
-    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
-    "dj": "Dam Swindle",
-    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795767360000,
     "dur": 62,
@@ -2383,18 +2371,6 @@
   ],
   "club3": [
    {
-    "start": 1795756200000,
-    "dur": 182,
-    "url": "https://soundcloud.com/wus_fest/sons-2022",
-    "title": "S.O.N.S. at WUS2022",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-Y87UL9bxFTAdmcxe-w1txyg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795767120000,
     "dur": 192,
     "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
@@ -2636,18 +2612,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795759380000,
-    "dur": 119,
-    "url": "https://soundcloud.com/postervoyage/here061226",
-    "title": "@here June/12/2026",
-    "dj": "Kyuchan",
-    "art": "https://i1.sndcdn.com/artworks-YGf2c8hdyi8BI78A-RgR3yA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795766520000,
     "dur": 59,
@@ -2938,18 +2902,6 @@
    }
   ],
   "zone:teller": [
-   {
-    "start": 1795756320000,
-    "dur": 149,
-    "url": "https://soundcloud.com/oho990828/teller-seoul-26-07-16",
-    "title": "Oho @Teller 26.07.16",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-grA9JcbDWWI5SNLf-zEvC5Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795765260000,
     "dur": 96,
@@ -3483,18 +3435,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795763160000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set",
-    "title": "Honey Dijon Boiler Room Sugar Mountain Melbourne DJ Set",
-    "dj": "Honey Dijon",
-    "art": "https://i1.sndcdn.com/artworks-000312169044-um407k-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795766760000,
     "dur": 59,
     "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
@@ -3772,18 +3712,6 @@
    }
   ],
   "zone:nm-jandi": [
-   {
-    "start": 1795759620000,
-    "dur": 150,
-    "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
-    "title": "Comfort Mix 004 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-ly0csIMhZDf2yqym-C8QKzg-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795768620000,
     "dur": 89,
@@ -4063,18 +3991,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795761240000,
-    "dur": 106,
-    "url": "https://soundcloud.com/mayanwarriorofficial/rufus-du-sol-dj-set-mayan-warrior-burning-man-2024",
-    "title": "RÜFÜS DU SOL (DJ SET) - Mayan Warrior - Burning Man 2024",
-    "dj": "RÜFÜS DU SOL",
-    "art": "https://i1.sndcdn.com/artworks-NNZ3BazbZUJ0mFOx-x6j7XQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795767600000,
     "dur": 114,
     "url": "https://soundcloud.com/tanniix/anymagenesys",
@@ -4353,18 +4269,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795761000000,
-    "dur": 80,
-    "url": "https://soundcloud.com/platform/stephan-bodzin",
-    "title": "Stephan Bodzin Boiler Room Berlin Live Set",
-    "dj": "Stephan Bodzin",
-    "art": "https://i1.sndcdn.com/artworks-000132066481-7ill9d-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795765800000,
     "dur": 122,
     "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
@@ -4594,18 +4498,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795761180000,
-    "dur": 75,
-    "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
-    "title": "Aphex Twin - Selected Ambient Works 85-92 (1992)",
-    "dj": "Aphex Twin",
-    "art": "https://i1.sndcdn.com/artworks-znkQvfJ9Vrp35isG-BIIycA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795765680000,
     "dur": 119,
@@ -5572,18 +5464,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795758900000,
-    "dur": 104,
-    "url": "https://soundcloud.com/johnsummit/john-summit-live-club-space-miami-sunrise-set-1",
-    "title": "John Summit LIVE @ Club Space Miami (Sunrise Set)",
-    "dj": "John Summit",
-    "art": "https://i1.sndcdn.com/artworks-rzgXxMhPyjHzmpym-DfEkwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795765140000,
     "dur": 125,
@@ -6696,5 +6576,5 @@
    }
   ]
  },
- "updated": "2026-11-27T19:37:51.741Z"
+ "updated": "2026-11-27T20:37:55.065Z"
 }
