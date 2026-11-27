@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795768380000,
-    "dur": 76,
-    "url": "https://soundcloud.com/platform/boiler-room-berlin-nina-kraviz",
-    "title": "Nina Kraviz Boiler Room Berlin DJ Set",
-    "dj": "Nina Kraviz",
-    "art": "https://i1.sndcdn.com/artworks-000041355784-ik7zlb-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795772940000,
     "dur": 90,
     "url": "https://soundcloud.com/avidmuzikfan-725076808/amelie-lens-live-ultra-miami-2024",
@@ -281,18 +269,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795771020000,
-    "dur": 59,
-    "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
-    "title": "Karma Karma Radio 100 - Shimza live from Scorpios, Mykonos",
-    "dj": "Shimza",
-    "art": "https://i1.sndcdn.com/artworks-NgYHQtHgQOEnkaNU-6Td2kw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795774560000,
     "dur": 131,
     "url": "https://soundcloud.com/cool-ant/black-coffee-live-brasil-full",
@@ -510,18 +486,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795765380000,
-    "dur": 118,
-    "url": "https://soundcloud.com/zedsdead/zeds-dead-live-at-fabric",
-    "title": "Zeds Dead - Live at fabric London",
-    "dj": "Zeds Dead",
-    "art": "https://i1.sndcdn.com/artworks-wcAyRDsREr4z1CJ3-Q9sHcw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795772460000,
     "dur": 83,
@@ -920,18 +884,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795766580000,
-    "dur": 121,
-    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
-    "title": "Live from Lost Village — Four Tet [2023]",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795773840000,
     "dur": 121,
@@ -1404,18 +1356,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795749180000,
-    "dur": 430,
-    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
-    "title": "PAWSA IN THE PARK LONDON 2025",
-    "dj": "PAWSA",
-    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795774980000,
     "dur": 62,
@@ -2855,18 +2795,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795771020000,
-    "dur": 54,
-    "url": "https://soundcloud.com/oho990828/oho-nothing-in",
-    "title": "Nothing in",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795774260000,
     "dur": 68,
     "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
@@ -3363,18 +3291,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795770300000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/jayda-g-dekmantel",
-    "title": "Jayda G Boiler Room x Dekmantel Festival DJ Set",
-    "dj": "Jayda G",
-    "art": "https://i1.sndcdn.com/artworks-000241631043-cexmtj-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795773900000,
     "dur": 120,
     "url": "https://soundcloud.com/domdolla/sydney",
@@ -3628,18 +3544,6 @@
    }
   ],
   "zone:nm-jandi": [
-   {
-    "start": 1795768620000,
-    "dur": 89,
-    "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
-    "title": "Up The Stuss Radio 02 By Chris Stussy",
-    "dj": "Chris Stussy",
-    "art": "https://i1.sndcdn.com/artworks-NUHxb6ZZHzUzTGXO-l1SqPw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795773960000,
     "dur": 121,
@@ -3907,18 +3811,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795767600000,
-    "dur": 114,
-    "url": "https://soundcloud.com/tanniix/anymagenesys",
-    "title": "ANYMA: THE END OF GENESY II FINALE @ SPHERE ft. Cassian & John Summit 02-25 (Live Set Inspired Mix)",
-    "dj": "Anyma",
-    "art": "https://i1.sndcdn.com/artworks-MGrLnKk8DX92aHEc-ldULCg-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795774440000,
     "dur": 91,
     "url": "https://soundcloud.com/cerclelive/monolink-live-at-gaatafushi-island-in-the-maldives-for-cercle-and-w-hotels",
@@ -4185,18 +4077,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795765800000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795773120000,
     "dur": 69,
     "url": "https://soundcloud.com/tiefundton/baumannshoehle",
@@ -4411,21 +4291,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:nm-exp": [
+   },
    {
-    "start": 1795765680000,
-    "dur": 119,
-    "url": "https://soundcloud.com/gelipon/bonobo-mixmag-live-2017",
-    "title": "BONOBO Mixmag Live 2017 (DJ Set)",
-    "dj": "Bonobo",
-    "art": "https://i1.sndcdn.com/artworks-000211145196-uihtmk-t500x500.jpg",
+    "start": 1795904040000,
+    "dur": 178,
+    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
+    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
+    "dj": "Nicolas Lutz",
+    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795914720000,
+    "dur": 68,
+    "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
+    "title": "259 - Jeff Mills ‎– Live At The Liquid Room - Tokyo (1996)",
+    "dj": "Jeff Mills",
+    "art": "https://i1.sndcdn.com/artworks-000186620556-mhd0z7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795918800000,
+    "dur": 106,
+    "url": "https://soundcloud.com/mayanwarriorofficial/rufus-du-sol-dj-set-mayan-warrior-burning-man-2024",
+    "title": "RÜFÜS DU SOL (DJ SET) - Mayan Warrior - Burning Man 2024",
+    "dj": "RÜFÜS DU SOL",
+    "art": "https://i1.sndcdn.com/artworks-NNZ3BazbZUJ0mFOx-x6j7XQ-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795925160000,
+    "dur": 149,
+    "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
+    "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:nm-exp": [
    {
     "start": 1795772820000,
     "dur": 73,
@@ -5353,21 +5269,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:sphere": [
+   },
    {
-    "start": 1795765140000,
-    "dur": 125,
-    "url": "https://soundcloud.com/eric-prydz/eric-prydz-live-from-history-toronto-2025",
-    "title": "Eric Prydz - Live from History Toronto 2025 (FULL SET)",
-    "dj": "Eric Prydz",
-    "art": "https://i1.sndcdn.com/artworks-xfusFeCezq2zyAzt-l42Tmw-t500x500.png",
+    "start": 1795904340000,
+    "dur": 115,
+    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
+    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
+    "dj": "Vintage Culture b2b Mochakk",
+    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795911240000,
+    "dur": 150,
+    "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
+    "title": "Comfort Mix 004 Unai Trotti",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-ly0csIMhZDf2yqym-C8QKzg-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795920240000,
+    "dur": 121,
+    "url": "https://soundcloud.com/platform/jayda-g",
+    "title": "Jayda G Boiler Room London Studio DJ Set",
+    "dj": "Jayda G",
+    "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:sphere": [
    {
     "start": 1795772640000,
     "dur": 62,
@@ -6179,18 +6119,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795764000000,
-    "dur": 160,
-    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
-    "title": "Phonotheque 2020 Live Recording",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795773600000,
     "dur": 109,
     "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
@@ -6444,5 +6372,5 @@
    }
   ]
  },
- "updated": "2026-11-27T21:37:58.270Z"
+ "updated": "2026-11-27T22:38:01.243Z"
 }
