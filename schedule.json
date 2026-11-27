@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795714200000,
-    "dur": 72,
-    "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
-    "title": "404 [Frankfurt, 09 April 2023]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-sNbnpmczvk82KoyY-aoTXNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795718520000,
     "dur": 69,
     "url": "https://soundcloud.com/tiefundton/baumannshoehle",
@@ -256,18 +244,6 @@
    }
   ],
   "booth:afro": [
-   {
-    "start": 1795714980000,
-    "dur": 59,
-    "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
-    "title": "Karma Karma Radio 100 - Shimza live from Scorpios, Mykonos",
-    "dj": "Shimza",
-    "art": "https://i1.sndcdn.com/artworks-NgYHQtHgQOEnkaNU-6Td2kw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795718520000,
     "dur": 131,
@@ -897,18 +873,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795714860000,
-    "dur": 68,
-    "url": "https://soundcloud.com/blankstatemusic/blank-state-podcast-10-kabuto",
-    "title": "BLANK STATE PODCAST 10 / KABUTO",
-    "dj": "KABUTO",
-    "art": "https://i1.sndcdn.com/artworks-000626950369-r6ifep-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795718940000,
     "dur": 121,
     "url": "https://soundcloud.com/fabric/027-nicolas-lutz-recorded-live-from-fabric",
@@ -1162,18 +1126,6 @@
    }
   ],
   "booth:hardstyle": [
-   {
-    "start": 1795713360000,
-    "dur": 122,
-    "url": "https://soundcloud.com/platform/dax-j-boiler-room-x-eristoff-into-the-darkdj-set",
-    "title": "Dax J Boiler Room x Eristoff \"Into The Dark\"DJ Set",
-    "dj": "Dax J",
-    "art": "https://i1.sndcdn.com/artworks-000337647888-yt7u4m-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795720680000,
     "dur": 213,
@@ -1703,21 +1655,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:disco": [
+   },
    {
-    "start": 1795716060000,
-    "dur": 71,
-    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
-    "title": "S.O.N.S: The Ransom Note Mix",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
+    "start": 1795848660000,
+    "dur": 59,
+    "url": "https://soundcloud.com/mayank-bisht-649299172/zedd-live-ultra-music-festival",
+    "title": "ZEDD LIVE @ ULTRA MUSIC FESTIVAL MIAMI (2025)",
+    "dj": "Zedd",
+    "art": "https://i1.sndcdn.com/artworks-mcIyBVAGmajyFTL8-akkbmA-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795852200000,
+    "dur": 72,
+    "url": "https://soundcloud.com/officialswedishhousemafia/mafia-live-from-miami",
+    "title": "SWEDISH HOUSE MAFIA LIVE FROM ULTRA MIAMI 2023",
+    "dj": "Swedish House Mafia",
+    "art": "https://i1.sndcdn.com/artworks-msZEB7o4jRxwkhv5-3oR5aA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795856520000,
+    "dur": 62,
+    "url": "https://soundcloud.com/dimitrivegasandlikemike/tl-dvlm-2012-live",
+    "title": "Dimitri Vegas & Like Mike - Live at Tomorrowland ( 28/07/2012 )",
+    "dj": "Dimitri Vegas & Like Mike",
+    "art": "https://i1.sndcdn.com/artworks-000028184106-1qqa7h-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795860240000,
+    "dur": 131,
+    "url": "https://soundcloud.com/tiesto/tiesto-live-at-clublife-500",
+    "title": "Tiësto presents Clublife 500 (Live Set)",
+    "dj": "Tiësto",
+    "art": "https://i1.sndcdn.com/artworks-000190916397-9bztep-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795868100000,
+    "dur": 120,
+    "url": "https://soundcloud.com/domdolla/sydney",
+    "title": "Dom Dolla Live @ Allianz Stadium, Sydney 2025",
+    "dj": "Dom Dolla",
+    "art": "https://i1.sndcdn.com/artworks-vcG6hK83U1EWXGFV-O4yiAA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:disco": [
    {
     "start": 1795720320000,
     "dur": 87,
@@ -2274,18 +2274,6 @@
    }
   ],
   "club3": [
-   {
-    "start": 1795716660000,
-    "dur": 64,
-    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
-    "title": "EOS Radio - Minkyu 28.07.2024",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795720500000,
     "dur": 61,
@@ -4621,18 +4609,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795712220000,
-    "dur": 112,
-    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
-    "title": "'Infinite' Ambient Mix",
-    "dj": "Ambient",
-    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795718940000,
     "dur": 75,
     "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
@@ -4971,18 +4947,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795709460000,
-    "dur": 160,
-    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
-    "title": "Phonotheque 2020 Live Recording",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795719060000,
     "dur": 430,
     "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
@@ -5248,18 +5212,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795715100000,
-    "dur": 76,
-    "url": "https://soundcloud.com/blvckrose0/calvin-harris-live-ultra-miami-2024",
-    "title": "CALVIN HARRIS - LIVE @ ULTRA MUSIC FESTIVAL 2024 (MIAMI)",
-    "dj": "Calvin Harris",
-    "art": "https://i1.sndcdn.com/artworks-zw8MVyTIxYW1op6g-d8FXbQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795719660000,
     "dur": 60,
@@ -5539,18 +5491,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795717260000,
-    "dur": 60,
-    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
-    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
-    "dj": "Layton Giordani",
-    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795720860000,
     "dur": 106,
     "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
@@ -5792,18 +5732,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795717320000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795721040000,
     "dur": 82,
@@ -6095,18 +6023,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795715460000,
-    "dur": 61,
-    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
-    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795719120000,
     "dur": 109,
     "url": "https://soundcloud.com/dfp/dimitri-from-paris-live-slide",
@@ -6348,5 +6264,5 @@
    }
   ]
  },
- "updated": "2026-11-27T06:37:12.958Z"
+ "updated": "2026-11-27T07:37:16.190Z"
 }
