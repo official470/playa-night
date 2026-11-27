@@ -281,18 +281,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795765680000,
-    "dur": 89,
-    "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
-    "title": "APACHE live at RAMPA [Keinemusik] & Friends F1 Miami",
-    "dj": "Apache",
-    "art": "https://i1.sndcdn.com/artworks-A6jt9h6iIQwqrz2B-BAiCcg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795771020000,
     "dur": 59,
     "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
@@ -1187,18 +1175,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795766340000,
-    "dur": 82,
-    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
-    "title": "Phonica Mix Series 65: S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795771260000,
     "dur": 135,
     "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
@@ -1751,21 +1727,21 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:disco": [
+   },
    {
-    "start": 1795767360000,
-    "dur": 62,
-    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
-    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
-    "dj": "ANOTR",
-    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
+    "start": 1795900800000,
+    "dur": 430,
+    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
+    "title": "PAWSA IN THE PARK LONDON 2025",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
-   },
+   }
+  ],
+  "zone:disco": [
    {
     "start": 1795771080000,
     "dur": 86,
@@ -2080,18 +2056,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795762500000,
-    "dur": 118,
-    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
-    "title": "Unai Trotti - Live from Dimensions 23'",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795769580000,
     "dur": 129,
@@ -2613,18 +2577,6 @@
   ],
   "club4": [
    {
-    "start": 1795766520000,
-    "dur": 59,
-    "url": "https://soundcloud.com/platform/peggy-gou",
-    "title": "Peggy Gou Boiler Room x Dekmantel Festival DJ Set",
-    "dj": "Peggy Gou",
-    "art": "https://i1.sndcdn.com/artworks-000241463822-16r29o-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795770060000,
     "dur": 115,
     "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
@@ -2903,18 +2855,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795765260000,
-    "dur": 96,
-    "url": "https://soundcloud.com/oho990828/april-haze",
-    "title": "April Haze",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795771020000,
     "dur": 54,
     "url": "https://soundcloud.com/oho990828/oho-nothing-in",
@@ -3156,18 +3096,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795762920000,
-    "dur": 124,
-    "url": "https://soundcloud.com/dkmntl/dekmantel-mix-513-nicolas-lutz",
-    "title": "Dekmantel Mix 513 - Nicolas Lutz",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-jgUL4Pr8wVcguzZu-DSppFQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795770360000,
     "dur": 119,
@@ -3434,18 +3362,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795766760000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795770300000,
     "dur": 60,
@@ -4825,18 +4741,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795764540000,
-    "dur": 73,
-    "url": "https://soundcloud.com/platform/tycho",
-    "title": "Tycho Boiler Room San Francisco Live Set",
-    "dj": "Tycho",
-    "art": "https://i1.sndcdn.com/artworks-000084577213-i7uy4x-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795768920000,
     "dur": 134,
     "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
@@ -5174,18 +5078,6 @@
    }
   ],
   "zone:nm-aero": [
-   {
-    "start": 1795764060000,
-    "dur": 122,
-    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
-    "title": "EOS Radio - November 2021",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795771380000,
     "dur": 89,
@@ -5767,18 +5659,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795759500000,
-    "dur": 179,
-    "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
-    "title": "Recorded at Houghton - Nicolas Lutz (2022)",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-XHeC6dnHfNj0SNXy-gNnOWg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795770240000,
     "dur": 122,
     "url": "https://soundcloud.com/platform/dax-j-boiler-room-x-eristoff-into-the-darkdj-set",
@@ -5984,18 +5864,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795760640000,
-    "dur": 193,
-    "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
-    "title": "DCR501 – Drumcode Radio Live – Adam Beyer B2B Maceo Plex live [3 hour set] from Resistance in Ibiza",
-    "dj": "Adam Beyer",
-    "art": "https://i1.sndcdn.com/artworks-Snjbmip2VZKRsaxq-KywTyA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795772220000,
     "dur": 71,
@@ -6576,5 +6444,5 @@
    }
   ]
  },
- "updated": "2026-11-27T20:37:55.065Z"
+ "updated": "2026-11-27T21:37:58.270Z"
 }
