@@ -269,18 +269,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795736760000,
-    "dur": 121,
-    "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
-    "title": "Keinemusik Radio Show 100 live at Else Berlin by &ME, Rampa, Reznik, Adam Port",
-    "dj": "Keinemusik (&ME, Rampa, Adam Port)",
-    "art": "https://i1.sndcdn.com/artworks-000176184477-601nwg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795744020000,
     "dur": 183,
     "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
@@ -510,18 +498,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795740420000,
-    "dur": 62,
-    "url": "https://soundcloud.com/vvvfrankie/skrillex-live-ultra-music-festival-2015-diplo-justine-biber-jack-u-kiesza-p-diddy-dj-snake",
-    "title": "SKRILLEX LIVE @ ULTRA MUSIC FESTIVAL 2015 FULL SET (Diplo Justin Bieber Jack U Kiesza Dj Snake)",
-    "dj": "Skrillex",
-    "art": "https://i1.sndcdn.com/artworks-000124856288-whf3x3-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795744140000,
     "dur": 59,
@@ -932,18 +908,6 @@
    }
   ],
   "booth:house": [
-   {
-    "start": 1795740780000,
-    "dur": 104,
-    "url": "https://soundcloud.com/johnsummit/john-summit-live-club-space-miami-sunrise-set-1",
-    "title": "John Summit LIVE @ Club Space Miami (Sunrise Set)",
-    "dj": "John Summit",
-    "art": "https://i1.sndcdn.com/artworks-rzgXxMhPyjHzmpym-DfEkwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795747020000,
     "dur": 60,
@@ -1453,18 +1417,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795737240000,
-    "dur": 123,
-    "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
-    "title": "PAWSA ESSENTIAL MIX 2024",
-    "dj": "PAWSA",
-    "art": "https://i1.sndcdn.com/artworks-tM9XyF5Nj0MznBQY-3Aae9g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795744620000,
     "dur": 76,
     "url": "https://soundcloud.com/blvckrose0/calvin-harris-live-ultra-miami-2024",
@@ -1739,21 +1691,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:disco": [
+   },
    {
-    "start": 1795737900000,
-    "dur": 129,
-    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
-    "title": "RA.1017 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
+    "start": 1795875300000,
+    "dur": 104,
+    "url": "https://soundcloud.com/johnsummit/john-summit-live-club-space-miami-sunrise-set-1",
+    "title": "John Summit LIVE @ Club Space Miami (Sunrise Set)",
+    "dj": "John Summit",
+    "art": "https://i1.sndcdn.com/artworks-rzgXxMhPyjHzmpym-DfEkwA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795881540000,
+    "dur": 62,
+    "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
+    "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
+    "dj": "ANOTR",
+    "art": "https://i1.sndcdn.com/artworks-Ug7VIIqAYWTl3ZO3-unl3UA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795885260000,
+    "dur": 60,
+    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
+    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
+    "dj": "Layton Giordani",
+    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795888860000,
+    "dur": 123,
+    "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
+    "title": "PAWSA ESSENTIAL MIX 2024",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-tM9XyF5Nj0MznBQY-3Aae9g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795896240000,
+    "dur": 76,
+    "url": "https://soundcloud.com/blvckrose0/calvin-harris-live-ultra-miami-2024",
+    "title": "CALVIN HARRIS - LIVE @ ULTRA MUSIC FESTIVAL 2024 (MIAMI)",
+    "dj": "Calvin Harris",
+    "art": "https://i1.sndcdn.com/artworks-zw8MVyTIxYW1op6g-d8FXbQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:disco": [
    {
     "start": 1795745640000,
     "dur": 213,
@@ -2346,18 +2346,6 @@
    }
   ],
   "club3": [
-   {
-    "start": 1795742280000,
-    "dur": 54,
-    "url": "https://soundcloud.com/oho990828/oho-nothing-in",
-    "title": "Nothing in",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-qrs2bNZvQPyybukT-yUxP1w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795745520000,
     "dur": 96,
@@ -3132,18 +3120,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795742580000,
-    "dur": 59,
-    "url": "https://soundcloud.com/dannyhowarddj/danny-howard-live-ushuaia-ibiza",
-    "title": "Danny Howard (Live DJ Set) Defected @ Ushuaia Ibiza",
-    "dj": "Danny Howard",
-    "art": "https://i1.sndcdn.com/artworks-zrleu0A1V57IMDXV-lYGd6g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795746120000,
     "dur": 61,
@@ -4753,18 +4729,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795742220000,
-    "dur": 79,
-    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
-    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
-    "dj": "Harrison Divecha",
-    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795746960000,
     "dur": 75,
     "url": "https://soundcloud.com/undergroundstation9/aphex-twin-selected-ambient-works-85-92-1992",
@@ -5091,18 +5055,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795719060000,
-    "dur": 430,
-    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
-    "title": "PAWSA IN THE PARK LONDON 2025",
-    "dj": "PAWSA",
-    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795744860000,
     "dur": 117,
     "url": "https://soundcloud.com/solomun-destino-ibiza/solomun-live-solomun-live-destino-ibiza-25-08-2016",
@@ -5416,18 +5368,6 @@
    }
   ],
   "zone:sphere": [
-   {
-    "start": 1795739460000,
-    "dur": 114,
-    "url": "https://soundcloud.com/tanniix/anymagenesys",
-    "title": "ANYMA: THE END OF GENESY II FINALE @ SPHERE ft. Cassian & John Summit 02-25 (Live Set Inspired Mix)",
-    "dj": "Anyma",
-    "art": "https://i1.sndcdn.com/artworks-MGrLnKk8DX92aHEc-ldULCg-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795746300000,
     "dur": 76,
@@ -6227,18 +6167,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795737900000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795745220000,
     "dur": 89,
     "url": "https://soundcloud.com/upthestuss/up-the-stuss-radio-02-by-chris-stussy",
@@ -6492,5 +6420,5 @@
    }
   ]
  },
- "updated": "2026-11-27T13:37:33.353Z"
+ "updated": "2026-11-27T14:37:36.597Z"
 }
