@@ -257,18 +257,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795709640000,
-    "dur": 89,
-    "url": "https://soundcloud.com/apache_ofc/apache-live-rampa-keinemusik",
-    "title": "APACHE live at RAMPA [Keinemusik] & Friends F1 Miami",
-    "dj": "Apache",
-    "art": "https://i1.sndcdn.com/artworks-A6jt9h6iIQwqrz2B-BAiCcg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795714980000,
     "dur": 59,
     "url": "https://soundcloud.com/shimza/karma-karma-radio-100",
@@ -498,18 +486,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795712340000,
-    "dur": 55,
-    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
-    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
-    "dj": "Excision",
-    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795715640000,
     "dur": 118,
@@ -857,21 +833,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:house": [
+   },
    {
-    "start": 1795704180000,
-    "dur": 178,
-    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
-    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
+    "start": 1795847160000,
+    "dur": 96,
+    "url": "https://soundcloud.com/deadbeatsrecords/300-deadbeats-radio-with-zeds-dead-live-from-electric-forest-afters-edition",
+    "title": "#300 Deadbeats Radio with Zeds Dead | After Hours Set Live from Electric Forest EVOL Renegade",
+    "dj": "Zeds Dead",
+    "art": "https://i1.sndcdn.com/artworks-e31EeM0tgaoa6Y6T-Zs41hQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795852920000,
+    "dur": 74,
+    "url": "https://soundcloud.com/elivesets/rl-grime-live-edc-las-vegas",
+    "title": "RL Grime - Live @ EDC Las Vegas 2025",
+    "dj": "RL Grime",
+    "art": "https://i1.sndcdn.com/artworks-YOY9tUwmTufNNjtR-pcEGdA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795857360000,
+    "dur": 70,
+    "url": "https://soundcloud.com/johnnykham-745185291/subtronics-edc-las-vegas-2026",
+    "title": "Subtronics - EDC Las Vegas 2026 (Full Set)",
+    "dj": "Subtronics",
+    "art": "https://i1.sndcdn.com/artworks-mmVONtRPHsBhzlFV-zNZfxw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795861560000,
+    "dur": 55,
+    "url": "https://soundcloud.com/lostlandsmusicfestival/excision-detox-set-lost-lands-2017-live-set-day-3",
+    "title": "Excision (Detox Set) Live @ Lost Lands 2017",
+    "dj": "Excision",
+    "art": "https://i1.sndcdn.com/artworks-000279877478-9k5w59-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795864860000,
+    "dur": 118,
+    "url": "https://soundcloud.com/zedsdead/zeds-dead-live-at-fabric",
+    "title": "Zeds Dead - Live at fabric London",
+    "dj": "Zeds Dead",
+    "art": "https://i1.sndcdn.com/artworks-wcAyRDsREr4z1CJ3-Q9sHcw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:house": [
    {
     "start": 1795714860000,
     "dur": 68,
@@ -1405,18 +1429,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795708620000,
-    "dur": 131,
-    "url": "https://soundcloud.com/tiesto/tiesto-live-at-clublife-500",
-    "title": "Tiësto presents Clublife 500 (Live Set)",
-    "dj": "Tiësto",
-    "art": "https://i1.sndcdn.com/artworks-000190916397-9bztep-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795716480000,
     "dur": 120,
     "url": "https://soundcloud.com/domdolla/sydney",
@@ -1694,18 +1706,6 @@
    }
   ],
   "zone:disco": [
-   {
-    "start": 1795709520000,
-    "dur": 109,
-    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
-    "title": "Four Tet | Live from Lost Village 2025",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795716060000,
     "dur": 71,
@@ -1997,18 +1997,6 @@
   ],
   "zone:potty": [
    {
-    "start": 1795713180000,
-    "dur": 59,
-    "url": "https://soundcloud.com/kioskradio/unai-trotti-kiosk-radio-20-01",
-    "title": "Unai Trotti @ Kiosk Radio 20.01.2026",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-PmvPN9qZzk8N2NCc-Fz5RIQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795716720000,
     "dur": 123,
     "url": "https://soundcloud.com/pawsa/pawsa-essential-mix-2024",
@@ -2287,18 +2275,6 @@
   ],
   "club3": [
    {
-    "start": 1795711260000,
-    "dur": 90,
-    "url": "https://soundcloud.com/avidmuzikfan-725076808/amelie-lens-live-ultra-miami-2024",
-    "title": "Amelie Lens - Live @ Ultra Miami 2024",
-    "dj": "Amelie Lens",
-    "art": "https://i1.sndcdn.com/artworks-PsVOWRBbOAayhFPm-MtaVRQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795716660000,
     "dur": 64,
     "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
@@ -2540,18 +2516,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795709460000,
-    "dur": 117,
-    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
-    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795716480000,
     "dur": 122,
@@ -3097,18 +3061,6 @@
   ],
   "zone:ring": [
    {
-    "start": 1795713660000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/mall-grab",
-    "title": "Mall Grab Boiler Room Paris DJ set",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-000173714296-ig7f1e-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795717260000,
     "dur": 129,
     "url": "https://soundcloud.com/user-863396657/ricardo-villalobos-full-live-set-sundeck-chile-2019",
@@ -3326,18 +3278,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795704600000,
-    "dur": 213,
-    "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
-    "title": "Outransa - Cartulis Podcast 057",
-    "dj": "Kensa",
-    "art": "https://i1.sndcdn.com/artworks-N1OTGQBqWriyoCU6-mxPb9w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795717380000,
     "dur": 80,
@@ -4137,18 +4077,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795709520000,
-    "dur": 135,
-    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
-    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795717620000,
     "dur": 92,
     "url": "https://soundcloud.com/cerclelive/whomadewho-cercle-odyssey",
@@ -4378,18 +4306,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795709340000,
-    "dur": 134,
-    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
-    "title": "Vajra Mind - Ambient mix by AMANI",
-    "dj": "Desert Dwellers",
-    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795717380000,
     "dur": 119,
@@ -5269,11 +5185,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:sphere": [
+   },
    {
-    "start": 1795711380000,
+    "start": 1795846260000,
+    "dur": 118,
+    "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
+    "title": "Unai Trotti - Live from Dimensions 23'",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-syEyOhzEU4kxWrDI-UOtOtw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795853340000,
+    "dur": 117,
+    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
+    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795860360000,
+    "dur": 59,
+    "url": "https://soundcloud.com/dannyhowarddj/danny-howard-live-ushuaia-ibiza",
+    "title": "Danny Howard (Live DJ Set) Defected @ Ushuaia Ibiza",
+    "dj": "Danny Howard",
+    "art": "https://i1.sndcdn.com/artworks-zrleu0A1V57IMDXV-lYGd6g-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795863900000,
     "dur": 62,
     "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
     "title": "Tomorrowland Friendship Mix with ANOTR - April, 2025",
@@ -5284,6 +5234,20 @@
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795867620000,
+    "dur": 80,
+    "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
+    "title": "Honey Dijon Live @ Le Bain April 12, 2014",
+    "dj": "Honey Dijon",
+    "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:sphere": [
    {
     "start": 1795715100000,
     "dur": 76,
@@ -5575,18 +5539,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795709520000,
-    "dur": 129,
-    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
-    "title": "RA.1017 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795717260000,
     "dur": 60,
     "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
@@ -5840,18 +5792,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795713180000,
-    "dur": 69,
-    "url": "https://soundcloud.com/tiefundton/baumannshoehle",
-    "title": "TIEFUNDTON LIVE @ BAUMANNSHÖHLE | TECHNO VIDEO SET",
-    "dj": "Tiefundton",
-    "art": "https://i1.sndcdn.com/artworks-rziqEoannr2aGM1t-YRrRuw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795717320000,
     "dur": 62,
@@ -6155,18 +6095,6 @@
   ],
   "zone:sh-green": [
    {
-    "start": 1795708140000,
-    "dur": 122,
-    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
-    "title": "EOS Radio - November 2021",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795715460000,
     "dur": 61,
     "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
@@ -6420,5 +6348,5 @@
    }
   ]
  },
- "updated": "2026-11-27T05:37:10.143Z"
+ "updated": "2026-11-27T06:37:12.958Z"
 }
