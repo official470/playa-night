@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795750440000,
-    "dur": 178,
-    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
-    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795761120000,
     "dur": 61,
     "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
@@ -253,6 +241,66 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795888440000,
+    "dur": 72,
+    "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
+    "title": "404 [Frankfurt, 09 April 2023]",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-sNbnpmczvk82KoyY-aoTXNQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795892760000,
+    "dur": 115,
+    "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
+    "title": "Dômesicle #5 - MUTEK 09.08.2020",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-iAONL0OrSeNmicrJ-TAbSPQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795899660000,
+    "dur": 69,
+    "url": "https://soundcloud.com/tiefundton/baumannshoehle",
+    "title": "TIEFUNDTON LIVE @ BAUMANNSHÖHLE | TECHNO VIDEO SET",
+    "dj": "Tiefundton",
+    "art": "https://i1.sndcdn.com/artworks-rziqEoannr2aGM1t-YRrRuw-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795903800000,
+    "dur": 60,
+    "url": "https://soundcloud.com/laytongiordani/layton-giordani-live-edc-las-vegas-circuit-grounds-closing-set-2025",
+    "title": "Layton Giordani Live @ EDC Las Vegas Closing Set 2025",
+    "dj": "Layton Giordani",
+    "art": "https://i1.sndcdn.com/artworks-JuV5cV3XD26rz6io-Qp42Sw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795907400000,
+    "dur": 90,
+    "url": "https://soundcloud.com/avidmuzikfan-725076808/amelie-lens-live-ultra-miami-2024",
+    "title": "Amelie Lens - Live @ Ultra Miami 2024",
+    "dj": "Amelie Lens",
+    "art": "https://i1.sndcdn.com/artworks-PsVOWRBbOAayhFPm-MtaVRQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "booth:afro": [
@@ -474,18 +522,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795753440000,
-    "dur": 74,
-    "url": "https://soundcloud.com/elivesets/rl-grime-live-edc-las-vegas",
-    "title": "RL Grime - Live @ EDC Las Vegas 2025",
-    "dj": "RL Grime",
-    "art": "https://i1.sndcdn.com/artworks-YOY9tUwmTufNNjtR-pcEGdA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795757880000,
     "dur": 70,
@@ -1139,18 +1175,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795754220000,
-    "dur": 61,
-    "url": "https://soundcloud.com/verzila/petre-inspirescu-live-super-dommune-tokyo-japan-03042025",
-    "title": "Petre Inspirescu Live @ SUPER DOMMUNE (Tokyo, Japan) 03/04/2025",
-    "dj": "Petre Inspirescu",
-    "art": "https://i1.sndcdn.com/artworks-nbpCmnhEL3OVPeb7-HKyDeA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795757880000,
     "dur": 69,
     "url": "https://soundcloud.com/tiefundton/baumannshoehle",
@@ -1743,18 +1767,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795745640000,
-    "dur": 213,
-    "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
-    "title": "Outransa - Cartulis Podcast 057",
-    "dj": "Kensa",
-    "art": "https://i1.sndcdn.com/artworks-N1OTGQBqWriyoCU6-mxPb9w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795758420000,
     "dur": 88,
     "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-horse-meat-disco",
@@ -2044,18 +2056,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795753680000,
-    "dur": 87,
-    "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
-    "title": "Todd Terje live @ Betalounge Hamburg 4th october 2008",
-    "dj": "Todd Terje",
-    "art": "https://i1.sndcdn.com/avatars-000030468584-egyp2b-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795758900000,
     "dur": 60,
@@ -2564,18 +2564,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795755540000,
-    "dur": 64,
-    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
-    "title": "EOS Radio - Minkyu 28.07.2024",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795759380000,
     "dur": 119,
@@ -3665,18 +3653,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795752300000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795759620000,
     "dur": 150,
     "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
@@ -3966,18 +3942,6 @@
    }
   ],
   "zone:nm-hanok": [
-   {
-    "start": 1795753740000,
-    "dur": 125,
-    "url": "https://soundcloud.com/eric-prydz/eric-prydz-live-from-history-toronto-2025",
-    "title": "Eric Prydz - Live from History Toronto 2025 (FULL SET)",
-    "dj": "Eric Prydz",
-    "art": "https://i1.sndcdn.com/artworks-xfusFeCezq2zyAzt-l42Tmw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795761240000,
     "dur": 106,
@@ -4269,18 +4233,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795756920000,
-    "dur": 68,
-    "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
-    "title": "259 - Jeff Mills ‎– Live At The Liquid Room - Tokyo (1996)",
-    "dj": "Jeff Mills",
-    "art": "https://i1.sndcdn.com/artworks-000186620556-mhd0z7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795761000000,
     "dur": 80,
     "url": "https://soundcloud.com/platform/stephan-bodzin",
@@ -4522,18 +4474,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795753920000,
-    "dur": 121,
-    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
-    "title": "Live from Lost Village — Four Tet [2023]",
-    "dj": "Four Tet",
-    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795761180000,
     "dur": 75,
@@ -4824,18 +4764,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795751460000,
-    "dur": 112,
-    "url": "https://soundcloud.com/ambientmusicalgenre/infinite-ambient-mix",
-    "title": "'Infinite' Ambient Mix",
-    "dj": "Ambient",
-    "art": "https://i1.sndcdn.com/artworks-000197997826-3l5amk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795758180000,
     "dur": 62,
@@ -5513,18 +5441,6 @@
   ],
   "zone:sphere": [
    {
-    "start": 1795755180000,
-    "dur": 62,
-    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
-    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
-    "dj": "Oliver Heldens",
-    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795758900000,
     "dur": 104,
     "url": "https://soundcloud.com/johnsummit/john-summit-live-club-space-miami-sunrise-set-1",
@@ -5839,18 +5755,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795755720000,
-    "dur": 63,
-    "url": "https://soundcloud.com/platform/reinier-zonneveld",
-    "title": "Reinier Zonneveld Boiler Room Berlin Live Set",
-    "dj": "Reinier Zonneveld",
-    "art": "https://i1.sndcdn.com/artworks-000221596202-egsjlu-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795759500000,
     "dur": 179,
     "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
@@ -6068,18 +5972,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795751700000,
-    "dur": 149,
-    "url": "https://soundcloud.com/macadamnantes/sons-b2b-gabriola-macadam-09062023-nantes",
-    "title": "S.O.N.S B2B Gabriola • Macadam 09/06/2023 • Nantes",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-x9UFxXz7OUB3F3SZ-LhwYsQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795760640000,
     "dur": 193,
@@ -6346,18 +6238,6 @@
    }
   ],
   "zone:sh-green": [
-   {
-    "start": 1795756800000,
-    "dur": 61,
-    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
-    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
-    "dj": "Dam Swindle",
-    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795760460000,
     "dur": 59,
@@ -6636,5 +6516,5 @@
    }
   ]
  },
- "updated": "2026-11-27T17:37:45.814Z"
+ "updated": "2026-11-27T18:37:48.707Z"
 }
