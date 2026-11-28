@@ -3685,7 +3685,7 @@ const PAPER_TR=[
  {name:'서울 야경 딥하우스',bpm:120,root:33,kick:K4,hat:OFF,clap:CL,shk:1,bass:'0.....0...3...5.',bt:'sub',prog:[[0,'min9'],[0,'min9'],[-4,'maj7'],[-2,'dom7']],chord:'x...............',ct:'pad'}];
 const IT_TR={3:SHELTER_TR,4:PAPER_TR}, IT_TI={3:0,4:0};
 function inBldg(x,z){ const lx=x-OX; return lx>8.2&&lx<21.8&&z>-8.8&&z<8.8; }
-function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTread(x,z); if(z<-1500) return SHG.st?shStairY(x):0; if(MAP==='itaewon'&&CST.on) return cstY(x-OX); if(MAP==='itaewon'&&IT.floor>0&&inBldg(x,z)) return IT.floorY[IT.floor]; if(MAP==='itaewon'&&RING.st&&ringOnStairs(x,z)) return ringStairY(x-OX); return floorAtBase(x,z); }
+function floorAt(x,z){ if(z>1500&&SPH.inside&&!SPH.seat) return SPH.ga?0:sphTread(x,z); if(z<-1500){ const iy=insStY(x,z); return iy!==null?iy:SHG.st?shStairY(x):0; } if(MAP==='itaewon'&&CST.on) return cstY(x-OX); if(MAP==='itaewon'&&IT.floor>0&&inBldg(x,z)) return IT.floorY[IT.floor]; if(MAP==='itaewon'&&RING.st&&ringOnStairs(x,z)) return ringStairY(x-OX); return floorAtBase(x,z); }
 function clampMap(){ if(BM.mode){ bmClamp(); return; } if(pState.z<-1500){ clampShanghai(); return; } if(pState.z>1500){ clampSphere(); return; } if(pState.x<-1500){ clampNami(); return; } if(pState.x<1500){ const dr=Math.hypot(pState.x,pState.z); if(dr>300){ pState.x*=300/dr; pState.z*=300/dr; } return; }
   let lx=pState.x-OX, z=pState.z;
   if(TEL.in){ lx=clamp(lx,TEL.X-9.8,TEL.X+7.8); z=clamp(z,-7.8,7.8); if(lx>TEL.X+1.6&&z>5.6) z=5.6; }
@@ -7030,8 +7030,8 @@ const SH_TR={
   hall:{name:'화이트 노이즈 시스템',bpm:132,root:29,kick:K4,hat:OFF,h16:1,rim:'..x...x...x...x.',bass:'.0.0.0.0.0.0.0.0',bt:'rumble',prog:[[0,'min'],[0,'min'],[-2,'min'],[0,'min']]},
   green:{name:'그린 룸 그루브',bpm:124,root:34,kick:K4,hat:OFF,oh:OFF,clap:CL,bass:'0.0..0.0..c.0.7.',bt:'pluck',prog:[[0,'min7'],[5,'min7'],[3,'maj7'],[-2,'dom7']],chord:'x..x..x.......x.',ct:'stab'} };
 // the camera may sit behind a wall (the walls only show from inside) but never above the ceiling or among the ivy
-function shCam(){ const r=SHG.room; if(r==='out') return; const R=SH_R[r], c=camera.position, top=r[0]==='i'?R.h-.5:r==='green'?3.05:r==='lift'?R.h-.35:r==='gal'?4.1:R.h-2.2; if(c.y>top) c.y=top; if(c.y<pState.y+.6) c.y=pState.y+.6; }
-function shRoomAt(x,z){ for(const k of ['gal','lift','hall','green','i1','i2','i3','i4','i5','i6']){ const R=SH_R[k]; if(Math.abs(x-R.cx)<R.w/2+4&&Math.abs(z-R.cz)<R.d/2+4) return k; } return 'out'; }
+function shCam(){ const r=SHG.room; if(r==='out') return; const R=SH_R[r], c=camera.position, top=r[0]==='i'||r==='w5'?R.h-.3:r==='green'?3.05:r==='lift'?R.h-.35:r==='gal'?4.1:R.h-2.2; if(c.y>top) c.y=top; if(c.y<pState.y+.6) c.y=pState.y+.6; }
+function shRoomAt(x,z){ for(const k of ['gal','lift','hall','green','i1','i2','i3','i4','i5','i6','w5','ist']){ const R=SH_R[k]; if(Math.abs(x-R.cx)<R.w/2+4&&Math.abs(z-R.cz)<R.d/2+4) return k; } return 'out'; }
 function clampShanghai(){ const r=shRoomAt(pState.x,pState.z);
   if(r==='out'){ const R=SH_R.out; pState.x=clamp(pState.x,R.x0,R.x1); pState.z=clamp(pState.z,R.z0,R.z1); return; }
   const R=SH_R[r]; pState.x=clamp(pState.x,R.cx-R.w/2+.45,R.cx+R.w/2-.45); pState.z=clamp(pState.z,R.cz-R.d/2+.45,R.cz+R.d/2-.45);
@@ -7098,7 +7098,7 @@ const INS_TR={
   i4:{name:'더티 하우스 레드',bpm:134,root:29,kick:K4,hat:OFF,h16:1,rim:'..x...x...x...x.',bass:'.0.0.0.0.0.0.0.0',bt:'acid',prog:[[0,'min'],[0,'min'],[1,'min'],[0,'min']]},
   i5:{name:'프렌즈 파티',bpm:124,root:34,kick:K4,hat:OFF,oh:OFF,clap:CL,bass:'0.0..0.0..c.0.7.',bt:'pluck',prog:[[0,'maj7'],[5,'maj7'],[3,'min7'],[-2,'dom7']],chord:'x..x..x.......x.',ct:'stab'},
   i6:{name:'팡팡 점프',bpm:140,root:33,kick:K4,hat:OFF,clap:CL,bass:'0.0.0.0.0.0.0.0.',bt:'rolling',prog:[[0,'min'],[-2,'min'],[3,'maj'],[5,'maj']]} };
-const INSG={cards:{},coupons:0,zones:{},crowds:{},jumpers:[],wands:[],candles:[],lasers:[],ballR:null};
+const INSG={g:{},cards:{},coupons:0,zones:{},crowds:{},jumpers:[],wands:[],candles:[],lasers:[],ballR:null};
 function insLoad(){ try{ const v=JSON.parse(localStorage.getItem('playa-ins')||'null'); if(v&&v.exp>Date.now()){ INSG.cards=v.cards||{}; INSG.coupons=v.coupons||0; } }catch(e){} }
 function insSave(){ try{ const T=JSON.parse(localStorage.getItem('playa-tickets')||'{}'); localStorage.setItem('playa-ins',JSON.stringify({exp:T.ins||Date.now()+12*3600000,cards:INSG.cards,coupons:INSG.coupons})); }catch(e){} }
 // the die-cut sticker card each floor hands out
@@ -7116,8 +7116,10 @@ function insCardTex(f){ return shTex(256,340,(x,w,h)=>{ const F=INS_F[f]; x.clea
   x.fillStyle='rgba(0,0,0,.45)'; x.fillRect(f===1?56:40,ty+48,f===1?144:176,40); x.fillStyle='#ffe08a'; x.font='900 20px sans-serif'; x.fillText('FREE DRINK',128,ty+75); x.restore(); }); }
 function insEnterFloor(f){ const F=INS_F[f]; if(!SHG.insPass||INSG.cards[f]) return; INSG.cards[f]=1; INSG.coupons++; insSave(); const n=Object.keys(INSG.cards).length;
   const url=insCardTex(f).image.toDataURL(); setTimeout(()=>openSp(`${F.n} 스티커 카드`,`프리드링크 쿠폰 1장을 받았어요 · 모은 스티커 ${n}/6`,`<div style='text-align:center'><img src='${url}' style='width:170px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.5))'><p>${tr('이 층 바에서 쿠폰을 쓰면 술 한 잔이 공짜예요')}</p></div><div class='acts'><button data-act='ok' class='hot'>${tr('좋아요')}</button></div>`,()=>closeSp()),500); }
-function insGo(f,msg){ const R=SH_R['i'+f]; SHG.st=false; shGo('i'+f,R.cx-R.w/2+2.6,R.cz,Math.PI/2,msg||INS_F[f].n); setTimeout(()=>insEnterFloor(f),450); }
-function insElevator(){ const cur=+String(SHG.room).slice(1)||0;
+function insGo(f,msg){ SHG.st=false; try{ chime(84,'sine',.06,.5); }catch(e){}
+  if(f===5){ const W5=SH_R.w5; shGo('w5',W5.cx-W5.w/2+2.6,W5.cz,Math.PI/2,msg||'띵! 5F 대기실이에요. 줄 서서 FRIENDS에 들어가요'); return; }
+  const R=SH_R['i'+f]; shGo('i'+f,R.cx-R.w/2+2.6,R.cz,Math.PI/2,msg||('띵! '+INS_F[f].n+(f===1?' · 배우들을 따라다니며 보는 이머시브 연극이에요':''))); setTimeout(()=>insEnterFloor(f),450); }
+function insElevator(){ const cur=SHG.room==='w5'?5:SHG.room==='ist'?0:+String(SHG.room).slice(1)||0;
   openSp('INS 엘리베이터','올패스로 모든 층에 갈 수 있어요',`<div class='acts' style='grid-template-columns:1fr'>${[6,5,4,3,2,1].map(f=>`<button data-act='f${f}' ${cur===f?'disabled':''}>${INS_F[f].n} <small class='loc'>${INS_F[f].sub}${INSG.cards[f]?' · ✓ 스티커':''}</small></button>`).join('')}<button data-act='out'>밖으로 (황푸강변)</button></div>`,a=>{
     if(a==='out'){ shGo('out',INS_X,SHZ+2,Math.PI,'황푸강변이에요'); return; } const f=+a.slice(1); if(f) insGo(f); }); }
 function insEntry(){ if(SHG.insPass){ insGo(1,'INS LAND 1F. 알바생들이 해리포터 연극을 하고 있어요'); return; }
@@ -7156,12 +7158,12 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
   for(let i=0;i<(LOW?8:16);i++){ const S=addNPC(avantLook(),{x:INS_X+8+i*.9,z:SHZ+2.6+(i%2?.4:-.3)},Math.atan2(-1,0)+rand(-.6,.6),'talk',{talk:true}); mine.push(S.P); }
   floatLabel('INS LAND 新乐园','1~6층 클럽 빌딩 · ALL PASS','#ffb040',INS_X,9,SHZ+1);
   // ---------- 1F: the wizard theatre (staff playing a Harry Potter scene in a candle-lit great hall) ----------
-  { const R=SH_R.i1, g=shRoom(R,M('#3a3230'),M('#3a2618'),new THREE.MeshBasicMaterial({map:shTex(256,256,(x,w,h)=>{ x.fillStyle='#0a0c1e'; x.fillRect(0,0,w,h); for(let i=0;i<140;i++){ x.fillStyle=`rgba(255,255,240,${(Math.random()*.9).toFixed(2)})`; x.fillRect(Math.random()*w,Math.random()*h,1.5,1.5); } })})), W=R.w, D=R.d, H=R.h;
+  { const R=SH_R.i1, g=INSG.g[1]=shRoom(R,M('#3a3230'),M('#3a2618'),new THREE.MeshBasicMaterial({map:shTex(256,256,(x,w,h)=>{ x.fillStyle='#0a0c1e'; x.fillRect(0,0,w,h); for(let i=0;i<140;i++){ x.fillStyle=`rgba(255,255,240,${(Math.random()*.9).toFixed(2)})`; x.fillRect(Math.random()*w,Math.random()*h,1.5,1.5); } })})), W=R.w, D=R.d, H=R.h;
     // stone blocks on the walls
     const stone=shTex(256,128,(x,w,h)=>{ x.fillStyle='#4a423c'; x.fillRect(0,0,w,h); for(let r=0;r<8;r++) for(let c=-1;c<6;c++){ const v=60+Math.random()*30|0; x.fillStyle=`rgb(${v+10},${v+4},${v})`; x.fillRect(c*48+(r%2)*24+2,r*16+2,44,12); } }); stone.wrapS=stone.wrapT=THREE.RepeatWrapping; stone.repeat.set(8,2);
     [[0,-D/2+.04,0,W],[0,D/2-.04,Math.PI,W]].forEach(([x,z,ry,len])=>shPlane(g,new THREE.MeshLambertMaterial({map:stone}),len,H,x,H/2,z,ry));
     // long tables with candles, and candles floating under the starry ceiling
-    [-6,-2,2,6].forEach(z=>{ B(18,.12,1.4,M('#5a3a22'),-2,.85,z,g); for(let i=0;i<4;i++) B(.12,.8,.12,M('#3a2618'),-10+i*5.6,.42,z,g); [-1,1].forEach(sd=>B(18,.45,.4,M('#3a2618'),-2,.45,z+sd*1.1,g)); for(let i=0;i<8;i++) mesh(G.sph,M('#c8a040'),-10+i*2.4,.98,z,.12,.08,.12,g); });
+    [-2.2,2.2].forEach(z=>{ B(12,.12,1.4,M('#5a3a22'),-1,.85,z,g); for(let i=0;i<4;i++) B(.12,.8,.12,M('#3a2618'),-6+i*4,.42,z,g); [-1,1].forEach(sd=>B(12,.45,.4,M('#3a2618'),-1,.45,z+sd*1.1,g)); for(let i=0;i<6;i++) mesh(G.sph,M('#c8a040'),-6+i*2,.98,z,.12,.08,.12,g); });
     for(let i=0;i<(LOW?24:60);i++){ const x=rand(-W/2+2,W/2-6), z=rand(-D/2+2,D/2-2), y=rand(4.6,6.8); mesh(G.cyl,M('#f4ecd8'),x,y,z,.05,.32,.05,g); const fl=mesh(G.sph,M('#ffcf6a',{glow:2}),x,y+.22,z,.05,.08,.05,g); INSG.candles.push({m:fl,ph:Math.random()*6,y:y+.22}); }
     // the stage: castle backdrop, house banners, the sorting hat
     B(7,.8,18,M('#2a1e16'),W/2-4,.4,0,g);
@@ -7175,16 +7177,16 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     // the cast: staff in black robes and house scarves with lit wands
     const cast=[['#8a1a1a',-2],['#1a5a2a',2],['#d8b020',-4.5],['#1a2a7a',4.5],['#8a1a1a',0],['#1a5a2a',-6.5]];
     cast.forEach(([c,z],i)=>{ const S=addNPC({top:'long',topColor:c,outer:'kimono',outerColor:'#0c0c10',bottom:'cargo',bottomColor:'#141418',shoes:'boots',shoeColor:'#141418',head:i===0?'none':'none',face:i%3===0?'shades':'none',extra:'cape',hairStyle:pick(['buzz','bob','long'])},{x:R.cx+W/2-4+rand(-1.5,1),z:R.cz+z},-Math.PI/2,'talk',{y:.8});
-      const E=S.P.el&&S.P.el[1]; if(E){ const wd=B(.025,.025,.42,M('#3a2414'),0,-.36,.18,E); const tip=mesh(G.sph,M('#cfe8ff',{glow:2.5}),0,-.36,.4,.04,.04,.04,E); INSG.wands.push({P:S.P,tip,ph:i*1.3,line:pick(['윙가르디움 레비오우사!','익스펙토 패트로눔!','루모스!','엑스펠리아르무스!','그리핀도르에 10점!','마법은 계속돼요!'])}); } mine.push(S.P); });
+      const E=S.P.el&&S.P.el[1]; if(E){ const wd=B(.025,.025,.42,M('#3a2414'),0,-.36,.18,E); const tip=mesh(G.sph,M('#cfe8ff',{glow:2.5}),0,-.36,.4,.04,.04,.04,E); INSG.wands.push({S,P:S.P,tip,ph:i*1.3,line:pick(['윙가르디움 레비오우사!','익스펙토 패트로눔!','루모스!','엑스펠리아르무스!','그리핀도르에 10점!','마법은 계속돼요!'])}); } mine.push(S.P); });
     // the audience on the benches
-    [-6,-2,2,6].forEach(z=>{ for(let i=0;i<(LOW?3:6);i++){ const S=addNPC(Math.random()<.5?avantLook():{},{x:R.cx-9+i*2.6,z:R.cz+z+(i%2?1.1:-1.1)},Math.PI/2,'talk',{talk:true}); mine.push(S.P); } });
+    
     const wl=new THREE.PointLight(0xffc870,1.4,30); wl.position.set(0,5,0); g.add(wl); const sl=new THREE.PointLight(0xc8b0ff,1.6,16); sl.position.set(W/2-6,4,0); g.add(sl);
     INSG.bars=INSG.bars||{}; B(1,1.1,5,M('#3a2618'),-W/2+6,.55,D/2-4,g); B(1.06,.05,5.06,M('#ffd890',{glow:1}),-W/2+6,1.12,D/2-4,g); INSG.bars[1]={x:R.cx-W/2+7.2,z:R.cz+D/2-4}; }
   // ---------- 2F HUSH: the orange tunnel and portholes, VIP booths, hip-hop ----------
-  { const R=SH_R.i2, g=shRoom(R,M('#2a1208'),M('#120806'),M('#1a0c06')), W=R.w, D=R.d, H=R.h;
+  { const R=SH_R.i2, g=INSG.g[2]=shRoom(R,M('#2a1208'),M('#120806'),M('#1a0c06')), W=R.w, D=R.d, H=R.h;
     for(let i=0;i<9;i++) [-1,1].forEach(sd=>{ const x=-W/2+3+i*3.2; const ring=new THREE.Mesh(new THREE.TorusGeometry(.75,.12,8,24),M('#ff8a2a',{glow:1.8})); ring.position.set(x,2.1,sd*(D/2-.08)); g.add(ring); shPlane(g,M('#2a0c04'),1.3,1.3,x,2.1,sd*(D/2-.06),sd>0?Math.PI:0); });
     for(let i=0;i<8;i++){ const arch=new THREE.Mesh(new THREE.TorusGeometry(2.4-i*.08,.05,6,32,Math.PI),M('#ff7a2a',{glow:1.6})); arch.position.set(-W/2+.3+i*.35,0,0); arch.rotation.y=Math.PI/2; g.add(arch); }
-    shPlane(g,insWord([['HUSH','900 160px Georgia,serif','#ffb040',.5,30]],{w:512,h:256}),3.2,1.6,-W/2+1.6,3.2,0,Math.PI/2);
+    shPlane(g,insWord([['HUSH','900 160px Georgia,serif','#ffb040',.5,30]],{w:512,h:256}),3.2,1.6,-W/2+1.6,4.4,0,Math.PI/2);
     for(let i=0;i<6;i++) [-1,1].forEach(sd=>{ const x=-W/2+7+i*3.4, z=sd*(D/2-1.8); B(2.6,.45,1.3,M('#4a1a10'),x,.25,z,g); B(2.6,.8,.3,M('#4a1a10'),x,.7,z+sd*.55,g); B(.8,.6,.8,M('#1a1a1a'),x,.3,z-sd*1.2,g); shPlane(g,insWord([['A'+(i+1+(sd>0?6:0)),'900 80px sans-serif','#ff9a4a',.5]],{w:256,h:128}),.8,.4,x,1.6,sd*(D/2-.06),sd>0?Math.PI:0); });
     B(2.4,1.2,5,M('#1a0a06'),W/2-2.4,.6,0,g); B(2.42,.05,5.02,M('#ff7a2a',{glow:2}),W/2-2.4,1.22,0,g); shPlane(g,insWord([['DJ BOOTH  ⟪','900 70px "Arial Black",sans-serif','#ff7a2a',.5,12]],{w:512,h:128}),3,.75,W/2-.06,3.2,0,-Math.PI/2);
     const rl=new THREE.PointLight(0xff6a20,2,28); rl.position.set(0,4,0); g.add(rl);
@@ -7193,7 +7195,7 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     INSG.crowds[2]=insCrowd(R,-W/2+6,W/2-4,-D/2+3.4,D/2-3.4,LOW?1:.78,W/2,0);
     B(4,1.1,1,M('#1a0a06'),-W/2+6,.55,-D/2+3,g); B(4.04,.05,1.04,M('#ffb040',{glow:1.4}),-W/2+6,1.12,-D/2+3,g); INSG.bars[2]={x:R.cx-W/2+6,z:R.cz-D/2+4.4}; }
   // ---------- 3F KEZEE live house (and the RADI corner) ----------
-  { const R=SH_R.i3, g=shRoom(R,M('#120a1e'),M('#0c0812'),M('#0a0610')), W=R.w, D=R.d, H=R.h;
+  { const R=SH_R.i3, g=INSG.g[3]=shRoom(R,M('#120a1e'),M('#0c0812'),M('#0a0610')), W=R.w, D=R.d, H=R.h;
     INSG.gold=new THREE.ShaderMaterial({uniforms:{uT:{value:0}},vertexShader:'varying vec2 v; void main(){ v=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
       fragmentShader:'varying vec2 v; uniform float uT; void main(){ vec2 p=v*vec2(12.,5.); vec2 q=abs(fract(p)-.5); float d=max(q.x,q.y), dia=abs(q.x+q.y-.5+.15*sin(uT+p.x*.5)); float l=smoothstep(.05,0.,dia)+smoothstep(.48,.5,d); vec3 c=mix(vec3(.4,.2,.05),vec3(1.,.8,.4),l); c+=vec3(.6,.3,.9)*.25*sin(uT*.7+v.x*6.); gl_FragColor=vec4(c,1.); }'});
     const led=new THREE.Mesh(G.plane,INSG.gold); led.scale.set(D-4,H-1.6,1); led.position.set(W/2-.06,H/2+.4,0); led.rotation.y=-Math.PI/2; g.add(led);
@@ -7207,7 +7209,7 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     for(let i=0;i<(LOW?14:30);i++){ const x=rand(-W/2+4,W/2-8), z=rand(-D/2+2.5,D/2-2.5); const S=addNPC(Math.random()<.6?avantLook():{},{x:R.cx+x,z:R.cz+z},Math.atan2(W/2-4-x,-z)+rand(-.3,.3),'dance',{dance:pick(['sway','hands','wave']),zone:INSG.zones[3],talk:true}); const E=S.P.el&&S.P.el[i%2]; if(E) mesh(G.cyl,M('#c88aff',{glow:2.4}),0,-.36,.12,.035,.45,.035,E); mine.push(S.P); }
     B(1,1.1,6,M('#141418'),-W/2+5,.55,-D/2+5,g); B(1.06,.05,6.06,M('#b06bff',{glow:1.4}),-W/2+5,1.12,-D/2+5,g); INSG.bars[3]={x:R.cx-W/2+6.2,z:R.cz-D/2+5}; }
   // ---------- 4F DIRTY HOUSE: red techno, lasers, haze, the swirling LED disc ----------
-  { const R=SH_R.i4, g=shRoom(R,M('#1a0606'),M('#0c0404'),M('#120404')), W=R.w, D=R.d, H=R.h;
+  { const R=SH_R.i4, g=INSG.g[4]=shRoom(R,M('#1a0606'),M('#0c0404'),M('#120404')), W=R.w, D=R.d, H=R.h;
     INSG.swirl=new THREE.MeshBasicMaterial({map:shTex(256,256,(x,w,h)=>{ x.fillStyle='#000'; x.fillRect(0,0,w,h); x.strokeStyle='#ff6a5a'; x.lineWidth=3; for(let i=0;i<14;i++){ x.beginPath(); x.ellipse(128,128,30+i*7,18+i*4,i*.3,0,Math.PI*2); x.stroke(); } }),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});
     const disc=new THREE.Mesh(G.plane,INSG.swirl); disc.scale.set(6,3,1); disc.position.set(W/2-.1,3.4,0); disc.rotation.y=-Math.PI/2; g.add(disc); INSG.disc=disc;
     B(1.2,1.1,4,M('#0e0e10'),W/2-2.2,.55,0,g); B(1.22,.04,4.02,M('#ff2a2a',{glow:2}),W/2-2.2,1.12,0,g);
@@ -7220,7 +7222,7 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     INSG.crowds[4]=insCrowd(R,-W/2+4,W/2-3.5,-D/2+1.2,D/2-1.2,LOW?.95:.72,W/2,0,(x,z)=>x<-W/2+7&&z<-D/2+6);
     B(4,1.1,1,M('#1a0606'),-W/2+5,.55,-D/2+2.5,g); B(4.04,.05,1.04,M('#ff2a2a',{glow:1.4}),-W/2+5,1.12,-D/2+2.5,g); INSG.bars[4]={x:R.cx-W/2+5,z:R.cz-D/2+3.9}; }
   // ---------- 5F FRIENDS: the Vegas sign, the calendar screen, beer towers ----------
-  { const R=SH_R.i5, g=shRoom(R,M('#1a0e18'),M('#100a10'),M('#0c080c')), W=R.w, D=R.d, H=R.h;
+  { const R=SH_R.i5, g=INSG.g[5]=shRoom(R,M('#1a0e18'),M('#100a10'),M('#0c080c')), W=R.w, D=R.d, H=R.h;
     shPlane(g,new THREE.MeshBasicMaterial({map:shTex(512,256,(x,w,h)=>{ x.fillStyle='#000'; x.fillRect(0,0,w,h); x.fillStyle='#ffe8b0'; x.strokeStyle='#ff4a2a'; x.lineWidth=8; x.beginPath(); x.moveTo(40,128); x.lineTo(256,30); x.lineTo(472,128); x.lineTo(256,226); x.closePath(); x.fill(); x.stroke();
       for(let i=0;i<30;i++){ const a=i/30*Math.PI*2; x.fillStyle='#ffd23d'; x.beginPath(); x.arc(256+Math.cos(a)*200,128+Math.sin(a)*88,4,0,7); x.fill(); } x.fillStyle='#c81a1a'; x.textAlign='center'; x.font='900 26px sans-serif'; x.fillText('WELCOME TO',256,86); x.font='italic 900 70px "Arial Black",sans-serif'; x.fillText('FRiENDS',256,150); x.font='800 24px sans-serif'; x.fillStyle='#1a1a1a'; x.fillText('SHANGHAI',256,186); }),transparent:true}),6,3,-W/2+.06,3.2,-4,Math.PI/2);
     shPlane(g,new THREE.MeshBasicMaterial({map:shTex(256,360,(x,w,h)=>{ const gr=x.createLinearGradient(0,0,0,h); gr.addColorStop(0,'#5aa0e8'); gr.addColorStop(1,'#8ab8e0'); x.fillStyle=gr; x.fillRect(0,0,w,h); x.fillStyle='#111'; x.font='900 40px "Arial Black",sans-serif'; x.fillText('FRiENDS',14,46); x.font='800 14px sans-serif'; x.fillText('NOVEMBER 2026',150,40);
@@ -7234,7 +7236,7 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     for(let i=0;i<(LOW?14:30);i++){ const x=rand(-W/2+4,W/2-5), z=rand(-D/2+2,D/2-2); mine.push(addNPC(Math.random()<.5?avantLook():{},{x:R.cx+x,z:R.cz+z},rand(0,6.28),'dance',{dance:pick(['jack','twostep','hands','shuffle','sway']),zone:INSG.zones[5],talk:true}).P); }
     B(4,1.1,1,M('#141418'),-W/2+6,.55,D/2-2.5,g); B(4.04,.05,1.04,M('#ff9a3a',{glow:1.4}),-W/2+6,1.12,D/2-2.5,g); INSG.bars[5]={x:R.cx-W/2+6,z:R.cz+D/2-3.9}; }
   // ---------- 6F JUMP STAGE 팡팡: a padded floor, everybody jumps on the beat ----------
-  { const R=SH_R.i6, g=shRoom(R,M('#10102a'),M('#141428'),M('#08081a')), W=R.w, D=R.d, H=R.h;
+  { const R=SH_R.i6, g=INSG.g[6]=shRoom(R,M('#10102a'),M('#141428'),M('#08081a')), W=R.w, D=R.d, H=R.h;
     const mats=['#ff3a8a','#ffd23d','#3ad6ff','#7aff4a','#b06bff','#ff7a2a']; INSG.pads=[];
     for(let i=0;i<6;i++) for(let j=0;j<4;j++){ const m=M(mats[(i+j)%6],{glow:.35}).clone(); const p=B(3.4,.12,3.4,m,-W/2+8+i*3.5,.06,-6+j*3.5,g); INSG.pads.push(m); }
     INSG.jumpZ={x0:R.cx-W/2+6.2,x1:R.cx-W/2+6.2+21,z0:R.cz-7.8,z1:R.cz+7.8};
@@ -7254,7 +7256,7 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     const b=INSG.bars[f]; if(b) INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='i'+f?b:FARV,r:2.4,get label(){ return INSG.coupons>0?`프리드링크 쿠폰 쓰기 (${INSG.coupons}장)`:`${INS_F[f].n} 바`; },act:()=>{
       if(INSG.coupons>0){ INSG.coupons--; insSave(); const it=ITEMS[INS_F[f].drink]; if(it) useItem(it); toast(`쿠폰으로 ${INS_F[f].drink} 한 잔! 남은 쿠폰 ${INSG.coupons}장`); }
       else openShop({id:'insbar'+f,name:INS_F[f].n+' 바',sub:'맥주, 샷, 칵테일, 물',items:[ITEMS['플라야 라거'],ITEMS['데킬라 샷'],ITEMS['선셋 칵테일'],ITEMS['생수']].filter(Boolean)}); }}); }
-  insLoad(); updaters.push(insTick); }
+  insLoad(); updaters.push(insTick); buildINS2(); }
 function insTick(t,dt){ if(MAP!=='shanghai') return; const r=SHG.room; if(!r||r[0]!=='i') return; const f=+r.slice(1), Z=INSG.zones[f], b=Z&&Z.running?boothBeat(Z,t):t*2.1, ph=((b%1)+1)%1, k=Math.exp(-ph*4);
   if(f===1){ INSG.candles.forEach(C=>{ C.m.position.y=C.y+Math.sin(t*1.3+C.ph)*.06; C.m.scale.y=.08*(.8+.3*Math.sin(t*9+C.ph)); });
     for(const W of INSG.wands){ W.tip.material.color.setHSL(.58,.7,.6+.35*Math.max(0,Math.sin(t*2+W.ph))); if(Math.random()<dt*.9){ const p=new THREE.Vector3(); W.tip.getWorldPosition(p); for(let i=0;i<5;i++) part({x:p.x,y:p.y,z:p.z,vx:rand(-.6,.6),vy:rand(.2,1),vz:rand(-.6,.6),col:pick(['#cfe8ff','#ffe08a','#c8a2ff']),op:.9,size:.12,grow:.1,life:1.2}); } if(Math.random()<dt*.08) say(W.P,tr(W.line),2.2); } return; }
@@ -7266,6 +7268,135 @@ function insTick(t,dt){ if(MAP!=='shanghai') return; const r=SHG.room; if(!r||r[
     INSG.jumpers.forEach(J=>{ J.P.root.position.y=J.y+Math.abs(Math.sin((b+J.ph)*Math.PI))*.6; });
     // on the padded floor you jump with everyone, on every beat
     const J=INSG.jumpZ; if(pState.x>J.x0&&pState.x<J.x1&&pState.z>J.z0&&pState.z<J.z1&&pState.y<=.05&&pState.vy<=0&&ph<.15) pState.vy=4.6; } }
+
+/* ---------- INS LAND part 2: the free-roaming 1F play, elevator doors, the 5F waiting room, the painted stairwell ---------- */
+Object.assign(SH_R,{ w5:{cx:SHX+4800,cz:SHZ,w:16,d:12,h:3.6}, ist:{cx:SHX+4900,cz:SHZ,w:26,d:3.6,h:11} });
+const IST={lo:1,len:8,rise:5.4};
+function insStY(x,z){ const R=SH_R.ist; if(Math.abs(x-R.cx)>R.w/2+1||Math.abs(z-R.cz)>R.d/2+1) return null; return clamp((x-R.cx+IST.len)/(IST.len*2),0,1)*IST.rise; }
+// the stairwell walls are painted: a different mural between each pair of floors
+function insMural(lo){ INSG.murals=INSG.murals||{}; if(INSG.murals[lo]) return INSG.murals[lo];
+  const t=shTex(1024,440,(x,w,h)=>{ const ink='#1a1014', comic=(s,X,Y,size,fill,rot)=>{ x.save(); x.translate(X,Y); x.rotate(rot||0); x.font=`italic 900 ${size}px "Arial Black",sans-serif`; x.lineJoin='round'; x.lineWidth=size*.16; x.strokeStyle=ink; x.strokeText(s,0,0); x.fillStyle=fill; x.fillText(s,0,0); x.restore(); };
+    const star=(X,Y,r,c)=>{ x.fillStyle=c; x.beginPath(); for(let i=0;i<8;i++){ const a=i*Math.PI/4, rr=i%2?r*.3:r; x.lineTo(X+Math.cos(a)*rr,Y+Math.sin(a)*rr); } x.fill(); };
+    if(lo===5){ // a giant UFO with LAFIN on its rim, over red and orange
+      x.fillStyle='#c8322a'; x.fillRect(0,0,w,h); x.fillStyle='#f0a050'; x.fillRect(620,0,404,h); for(let i=0;i<5;i++) star(680+i*70,80+((i*97)%300),14,'#ffe27a');
+      x.fillStyle='#e8ecef'; x.strokeStyle=ink; x.lineWidth=6; x.beginPath(); x.ellipse(560,200,330,95,-.08,0,Math.PI*2); x.fill(); x.stroke(); x.fillStyle='#c8d0d8'; x.beginPath(); x.ellipse(560,150,170,90,-.08,Math.PI,0); x.fill(); x.stroke();
+      x.fillStyle='#8aa0b0'; for(let i=0;i<9;i++){ x.beginPath(); x.arc(300+i*62,250-i*5,12,0,7); x.fill(); x.stroke(); } x.fillStyle='#f0f2f4'; x.fillRect(470,280,90,160); x.strokeRect(470,280,90,160);
+      comic('LAFIN',420,236,64,'#ff6a8a',-.08); x.fillStyle='#e8ecef'; x.beginPath(); x.ellipse(120,120,110,48,.3,0,7); x.fill(); x.stroke(); comic('INS',60,150,54,'#ff5ab4',.3); x.fillStyle='#6ac46a'; x.beginPath(); x.ellipse(250,80,26,40,0,0,7); x.fill(); x.stroke(); }
+    else if(lo===4){ // pink comic sheets and orange F flags
+      x.fillStyle='#f6a8b8'; x.fillRect(0,0,w,h); x.strokeStyle='#c8506a'; x.lineWidth=5; for(let i=0;i<14;i++){ x.beginPath(); x.moveTo(i*80,0); x.bezierCurveTo(i*80+60,150,i*80-40,300,i*80+30,h); x.stroke(); }
+      x.fillStyle='#f4c040'; x.fillRect(0,0,140,h); x.fillStyle='#5a78c8'; x.beginPath(); x.ellipse(70,h,110,250,0,Math.PI,0); x.fill();
+      [[300,120,-.1],[700,70,.08],[860,300,-.05]].forEach(([X,Y,r])=>{ x.save(); x.translate(X,Y); x.rotate(r); x.fillStyle='#f0a040'; x.strokeStyle=ink; x.lineWidth=5; x.beginPath(); x.moveTo(0,0); x.lineTo(170,10); x.lineTo(150,60); x.lineTo(175,110); x.lineTo(0,100); x.closePath(); x.fill(); x.stroke(); x.fillStyle='#fff6d8'; x.font='900 80px Georgia,serif'; x.strokeText('F',50,84); x.fillText('F',50,84); x.fillStyle=ink; x.fillRect(-6,-10,6,200); x.restore(); });
+      x.fillStyle='#ffd23d'; x.beginPath(); x.ellipse(200,300,30,60,.3,0,7); x.fill(); x.fillStyle='#ff3a5a'; x.beginPath(); x.arc(200,300,16,0,7); x.fill(); }
+    else if(lo===3){ // KEZEE: gold and violet pop art
+      x.fillStyle='#2a1450'; x.fillRect(0,0,w,h); for(let i=0;i<60;i++) star(Math.random()*w,Math.random()*h,4+Math.random()*10,'#ffd86a');
+      x.fillStyle='#c8902a'; x.beginPath(); x.moveTo(0,h); x.lineTo(380,120); x.lineTo(640,h); x.fill(); x.strokeStyle=ink; x.lineWidth=6; x.stroke(); comic('KEZEE',460,200,120,'#d8b0ff',-.05); comic('LIVE!',120,360,70,'#ffd86a',.1);
+      x.fillStyle='#ff6ab4'; x.beginPath(); x.arc(860,110,70,0,7); x.fill(); x.stroke(); x.fillStyle=ink; x.fillRect(850,170,20,160); }
+    else if(lo===2){ // HUSH: orange portholes and a black cat
+      x.fillStyle='#f07a2a'; x.fillRect(0,0,w,h); x.fillStyle='#ffb060'; for(let i=0;i<6;i++){ x.beginPath(); x.arc(90+i*170,140,60,0,7); x.fill(); x.strokeStyle=ink; x.lineWidth=8; x.stroke(); }
+      comic('SHHH...',300,360,110,'#fff4e0',-.04); x.fillStyle=ink; x.beginPath(); x.ellipse(900,330,60,80,0,0,7); x.fill(); x.beginPath(); x.moveTo(860,270); x.lineTo(870,220); x.lineTo(890,262); x.moveTo(940,270); x.lineTo(930,220); x.lineTo(910,262); x.fill(); x.fillStyle='#ffe27a'; x.fillRect(875,300,14,8); x.fillRect(910,300,14,8); }
+    else { // 1F-2F: space comic, pink INS
+      x.fillStyle='#3a2a8a'; x.fillRect(0,0,w,h); for(let i=0;i<90;i++){ x.fillStyle='#fff'; x.fillRect(Math.random()*w,Math.random()*h,2,2); }
+      x.fillStyle='#ff9a3a'; x.beginPath(); x.arc(820,140,90,0,7); x.fill(); x.strokeStyle=ink; x.lineWidth=6; x.stroke(); x.strokeStyle='#ffd23d'; x.lineWidth=10; x.beginPath(); x.ellipse(820,140,150,30,-.3,0,7); x.stroke();
+      comic('INS',140,260,170,'#ff5ab4',-.1); comic('LAND',220,380,90,'#ffe27a',-.1); x.fillStyle='#e8ecef'; x.beginPath(); x.ellipse(560,330,120,40,.1,0,7); x.fill(); x.strokeStyle=ink; x.lineWidth=5; x.stroke(); }
+  }); INSG.murals[lo]=t; return t; }
+function insStair(f,dir){ const R=SH_R.ist, lo=dir>0?f:f-1; if(lo<1||lo>5) return; IST.lo=lo; INSG.stMat.forEach(m=>{ m.map=insMural(lo); m.needsUpdate=true; });
+  INSG.stSign[0].material.map=insWordTex(lo); INSG.stSign[1].material.map=insWordTex(lo+1); INSG.stSign.forEach(s=>s.material.needsUpdate=true);
+  if(dir>0) shGo('ist',R.cx-11,R.cz,Math.PI/2,`계단 ${lo}F → ${lo+1}F`); else shGo('ist',R.cx+11,R.cz,-Math.PI/2,`계단 ${lo+1}F → ${lo}F`,IST.rise); }
+function insWordTex(n){ INSG.fw=INSG.fw||{}; return INSG.fw[n]||(INSG.fw[n]=shWordTex([[n+'F','900 190px "Arial Black",sans-serif','#ffffff',.6,20]],{w:512,h:256})); }
+function insStairDoor(f){ const L=[]; if(f<6) L.push(['up',`↑ 위층 ${f+1}F (${INS_F[f+1].n.replace(/^\dF /,'')})`]); if(f>1) L.push(['dn',`↓ 아래층 ${f-1}F (${INS_F[f-1].n.replace(/^\dF /,'')})`]);
+  openSp('INS 계단','층마다 벽에 그림이 그려진 계단이에요',`<div class='acts' style='grid-template-columns:1fr'>${L.map(([k,n])=>`<button data-act='${k}'>${n}</button>`).join('')}</div>`,a=>{ if(a==='up') insStair(f,1); else if(a==='dn') insStair(f,-1); }); }
+function insStairEnd(top){ const f=top?IST.lo+1:IST.lo, nxt=top?f+1:f-1, L=[['in',`${f}F 들어가기 (${INS_F[f].n.replace(/^\dF /,'')})`]]; if(nxt>=1&&nxt<=6) L.push(['go',top?`계속 올라가기 (${nxt}F)`:`계속 내려가기 (${nxt}F)`]);
+  openSp(`${f}F 계단참`,'',`<div class='acts' style='grid-template-columns:1fr'>${L.map(([k,n])=>`<button data-act='${k}'>${n}</button>`).join('')}</div>`,a=>{ if(a==='in') insGo(f); else if(a==='go') insStair(f,top?1:-1); }); }
+function insElevDoor(g,R,f){ const W=R.w, x=-W/2+.07; shPlane(g,M('#2a2a30'),2.8,3.1,x+.02,1.55,0,Math.PI/2); [-.55,.55].forEach(z=>shPlane(g,M('#9aa0a8',{glow:.08}),1.08,2.6,x+.07,1.3,z,Math.PI/2)); shPlane(g,M('#1a1a1e'),.04,2.6,x+.08,1.3,0,Math.PI/2);
+  shPlane(g,new THREE.MeshBasicMaterial({map:shTex(256,96,(c,w,h)=>{ c.fillStyle='#08080a'; c.fillRect(0,0,w,h); c.fillStyle='#ff3a2a'; c.font='900 64px monospace'; c.textAlign='center'; c.fillText('▲ '+(f||5)+'F ▼',128,70); })}),.9,.34,x+.08,2.85,0,Math.PI/2);
+  shPlane(g,M('#c8c8d0'),.14,.22,x+.09,1.25,1.05,Math.PI/2); mesh(G.sph,M('#ffb040',{glow:2}),x+.12,1.29,1.05,.03,.03,.03,g); mesh(G.sph,M('#ffb040',{glow:2}),x+.12,1.21,1.05,.03,.03,.03,g); }
+function insStairDoorVis(g,R){ const W=R.w, D=R.d, x=-W/2+.07, z=D/2-2; shPlane(g,M('#3a3a40'),1.5,2.6,x+.02,1.3,z,Math.PI/2); shPlane(g,M('#c8c0b0'),1.2,2.3,x+.07,1.15,z,Math.PI/2);
+  shPlane(g,new THREE.MeshBasicMaterial({map:shTex(256,96,(c,w,h)=>{ c.fillStyle='#0a8a3a'; c.fillRect(0,0,w,h); c.fillStyle='#fff'; c.font='900 40px sans-serif'; c.textAlign='center'; c.fillText('楼梯 STAIRS',128,62); })}),1.1,.4,x+.08,2.75,z,Math.PI/2); }
+function buildINS2(){ const mine=[];
+  // ---------- elevator doors and a stair door on every floor ----------
+  for(let f=1;f<=6;f++){ const R=SH_R['i'+f], g=INSG.g[f]; if(!g) continue; insElevDoor(g,R,f); insStairDoorVis(g,R);
+    INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='i'+f?{x:R.cx-R.w/2+1.2,z:R.cz+R.d/2-2}:FARV,r:1.8,prio:1,label:'INS 계단 (위·아래층)',act:()=>insStairDoor(f)}); }
+  // ---------- 1F: the stations of the free-roaming play ----------
+  { const R=SH_R.i1, g=INSG.g[1], W=R.w, D=R.d;
+    // potions: cauldrons bubbling green, a shelf of bottles
+    INSG.cauld=[]; [[-7.4,-10],[-5.6,-10.4],[-4,-9.8]].forEach(([x,z])=>{ mesh(G.sph,M('#141416'),x,.5,z,.5,.42,.5,g); const lq=mesh(G.cyl,M('#5aff6a',{glow:1.6}),x,.86,z,.42,.02,.42,g); INSG.cauld.push({x:R.cx+x,z:R.cz+z}); });
+    B(6,2.4,.4,M('#3a2618'),-6,1.4,-D/2+.3,g); for(let r=0;r<3;r++) for(let i=0;i<12;i++) mesh(G.cyl,M(pick(['#5aff6a','#c86aff','#ff5a6a','#6ac8ff','#ffd86a']),{glow:.9}),-8.6+i*.47,.75+r*.75,-D/2+.45,.07,.16,.07,g);
+    // the duel: a circle of light on the floor
+    { const ring=new THREE.Mesh(new THREE.TorusGeometry(2.3,.05,6,40),M('#cfe8ff',{glow:2})); ring.rotation.x=Math.PI/2; ring.position.set(4,.04,-8.6); g.add(ring); for(let i=0;i<10;i++){ const a=i/10*Math.PI*2; mesh(G.cyl,M('#f4ecd8'),4+Math.cos(a)*2.7,.2,-8.6+Math.sin(a)*2.7,.05,.4,.05,g); mesh(G.sph,M('#ffcf6a',{glow:2}),4+Math.cos(a)*2.7,.46,-8.6+Math.sin(a)*2.7,.05,.08,.05,g); } }
+    // the library: tall shelves of books and a few books floating in the air
+    const books=shTex(256,256,(x,w,h)=>{ x.fillStyle='#2a1a10'; x.fillRect(0,0,w,h); for(let r=0;r<4;r++){ let cx=4; while(cx<w-8){ const bw=8+Math.random()*12; x.fillStyle=pick(['#7a1a1a','#1a4a2a','#2a2a6a','#8a6a2a','#4a2a4a','#c8b080']); x.fillRect(cx,r*64+8,bw,54); cx+=bw+2; } x.fillStyle='#1a0c06'; x.fillRect(0,r*64+60,w,6); } });
+    [2.5,6,9.5].forEach(x=>{ B(3.2,4,.6,M('#2a1a10'),x,2,D/2-.35,g); shPlane(g,new THREE.MeshLambertMaterial({map:books}),3,3.8,x,2,D/2-.66,Math.PI); });
+    INSG.fbooks=[]; for(let i=0;i<7;i++){ const b=B(.4,.08,.3,M(pick(['#7a1a1a','#1a4a2a','#2a2a6a','#8a6a2a'])),3+i*1,2.6+Math.random(),8.6+rand(-.6,.6),g); INSG.fbooks.push({m:b,y:b.position.y,ph:i}); }
+    // the owlery: perches with owls
+    INSG.owls=[]; for(let i=0;i<5;i++){ const x=-9+i*1.3, z=D/2-.8; B(.08,2.4+i%2*.6,.08,M('#3a2618'),x,1.2+i%2*.3,z,g); const o=new THREE.Group(); o.position.set(x,2.5+i%2*.6,z); g.add(o); mesh(G.sph,M(i%2?'#e8e0d0':'#8a6a4a'),0,0,0,.2,.26,.2,o); [-.07,.07].forEach(dx=>mesh(G.sph,M('#ffcf3a',{glow:1.4}),dx,.08,.17,.05,.05,.03,o)); INSG.owls.push(o); }
+    // 9 3/4: trunks and a cage by the brick sign
+    [[-13.8,-10.4],[-12.6,-10.6]].forEach(([x,z],i)=>{ B(1.1,.7,.7,M(i?'#5a3a22':'#3a2a4a'),x,.35+i*.0,z,g); B(1.12,.06,.72,M('#c8a040'),x,.55,z,g); }); B(.9,.6,.6,M('#6a4a2a'),-13.2,1.0,-10.5,g);
+    { const cage=new THREE.Mesh(new THREE.CylinderGeometry(.25,.3,.6,10,1,true),new THREE.MeshBasicMaterial({color:0xc8a040,wireframe:true})); cage.position.set(-12.6,1.05,-10.5); g.add(cage); mesh(G.sph,M('#f4f4f0'),-12.6,1,-10.5,.12,.15,.12,g); }
+    // purple light-box posters by the door, like the queue corridor
+    for(let i=0;i<3;i++){ const z=-D/2+2.5+i*2.4; shPlane(g,new THREE.MeshBasicMaterial({map:shTex(256,320,(x,w,h)=>{ const gr=x.createLinearGradient(0,0,0,h); gr.addColorStop(0,'#f4eeff'); gr.addColorStop(1,'#c8b8f4'); x.fillStyle=gr; x.fillRect(0,0,w,h); x.fillStyle='#4a3a8a'; x.font='900 30px sans-serif'; x.fillText(['禁止携带以下物品','INS LAND','WIZARD THEATER'][i],14,46); x.fillStyle='rgba(80,60,140,.5)'; x.beginPath(); x.arc(128,200,60+i*8,0,7); x.fill(); })}),2,2.6,-W/2+.08,1.6,z,Math.PI/2); }
+    const ST=[{k:'stage',x:12,z:0},{k:'potion',x:-5.8,z:-8.4},{k:'platform',x:-12.4,z:-8.4},{k:'duel',x:4,z:-8.6},{k:'library',x:6,z:8.6},{k:'owlery',x:-6.6,z:9.2}];
+    INSG.st1=ST.map(s=>({k:s.k,x:R.cx+s.x,z:R.cz+s.z}));
+    INSG.actors=INSG.wands.map((W2,i)=>({S:W2.S,P:W2.P,at:i%ST.length,path:[],wait:rand(3,12),sp:rand(1.1,1.4)}));
+    INSG.actors.forEach(A=>{ const s=INSG.st1[A.at]; A.P.root.position.set(s.x+rand(-.6,.6),0,s.z+rand(-.6,.6)); });
+    // the masked audience: each one follows an actor around the building
+    INSG.aud=[]; const na=LOW?10:20; for(let i=0;i<na;i++){ const A=INSG.actors[i%INSG.actors.length]; const p=A.P.root.position, a=Math.random()*Math.PI*2, r=rand(1.8,3);
+      const S=addNPC({topColor:pick(['#141414','#1a1a1e','#2a2a30']),outer:'none',bottomColor:'#141418',head:'none',face:'none',extra:'none'},{x:p.x+Math.cos(a)*r,z:p.z+Math.sin(a)*r},0,'talk',{talk:true});
+      const mk=B(.22,.27,.05,M('#f4f2ea'),0,-.01,.13,S.P.head); B(.05,.025,.02,M('#141414'),.05,.02,.16,S.P.head); B(.05,.025,.02,M('#141414'),-.05,.02,.16,S.P.head);
+      INSG.aud.push({S,P:S.P,A,a,r,sp:rand(1.3,1.7)}); mine.push(S.P); } }
+  // ---------- 5F waiting room: white tiles under blue-violet light, like a big restroom ----------
+  { const R=SH_R.w5, W=R.w, D=R.d, H=R.h;
+    const tile=shTex(256,256,(x,w,h)=>{ x.fillStyle='#f4f4f8'; x.fillRect(0,0,w,h); x.strokeStyle='#b8b8c8'; x.lineWidth=3; for(let i=0;i<=8;i++){ x.beginPath(); x.moveTo(i*32,0); x.lineTo(i*32,h); x.stroke(); x.beginPath(); x.moveTo(0,i*32); x.lineTo(w,i*32); x.stroke(); } }); tile.wrapS=tile.wrapT=THREE.RepeatWrapping; tile.repeat.set(4,1);
+    const g=shRoom(R,new THREE.MeshLambertMaterial({map:tile}),M('#141420'),M('#6a5aff',{glow:.9})); INSG.g.w5=g;
+    // a mirror wall, a counter with sinks, stall doors, a tiled column
+    shPlane(g,M('#1a1a4a',{glow:.15}),9,2,-1,2.2,-D/2+.07,0); B(10,.9,.7,M('#e8e8f0'),-1,.45,-D/2+.4,g); for(let i=0;i<4;i++){ mesh(G.half,M('#ffffff'),-4.6+i*2.4,.92,-D/2+.45,.28,.08,.2,g); B(.04,.25,.04,M('#c8c8d0'),-4.6+i*2.4,1.05,-D/2+.18,g); }
+    for(let i=0;i<5;i++){ B(1.3,2.3,.06,M('#8a8aa0'),-5.5+i*1.5,1.25,D/2-.06,g); B(.06,2.4,.9,M('#c8c8d8'),-6.25+i*1.5,1.2,D/2-.5,g); }
+    B(5,.45,.7,M('#1a1a24'),W/2-4,.23,-D/2+1.2,g); // the ledge people sit on
+    shPlane(g,insWord([['WAITING ROOM · 等候区','900 64px sans-serif','#3a2aa0',.4,12],['5F FRIENDS →','900 72px "Arial Black",sans-serif','#ff5a8a',.78,12]],{w:1024,h:256}),5,1.25,-2,H-.75,D/2-.1,Math.PI);
+    // the rope line and the door into FRIENDS
+    shPlane(g,M('#1a1a1e'),2.4,2.8,W/2-.09,1.4,0,-Math.PI/2); shPlane(g,M('#ff3a6a',{glow:1.2}),2,.12,W/2-.1,2.9,0,-Math.PI/2);
+    for(let i=0;i<4;i++){ const z=-2.4+i*1.6; mesh(G.cyl,M('#c8a040'),W/2-2,.5,z,.05,1,.05,g); if(i<3) B(.04,.04,1.6,M('#c81a2a'),W/2-2,.86,z+.8,g); }
+    const l1=new THREE.PointLight(0x6a5aff,1.6,18); l1.position.set(0,3,0); g.add(l1); const l2=new THREE.PointLight(0xb0a0ff,1,12); l2.position.set(-4,2.6,-3); g.add(l2);
+    insElevDoor(g,R,5);
+    mine.push(addNPC({topColor:'#141414',outer:'none',bottomColor:'#141418',face:'none',extra:'none',head:'none'},{x:R.cx+W/2-1.4,z:R.cz+1.4},-Math.PI/2,'talk',{talk:true}).P);
+    for(let i=0;i<(LOW?3:5);i++){ const S=addNPC(Math.random()<.5?avantLook():{},{x:R.cx+W/2-6+i*1,z:R.cz-D/2+1.2},0,i%2?'sit':'selfie',{y:i%2?-.42:0,talk:true}); mine.push(S.P); }
+    for(let i=0;i<(LOW?4:9);i++){ const x=rand(-W/2+3,W/2-3), z=rand(-2,3.4); mine.push(addNPC(Math.random()<.6?avantLook():{},{x:R.cx+x,z:R.cz+z},rand(0,6.28),i%3?'talk':'selfie',{talk:true}).P); }
+    for(let i=0;i<(LOW?3:6);i++) mine.push(addNPC(avantLook(),{x:R.cx+W/2-2.6,z:R.cz-2.6+i*1},Math.PI/2,'talk',{talk:true}).P);
+    INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='w5'?{x:R.cx+W/2-1,z:R.cz}:FARV,r:2.2,prio:2,label:'FRIENDS 입장 (5F 클럽)',act:()=>{ const Ri=SH_R.i5; shGo('i5',Ri.cx-Ri.w/2+2.6,Ri.cz-4,Math.PI/2,'5F FRIENDS'); setTimeout(()=>insEnterFloor(5),450); }});
+    INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='w5'?{x:R.cx-W/2+1.2,z:R.cz}:FARV,r:2.2,prio:1,label:'INS 엘리베이터 (층 이동)',act:insElevator});
+    INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='i5'?{x:SH_R.i5.cx-SH_R.i5.w/2+1.2,z:SH_R.i5.cz-4}:FARV,r:1.6,prio:1,label:'5F 대기실로',act:()=>shGo('w5',R.cx+W/2-3.4,R.cz+3,-Math.PI/2,'5F 대기실')}); }
+  // ---------- the stairwell: one flight between two floors, murals on both walls, a mesh rail ----------
+  { const R=SH_R.ist, W=R.w, D=R.d, H=R.h, g=shRoom(R,M('#e8e4dc'),M('#4a1a1a'),M('#e8e4dc')); INSG.g.ist=g; INSG.stMat=[];
+    [[-D/2+.05,0],[D/2-.05,Math.PI]].forEach(([z,ry])=>{ const m=new THREE.MeshBasicMaterial({map:insMural(1)}); INSG.stMat.push(m); shPlane(g,m,W,H-1.6,0,(H-1.6)/2+.2,z,ry); });
+    const L=IST.len, rise=IST.rise, n=18; for(let i=0;i<n;i++){ const x=-L+(i+.5)*(2*L/n); B(2*L/n+.02,(i+1)*rise/n,D-.2,M(i%2?'#5a1e1e':'#4a1818'),x,(i+1)*rise/n/2,0,g); B(.05,.03,D-.2,M('#c8a040'),x-L/n+.02,(i+1)*rise/n+.01,0,g); }
+    B(W/2-L+.1,rise,D-.2,M('#4a1818'),L+(W/2-L)/2,rise/2,0,g);
+    const slope=Math.atan2(rise,2*L), len=Math.hypot(rise,2*L);
+    const grid=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:shTex(256,64,(x,w,h)=>{ x.strokeStyle='#1a1a1a'; x.lineWidth=2; for(let i=0;i<=w;i+=8){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,h); x.stroke(); } for(let j=0;j<=h;j+=8){ x.beginPath(); x.moveTo(0,j); x.lineTo(w,j); x.stroke(); } }),transparent:true,side:THREE.DoubleSide}));
+    grid.scale.set(len,1.1,1); grid.position.set(0,rise/2+.6,D/2-.25); grid.rotation.z=slope; g.add(grid); const rail=B(len,.06,.06,M('#c8c8d0'),0,rise/2+1.17,D/2-.25,g); rail.rotation.z=slope;
+    INSG.stSign=[shPlane(g,new THREE.MeshBasicMaterial({map:insWordTex(1),transparent:true}),2.4,1.2,-W/2+.08,2.4,0,Math.PI/2),shPlane(g,new THREE.MeshBasicMaterial({map:insWordTex(2),transparent:true}),2.4,1.2,W/2-.08,rise+2.4,0,-Math.PI/2)];
+    const l=new THREE.PointLight(0xfff0e0,1.4,30); l.position.set(0,rise+3,0); g.add(l); const l2=new THREE.PointLight(0xfff0e0,1,20); l2.position.set(-9,3,0); g.add(l2);
+    // people on their way up and down
+    INSG.stPeople=[]; for(let i=0;i<(LOW?5:9);i++){ const x=rand(-L+1,L-1); const S=addNPC(Math.random()<.6?avantLook():{},{x:R.cx+x,z:R.cz+rand(-1,1)},Math.PI/2,'walk',{talk:true}); INSG.stPeople.push({S,x,dir:Math.random()<.5?1:-1,sp:rand(.6,1)}); mine.push(S.P); }
+    INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='ist'?{x:R.cx-W/2+1.4,z:R.cz}:FARV,r:2.2,prio:1,get label(){ return `${IST.lo}F 계단참`; },act:()=>insStairEnd(false)});
+    INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='ist'?{x:R.cx+W/2-1.4,z:R.cz}:FARV,r:2.2,prio:1,get label(){ return `${IST.lo+1}F 계단참`; },act:()=>insStairEnd(true)}); }
+  mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); if(!TALKP.includes(P)) TALKP.push(P); });
+  updaters.push(insTick2); }
+const INS_LINES={stage:['모자가 고민하고 있어요…','이 아이는… 용기가 있군!','다 같이 박수!'],potion:['시계 방향으로 세 번만 저어요','한 방울이면 충분해요','연기 색이 바뀌었어요!'],platform:['열차가 곧 떠나요!','벽을 향해 그대로 달려요!','트렁크 잊지 마세요'],
+  duel:['엑스펠리아르무스!','프로테고!','결투 시작!'],library:['쉿, 금서 구역이에요','이 책이 답을 알고 있어요','책이 날아다녀요!'],owlery:['편지가 왔어요!','부엉이가 길을 알아요','답장은 내일 와요']};
+function insTick2(t,dt){ if(MAP!=='shanghai') return; const r=SHG.room;
+  if(r==='i1'&&INSG.actors){ const R=SH_R.i1, tbl=(x,z)=>x>R.cx-7.4&&x<R.cx+5.4&&Math.abs(z-R.cz)<3.8;
+    for(const A of INSG.actors){ const p=A.P.root.position;
+      if(A.wait>0){ A.wait-=dt; A.S.mode='talk'; const s=INSG.st1[A.at]; if(Math.random()<dt*.12) say(A.P,tr(pick(INS_LINES[s.k])),2.4);
+        if(A.wait<=0){ let nx=Math.floor(Math.random()*INSG.st1.length); if(nx===A.at) nx=(nx+1)%INSG.st1.length; A.at=nx; const s2=INSG.st1[nx], tx=s2.x+rand(-.8,.8), tz=s2.z+rand(-.8,.8);
+          A.path=[]; if(Math.sign(p.z-R.cz)!==Math.sign(tz-R.cz)&&Math.abs(tz-R.cz)>1){ const wx=Math.abs(p.x-(R.cx-9.5))<Math.abs(p.x-(R.cx+7.5))?R.cx-9.5:R.cx+7.5; A.path.push({x:wx,z:p.z},{x:wx,z:tz}); } A.path.push({x:tx,z:tz}); } continue; }
+      const T=A.path[0]; if(!T){ A.wait=rand(16,26); const s=INSG.st1[A.at]; A.P.root.rotation.y=Math.atan2(s.x-p.x,s.z-p.z); say(A.P,tr(pick(INS_LINES[s.k])),2.4); continue; }
+      const dx=T.x-p.x, dz=T.z-p.z, L=Math.hypot(dx,dz); if(L<.3){ A.path.shift(); continue; } A.S.mode='walk'; p.x+=dx/L*A.sp*dt; p.z+=dz/L*A.sp*dt; A.P.root.rotation.y=Math.atan2(dx,dz);
+      p.y=(p.x>R.cx+R.w/2-7.5&&Math.abs(p.z-R.cz)<9)?.8:0; }
+    for(const U of INSG.aud){ const ap=U.A.P.root.position, p=U.P.root.position, tx=ap.x+Math.cos(U.a)*U.r, tz=ap.z+Math.sin(U.a)*U.r, dx=tx-p.x, dz=tz-p.z, L=Math.hypot(dx,dz);
+      if(L>.7){ U.S.mode='walk'; const s=Math.min(U.sp*(L>4?1.4:1),L/dt*.5); let nx=p.x+dx/L*s*dt, nz=p.z+dz/L*s*dt; if(tbl(nx,nz)){ nz=p.z; nx=p.x+Math.sign(dx)*s*dt; if(tbl(nx,nz)) nx=p.x; } p.x=nx; p.z=nz; U.P.root.rotation.y=Math.atan2(dx,dz); }
+      else { U.S.mode='talk'; U.P.root.rotation.y=Math.atan2(ap.x-p.x,ap.z-p.z); } p.y=(p.x>R.cx+R.w/2-7.5&&Math.abs(p.z-R.cz)<9)?.8:0; }
+    for(const C of INSG.cauld) if(Math.random()<dt*3) part({x:C.x+rand(-.25,.25),y:.9,z:C.z+rand(-.25,.25),vx:0,vy:rand(.4,.8),vz:0,col:'#7aff8a',op:.8,size:.1,grow:.15,life:1.2});
+    INSG.fbooks.forEach(b=>{ b.m.position.y=b.y+Math.sin(t*1.2+b.ph)*.25; b.m.rotation.y=t*.4+b.ph; }); INSG.owls.forEach((o,i)=>{ o.rotation.y=Math.sin(t*.7+i*2)*.8; }); }
+  if(r==='ist'&&INSG.stPeople){ const R=SH_R.ist; for(const Q of INSG.stPeople){ Q.x+=Q.dir*Q.sp*dt; if(Q.x>IST.len-.5||Q.x<-IST.len+.5){ Q.dir*=-1; Q.x=clamp(Q.x,-IST.len+.5,IST.len-.5); } const p=Q.S.P.root.position; p.x=R.cx+Q.x; p.y=clamp((Q.x+IST.len)/(IST.len*2),0,1)*IST.rise; Q.S.P.root.rotation.y=Q.dir>0?Math.PI/2:-Math.PI/2; } } }
 
 function buildShanghai(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); scene.add(IG); SHG.g=IG; const L=(x,z)=>({x:SHX+x,z:SHZ+z}), mine=[];
   // ---------- ground, promenade, river ----------
@@ -7644,7 +7775,7 @@ function shTick(t,dt){ const inS=MAP==='shanghai'; document.body.classList.toggl
   if(dust) dust.visible=false; stormNext=Math.max(stormNext,30); if(stormOn){ stormOn=false; stormLeft=0; }
   const room=shRoomAt(pState.x,pState.z); SHG.room=room; const u=sky.material.uniforms;
   if(room==='out'){ u.top.value.set(0x03040c); u.hor.value.set(0x3a2448); u.bot.value.set(0x0a0a14); scene.fog.color.set(0x12142a); scene.fog.near=180; scene.fog.far=LOW?650:1300; hemi.intensity=.5; }
-  else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x111113,green:0x4a7a62,i1:0x140c1e,i2:0x1a0804,i3:0x0c0618,i4:0x200202,i5:0x140a12,i6:0x0a0a1c}[room]); scene.fog.near=room==='gal'?60:room==='hall'?3:room==='green'?1:30; scene.fog.far=room==='hall'?58:room==='gal'?160:room==='green'?19:110; hemi.intensity=room==='gal'?.9:room==='hall'?.16:.35; }
+  else { scene.fog.color.set({gal:0xd8d4cc,lift:0x14081e,hall:0x111113,green:0x4a7a62,i1:0x140c1e,i2:0x1a0804,i3:0x0c0618,i4:0x200202,i5:0x140a12,i6:0x0a0a1c,w5:0x1a1640,ist:0x2a1a1a}[room]); scene.fog.near=room==='gal'?60:room==='hall'?3:room==='green'?1:30; scene.fog.far=room==='hall'?58:room==='gal'?160:room==='green'?19:110; hemi.intensity=room==='gal'?.9:room==='hall'?.16:.35; }
   renderer.setClearColor(scene.fog.color);
   if(room==='out'&&SHG.sights){ for(const S of SHG.sights){ if(S.seen) continue; if(Math.hypot(S.x-pState.x,S.z-pState.z)<11){ S.seen=true; toast(S.fact); break; } }
     if(SHG.clock){ const d=new Date(); SHG.clock.forEach(C=>{ C.mm.rotation.z=-d.getMinutes()/60*Math.PI*2; C.hh.rotation.z=-(d.getHours()%12+d.getMinutes()/60)/12*Math.PI*2; }); }
