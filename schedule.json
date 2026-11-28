@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795778340000,
-    "dur": 193,
-    "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
-    "title": "DCR501 – Drumcode Radio Live – Adam Beyer B2B Maceo Plex live [3 hour set] from Resistance in Ibiza",
-    "dj": "Adam Beyer",
-    "art": "https://i1.sndcdn.com/artworks-Snjbmip2VZKRsaxq-KywTyA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795789920000,
     "dur": 120,
     "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
@@ -498,18 +486,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795784760000,
-    "dur": 90,
-    "url": "https://soundcloud.com/block9official/sub-focus-live-from-iicon-2025",
-    "title": "Sub Focus Live from IICON",
-    "dj": "Sub Focus",
-    "art": "https://i1.sndcdn.com/artworks-AUjV4n0S9C03LLAz-LMMcQQ-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795790160000,
     "dur": 62,
@@ -1719,18 +1695,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795779840000,
-    "dur": 122,
-    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
-    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795787160000,
     "dur": 103,
     "url": "https://soundcloud.com/lost-village-festival/peggy-gou-live-from-the-village",
@@ -2005,21 +1969,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:potty": [
+   },
    {
-    "start": 1795777320000,
-    "dur": 191,
-    "url": "https://soundcloud.com/kettamabro/kettama-b2b-mall-grab-live-from-crssd-festival-san-diego-usa",
-    "title": "KETTAMA B2B Mall Grab (Live From CRSSD Festival, San Diego USA 2023)",
-    "dj": "KETTAMA b2b Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-4md67zyos1io9G9H-ky0cWw-t500x500.jpg",
+    "start": 1795919760000,
+    "dur": 83,
+    "url": "https://soundcloud.com/resident-advisor/ra-live-20160617-kerri-chandler-sonar-festival-barcelona",
+    "title": "RA Live - 2016.06.17 - Kerri Chandler, Sónar Festival, Barcelona",
+    "dj": "Kerri Chandler",
+    "art": "https://i1.sndcdn.com/artworks-000170334203-77jk64-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795924740000,
+    "dur": 150,
+    "url": "https://soundcloud.com/thecomfort_org/comfort-mix-004",
+    "title": "Comfort Mix 004 Unai Trotti",
+    "dj": "Unai Trotti",
+    "art": "https://i1.sndcdn.com/artworks-ly0csIMhZDf2yqym-C8QKzg-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795933740000,
+    "dur": 160,
+    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
+    "title": "Phonotheque 2020 Live Recording",
+    "dj": "KINO",
+    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:potty": [
    {
     "start": 1795788780000,
     "dur": 89,
@@ -2271,21 +2259,81 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "club3": [
+   },
    {
-    "start": 1795778640000,
-    "dur": 149,
-    "url": "https://soundcloud.com/oho990828/teller-seoul-26-07-16",
-    "title": "Oho @Teller 26.07.16",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-grA9JcbDWWI5SNLf-zEvC5Q-t500x500.jpg",
+    "start": 1795916760000,
+    "dur": 61,
+    "url": "https://soundcloud.com/damswindle/detroit-swindle-rinse-fm-lockdown-live-003",
+    "title": "Detroit Swindle | Rinse FM | Lockdown Live 003",
+    "dj": "Dam Swindle",
+    "art": "https://i1.sndcdn.com/artworks-Ayvx0zhOSsUTUisG-5PFBlg-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795920420000,
+    "dur": 91,
+    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
+    "title": "Boiler Room Set Melbourne '22",
+    "dj": "Mall Grab",
+    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795925880000,
+    "dur": 90,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-the-village-horse-meat-disco",
+    "title": "Live from the Village - Horse Meat Disco",
+    "dj": "Horse Meat Disco",
+    "art": "https://i1.sndcdn.com/artworks-wqKIc1djvdQh9irU-8VAXeA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795931280000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/honey-dijon-boiler-room-sugar-mountain-melbourne-dj-set",
+    "title": "Honey Dijon Boiler Room Sugar Mountain Melbourne DJ Set",
+    "dj": "Honey Dijon",
+    "art": "https://i1.sndcdn.com/artworks-000312169044-um407k-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795934880000,
+    "dur": 109,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
+    "title": "Four Tet | Live from Lost Village 2025",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795941420000,
+    "dur": 115,
+    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
+    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
+    "dj": "Vintage Culture b2b Mochakk",
+    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "club3": [
    {
     "start": 1795787580000,
     "dur": 77,
@@ -2553,18 +2601,6 @@
   ],
   "club4": [
    {
-    "start": 1795776960000,
-    "dur": 182,
-    "url": "https://soundcloud.com/wus_fest/sons-2022",
-    "title": "S.O.N.S. at WUS2022",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-Y87UL9bxFTAdmcxe-w1txyg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795787880000,
     "dur": 192,
     "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
@@ -2815,21 +2851,57 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:teller": [
+   },
    {
-    "start": 1795782480000,
-    "dur": 88,
-    "url": "https://soundcloud.com/platform/boiler-room-berlin-ben-klock",
-    "title": "Ben Klock Boiler Room Berlin DJ Set",
-    "dj": "Ben Klock",
-    "art": "https://i1.sndcdn.com/artworks-000041329677-78q9sa-t500x500.jpg",
+    "start": 1795918680000,
+    "dur": 119,
+    "url": "https://soundcloud.com/postervoyage/here061226",
+    "title": "@here June/12/2026",
+    "dj": "Kyuchan",
+    "art": "https://i1.sndcdn.com/artworks-YGf2c8hdyi8BI78A-RgR3yA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795925820000,
+    "dur": 61,
+    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
+    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795929480000,
+    "dur": 86,
+    "url": "https://soundcloud.com/purplediscomachine/purple-disco-machine-livetomorrowland-2018",
+    "title": "Purple Disco Machine - Live @ Glitterbox, Tomorrowland 2018",
+    "dj": "Purple Disco Machine",
+    "art": "https://i1.sndcdn.com/artworks-000386110026-ttdx45-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795934640000,
+    "dur": 121,
+    "url": "https://soundcloud.com/platform/jayda-g",
+    "title": "Jayda G Boiler Room London Studio DJ Set",
+    "dj": "Jayda G",
+    "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:teller": [
    {
     "start": 1795787760000,
     "dur": 60,
@@ -3084,18 +3156,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795785240000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
-    "title": "Folamour | Boiler Room x Sugar Mountain 2024",
-    "dj": "Folamour",
-    "art": "https://i1.sndcdn.com/artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795788840000,
     "dur": 96,
@@ -3641,18 +3701,6 @@
   ],
   "zone:nm-jandi": [
    {
-    "start": 1795781220000,
-    "dur": 120,
-    "url": "https://soundcloud.com/domdolla/sydney",
-    "title": "Dom Dolla Live @ Allianz Stadium, Sydney 2025",
-    "dj": "Dom Dolla",
-    "art": "https://i1.sndcdn.com/artworks-vcG6hK83U1EWXGFV-O4yiAA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795788420000,
     "dur": 62,
     "url": "https://soundcloud.com/tomorrowland/tomorrowland-friendship-mix-with-anotr-april-2025",
@@ -3967,18 +4015,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795784880000,
-    "dur": 84,
-    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
-    "title": "Jon Hopkins - Live at Glastonbury 2019",
-    "dj": "Jon Hopkins",
-    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795789920000,
     "dur": 167,
     "url": "https://soundcloud.com/adriatique/adriatique-watergate",
@@ -4268,18 +4304,6 @@
    }
   ],
   "zone:nm-soop": [
-   {
-    "start": 1795784280000,
-    "dur": 76,
-    "url": "https://soundcloud.com/platform/boiler-room-berlin-nina-kraviz",
-    "title": "Nina Kraviz Boiler Room Berlin DJ Set",
-    "dj": "Nina Kraviz",
-    "art": "https://i1.sndcdn.com/artworks-000041355784-ik7zlb-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795788840000,
     "dur": 115,
@@ -4797,6 +4821,66 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795918440000,
+    "dur": 44,
+    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
+    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795921080000,
+    "dur": 109,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
+    "title": "Four Tet | Live from Lost Village 2025",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795927620000,
+    "dur": 62,
+    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
+    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
+    "dj": "Nils Frahm",
+    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795931340000,
+    "dur": 121,
+    "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
+    "title": "Live from Lost Village — Four Tet [2023]",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-PeQkpOWUIAluVUiW-uW3ROg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795938600000,
+    "dur": 79,
+    "url": "https://soundcloud.com/stuffyourtacos/atmospheric-dub-techno-mix-ambient-and-chill",
+    "title": "Atmospheric Dub Techno Mix - Ambient and Chill",
+    "dj": "Harrison Divecha",
+    "art": "https://i1.sndcdn.com/artworks-000564201134-5qdfe7-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:nm-hut": [
@@ -5150,18 +5234,6 @@
    }
   ],
   "zone:nm-aero": [
-   {
-    "start": 1795783980000,
-    "dur": 91,
-    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
-    "title": "Boiler Room Set Melbourne '22",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795789440000,
     "dur": 83,
@@ -5779,18 +5851,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795777560000,
-    "dur": 160,
-    "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
-    "title": "Phonotheque 2020 Live Recording",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-j8vOLY2kzdV6ub1F-JrggOA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795787160000,
     "dur": 122,
     "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
@@ -6020,18 +6080,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795780140000,
-    "dur": 119,
-    "url": "https://soundcloud.com/gelipon/bonobo-mixmag-live-2017",
-    "title": "BONOBO Mixmag Live 2017 (DJ Set)",
-    "dj": "Bonobo",
-    "art": "https://i1.sndcdn.com/artworks-000211145196-uihtmk-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795787280000,
     "dur": 178,
@@ -6612,5 +6660,5 @@
    }
   ]
  },
- "updated": "2026-11-28T01:38:10.281Z"
+ "updated": "2026-11-28T02:38:12.934Z"
 }
