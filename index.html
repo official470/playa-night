@@ -7127,14 +7127,35 @@ function insEntry(){ if(SHG.insPass){ insGo(1,'INS LAND 1F. 알바생들이 해�
     if(a!=='buy') return; if(coins<INS_PRICE){ toast('코인이 모자라요'); return; } addCoins(-INS_PRICE); SHG.insPass=true; INSG.cards={}; INSG.coupons=0; insSave(); toast('ALL PASS 구매 완료! 손목에 INS 밴드를 채워 줘요'); setTimeout(()=>insGo(1,'INS LAND 1F. 알바생들이 해리포터 연극을 하고 있어요'),700); }); }
 // a field of simple figures for a floor (one draw call per body part), bouncing to the beat near you
 function insCrowd(R,x0,x1,z0,z1,sp,faceX,faceZ,skip){ const pts=[]; for(let x=x0;x<x1;x+=sp) for(let z=z0;z<z1;z+=sp){ const jx=x+rand(-.2,.2), jz=z+rand(-.2,.2); if(skip&&skip(jx,jz)) continue; if(Math.random()<.05) continue; pts.push([jx,jz]); }
-  const n=pts.length, mk=geo=>{ const m=new THREE.InstancedMesh(geo,new THREE.MeshLambertMaterial({color:0xffffff}),n); m.position.set(R.cx,0,R.cz); scene.add(m); return m; };
-  const bx=(w,h,d,x,y,z,rz)=>{ const b=new THREE.BoxGeometry(w,h,d); if(rz) b.rotateZ(rz); b.translate(x,y,z); return b; };
-  const L={legs:mk(bx(.32,.8,.2,0,.42,0)),body:mk(bx(.46,.64,.27,0,1.14,0)),head:mk(new THREE.SphereGeometry(.13,8,6).translate(0,1.6,0)),hair:mk(new THREE.SphereGeometry(.142,8,5,0,Math.PI*2,0,Math.PI*.55).translate(0,1.63,0)),up:mk(bx(.09,.55,.09,-.27,1.78,0,.18)),up2:mk(bx(.09,.55,.09,.27,1.78,0,-.18)),dn:mk(bx(.62,.6,.09,0,1.08,0))};
+  // every guest is dressed: trousers or a skirt, shoes, a top (some with a print), an open jacket with a collar, sleeves, hands,
+  // hair or a cap or a bucket hat, and now and then sunglasses, a gold chain or a cross-body bag
+  const n=pts.length, mk=geo=>{ const m=new THREE.InstancedMesh(geo,new THREE.MeshLambertMaterial({color:0xffffff}),n); m.position.set(R.cx,0,R.cz); m.frustumCulled=false; scene.add(m); return m; };
+  const bx=(w,h,d,x,y,z,rz,rx)=>{ const b=new THREE.BoxGeometry(w,h,d); if(rx) b.rotateX(rx); if(rz) b.rotateZ(rz); b.translate(x,y,z); return b; }, sph=(r,x,y,z,sx,sy,sz,part)=>{ const g=part?new THREE.SphereGeometry(r,10,6,0,Math.PI*2,0,Math.PI*part):new THREE.SphereGeometry(r,10,7); g.scale(sx||1,sy||1,sz||1); g.translate(x,y,z); return g; };
+  const L={legL:mk(bx(.15,.78,.18,-.085,.45,0)),legR:mk(bx(.15,.78,.18,.085,.45,0)),skirt:mk(new THREE.CylinderGeometry(.2,.28,.42,10).translate(0,.72,0)),
+    shoeL:mk(bx(.15,.1,.27,-.085,.05,.035)),shoeR:mk(bx(.15,.1,.27,.085,.05,.035)),belt:mk(bx(.43,.05,.25,0,.84,0)),
+    top:mk(bx(.42,.6,.24,0,1.14,0)),print:mk(bx(.2,.18,.01,0,1.2,.125)),
+    jk:mk(bx(.48,.62,.2,0,1.15,-.04)),jkL:mk(bx(.12,.62,.03,-.18,1.15,.125)),jkR:mk(bx(.12,.62,.03,.18,1.15,.125)),collar:mk(bx(.34,.07,.27,0,1.46,-.01)),
+    armL:mk(bx(.11,.56,.12,-.28,1.1,0,.06)),armR:mk(bx(.11,.56,.12,.28,1.1,0,-.06)),handL:mk(sph(.055,-.3,.79,0)),handR:mk(sph(.055,.3,.79,0)),
+    upL:mk(bx(.11,.56,.12,-.27,1.74,0,.2)),upR:mk(bx(.11,.56,.12,.27,1.74,0,-.2)),uhL:mk(sph(.055,-.33,2.04,0)),uhR:mk(sph(.055,.33,2.04,0)),
+    neck:mk(bx(.09,.08,.09,0,1.48,0)),head:mk(sph(.13,0,1.62,0,1,1.12,1.05)),hair:mk(sph(.142,0,1.66,-.01,1,1,1.05,.55)),long:mk(bx(.27,.38,.08,0,1.5,-.1)),bun:mk(sph(.07,0,1.8,-.06)),
+    cap:mk(sph(.145,0,1.67,0,1,.9,1,.5)),brim:mk(bx(.2,.025,.15,0,1.69,.15)),bucket:mk(new THREE.CylinderGeometry(.16,.21,.13,12).translate(0,1.76,0)),
+    shades:mk(bx(.25,.055,.03,0,1.64,.13)),chain:mk(new THREE.TorusGeometry(.1,.012,5,14).rotateX(Math.PI/2.3).translate(0,1.36,.06)),
+    strap:mk(bx(.035,.72,.02,0,1.15,.13,.62)),bag:mk(bx(.18,.14,.08,.22,.9,.06))};
   const d=new THREE.Object3D(), c=new THREE.Color(), Z0=new THREE.Matrix4().makeScale(0,0,0), keys=Object.keys(L);
-  const P=pts.map(([x,z],i)=>{ const q={x,z,ry:Math.atan2(faceX-x,faceZ-z)+rand(-.5,.5),s:rand(.9,1.1),ph:Math.random()*6,up:Math.random()<.3};
-    L.legs.setColorAt(i,c.set(pick(['#0a0a0c','#16161a','#1c2a44','#2a2a30']))); L.body.setColorAt(i,c.set(pick(['#0a0a0c','#16161a','#d8d4cc','#3a3a40','#5a2a2a','#2a3a5a','#e8e4dc']))); L.head.setColorAt(i,c.set(pick(['#e8c4a8','#d8b090','#c69a7a','#a8764e'])));
-    L.hair.setColorAt(i,c.set(pick(['#0c0a08','#0c0a08','#3a2018','#c8b48a','#8a2a4a']))); L.up.setColorAt(i,c.set('#d8b090')); L.up2.setColorAt(i,c.set('#d8b090')); L.dn.setColorAt(i,c.set('#16161a')); return q; });
-  const put=(i,b)=>{ const q=P[i]; d.position.set(q.x,b,q.z); d.rotation.set(0,q.ry,0); d.scale.set(q.s,q.s,q.s); d.updateMatrix(); for(const k of keys) L[k].setMatrixAt(i,((k==='up'||k==='up2')&&!q.up)||(k==='dn'&&q.up)?Z0:d.matrix); };
+  const SKIN=['#f1d0b6','#e8c4a8','#d8b090','#c69a7a','#a8764e','#7a5234'], HAIR=['#0c0a08','#0c0a08','#1a1410','#3a2018','#c8b48a','#e8e0d0','#8a2a4a','#2a3a8a','#c84a2a'],
+    TOP=['#0a0a0c','#f4f2ec','#e8e0d0','#c81e2a','#2a4ac8','#c6ff3d','#ff5ab4','#ff7a2a','#3a3a40','#8a6ad8','#1e6a4a','#f4d23d'],
+    JK=['#0c0c0e','#141416','#2a3a6a','#4a6a9a','#c0c4cc','#8a5a2a','#c8a878','#7a1a24','#1e4a2a','#e8e4dc','#4a4a50','#ff4a8a'],
+    PANT=['#0a0a0c','#14141a','#2a3a5a','#4a5a7a','#6a6a5a','#e8e4dc','#3a2a20','#1c1c24'], SHOE=['#f4f4f4','#f4f4f4','#0a0a0a','#0a0a0a','#c81e2a','#8a6a4a','#e8e0c8'], PR=['#ff5ab4','#46d6ff','#ffd23d','#ffffff','#c6ff3d','#ff3a2a'];
+  const P=pts.map(([x,z],i)=>{ const fem=Math.random()<.5, q={x,z,ry:Math.atan2(faceX-x,faceZ-z)+rand(-.5,.5),s:rand(.9,1.08)*(fem?.95:1),ph:Math.random()*6,up:Math.random()<.32,
+      skirt:fem&&Math.random()<.4,jk:Math.random()<.6,print:Math.random()<.45,hairK:pick(fem?['long','long','bun','plain','cap','bucket']:['plain','plain','cap','cap','bucket','buzz']),shades:Math.random()<.25,chain:Math.random()<.3,bag:Math.random()<.28};
+    const sk=pick(SKIN), hr=pick(HAIR), top=pick(TOP), jk=pick(JK), pa=pick(PANT), sh=pick(SHOE), hat=pick(['#0a0a0c','#f4f2ec','#c81e2a','#2a4ac8','#c8a878','#3a3a40']), sleeve=q.jk?jk:(Math.random()<.4?sk:top);
+    const col={legL:q.skirt?sk:pa,legR:q.skirt?sk:pa,skirt:pick(['#0a0a0c','#c81e2a','#e8e0d0','#2a2a6a','#8a6ad8']),shoeL:sh,shoeR:sh,belt:pick(['#0a0a0a','#3a2414','#c8a040']),top,print:pick(PR),jk,jkL:jk,jkR:jk,collar:jk,
+      armL:sleeve,armR:sleeve,handL:sk,handR:sk,upL:sleeve,upR:sleeve,uhL:sk,uhR:sk,neck:sk,head:sk,hair:hr,long:hr,bun:hr,cap:hat,brim:hat,bucket:hat,shades:'#0a0a0c',chain:'#e8c040',strap:'#1a1a1a',bag:pick(['#0a0a0a','#c81e2a','#e8e0d0','#c0c4cc'])};
+    for(const k of keys) L[k].setColorAt(i,c.set(col[k]));
+    q.show={skirt:q.skirt,belt:!q.skirt&&!q.jk,print:q.print&&!q.jk,jk:q.jk,jkL:q.jk,jkR:q.jk,collar:q.jk,armL:!q.up,armR:!q.up,handL:!q.up,handR:!q.up,upL:q.up,upR:q.up,uhL:q.up,uhR:q.up,
+      hair:q.hairK!=='cap'&&q.hairK!=='bucket',long:q.hairK==='long',bun:q.hairK==='bun',cap:q.hairK==='cap',brim:q.hairK==='cap',bucket:q.hairK==='bucket',shades:q.shades,chain:q.chain&&!q.jk,strap:q.bag,bag:q.bag};
+    if(q.hairK==='buzz') L.hair.setColorAt(i,c.set('#1a1410')); return q; });
+  const put=(i,b)=>{ const q=P[i]; d.position.set(q.x,b,q.z); d.rotation.set(0,q.ry,0); d.scale.set(q.s,q.s,q.s); d.updateMatrix(); for(const k of keys) L[k].setMatrixAt(i,q.show[k]===false?Z0:d.matrix); };
   P.forEach((q,i)=>put(i,0)); keys.forEach(k=>{ L[k].instanceMatrix.needsUpdate=true; L[k].instanceColor.needsUpdate=true; });
   return {L:keys.map(k=>L[k]),P,put,near:[],nt:0,R}; }
 function insCrowdTick(C,t,b,amp){ if(t-C.nt>1){ C.nt=t; const lx=pState.x-C.R.cx, lz=pState.z-C.R.cz, r2=(LOW?6:9)**2; C.near=[]; C.P.forEach((q,i)=>{ if((q.x-lx)**2+(q.z-lz)**2<r2) C.near.push(i); }); }
@@ -7257,10 +7278,10 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
       if(INSG.coupons>0){ INSG.coupons--; insSave(); const it=ITEMS[INS_F[f].drink]; if(it) useItem(it); toast(`쿠폰으로 ${INS_F[f].drink} 한 잔! 남은 쿠폰 ${INSG.coupons}장`); }
       else openShop({id:'insbar'+f,name:INS_F[f].n+' 바',sub:'맥주, 샷, 칵테일, 물',items:[ITEMS['플라야 라거'],ITEMS['데킬라 샷'],ITEMS['선셋 칵테일'],ITEMS['생수']].filter(Boolean)}); }}); }
   insLoad(); updaters.push(insTick); buildINS2(); }
-function insTick(t,dt){ if(MAP!=='shanghai') return; const r=SHG.room; if(!r||r[0]!=='i') return; const f=+r.slice(1), Z=INSG.zones[f], b=Z&&Z.running?boothBeat(Z,t):t*2.1, ph=((b%1)+1)%1, k=Math.exp(-ph*4);
+function insTick(t,dt){ const r=SHG.room, onI=MAP==='shanghai'&&r&&r[0]==='i'&&r!=='ist'; if(!onI){ if(INSG.cv!==false){ INSG.cv=false; for(const k in INSG.crowds) INSG.crowds[k].L.forEach(m=>m.visible=false); } return; } INSG.cv=true; const f=+r.slice(1), Z=INSG.zones[f], b=Z&&Z.running?boothBeat(Z,t):t*2.1, ph=((b%1)+1)%1, k=Math.exp(-ph*4);
   if(f===1){ INSG.candles.forEach(C=>{ C.m.position.y=C.y+Math.sin(t*1.3+C.ph)*.06; C.m.scale.y=.08*(.8+.3*Math.sin(t*9+C.ph)); });
     for(const W of INSG.wands){ W.tip.material.color.setHSL(.58,.7,.6+.35*Math.max(0,Math.sin(t*2+W.ph))); if(Math.random()<dt*.9){ const p=new THREE.Vector3(); W.tip.getWorldPosition(p); for(let i=0;i<5;i++) part({x:p.x,y:p.y,z:p.z,vx:rand(-.6,.6),vy:rand(.2,1),vz:rand(-.6,.6),col:pick(['#cfe8ff','#ffe08a','#c8a2ff']),op:.9,size:.12,grow:.1,life:1.2}); } if(Math.random()<dt*.08) say(W.P,tr(W.line),2.2); } return; }
-  const C=INSG.crowds[f]; if(C) insCrowdTick(C,t,b,f===6?.55:.09);
+  for(const k in INSG.crowds){ const on=+k===f; INSG.crowds[k].L.forEach(m=>m.visible=on); } const C=INSG.crowds[f]; if(C) insCrowdTick(C,t,b,f===6?.55:.09);
   if(f===3&&INSG.gold) INSG.gold.uniforms.uT.value=t;
   if(f===4){ INSG.lm.opacity=.35+.5*k; INSG.lasers.forEach(L=>{ L.l.rotation.y=-Math.PI/2+Math.sin(t*.8+L.ph)*.7; L.l.rotation.x=.15+Math.sin(t*.5+L.ph)*.12; }); INSG.disc.rotation.z=t*.6; INSG.redL.intensity=1.6+1.8*k; }
   if(f===5){ if(INSG.ballR) INSG.ballR.rotation.y=t*.6; INSG.fr[0].intensity=1+1.2*k; INSG.fr[1].intensity=1+1.2*(1-k); }
