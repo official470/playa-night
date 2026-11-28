@@ -269,18 +269,6 @@
   ],
   "booth:afro": [
    {
-    "start": 1795792800000,
-    "dur": 121,
-    "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
-    "title": "Keinemusik Radio Show 100 live at Else Berlin by &ME, Rampa, Reznik, Adam Port",
-    "dj": "Keinemusik (&ME, Rampa, Adam Port)",
-    "art": "https://i1.sndcdn.com/artworks-000176184477-601nwg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795800060000,
     "dur": 183,
     "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
@@ -1199,18 +1187,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795786260000,
-    "dur": 203,
-    "url": "https://soundcloud.com/outransa/outransa-chronicles-three-kensa-nicky-macha",
-    "title": "Chronicle #3: Kensa & Nicky Macha",
-    "dj": "Kensa",
-    "art": "https://i1.sndcdn.com/artworks-tQh94747jysBdFIW-wuptQg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795798440000,
     "dur": 118,
     "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
@@ -1464,18 +1440,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795793100000,
-    "dur": 77,
-    "url": "https://soundcloud.com/jackedradio/afrojack-presents-jacked-radio-649-live-set-ultra-music-festival-2024",
-    "title": "AFROJACK Presents JACKED Radio – 649 (Live set Ultra Music Festival 2024)",
-    "dj": "Afrojack",
-    "art": "https://i1.sndcdn.com/artworks-6Lidmuivll3yryi8-ye8DJQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795797720000,
     "dur": 60,
@@ -1803,18 +1767,6 @@
   ],
   "zone:disco": [
    {
-    "start": 1795793340000,
-    "dur": 91,
-    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
-    "title": "Boiler Room Set Melbourne '22",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795798800000,
     "dur": 121,
     "url": "https://soundcloud.com/four-tet/live-from-lost-village-four-tet-2023",
@@ -2104,18 +2056,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795794120000,
-    "dur": 59,
-    "url": "https://soundcloud.com/platform/peggy-gou",
-    "title": "Peggy Gou Boiler Room x Dekmantel Festival DJ Set",
-    "dj": "Peggy Gou",
-    "art": "https://i1.sndcdn.com/artworks-000241463822-16r29o-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795797660000,
     "dur": 160,
@@ -2661,18 +2601,6 @@
   ],
   "club4": [
    {
-    "start": 1795787880000,
-    "dur": 192,
-    "url": "https://soundcloud.com/djminkyu/minkyu-b2b-yoel-vg-2nd-anniversary-club-27092025",
-    "title": "Minkyu b2b Yoel @ VG+ 2nd anniversary 宀 club 27.09.2025",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-xq0npyzCTxXryOF8-mrAbEw-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795799400000,
     "dur": 213,
     "url": "https://soundcloud.com/cartulisday/outransa-cartulis-podcast-057",
@@ -3193,18 +3121,6 @@
   ],
   "zone:ring": [
    {
-    "start": 1795794600000,
-    "dur": 77,
-    "url": "https://soundcloud.com/postervoyage/journey_to_oases",
-    "title": "JOURNEY_TO_OASES",
-    "dj": "Kyuchan",
-    "art": "https://i1.sndcdn.com/artworks-JtbOu0kYEFThI8ml-QrvyjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795799220000,
     "dur": 54,
     "url": "https://soundcloud.com/oho990828/oho-nothing-in",
@@ -3459,18 +3375,6 @@
   ],
   "zone:studio": [
    {
-    "start": 1795790880000,
-    "dur": 129,
-    "url": "https://soundcloud.com/resident-advisor/ra-1017-unai-trotti",
-    "title": "RA.1017 Unai Trotti",
-    "dj": "Unai Trotti",
-    "art": "https://i1.sndcdn.com/artworks-AIQeyNRMC39nYoHs-938DZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795798620000,
     "dur": 60,
     "url": "https://soundcloud.com/traxsource/live-395-kerri-chandler",
@@ -3712,18 +3616,6 @@
    }
   ],
   "zone:nm-jandi": [
-   {
-    "start": 1795792140000,
-    "dur": 117,
-    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
-    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795799160000,
     "dur": 59,
@@ -4015,18 +3907,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795789920000,
-    "dur": 167,
-    "url": "https://soundcloud.com/adriatique/adriatique-watergate",
-    "title": "Adriatique - DJ-Set Live @ Watergate - 2013-08-23",
-    "dj": "Adriatique",
-    "art": "https://i1.sndcdn.com/artworks-000056268597-51ajb4-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795799940000,
     "dur": 60,
     "url": "https://soundcloud.com/thisman1/tale-of-us-gta-online-after-hours-full-liveset-2018",
@@ -4304,18 +4184,6 @@
    }
   ],
   "zone:nm-soop": [
-   {
-    "start": 1795795740000,
-    "dur": 74,
-    "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
-    "title": "Charlotte de Witte - Live at EDC Las Vegas 2026",
-    "dj": "Charlotte de Witte",
-    "art": "https://i1.sndcdn.com/artworks-WsVBkyeHGQBHzuk2-JQT02Q-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795800180000,
     "dur": 179,
@@ -4849,18 +4717,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795796640000,
-    "dur": 44,
-    "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
-    "title": "Nils Frahm Boiler Room x Dimensions Opening Concert Live Set",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/avatars-dg8DTxkybhLjzjo7-yyV0Og-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795799280000,
     "dur": 73,
     "url": "https://soundcloud.com/platform/tycho",
@@ -5175,18 +5031,6 @@
   ],
   "zone:nm-aero": [
    {
-    "start": 1795794420000,
-    "dur": 62,
-    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
-    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
-    "dj": "Oliver Heldens",
-    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795798140000,
     "dur": 87,
     "url": "https://soundcloud.com/toddterje/todd-terje-betalounge-0410",
@@ -5433,6 +5277,66 @@
     "title": "Jayda G Boiler Room London Studio DJ Set",
     "dj": "Jayda G",
     "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795927500000,
+    "dur": 83,
+    "url": "https://soundcloud.com/resident-advisor/ra-live-20160617-kerri-chandler-sonar-festival-barcelona",
+    "title": "RA Live - 2016.06.17 - Kerri Chandler, Sónar Festival, Barcelona",
+    "dj": "Kerri Chandler",
+    "art": "https://i1.sndcdn.com/artworks-000170334203-77jk64-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795932480000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/jayda-g-dekmantel",
+    "title": "Jayda G Boiler Room x Dekmantel Festival DJ Set",
+    "dj": "Jayda G",
+    "art": "https://i1.sndcdn.com/artworks-000241631043-cexmtj-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795936080000,
+    "dur": 82,
+    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
+    "title": "Phonica Mix Series 65: S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795941000000,
+    "dur": 122,
+    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
+    "title": "EOS Radio - November 2021",
+    "dj": "KINO",
+    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795948320000,
+    "dur": 109,
+    "url": "https://soundcloud.com/lost-village-festival/live-from-lost-village-2025-four-tet",
+    "title": "Four Tet | Live from Lost Village 2025",
+    "dj": "Four Tet",
+    "art": "https://i1.sndcdn.com/artworks-FdlcAzNmN6RhsdbA-sDMznA-t500x500.png",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
@@ -5779,18 +5683,6 @@
   ],
   "zone:sh-lift": [
    {
-    "start": 1795794480000,
-    "dur": 72,
-    "url": "https://soundcloud.com/dau_ra/daura-404-frankfurt-09-april-2023",
-    "title": "404 [Frankfurt, 09 April 2023]",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-sNbnpmczvk82KoyY-aoTXNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795798800000,
     "dur": 121,
     "url": "https://soundcloud.com/loveintfestival/live-from-the-adriatic-2026",
@@ -5996,18 +5888,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795787280000,
-    "dur": 178,
-    "url": "https://soundcloud.com/resident-advisor/nicolaslutz-houghton-25",
-    "title": "RA Live - Nicolas Lutz - Houghton, 2025",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-fWXHdNT6BDWQWy0C-1rfxRw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795797960000,
     "dur": 135,
@@ -6612,5 +6492,5 @@
    }
   ]
  },
- "updated": "2026-11-28T04:38:18.875Z"
+ "updated": "2026-11-28T05:38:22.634Z"
 }
