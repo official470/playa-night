@@ -3,18 +3,6 @@
  "booths": {
   "booth:techno": [
    {
-    "start": 1795789920000,
-    "dur": 120,
-    "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
-    "title": "DCR827 – Drumcode Radio Live - Adam Beyer live from Drumcode Mallorca",
-    "dj": "Adam Beyer",
-    "art": "https://i1.sndcdn.com/artworks-zzH6JpXaBEqTGwM8-ExoDZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795797120000,
     "dur": 68,
     "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
@@ -522,18 +510,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795793880000,
-    "dur": 59,
-    "url": "https://soundcloud.com/bass_cave/chase-and-status-ultra-music-festival-2025-full-set",
-    "title": "Chase and Status - Ultra Music Festival 2025 [FULL SET]",
-    "dj": "Chase & Status",
-    "art": "https://i1.sndcdn.com/artworks-VZ9IOQvB4wMFbXQE-lLuiEg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795797420000,
     "dur": 96,
@@ -1775,6 +1751,54 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795926600000,
+    "dur": 115,
+    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
+    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
+    "dj": "Vintage Culture b2b Mochakk",
+    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795933500000,
+    "dur": 62,
+    "url": "https://soundcloud.com/oliverheldens/oliver-heldens-live-on-a-boat-from-sunny-amsterdam-roomservicefest-dj-set",
+    "title": "Oliver Heldens Live on a Boat from sunny Amsterdam #RoomServiceFest DJ Set (Audio)",
+    "dj": "Oliver Heldens",
+    "art": "https://i1.sndcdn.com/artworks-bBEoRXukyL5IPyWh-LfkSjQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795937220000,
+    "dur": 125,
+    "url": "https://soundcloud.com/eric-prydz/eric-prydz-live-from-history-toronto-2025",
+    "title": "Eric Prydz - Live from History Toronto 2025 (FULL SET)",
+    "dj": "Eric Prydz",
+    "art": "https://i1.sndcdn.com/artworks-xfusFeCezq2zyAzt-l42Tmw-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795944720000,
+    "dur": 77,
+    "url": "https://soundcloud.com/jackedradio/afrojack-presents-jacked-radio-649-live-set-ultra-music-festival-2024",
+    "title": "AFROJACK Presents JACKED Radio – 649 (Live set Ultra Music Festival 2024)",
+    "dj": "Afrojack",
+    "art": "https://i1.sndcdn.com/artworks-6Lidmuivll3yryi8-ye8DJQ-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:disco": [
@@ -2080,18 +2104,6 @@
    }
   ],
   "zone:potty": [
-   {
-    "start": 1795788780000,
-    "dur": 89,
-    "url": "https://soundcloud.com/johnsummit/everything-always-live-ultra-miami-2025",
-    "title": "Everything Always (Dom Dolla & John Summit) Live @ Ultra Music Festival 2025",
-    "dj": "Everything Always (Dom Dolla & John Summit)",
-    "art": "https://i1.sndcdn.com/artworks-SnnzOZhvt3kJ5Ou8-onWFpg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795794120000,
     "dur": 59,
@@ -2406,18 +2418,6 @@
    }
   ],
   "club3": [
-   {
-    "start": 1795792200000,
-    "dur": 77,
-    "url": "https://soundcloud.com/user-105919562/ricardo-villalobos-live-from",
-    "title": "Ricardo Villalobos - Live from Circoloco DC-10 Ibiza (20.07.26 Garden)",
-    "dj": "Ricardo Villalobos",
-    "art": "https://i1.sndcdn.com/artworks-qputnArtcOedzLwK-NAvLVw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795796820000,
     "dur": 122,
@@ -2963,18 +2963,6 @@
   ],
   "zone:teller": [
    {
-    "start": 1795791360000,
-    "dur": 82,
-    "url": "https://soundcloud.com/phonicarecords/phonica-mix-series-65-sons",
-    "title": "Phonica Mix Series 65: S.O.N.S",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-000606121174-9mfg8u-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795796280000,
     "dur": 122,
     "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
@@ -3204,18 +3192,6 @@
    }
   ],
   "zone:ring": [
-   {
-    "start": 1795788840000,
-    "dur": 96,
-    "url": "https://soundcloud.com/oho990828/april-haze",
-    "title": "April Haze",
-    "dj": "Oho.",
-    "art": "https://i1.sndcdn.com/artworks-o3wql2XoLDv4oPNB-t8KjBQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795794600000,
     "dur": 77,
@@ -4329,18 +4305,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795788840000,
-    "dur": 115,
-    "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
-    "title": "Dômesicle #5 - MUTEK 09.08.2020",
-    "dj": "Daura",
-    "art": "https://i1.sndcdn.com/artworks-iAONL0OrSeNmicrJ-TAbSPQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795795740000,
     "dur": 74,
     "url": "https://soundcloud.com/joao-pedro-166498886/charlotte-de-witte-live-at-edc",
@@ -4558,18 +4522,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795791780000,
-    "dur": 84,
-    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
-    "title": "Jon Hopkins - Live at Glastonbury 2019",
-    "dj": "Jon Hopkins",
-    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795796820000,
     "dur": 112,
@@ -4897,18 +4849,6 @@
   ],
   "zone:nm-hut": [
    {
-    "start": 1795792920000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795796640000,
     "dur": 44,
     "url": "https://soundcloud.com/platform/nils-frahm-boiler-room-x-dimensions-opening-concert-live-set",
@@ -5234,18 +5174,6 @@
    }
   ],
   "zone:nm-aero": [
-   {
-    "start": 1795789440000,
-    "dur": 83,
-    "url": "https://soundcloud.com/resident-advisor/ra-live-20160617-kerri-chandler-sonar-festival-barcelona",
-    "title": "RA Live - 2016.06.17 - Kerri Chandler, Sónar Festival, Barcelona",
-    "dj": "Kerri Chandler",
-    "art": "https://i1.sndcdn.com/artworks-000170334203-77jk64-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795794420000,
     "dur": 62,
@@ -5850,18 +5778,6 @@
    }
   ],
   "zone:sh-lift": [
-   {
-    "start": 1795787160000,
-    "dur": 122,
-    "url": "https://soundcloud.com/kino-2/eos-radio-november-2021",
-    "title": "EOS Radio - November 2021",
-    "dj": "KINO",
-    "art": "https://i1.sndcdn.com/artworks-mFAwbyJqAZl9KRjY-TDJz1w-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795794480000,
     "dur": 72,
@@ -6696,5 +6612,5 @@
    }
   ]
  },
- "updated": "2026-11-28T03:38:15.937Z"
+ "updated": "2026-11-28T04:38:18.875Z"
 }
