@@ -7082,7 +7082,7 @@ function shWordTex(lines,opt){ opt=opt||{}; return shTex(opt.w||1024,opt.h||256,
    5F FRIENDS (Vegas sign, beer towers, the calendar screen) · 6F JUMP STAGE 팡팡 (a padded floor where everyone jumps together). */
 const INS_PRICE=120, INS_X=SHX-210; // the building's door on the riverside walk (local x -210)
 Object.assign(SH_R,{
-  i1:{cx:SHX+4000,cz:SHZ,w:34,d:26,h:8}, i2:{cx:SHX+4100,cz:SHZ,w:30,d:24,h:5.5}, i3:{cx:SHX+4200,cz:SHZ,w:34,d:26,h:7},
+  i1:{cx:SHX+4000,cz:SHZ,w:34,d:26,h:10}, i2:{cx:SHX+4100,cz:SHZ,w:30,d:24,h:5.5}, i3:{cx:SHX+4200,cz:SHZ,w:34,d:26,h:7},
   i4:{cx:SHX+4300,cz:SHZ,w:28,d:22,h:5.5}, i5:{cx:SHX+4400,cz:SHZ,w:28,d:22,h:5.2}, i6:{cx:SHX+4500,cz:SHZ,w:30,d:24,h:7.5} });
 SH_R.out.x0=SHX-265;
 const INS_F=[null,
@@ -7190,8 +7190,8 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     B(7,.8,18,M('#2a1e16'),W/2-4,.4,0,g);
     shPlane(g,new THREE.MeshBasicMaterial({map:shTex(512,256,(x,w,h)=>{ const gr=x.createLinearGradient(0,0,0,h); gr.addColorStop(0,'#0a0c2a'); gr.addColorStop(1,'#3a2a5a'); x.fillStyle=gr; x.fillRect(0,0,w,h); x.fillStyle='#f4f0d0'; x.beginPath(); x.arc(420,50,26,0,7); x.fill();
       x.fillStyle='#08080e'; const tw=(cx,ww,hh)=>{ x.fillRect(cx-ww/2,h-hh,ww,hh); x.beginPath(); x.moveTo(cx-ww/2-4,h-hh); x.lineTo(cx,h-hh-ww*1.4); x.lineTo(cx+ww/2+4,h-hh); x.fill(); }; tw(120,24,150); tw(190,30,190); tw(260,22,130); tw(330,36,170); x.fillRect(80,h-90,320,90);
-      for(let i=0;i<40;i++){ x.fillStyle='#ffd070'; x.fillRect(90+Math.random()*300,h-170+Math.random()*160,3,4); } })}),17,7,W/2-.06,3.9,0,-Math.PI/2);
-    [['#8a1a1a','#d8a030'],['#1a5a2a','#c0c0c8'],['#d8b020','#1a1a1a'],['#1a2a7a','#a87a40']].forEach(([c1,c2],i)=>{ const z=-7.5+i*5; shPlane(g,M(c1),1.6,3.6,W/2-.1,5.4,z,-Math.PI/2); shPlane(g,M(c2),1.6,.3,W/2-.11,3.75,z,-Math.PI/2); });
+      for(let i=0;i<40;i++){ x.fillStyle='#ffd070'; x.fillRect(90+Math.random()*300,h-170+Math.random()*160,3,4); } })}),14,4.6,W/2-.06,3.1,0,-Math.PI/2);
+    [['#8a1a1a','#d8a030'],['#1a5a2a','#c0c0c8'],['#d8b020','#1a1a1a'],['#1a2a7a','#a87a40']].forEach(([c1,c2],i)=>{ const z=[-10.5,-7.5,7.5,10.5][i]; shPlane(g,M(c1),1.6,3.6,W/2-.1,5.4,z,-Math.PI/2); shPlane(g,M(c2),1.6,.3,W/2-.11,3.75,z,-Math.PI/2); });
     B(.6,.6,.6,M('#5a3a22'),W/2-3.5,1.1,0,g); mesh(G.cone,M('#6a4a2a'),W/2-3.5,1.85,0,.38,.9,.38,g);
     shPlane(g,insWord([['WIZARD THEATER · 1F','900 70px Georgia,serif','#ffd890',.5,14]],{w:1024,h:128}),10,1.25,0,H-1,-D/2+.06,0);
     shPlane(g,new THREE.MeshBasicMaterial({map:shTex(256,256,(x,w,h)=>{ x.fillStyle='#8a3a2a'; x.fillRect(0,0,w,h); for(let r=0;r<16;r++) for(let c=-1;c<6;c++){ x.fillStyle=pick(['#9a4a32','#7a3222','#a85a3a']); x.fillRect(c*48+(r%2)*24+2,r*16+2,44,13); } x.fillStyle='#1a1a1a'; x.fillRect(60,90,136,70); x.fillStyle='#f4e8c8'; x.font='900 46px Georgia,serif'; x.textAlign='center'; x.fillText('9 ¾',128,142); })}),3,3,-W/2+.06,1.6,-D/2+5,Math.PI/2);
@@ -7240,7 +7240,7 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     const rl=new THREE.PointLight(0xff1a10,2.4,30); rl.position.set(0,3.5,0); g.add(rl); INSG.redL=rl;
     INSG.zones[4]=makeZone('sh-i4',R.cx+3,R.cz,20,INS_TR.i4); INSG.zones[4].vol=.95; mine.push(addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx+W/2-1.4,z:R.cz},-Math.PI/2,'dj',{zone:INSG.zones[4]}).P);
     for(let i=0;i<(LOW?12:26);i++){ const x=rand(-W/2+4,W/2-5), z=rand(-D/2+2,D/2-2); mine.push(addNPC(avantLook(),{x:R.cx+x,z:R.cz+z},Math.atan2(W/2-2-x,-z)+rand(-.3,.3),'dance',{dance:pick(['headbang','stomp','pump','hardstyle']),zone:INSG.zones[4],talk:true}).P); }
-    INSG.crowds[4]=insCrowd(R,-W/2+4,W/2-3.5,-D/2+1.2,D/2-1.2,LOW?.95:.72,W/2,0,(x,z)=>x<-W/2+7&&z<-D/2+6);
+    INSG.crowds[4]=insCrowd(R,-W/2+4,W/2-3.5,-D/2+1.2,D/2-1.2,LOW?.95:.72,W/2,0,(x,z)=>x<-W/2+8&&(z<-D/2+6||z>D/2-6.5));
     B(4,1.1,1,M('#1a0606'),-W/2+5,.55,-D/2+2.5,g); B(4.04,.05,1.04,M('#ff2a2a',{glow:1.4}),-W/2+5,1.12,-D/2+2.5,g); INSG.bars[4]={x:R.cx-W/2+5,z:R.cz-D/2+3.9}; }
   // ---------- 5F FRIENDS: the Vegas sign, the calendar screen, beer towers ----------
   { const R=SH_R.i5, g=INSG.g[5]=shRoom(R,M('#1a0e18'),M('#100a10'),M('#0c080c')), W=R.w, D=R.d, H=R.h;
@@ -7253,7 +7253,7 @@ function buildINS(){ const IG=new THREE.Group(); IG.position.set(SHX,0,SHZ); sce
     const ball=new THREE.Mesh(new THREE.IcosahedronGeometry(.7,2),new THREE.MeshPhongMaterial({color:0xdddddd,flatShading:true,shininess:150,emissive:0x332233})); ball.position.set(0,H-1,0); g.add(ball); INSG.ballR=ball;
     B(1.6,1.2,4,M('#141418'),W/2-2.2,.6,3,g); shPlane(g,insWord([['FRiENDS','900 90px "Arial Black",sans-serif','#ff9a3a',.5,10]],{w:512,h:128,bg:'#141418'}),3,.75,W/2-1.38,.8,3,-Math.PI/2);
     const pl5=new THREE.PointLight(0xff5ac8,1.6,22); pl5.position.set(-3,3.5,0); g.add(pl5); const pl6=new THREE.PointLight(0x46d6ff,1.4,22); pl6.position.set(5,3.5,0); g.add(pl6); INSG.fr=[pl5,pl6];
-    INSG.zones[5]=makeZone('sh-i5',R.cx+2,R.cz,20,INS_TR.i5); INSG.zones[5].vol=.95; mine.push(addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx+W/2-1.6,z:R.cz+3},-Math.PI/2,'dj',{zone:INSG.zones[5]}).P);
+    INSG.zones[5]=makeZone('sh-i5',R.cx+2,R.cz,20,INS_TR.i5); INSG.zones[5].vol=.95; mine.push(addNPC(Object.assign(avantLook(),{extra:'none'}),{x:R.cx+3,z:R.cz},-Math.PI/2,'dj',{zone:INSG.zones[5]}).P);
     for(let i=0;i<(LOW?14:30);i++){ const x=rand(-W/2+4,W/2-5), z=rand(-D/2+2,D/2-2); mine.push(addNPC(Math.random()<.5?avantLook():{},{x:R.cx+x,z:R.cz+z},rand(0,6.28),'dance',{dance:pick(['jack','twostep','hands','shuffle','sway']),zone:INSG.zones[5],talk:true}).P); }
     B(4,1.1,1,M('#141418'),-W/2+6,.55,D/2-2.5,g); B(4.04,.05,1.04,M('#ff9a3a',{glow:1.4}),-W/2+6,1.12,D/2-2.5,g); INSG.bars[5]={x:R.cx-W/2+6,z:R.cz+D/2-3.9}; }
   // ---------- 6F JUMP STAGE 팡팡: a padded floor, everybody jumps on the beat ----------
@@ -7400,7 +7400,7 @@ function buildINS2(){ const mine=[];
     INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='ist'?{x:R.cx-W/2+1.4,z:R.cz}:FARV,r:2.2,prio:1,get label(){ return `${IST.lo}F 계단참`; },act:()=>insStairEnd(false)});
     INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='ist'?{x:R.cx+W/2-1.4,z:R.cz}:FARV,r:2.2,prio:1,get label(){ return `${IST.lo+1}F 계단참`; },act:()=>insStairEnd(true)}); }
   mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); if(!TALKP.includes(P)) TALKP.push(P); });
-  insDragon(); updaters.push(insTick2); }
+  insDragon(); insUpgrade(); updaters.push(insTick2); }
 // ---------- 1F: a giant golden dragon flying a figure-eight above the hall ----------
 function insDragon(){ const R=SH_R.i1, g=INSG.g[1]; if(!g) return; const D={segs:[],N:LOW?22:36,u:0,fire:0,fireT:8};
   const gold=new THREE.MeshPhongMaterial({color:0xe8b830,emissive:0x5a3a00,specular:0xffe8a0,shininess:90,flatShading:true}), belly=new THREE.MeshPhongMaterial({color:0xfff0b0,emissive:0x3a2a00,flatShading:true}),
@@ -7429,6 +7429,107 @@ function insDragonTick(t,dt){ const D=INSG.dragon; if(!D) return; const R=SH_R.i
   if(Math.random()<dt*(LOW?6:14)){ const s=D.segs[Math.floor(Math.random()*D.N)].position; part({x:R.cx+s.x,y:s.y,z:R.cz+s.z,vx:rand(-.2,.2),vy:rand(-.6,-.2),vz:rand(-.2,.2),col:pick(['#ffe07a','#ffd040','#fff4c0']),op:.9,size:.09,grow:.02,life:1.6}); }
   D.fireT-=dt; if(D.fireT<=0){ D.fire=1.6; D.fireT=rand(10,16); try{ chime(40,'sawtooth',.05,.9); }catch(e){} }
   if(D.fire>0){ D.fire-=dt; const f=new THREE.Vector3(0,0,1).applyQuaternion(D.head.quaternion); for(let k=0;k<(LOW?2:5);k++) part({x:R.cx+hp.x+f.x*2.2,y:hp.y-.2+f.y*2.2,z:R.cz+hp.z+f.z*2.2,vx:f.x*rand(6,9)+rand(-.6,.6),vy:f.y*rand(6,9)+rand(-.8,.2),vz:f.z*rand(6,9)+rand(-.6,.6),col:pick(['#ffd040','#ff8a1a','#fff0a0']),op:.95,size:.3,grow:.9,life:.8}); } }
+// ---------- INS LAND interior upgrade: a gothic great hall on 1F, real club rigs on 2F-6F ----------
+function insSpot(g,x,y,z,col,list){ const cg=new THREE.ConeGeometry(1.1,7,16,1,true); cg.translate(0,-3.5,0); const m=new THREE.Mesh(cg,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.13,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+  m.position.set(x,y,z); g.add(m); B(.34,.3,.34,M('#1a1a1e'),x,y+.12,z,g); mesh(G.sph,M('#'+new THREE.Color(col).getHexString(),{glow:2}),x,y-.05,z,.12,.06,.12,g); list.push({m,ph:Math.random()*6}); return m; }
+function insTruss(g,x0,x1,z0,z1,y){ const m=M('#9aa0a8'); [[x0,z0],[x1,z0],[x0,z1],[x1,z1]].forEach(([x,z])=>B(.22,y,.22,m,x,y/2,z,g)); B(x1-x0,.22,.22,m,(x0+x1)/2,y,z0,g); B(x1-x0,.22,.22,m,(x0+x1)/2,y,z1,g); B(.22,.22,z1-z0,m,x0,y,(z0+z1)/2,g); B(.22,.22,z1-z0,m,x1,y,(z0+z1)/2,g); }
+function insUpgrade(){ INSG.spots={}; const tex=shTex;
+  // ===== 1F: the great hall — wood-panelled walls hung with portraits, tall arched windows, hammer-beam arches, chandeliers, lamps on the tables =====
+  { const R=SH_R.i1, g=INSG.g[1], W=R.w, D=R.d, H=R.h;
+    const floor=tex(256,256,(x,w,h)=>{ x.fillStyle='#2a221c'; x.fillRect(0,0,w,h); for(let r=0;r<4;r++) for(let c=0;c<4;c++){ const v=40+Math.random()*18|0; x.fillStyle=`rgb(${v+8},${v+2},${v-4})`; x.fillRect(c*64+2,r*64+2,60,60); } }); floor.wrapS=floor.wrapT=THREE.RepeatWrapping; floor.repeat.set(9,7);
+    const fl=new THREE.Mesh(G.plane,new THREE.MeshLambertMaterial({map:floor})); fl.scale.set(W,D,1); fl.rotation.x=-Math.PI/2; fl.position.y=.012; g.add(fl);
+    // a dark timber ceiling with arched trusses and corbels
+    shPlane(g,M('#1a120c'),W,D,0,H-.04,0,0).rotation.x=Math.PI/2;
+    INSG.lant=[]; for(let i=0;i<8;i++){ const x=-W/2+2.5+i*4.15, a=new THREE.Mesh(new THREE.TorusGeometry(D/2-.3,.17,6,28,Math.PI),M('#3a2414')); a.scale.set(1,.3,1); a.rotation.y=Math.PI/2; a.position.set(x,H-3.85,0); g.add(a);
+      [-1,1].forEach(sd=>{ B(.35,4.4,.35,M('#2a1a0e'),x,H-6.2,sd*(D/2-.25),g); B(.6,.5,.7,M('#3a2414'),x,H-3.9,sd*(D/2-.5),g); });
+      if(i%2===0){ const L=new THREE.Group(); L.position.set(x,H-1.6,0); g.add(L); B(.03,1.6,.03,M('#141414'),0,.8,0,L); const ring=new THREE.Mesh(new THREE.TorusGeometry(.9,.05,6,24),M('#8a6a2a')); ring.rotation.x=Math.PI/2; L.add(ring);
+        for(let k=0;k<8;k++){ const a2=k/8*Math.PI*2; mesh(G.cyl,M('#f4ecd8'),Math.cos(a2)*.9,.16,Math.sin(a2)*.9,.04,.24,.04,L); mesh(G.sph,M('#ffcf6a',{glow:2.4}),Math.cos(a2)*.9,.34,Math.sin(a2)*.9,.05,.08,.05,L); } INSG.lant.push(L); } }
+    // lower walls: dark wood panelling hung with gold-framed portraits
+    const pan=tex(1024,256,(x,w,h)=>{ x.fillStyle='#2a1a10'; x.fillRect(0,0,w,h); x.strokeStyle='#1a0e08'; x.lineWidth=4; for(let i=0;i<16;i++) x.strokeRect(i*64+4,h-70,56,62);
+      for(let i=0;i<5;i++){ const px=20+i*200, pw=130+(i%2)*30, ph=150-(i%2)*30, py=14+(i%2)*20; x.fillStyle='#c8a040'; x.fillRect(px-8,py-8,pw+16,ph+16); x.fillStyle='#b08a30'; x.fillRect(px-3,py-3,pw+6,ph+6);
+        const gr=x.createLinearGradient(0,py,0,py+ph); gr.addColorStop(0,'#3a2a1e'); gr.addColorStop(1,'#140c08'); x.fillStyle=gr; x.fillRect(px,py,pw,ph);
+        x.fillStyle=pick(['#1a1210','#2a1a2a','#1a2a1a','#3a1a10']); x.beginPath(); x.ellipse(px+pw/2,py+ph*.95,pw*.36,ph*.4,0,Math.PI,0); x.fill(); x.fillStyle='#c8a080'; x.beginPath(); x.ellipse(px+pw/2,py+ph*.38,pw*.13,ph*.14,0,0,7); x.fill(); x.fillStyle='#f4f0e8'; x.fillRect(px+pw/2-10,py+ph*.52,20,8); }
+      x.fillStyle='#c8a040'; x.fillRect(0,h-76,w,4); });
+    const panM=new THREE.MeshLambertMaterial({map:pan}); [[0,-D/2+.06,0,W],[0,D/2-.06,Math.PI,W]].forEach(([x,z,ry,len])=>{ const t=pan.clone(); t.needsUpdate=true; t.wrapS=THREE.RepeatWrapping; t.repeat.set(len/8,1); shPlane(g,new THREE.MeshLambertMaterial({map:t}),len,2,x,1.0,z,ry); });
+    shPlane(g,panM,D,2,-W/2+.06,1.0,0,Math.PI/2);
+    // a row of portraits above the panelling, like the hall in the photo
+    const port=tex(1024,256,(x,w,h)=>{ x.clearRect(0,0,w,h); for(let i=0;i<6;i++){ const px=22+i*168, pw=120, ph=200, py=28; x.fillStyle='#c8a040'; x.fillRect(px-9,py-9,pw+18,ph+18); const gr=x.createLinearGradient(0,py,0,py+ph); gr.addColorStop(0,pick(['#4a3a28','#3a2a3a','#2a3a2a'])); gr.addColorStop(1,'#140c08'); x.fillStyle=gr; x.fillRect(px,py,pw,ph);
+      x.fillStyle=pick(['#1a1210','#4a1a1a','#1a1a3a']); x.beginPath(); x.ellipse(px+pw/2,py+ph,pw*.42,ph*.42,0,Math.PI,0); x.fill(); x.fillStyle='#d0a888'; x.beginPath(); x.ellipse(px+pw/2,py+ph*.42,pw*.15,ph*.1,0,0,7); x.fill(); x.fillStyle='#e8e0d0'; x.fillRect(px+pw/2-14,py+ph*.56,28,10); } });
+    [-1,1].forEach(sd=>[-8,0,8].forEach(x=>shPlane(g,new THREE.MeshLambertMaterial({map:port,transparent:true}),8,2,x,3.3,sd*(D/2-.07),sd>0?Math.PI:0)));
+    // tall arched windows high on both long walls, and a great window over the stage
+    const arch=(w2,h2,big)=>tex(256,512,(x,w,h)=>{ x.clearRect(0,0,w,h); x.save(); x.beginPath(); x.moveTo(8,h); x.lineTo(8,h*.3); x.quadraticCurveTo(8,8,w/2,4); x.quadraticCurveTo(w-8,8,w-8,h*.3); x.lineTo(w-8,h); x.closePath(); x.fillStyle='#2a2018'; x.fill(); x.clip();
+      const gr=x.createLinearGradient(0,0,0,h); gr.addColorStop(0,'#e8eef8'); gr.addColorStop(1,'#9aa8c8'); x.fillStyle=gr; x.fillRect(16,12,w-32,h-20); x.strokeStyle='#2a2018'; x.lineWidth=big?7:9;
+      for(let i=1;i<(big?6:3);i++){ x.beginPath(); x.moveTo(i*w/(big?6:3),h*.2); x.lineTo(i*w/(big?6:3),h); x.stroke(); } for(let j=1;j<6;j++){ x.beginPath(); x.moveTo(0,h*.25+j*h*.13); x.lineTo(w,h*.25+j*h*.13); x.stroke(); }
+      if(big) for(let k=0;k<5;k++){ x.beginPath(); x.arc(w/2+(k-2)*42,h*.2,20,0,7); x.stroke(); } x.restore(); });
+    const aw=new THREE.MeshBasicMaterial({map:arch(1,1,false),transparent:true}); [-1,1].forEach(sd=>[-12,-4,4,12].forEach(x=>shPlane(g,aw,2.2,4,x,7.4,sd*(D/2-.07),sd>0?Math.PI:0)));
+    shPlane(g,new THREE.MeshBasicMaterial({map:arch(1,1,true),transparent:true}),6.5,5,W/2-.07,7.4,0,-Math.PI/2);
+    const wl=new THREE.PointLight(0xc8d8ff,.9,18); wl.position.set(W/2-3,7.5,0); g.add(wl);
+    // brass lamps with amber shades all down the long tables, and a THIS WAY sign
+    [-2.2,2.2].forEach(z=>{ for(let i=0;i<7;i++){ const x=-6.2+i*2.1; mesh(G.cyl,M('#b08a30'),x,1.08,z,.03,.32,.03,g); mesh(G.cone,M('#ffb04a',{glow:1.6}),x,1.32,z,.16,.18,.16,g); } });
+    B(.08,1.6,.08,M('#2a1a10'),-W/2+4.6,.8,-1.4,g); shPlane(g,new THREE.MeshBasicMaterial({map:tex(256,64,(x,w,h)=>{ x.fillStyle='#e8dcc0'; x.beginPath(); x.moveTo(0,8); x.lineTo(w-40,8); x.lineTo(w-4,h/2); x.lineTo(w-40,h-8); x.lineTo(0,h-8); x.fill(); x.fillStyle='#2a1a10'; x.font='900 34px Georgia,serif'; x.fillText('THIS WAY',22,44); }),transparent:true}),1.4,.36,-W/2+4.6,1.5,-1.36,0);
+    const warm=new THREE.PointLight(0xffb060,1.2,22); warm.position.set(-4,3.2,0); g.add(warm); }
+  // ===== 2F HUSH: red plasma lightning behind the DJ, haze, exit and no-smoking signs =====
+  { const R=SH_R.i2, g=INSG.g[2], W=R.w, D=R.d, H=R.h; const cv=document.createElement('canvas'); cv.width=512; cv.height=128; const t=new THREE.CanvasTexture(cv);
+    INSG.plasma={cv,t,nt:0}; const pm=new THREE.MeshBasicMaterial({map:t,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}); shPlane(g,pm,12,3,W/2-.15,2.9,0,-Math.PI/2); shPlane(g,pm,12,3,-W/2+.2,4.2,0,Math.PI/2);
+    INSG.haze=[]; const hz=tex(128,128,(x,w,h)=>{ const gr=x.createRadialGradient(64,64,4,64,64,64); gr.addColorStop(0,'rgba(255,255,255,.5)'); gr.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle=gr; x.fillRect(0,0,w,h); });
+    for(let i=0;i<6;i++){ const m=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:hz,color:0xff5a3a,transparent:true,opacity:.18,depthWrite:false,blending:THREE.AdditiveBlending})); m.scale.set(9,4,1); m.position.set(-8+i*3.5,1.6,rand(-5,5)); m.rotation.y=-Math.PI/2+rand(-.4,.4); g.add(m); INSG.haze.push({m,ph:i}); }
+    shPlane(g,new THREE.MeshBasicMaterial({map:tex(256,128,(x,w,h)=>{ x.fillStyle='#2a0818'; x.fillRect(0,0,w,h); x.strokeStyle='#ff3a8a'; x.lineWidth=6; x.strokeRect(6,6,w-12,h-12); x.fillStyle='#ff5aa8'; x.font='900 30px sans-serif'; x.fillText('禁止吸烟',70,58); x.font='700 18px sans-serif'; x.fillText('NO SMOKING',80,92); })}),1.4,.7,W/2-.08,3.4,D/2-2,-Math.PI/2);
+    shPlane(g,new THREE.MeshBasicMaterial({map:tex(256,96,(x,w,h)=>{ x.fillStyle='#0a8a3a'; x.fillRect(0,0,w,h); x.fillStyle='#fff'; x.font='900 40px sans-serif'; x.fillText('🏃 出口 EXIT',20,62); })}),1.1,.4,W/2-.08,4.6,-D/2+2,-Math.PI/2);
+    INSG.spots[2]=[]; for(let i=0;i<4;i++) insSpot(g,W/2-4,H-.3,-6+i*4,0xff6a2a,INSG.spots[2]); }
+  // ===== 3F KEZEE: a lighting truss over the stage and gold curtains of light =====
+  { const R=SH_R.i3, g=INSG.g[3], W=R.w, D=R.d, H=R.h; insTruss(g,W/2-7.2,W/2-.6,-7.5,7.5,H-.6); INSG.spots[3]=[]; for(let i=0;i<5;i++) insSpot(g,W/2-3.9,H-.75,-6+i*3,i%2?0xffd070:0xb070ff,INSG.spots[3]);
+    const cur=tex(64,256,(x,w,h)=>{ x.clearRect(0,0,w,h); for(let i=0;i<8;i++) for(let j=0;j<32;j++){ x.fillStyle=`rgba(255,${200+Math.random()*55|0},120,${(.5+Math.random()*.5).toFixed(2)})`; x.beginPath(); x.arc(4+i*8,4+j*8,1.6,0,7); x.fill(); } });
+    [-1,1].forEach(sd=>{ const m=new THREE.MeshBasicMaterial({map:cur,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}); shPlane(g,m,2.2,H-1,W/2-.1,(H-1)/2+.5,sd*(D/2-2.6),-Math.PI/2); }); }
+  // ===== 4F: the CULTURE CLUB MOTEL front desk (pink desk, neon signs, rope line) =====
+  { const R=SH_R.i4, g=INSG.g[4], W=R.w, D=R.d, H=R.h, x0=-W/2+4.2, z0=D/2-3.4;
+    B(2.6,1.05,1,M('#f4b8c8',{glow:.25}),x0,.53,z0,g); B(2.7,.06,1.1,M('#ffe0ea'),x0,1.08,z0,g); mesh(G.cyl,M('#ffe8a0',{glow:1.6}),x0-.8,1.3,z0,.1,.3,.1,g);
+    shPlane(g,new THREE.MeshBasicMaterial({map:tex(1024,128,(x,w,h)=>{ x.fillStyle='#0a0a0e'; x.fillRect(0,0,w,h); x.strokeStyle='#fff'; x.lineWidth=3; x.strokeRect(6,6,w-12,h-12); x.fillStyle='#ffffff'; x.shadowColor='#ffb0d0'; x.shadowBlur=18; x.font='900 74px "Arial Black",sans-serif'; x.textAlign='center'; x.fillText('CULTURE CLUB MOTEL',w/2,92); })}),4.2,.52,x0,2.8,z0-.6,0);
+    shPlane(g,new THREE.MeshBasicMaterial({map:tex(512,128,(x,w,h)=>{ const gr=x.createLinearGradient(0,0,w,0); gr.addColorStop(0,'#c86aff'); gr.addColorStop(1,'#ff6ac8'); x.fillStyle=gr; x.fillRect(0,0,w,h); x.fillStyle='#1a0a2a'; x.font='900 44px sans-serif'; x.textAlign='center'; x.fillText('卡座/预售票/现场票',w/2,58); x.font='700 26px sans-serif'; x.fillText('VIP / Pre-sale / At door line',w/2,102); })}),2.4,.6,-W/2+.08,3.3,D/2-6.2,Math.PI/2);
+    for(let i=0;i<4;i++){ const z=z0-1.6-i*1.3; mesh(G.cyl,M('#1a1a1e'),x0+2.2,.5,z,.05,1,.05,g); if(i<3) B(.03,.03,1.3,M('#c81a2a'),x0+2.2,.88,z-.65,g); }
+    mine2(addNPC({topColor:'#f4f2ec',outer:'none',bottomColor:'#141418',face:'none',extra:'none',head:'none'},{x:R.cx+x0,z:R.cz+z0+.9},Math.PI,'talk',{talk:true}).P);
+    const pl=new THREE.PointLight(0xff7ab4,1.2,10); pl.position.set(x0,2.6,z0-1.5); g.add(pl);
+    INSG.spots[4]=[]; for(let i=0;i<4;i++) insSpot(g,W/2-3,H-.3,-5+i*3.4,0xff1a1a,INSG.spots[4]); }
+  // ===== 5F FRIENDS: a round DJ booth under a pink LED ring, a marquee bulb ring with round screens, pixel-LED ceiling, a wide video wall =====
+  { const R=SH_R.i5, g=INSG.g[5], W=R.w, D=R.d, H=R.h, cx=3;
+    mesh(G.cyl,M('#141418'),cx,.55,0,2,1.1,2,g); mesh(G.cyl,M('#ff3a8a',{glow:1.2}),cx,1.12,0,2.02,.04,2.02,g);
+    for(let i=0;i<8;i++){ const a=i/8*Math.PI*2; mesh(G.cyl,M('#cfe8ff',{op:.35,glow:.3}),cx+Math.cos(a)*2.2,(H-.9)/2,Math.sin(a)*2.2,.06,H-.9,.06,g); }
+    const band=tex(1024,128,(x,w,h)=>{ x.fillStyle='#ff2a8a'; x.fillRect(0,0,w,h); x.fillStyle='rgba(0,0,0,.25)'; for(let i=0;i<w;i+=6) x.fillRect(i,0,2,h); x.fillStyle='#ffd8ec'; x.font='italic 900 84px "Arial Black",sans-serif'; for(let i=0;i<3;i++) x.fillText('FRiENDS',20+i*340,96); }); band.wrapS=THREE.RepeatWrapping;
+    INSG.band=band; const ring=new THREE.Mesh(new THREE.CylinderGeometry(2.6,2.6,.9,40,1,true),new THREE.MeshBasicMaterial({map:band,side:THREE.DoubleSide})); ring.position.set(cx,H-1,0); g.add(ring);
+    [H-.52,H-1.48].forEach(y=>{ const tr=new THREE.Mesh(new THREE.TorusGeometry(2.65,.06,6,40),M('#e8e8f0')); tr.rotation.x=Math.PI/2; tr.position.set(cx,y,0); g.add(tr); });
+    // marquee ring of bulbs and round blue screens
+    const n=LOW?40:72, bg=new THREE.SphereGeometry(.08,6,5), A=new THREE.InstancedMesh(bg,new THREE.MeshBasicMaterial({color:0xffb040}),n/2), Bm=new THREE.InstancedMesh(bg,new THREE.MeshBasicMaterial({color:0xffb040}),n/2), d=new THREE.Object3D();
+    for(let i=0;i<n;i++){ const a=i/n*Math.PI*2; d.position.set(cx+Math.cos(a)*6,H-.45,Math.sin(a)*6); d.updateMatrix(); (i%2?Bm:A).setMatrixAt(i>>1,d.matrix); } g.add(A); g.add(Bm); INSG.bulbs=[A.material,Bm.material];
+    { const tr=new THREE.Mesh(new THREE.TorusGeometry(6,.12,6,60),M('#3a1a10')); tr.rotation.x=Math.PI/2; tr.position.set(cx,H-.45,0); g.add(tr); }
+    const scr=tex(256,256,(x,w,h)=>{ const gr=x.createRadialGradient(128,128,10,128,128,128); gr.addColorStop(0,'#bfe8ff'); gr.addColorStop(.6,'#2a7ae8'); gr.addColorStop(1,'#0a1a4a'); x.fillStyle=gr; x.beginPath(); x.arc(128,128,124,0,7); x.fill(); x.strokeStyle='#e8f4ff'; x.lineWidth=4; for(let i=0;i<5;i++){ x.beginPath(); x.arc(128,128,30+i*18,i,i+2); x.stroke(); } });
+    for(let i=0;i<4;i++){ const a=i/4*Math.PI*2+.4, m=new THREE.Mesh(G.plane,new THREE.MeshBasicMaterial({map:scr,transparent:true,side:THREE.DoubleSide})); m.scale.set(1.6,1.6,1); m.position.set(cx+Math.cos(a)*6,H-.8,Math.sin(a)*6); m.lookAt(g.position.x+cx,0,0); m.rotation.x=-Math.PI/2.6; g.add(m); }
+    // pixel LED panels on the ceiling
+    const pix=tex(128,128,(x,w,h)=>{ x.fillStyle='#120a04'; x.fillRect(0,0,w,h); for(let i=0;i<16;i++) for(let j=0;j<16;j++){ x.fillStyle=`rgba(255,${210+Math.random()*45|0},${150+Math.random()*80|0},${(.6+Math.random()*.4).toFixed(2)})`; x.fillRect(i*8+1,j*8+1,5,5); } });
+    INSG.pix=[]; [[-9,-6],[-9,6],[-4,-8],[-4,8],[9,-6],[9,6],[-11,0]].forEach(([x,z],i)=>{ const m=new THREE.MeshBasicMaterial({map:pix,color:0xffffff}); const p=shPlane(g,m,2.4,2.4,x,H-.06,z,0); p.rotation.set(Math.PI/2,0,(i%3)*.4); INSG.pix.push({m,ph:i*1.7}); });
+    // the wide video wall with the FRIENDS cartoon, red neon text under it
+    const vid=tex(1024,256,(x,w,h)=>{ for(let p=0;p<3;p++){ const ox=p*w/3; const gr=x.createLinearGradient(0,0,0,h); gr.addColorStop(0,'#5ab0e8'); gr.addColorStop(1,'#8ad0e0'); x.fillStyle=gr; x.fillRect(ox,0,w/3,h); x.fillStyle='#6a9a3a'; x.fillRect(ox,h-40,w/3,40);
+      [[70,150],[220,160]].forEach(([dx,dy])=>{ x.fillStyle='#c84a2a'; x.beginPath(); x.ellipse(ox+dx,dy,46,60,0,0,7); x.fill(); x.beginPath(); x.ellipse(ox+dx,dy-70,34,30,0,0,7); x.fill(); x.fillStyle='#a83a1a'; x.beginPath(); x.ellipse(ox+dx-26,dy-90,10,22,-.4,0,7); x.fill(); x.beginPath(); x.ellipse(ox+dx+26,dy-90,10,22,.4,0,7); x.fill(); x.fillStyle='#fff'; x.beginPath(); x.arc(ox+dx-10,dy-76,6,0,7); x.arc(ox+dx+10,dy-76,6,0,7); x.fill(); });
+      x.fillStyle='#ffffff'; x.strokeStyle='#2a2a2a'; x.lineWidth=6; x.font='italic 900 50px "Arial Black",sans-serif'; [[30,50],[60,140],[20,240]].forEach(([tx,ty])=>{ x.strokeText('FRiENDS',ox+tx,ty); x.fillText('FRiENDS',ox+tx,ty); }); } }); vid.wrapS=THREE.RepeatWrapping; INSG.vid=vid;
+    shPlane(g,M('#0a0a0e'),10.4,2.2,W/2-.09,3.9,3.5,-Math.PI/2); shPlane(g,new THREE.MeshBasicMaterial({map:vid}),10,1.8,W/2-.1,3.9,3.5,-Math.PI/2);
+    shPlane(g,new THREE.MeshBasicMaterial({map:tex(1024,96,(x,w,h)=>{ x.clearRect(0,0,w,h); x.fillStyle='#ff2a3a'; x.shadowColor='#ff2a3a'; x.shadowBlur=16; x.font='900 54px sans-serif'; x.fillText('做自己的头顶  FRIENDS  FRIENDS  你们还是这么帅',20,66); }),transparent:true}),10,.9,W/2-.1,2.5,3.5,-Math.PI/2);
+    // keep the dancers out of the round booth
+    SNPC.forEach(S=>{ const p=S.P.root.position; const lx=p.x-(R.cx+cx), lz=p.z-R.cz; if(Math.abs(p.x-R.cx)<W/2&&Math.abs(lz)<D/2&&S.mode==='dance'&&Math.hypot(lx,lz)<2.8){ const a=Math.atan2(lz,lx); p.x=R.cx+cx+Math.cos(a)*3.2; p.z=R.cz+Math.sin(a)*3.2; } }); }
+  // ===== 6F: the 疯疯 STAGE sign, a truss over the pads with moving heads, an LED wall behind the DJ =====
+  { const R=SH_R.i6, g=INSG.g[6], W=R.w, D=R.d, H=R.h;
+    shPlane(g,new THREE.MeshBasicMaterial({map:tex(512,256,(x,w,h)=>{ x.fillStyle='#0a0a12'; x.fillRect(0,0,w,h); x.fillStyle='#e8f0ff'; x.shadowColor='#8ab0ff'; x.shadowBlur=20; x.font='900 80px sans-serif'; x.fillText('疯疯 STAGE',40,110); x.strokeStyle='#cfe0ff'; x.lineWidth=16; x.beginPath(); x.moveTo(40,200); x.lineTo(400,200); x.lineTo(400,140); x.stroke(); x.beginPath(); x.moveTo(360,160); x.lineTo(400,120); x.lineTo(440,160); x.stroke(); })}),3.2,1.6,-W/2+.08,3.1,-5,Math.PI/2);
+    insTruss(g,-W/2+5.8,-W/2+27.4,-8.2,8.2,H-.7); INSG.spots[6]=[]; const cols=[0xff3a8a,0xffe040,0x3ad6ff,0x7aff4a,0xb06bff,0xff7a2a]; for(let i=0;i<8;i++) insSpot(g,-W/2+7+i*2.9,H-.85,i%2?-8.2:8.2,cols[i%6],INSG.spots[6]);
+    const cv=document.createElement('canvas'); cv.width=256; cv.height=96; const t=new THREE.CanvasTexture(cv); INSG.led6={cv,t}; shPlane(g,new THREE.MeshBasicMaterial({map:t}),9,3.2,W/2-.08,3.6,0,-Math.PI/2); }
+  updaters.push(insUpTick); }
+function mine2(P){ if(!ALLP.includes(P)) ALLP.push(P); if(!TALKP.includes(P)) TALKP.push(P); }
+function insUpTick(t,dt){ if(MAP!=='shanghai') return; const r=SHG.room; if(!r||r[0]!=='i'||r==='ist') return; const f=+r.slice(1), Z=INSG.zones[f], b=Z&&Z.running?boothBeat(Z,t):t*2.1, k=Math.exp(-(((b%1)+1)%1)*4);
+  const S=INSG.spots[f]; if(S) S.forEach((s,i)=>{ s.m.rotation.z=Math.sin(t*.9+s.ph)*.55; s.m.rotation.x=Math.cos(t*.7+s.ph)*.4; s.m.material.opacity=.08+.12*k; });
+  if(f===1&&INSG.lant) INSG.lant.forEach((L,i)=>{ L.rotation.y=t*.15+i; L.position.y+=Math.sin(t*.8+i)*.0015; });
+  if(f===2&&INSG.plasma){ const P=INSG.plasma; if(t-P.nt>.07){ P.nt=t; const x=P.cv.getContext('2d'), w=P.cv.width, h=P.cv.height; x.clearRect(0,0,w,h); x.lineCap='round';
+      for(let l=0;l<4;l++){ let px=0, py=h/2+rand(-20,20); x.beginPath(); x.moveTo(px,py); while(px<w){ px+=rand(10,30); py=clamp(py+rand(-22,22),10,h-10); x.lineTo(px,py); } x.strokeStyle=`rgba(255,${60+l*30},40,${.5+k*.5})`; x.lineWidth=l===0?4:2; x.shadowColor='#ff3a1a'; x.shadowBlur=14; x.stroke(); } P.t.needsUpdate=true; }
+    INSG.haze.forEach(H2=>{ H2.m.position.z+=Math.sin(t*.2+H2.ph)*.004; H2.m.material.opacity=.12+.08*Math.sin(t*.5+H2.ph); }); }
+  if(f===5){ if(INSG.band) INSG.band.offset.x=-t*.05; if(INSG.vid) INSG.vid.offset.x=t*.02; const on=Math.floor(t*4)%2; INSG.bulbs[0].color.setHex(on?0xffc060:0x5a2a0a); INSG.bulbs[1].color.setHex(on?0x5a2a0a:0xffc060);
+    INSG.pix.forEach(p=>{ const v=.45+.55*Math.max(0,Math.sin(t*2+p.ph+b*.5)); p.m.color.setRGB(v,v*.9,v*.75); }); }
+  if(f===6&&INSG.led6){ const L=INSG.led6, x=L.cv.getContext('2d'); if(!L.nt||t-L.nt>.08){ L.nt=t; const w=L.cv.width, h=L.cv.height, cols=['#ff3a8a','#ffe040','#3ad6ff','#7aff4a','#b06bff','#ff7a2a']; x.fillStyle='#05050a'; x.fillRect(0,0,w,h);
+      for(let i=0;i<16;i++){ const v=Math.abs(Math.sin(t*3+i*.7))*(.4+.6*k); x.fillStyle=cols[i%6]; x.fillRect(i*16+2,h-v*h,12,v*h); } x.fillStyle='#fff'; x.font='900 30px "Arial Black",sans-serif'; x.globalAlpha=.4+.6*k; x.fillText('JUMP!',80,40); x.globalAlpha=1; L.t.needsUpdate=true; } } }
 const INS_LINES={stage:['모자가 고민하고 있어요…','이 아이는… 용기가 있군!','다 같이 박수!'],potion:['시계 방향으로 세 번만 저어요','한 방울이면 충분해요','연기 색이 바뀌었어요!'],platform:['열차가 곧 떠나요!','벽을 향해 그대로 달려요!','트렁크 잊지 마세요'],
   duel:['엑스펠리아르무스!','프로테고!','결투 시작!'],library:['쉿, 금서 구역이에요','이 책이 답을 알고 있어요','책이 날아다녀요!'],owlery:['편지가 왔어요!','부엉이가 길을 알아요','답장은 내일 와요']};
 function insTick2(t,dt){ if(MAP!=='shanghai') return; const r=SHG.room;
