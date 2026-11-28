@@ -241,21 +241,69 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "booth:afro": [
+   },
    {
-    "start": 1795800060000,
-    "dur": 183,
-    "url": "https://soundcloud.com/pink_limonade/black-coffee-spiritual-dj-set-mixmag-live-london",
-    "title": "BLACK COFFEE Spiritual DJ Set @ Mixmag Live, London",
-    "dj": "Black Coffee",
-    "art": "https://i1.sndcdn.com/artworks-lSIyiaGdaN19Z5mK-QmjtpQ-t500x500.jpg",
+    "start": 1795938960000,
+    "dur": 61,
+    "url": "https://soundcloud.com/seoulcommunityradio/la-fete-de-la-musique-2020-speciale-sons",
+    "title": "La fête de la musique 2020 Spéciale : S.O.N.S",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-fnMVcWqFQ3HAFtgY-3xp8eQ-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795942620000,
+    "dur": 122,
+    "url": "https://soundcloud.com/magicwire/gabriola-b2b-sons-midnight-vapour-trail-ep69",
+    "title": "Gabriola B2B S.O.N.S ~ Midnight Vapour Trail Ep.69",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-T03IexzDRrbL1vvT-2uyTxA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795949940000,
+    "dur": 102,
+    "url": "https://soundcloud.com/dau_ra/ring_seoul",
+    "title": "Daura @ Ring [Seoul, Nov. 21, 2025]",
+    "dj": "Daura",
+    "art": "https://i1.sndcdn.com/artworks-hVEP6VkTun7zXL8a-W7xz3w-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795956060000,
+    "dur": 117,
+    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
+    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795963080000,
+    "dur": 193,
+    "url": "https://soundcloud.com/adambeyer/dcr501-drumcode-radio-live-adam-beyer-b2b-maceo-plex-live-3-hour-set-from-resistance-in-ibiza",
+    "title": "DCR501 – Drumcode Radio Live – Adam Beyer B2B Maceo Plex live [3 hour set] from Resistance in Ibiza",
+    "dj": "Adam Beyer",
+    "art": "https://i1.sndcdn.com/artworks-Snjbmip2VZKRsaxq-KywTyA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "booth:afro": [
    {
     "start": 1795811040000,
     "dur": 178,
@@ -474,18 +522,6 @@
    }
   ],
   "booth:dubstep": [
-   {
-    "start": 1795807620000,
-    "dur": 70,
-    "url": "https://soundcloud.com/johnnykham-745185291/subtronics-edc-las-vegas-2026",
-    "title": "Subtronics - EDC Las Vegas 2026 (Full Set)",
-    "dj": "Subtronics",
-    "art": "https://i1.sndcdn.com/artworks-mmVONtRPHsBhzlFV-zNZfxw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795811820000,
     "dur": 55,
@@ -849,18 +885,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795805460000,
-    "dur": 103,
-    "url": "https://soundcloud.com/lost-village-festival/peggy-gou-live-from-the-village",
-    "title": "Live from Lost Village - Peggy Gou",
-    "dj": "Peggy Gou",
-    "art": "https://i1.sndcdn.com/artworks-nbngYxh6biftzoeg-BfgPjQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795811640000,
     "dur": 118,
     "url": "https://soundcloud.com/dimensionsfestival/unai-trotti-live-from-dimensions-23",
@@ -1163,18 +1187,6 @@
   ],
   "booth:hardstyle": [
    {
-    "start": 1795805520000,
-    "dur": 71,
-    "url": "https://soundcloud.com/the-ransom-note/sons-the-ransom-note-mix",
-    "title": "S.O.N.S: The Ransom Note Mix",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-6ZiVbIpzU9SDumyu-tsQPWQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795809780000,
     "dur": 68,
     "url": "https://soundcloud.com/theclassicmixcdseries/jeff-mills-live-at-the-liquid-room-tokyo",
@@ -1404,18 +1416,6 @@
    }
   ],
   "booth:edm": [
-   {
-    "start": 1795808160000,
-    "dur": 59,
-    "url": "https://soundcloud.com/hexagon/don-diablo-live-at-ultra-miami-2016",
-    "title": "Don Diablo Live at ULTRA Miami 2016",
-    "dj": "Don Diablo",
-    "art": "https://i1.sndcdn.com/artworks-000153657330-9h9b6j-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795811700000,
     "dur": 71,
@@ -2275,18 +2275,6 @@
   ],
   "club3": [
    {
-    "start": 1795804140000,
-    "dur": 119,
-    "url": "https://soundcloud.com/postervoyage/here061226",
-    "title": "@here June/12/2026",
-    "dj": "Kyuchan",
-    "art": "https://i1.sndcdn.com/artworks-YGf2c8hdyi8BI78A-RgR3yA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795811280000,
     "dur": 115,
     "url": "https://soundcloud.com/dau_ra/domesicle-5-mutek",
@@ -2842,18 +2830,6 @@
    }
   ],
   "zone:teller": [
-   {
-    "start": 1795803600000,
-    "dur": 117,
-    "url": "https://soundcloud.com/seoulcommunityradio/hajodaze-june-5th",
-    "title": "STROBE (Krijka +: S.O.N.S): SCR x Jim Beam Pres. HAJODAZE - SURFYY BEACH (June) 🏖",
-    "dj": "S.O.N.S",
-    "art": "https://i1.sndcdn.com/artworks-s5ajUviLJxRgDs1w-ukVO8Q-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795810620000,
     "dur": 192,
@@ -3967,18 +3943,6 @@
   ],
   "zone:nm-hanok": [
    {
-    "start": 1795803540000,
-    "dur": 121,
-    "url": "https://soundcloud.com/keinemusik/keinemusik-radio-show-100-live-at-else-berlin-by-me-rampa-reznik-adam-port",
-    "title": "Keinemusik Radio Show 100 live at Else Berlin by &ME, Rampa, Reznik, Adam Port",
-    "dj": "Keinemusik (&ME, Rampa, Adam Port)",
-    "art": "https://i1.sndcdn.com/artworks-000176184477-601nwg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795810800000,
     "dur": 80,
     "url": "https://soundcloud.com/platform/stephan-bodzin",
@@ -4269,18 +4233,6 @@
   ],
   "zone:nm-soop": [
    {
-    "start": 1795800180000,
-    "dur": 179,
-    "url": "https://soundcloud.com/houghton-festival/recorded-at-houghton-nicolas-lutz-2022",
-    "title": "Recorded at Houghton - Nicolas Lutz (2022)",
-    "dj": "Nicolas Lutz",
-    "art": "https://i1.sndcdn.com/artworks-XHeC6dnHfNj0SNXy-gNnOWg-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795810920000,
     "dur": 91,
     "url": "https://soundcloud.com/cerclelive/monolink-live-at-gaatafushi-island-in-the-maldives-for-cercle-and-w-hotels",
@@ -4522,18 +4474,6 @@
    }
   ],
   "zone:nm-exp": [
-   {
-    "start": 1795806180000,
-    "dur": 62,
-    "url": "https://soundcloud.com/aquilae-548399642/nils-frahm-live-montreux-jazz-festival-2015",
-    "title": "Nils Frahm - Live (Montreux Jazz Festival 2015)",
-    "dj": "Nils Frahm",
-    "art": "https://i1.sndcdn.com/artworks-000134511075-okp4lh-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795809900000,
     "dur": 121,
@@ -4824,18 +4764,6 @@
    }
   ],
   "zone:nm-hut": [
-   {
-    "start": 1795803660000,
-    "dur": 134,
-    "url": "https://soundcloud.com/desertdwellers/vajra-mind-meditative-soundscapes-compiled-by-amani",
-    "title": "Vajra Mind - Ambient mix by AMANI",
-    "dj": "Desert Dwellers",
-    "art": "https://i1.sndcdn.com/artworks-000119064842-ynev62-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795811700000,
     "dur": 79,
@@ -5477,18 +5405,6 @@
   ],
   "zone:sphere": [
    {
-    "start": 1795802160000,
-    "dur": 115,
-    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
-    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
-    "dj": "Vintage Culture b2b Mochakk",
-    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795809060000,
     "dur": 89,
     "url": "https://soundcloud.com/johnsummit/everything-always-live-ultra-miami-2025",
@@ -6069,18 +5985,6 @@
   ],
   "zone:sh-hall": [
    {
-    "start": 1795806060000,
-    "dur": 84,
-    "url": "https://soundcloud.com/jeeke48/jon-hopkins-live-at-glastonbury-2019",
-    "title": "Jon Hopkins - Live at Glastonbury 2019",
-    "dj": "Jon Hopkins",
-    "art": "https://i1.sndcdn.com/artworks-000561459078-atz5w7-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795811100000,
     "dur": 102,
     "url": "https://soundcloud.com/dau_ra/ring_seoul",
@@ -6370,18 +6274,6 @@
    }
   ],
   "zone:sh-green": [
-   {
-    "start": 1795804380000,
-    "dur": 121,
-    "url": "https://soundcloud.com/platform/jayda-g",
-    "title": "Jayda G Boiler Room London Studio DJ Set",
-    "dj": "Jayda G",
-    "art": "https://i1.sndcdn.com/artworks-000172160688-npyep4-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795811640000,
     "dur": 87,
@@ -6708,5 +6600,5 @@
    }
   ]
  },
- "updated": "2026-11-28T07:38:28.422Z"
+ "updated": "2026-11-28T08:38:31.447Z"
 }
