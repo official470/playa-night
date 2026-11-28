@@ -933,18 +933,6 @@
   ],
   "booth:house": [
    {
-    "start": 1795818720000,
-    "dur": 91,
-    "url": "https://soundcloud.com/mallgrab/br-set-melbourne-22",
-    "title": "Boiler Room Set Melbourne '22",
-    "dj": "Mall Grab",
-    "art": "https://i1.sndcdn.com/artworks-ILIBralcxi5b2c6q-QD8CNQ-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795824180000,
     "dur": 63,
     "url": "https://soundcloud.com/chris-lukasz-jankowski/zip-live-dj-set-6-years-of-sunrise-perlon-party-buchares-2007-1",
@@ -1477,18 +1465,6 @@
   ],
   "booth:edm": [
    {
-    "start": 1795819680000,
-    "dur": 76,
-    "url": "https://soundcloud.com/blasterjaxx/blasterjaxx-live-tomorrowland-2025-the-great-library-stage-full-set",
-    "title": "Blasterjaxx | LIVE @ Tomorrowland 2025 - The Great Library Stage [FULL SET]",
-    "dj": "Blasterjaxx",
-    "art": "https://i1.sndcdn.com/artworks-Q6x97hehifsqplas-re0WiA-t500x500.png",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795824240000,
     "dur": 67,
     "url": "https://soundcloud.com/umftv2016/deadmau5-live-ultra-2016-asot-stage-full-set-free-download",
@@ -1814,18 +1790,6 @@
    }
   ],
   "zone:disco": [
-   {
-    "start": 1795820160000,
-    "dur": 80,
-    "url": "https://soundcloud.com/honeydijon/honey-dijon-live-le-bain-april",
-    "title": "Honey Dijon Live @ Le Bain April 12, 2014",
-    "dj": "Honey Dijon",
-    "art": "https://i1.sndcdn.com/artworks-000076466152-7o35xs-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795824960000,
     "dur": 60,
@@ -2443,18 +2407,6 @@
   ],
   "club3": [
    {
-    "start": 1795818180000,
-    "dur": 120,
-    "url": "https://soundcloud.com/adambeyer/dcr827-drumcode-radio",
-    "title": "DCR827 – Drumcode Radio Live - Adam Beyer live from Drumcode Mallorca",
-    "dj": "Adam Beyer",
-    "art": "https://i1.sndcdn.com/artworks-zzH6JpXaBEqTGwM8-ExoDZw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
-   {
     "start": 1795825380000,
     "dur": 160,
     "url": "https://soundcloud.com/kino-2/phonotheque-2020-live-recording",
@@ -2696,18 +2648,6 @@
    }
   ],
   "club4": [
-   {
-    "start": 1795819440000,
-    "dur": 60,
-    "url": "https://soundcloud.com/platform/folamour-sugar-mountain-2024",
-    "title": "Folamour | Boiler Room x Sugar Mountain 2024",
-    "dj": "Folamour",
-    "art": "https://i1.sndcdn.com/artworks-L0wcXywPyulqtDIo-yhE0zw-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795823040000,
     "dur": 203,
@@ -3010,18 +2950,6 @@
    }
   ],
   "zone:teller": [
-   {
-    "start": 1795822140000,
-    "dur": 64,
-    "url": "https://soundcloud.com/djminkyu/minkyu_eos-radio_july_2024",
-    "title": "EOS Radio - Minkyu 28.07.2024",
-    "dj": "Minkyu",
-    "art": "https://i1.sndcdn.com/artworks-fLGr9D1ydge3y7ac-VuTR5g-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795825980000,
     "dur": 76,
@@ -3554,18 +3482,6 @@
    }
   ],
   "zone:studio": [
-   {
-    "start": 1795820520000,
-    "dur": 63,
-    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
-    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
-    "dj": "Franky Rizardo",
-    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795824300000,
     "dur": 71,
@@ -5509,6 +5425,42 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795954860000,
+    "dur": 60,
+    "url": "https://soundcloud.com/platform/mall-grab",
+    "title": "Mall Grab Boiler Room Paris DJ set",
+    "dj": "Mall Grab",
+    "art": "https://i1.sndcdn.com/artworks-000173714296-ig7f1e-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795958460000,
+    "dur": 63,
+    "url": "https://soundcloud.com/frankyrizardo/franky-rizardo-closing-set",
+    "title": "Franky Rizardo CLOSING set recorded live at Defected In The House club AIR Amsterdam 10.12.11",
+    "dj": "Franky Rizardo",
+    "art": "https://i1.sndcdn.com/artworks-000015737104-ixxb2l-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795962240000,
+    "dur": 430,
+    "url": "https://soundcloud.com/pawsa/pawsa-in-the-park-london-2025",
+    "title": "PAWSA IN THE PARK LONDON 2025",
+    "dj": "PAWSA",
+    "art": "https://i1.sndcdn.com/artworks-RNBsszzupFVqDArw-rSyRWQ-t500x500.png",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:sphere": [
@@ -5787,6 +5739,66 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
+   },
+   {
+    "start": 1795953780000,
+    "dur": 71,
+    "url": "https://soundcloud.com/user-640487736/armin-van-buuren-live-edc-las-vegas-2016-full-set-free-download",
+    "title": "Armin Van Buuren - Live @ EDC Las Vegas 2016 (Full Set) [Free Download]",
+    "dj": "Armin van Buuren",
+    "art": "https://i1.sndcdn.com/artworks-000168195679-3ifc2v-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795958040000,
+    "dur": 59,
+    "url": "https://soundcloud.com/hexagon/don-diablo-live-at-ultra-miami-2016",
+    "title": "Don Diablo Live at ULTRA Miami 2016",
+    "dj": "Don Diablo",
+    "art": "https://i1.sndcdn.com/artworks-000153657330-9h9b6j-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795961580000,
+    "dur": 89,
+    "url": "https://soundcloud.com/johnsummit/everything-always-live-ultra-miami-2025",
+    "title": "Everything Always (Dom Dolla & John Summit) Live @ Ultra Music Festival 2025",
+    "dj": "Everything Always (Dom Dolla & John Summit)",
+    "art": "https://i1.sndcdn.com/artworks-SnnzOZhvt3kJ5Ou8-onWFpg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795966920000,
+    "dur": 120,
+    "url": "https://soundcloud.com/domdolla/sydney",
+    "title": "Dom Dolla Live @ Allianz Stadium, Sydney 2025",
+    "dj": "Dom Dolla",
+    "art": "https://i1.sndcdn.com/artworks-vcG6hK83U1EWXGFV-O4yiAA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795974120000,
+    "dur": 115,
+    "url": "https://soundcloud.com/vintageculturemusic/vintage-culture-b2b-mochakk-coachella-dolab-stage-2023",
+    "title": "Vintage Culture b2b Mochakk - Coachella (Dolab Stage) Indio, California 2023",
+    "dj": "Vintage Culture b2b Mochakk",
+    "art": "https://i1.sndcdn.com/artworks-cV1kL5z8Tc2LzJbt-Oo1YwA-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
    }
   ],
   "zone:sh-lift": [
@@ -6044,18 +6056,6 @@
    }
   ],
   "zone:sh-hall": [
-   {
-    "start": 1795817220000,
-    "dur": 106,
-    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
-    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
-    "dj": "Dax J",
-    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
-    "djIntro": "",
-    "musicIntro": "",
-    "auto": true,
-    "v": 2
-   },
    {
     "start": 1795823580000,
     "dur": 121,
@@ -6319,21 +6319,45 @@
     "musicIntro": "",
     "auto": true,
     "v": 2
-   }
-  ],
-  "zone:sh-green": [
+   },
    {
-    "start": 1795816860000,
-    "dur": 103,
-    "url": "https://soundcloud.com/lost-village-festival/peggy-gou-live-from-the-village",
-    "title": "Live from Lost Village - Peggy Gou",
-    "dj": "Peggy Gou",
-    "art": "https://i1.sndcdn.com/artworks-nbngYxh6biftzoeg-BfgPjQ-t500x500.jpg",
+    "start": 1795953480000,
+    "dur": 106,
+    "url": "https://soundcloud.com/daxj/dax-j-closing-set-awakenings-festival-25th-anniversary-easter-2022",
+    "title": "Dax J Closing Set @ Awakenings Festival 25th Anniversary Easter 2022",
+    "dj": "Dax J",
+    "art": "https://i1.sndcdn.com/artworks-auqlevUYh7Z1TP5u-EquPlA-t500x500.jpg",
     "djIntro": "",
     "musicIntro": "",
     "auto": true,
     "v": 2
    },
+   {
+    "start": 1795959840000,
+    "dur": 135,
+    "url": "https://soundcloud.com/reinier-zonneveld/reinier-zonneveld-live-rotterdam-rave-closing-set",
+    "title": "Reinier Zonneveld LIVE @ Rotterdam Rave (closing set) 22 - 12 - 2018",
+    "dj": "Reinier Zonneveld",
+    "art": "https://i1.sndcdn.com/artworks-000670662310-a6um38-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   },
+   {
+    "start": 1795967940000,
+    "dur": 182,
+    "url": "https://soundcloud.com/wus_fest/sons-2022",
+    "title": "S.O.N.S. at WUS2022",
+    "dj": "S.O.N.S",
+    "art": "https://i1.sndcdn.com/artworks-Y87UL9bxFTAdmcxe-w1txyg-t500x500.jpg",
+    "djIntro": "",
+    "musicIntro": "",
+    "auto": true,
+    "v": 2
+   }
+  ],
+  "zone:sh-green": [
    {
     "start": 1795823040000,
     "dur": 60,
@@ -7822,5 +7846,5 @@
    }
   ]
  },
- "updated": "2026-11-28T11:38:41.071Z"
+ "updated": "2026-11-28T12:38:43.960Z"
 }
