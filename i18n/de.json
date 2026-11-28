@@ -2313,7 +2313,17 @@
 "책이 날아다녀요!": "Die Bücher fliegen!",
 "편지가 왔어요!": "Ein Brief ist da!",
 "부엉이가 길을 알아요": "Die Eule kennt den Weg",
-"답장은 내일 와요": "Die Antwort kommt morgen"
+"답장은 내일 와요": "Die Antwort kommt morgen",
+"1F 위저드 시어터 (이머시브 연극)": "1F Zauber-Theater (immersives Theater)",
+"2F HUSH (힙합)": "2F HUSH (Hip-Hop)",
+"3F KEZEE · RADI (라이브)": "3F KEZEE · RADI (live)",
+"4F DIRTY HOUSE (테크노)": "4F DIRTY HOUSE (Techno)",
+"5F FRIENDS (대기실)": "5F FRIENDS (Warteraum)",
+"🎟 INS LAND · 클럽": "🎟 INS LAND · Club",
+"⬛ SYSTEM · 클럽": "⬛ SYSTEM · Club",
+"📍 상하이 둘러보기": "📍 Shanghai erkunden",
+"미술관": "Museum",
+"INS LAND는 티켓 오피스에서 ALL PASS를 사고 들어가요": "Für INS LAND kaufst du am Ticketschalter einen ALL PASS"
 },
 "patterns": {
 ". 코인 +{0}": ". Münzen +{0}",
