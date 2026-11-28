@@ -7400,10 +7400,39 @@ function buildINS2(){ const mine=[];
     INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='ist'?{x:R.cx-W/2+1.4,z:R.cz}:FARV,r:2.2,prio:1,get label(){ return `${IST.lo}F 계단참`; },act:()=>insStairEnd(false)});
     INTER.push({pos:()=>MAP==='shanghai'&&inGame&&SHG.room==='ist'?{x:R.cx+W/2-1.4,z:R.cz}:FARV,r:2.2,prio:1,get label(){ return `${IST.lo+1}F 계단참`; },act:()=>insStairEnd(true)}); }
   mine.forEach(P=>{ if(!ALLP.includes(P)) ALLP.push(P); if(!TALKP.includes(P)) TALKP.push(P); });
-  updaters.push(insTick2); }
+  insDragon(); updaters.push(insTick2); }
+// ---------- 1F: a giant golden dragon flying a figure-eight above the hall ----------
+function insDragon(){ const R=SH_R.i1, g=INSG.g[1]; if(!g) return; const D={segs:[],N:LOW?22:36,u:0,fire:0,fireT:8};
+  const gold=new THREE.MeshPhongMaterial({color:0xe8b830,emissive:0x5a3a00,specular:0xffe8a0,shininess:90,flatShading:true}), belly=new THREE.MeshPhongMaterial({color:0xfff0b0,emissive:0x3a2a00,flatShading:true}),
+    red=new THREE.MeshPhongMaterial({color:0xd8301a,emissive:0x5a0a00,flatShading:true}), sg=new THREE.IcosahedronGeometry(1,1), cg=new THREE.ConeGeometry(1,1,5);
+  for(let i=0;i<D.N;i++){ const k=i/(D.N-1), r=1.05*(1-k*.8), s=new THREE.Group(); g.add(s);
+    const b=new THREE.Mesh(sg,gold); b.scale.set(r,r*.9,r*1.25); s.add(b); const bl=new THREE.Mesh(sg,belly); bl.scale.set(r*.75,r*.5,r*1.1); bl.position.y=-r*.45; s.add(bl);
+    if(i%2===0){ const f=new THREE.Mesh(cg,red); f.scale.set(r*.35,r*.9,r*.5); f.position.y=r*1.05; f.rotation.x=-.5; s.add(f); }
+    if(i===6||i===Math.round(D.N*.55)) [-1,1].forEach(sd=>{ const leg=new THREE.Group(); leg.position.set(sd*r*.9,-r*.4,0); leg.scale.setScalar(1.8); s.add(leg); const th=new THREE.Mesh(sg,gold); th.scale.set(.12,.34,.12); th.position.y=-.3; leg.add(th);
+      for(let c=-1;c<=1;c++){ const cl=new THREE.Mesh(cg,belly); cl.scale.set(.04,.16,.04); cl.position.set(c*.06,-.66,.08); cl.rotation.x=1.9; leg.add(cl); } leg.rotation.z=sd*.5; });
+    if(i===D.N-1){ const tf=new THREE.Mesh(cg,red); tf.scale.set(.25,.8,.08); tf.position.z=-.4; tf.scale.multiplyScalar(1.7); tf.rotation.x=-Math.PI/2; s.add(tf); }
+    D.segs.push(s); }
+  // the head: snout, jaw, horns, a red mane, glowing eyes and long whiskers
+  const H=new THREE.Group(); H.scale.setScalar(1.75); g.add(H); D.head=H; const sk=new THREE.Mesh(sg,gold); sk.scale.set(.62,.52,.7); H.add(sk);
+  const sn=new THREE.Mesh(new THREE.BoxGeometry(.6,.32,.8),gold); sn.position.set(0,-.02,.72); H.add(sn); const no=new THREE.Mesh(sg,gold); no.scale.set(.32,.2,.18); no.position.set(0,.08,1.1); H.add(no);
+  D.jaw=new THREE.Group(); D.jaw.position.set(0,-.22,.2); H.add(D.jaw); const jw=new THREE.Mesh(new THREE.BoxGeometry(.5,.12,.86),belly); jw.position.z=.5; D.jaw.add(jw);
+  for(let i=0;i<5;i++){ const tt=new THREE.Mesh(cg,new THREE.MeshBasicMaterial({color:0xffffff})); tt.scale.set(.03,.08,.03); tt.position.set(-.2+i*.1,-.2,1.05); tt.rotation.x=Math.PI; H.add(tt); }
+  [-1,1].forEach(sd=>{ const e=mesh(G.sph,M('#ff3a1a',{glow:3}),sd*.3,.2,.42,.09,.07,.06,H); const hr=new THREE.Mesh(cg,belly); hr.scale.set(.08,.75,.08); hr.position.set(sd*.25,.55,-.25); hr.rotation.set(-1,0,sd*-.35); H.add(hr);
+    const wh=new THREE.Mesh(new THREE.BoxGeometry(.025,.025,1.6),belly); wh.geometry.translate(0,0,.8); wh.position.set(sd*.25,-.02,1.05); wh.rotation.y=sd*.5; H.add(wh); (D.wh=D.wh||[]).push(wh);
+    for(let m=0;m<4;m++){ const mn=new THREE.Mesh(cg,red); mn.scale.set(.1,.55,.1); mn.position.set(sd*(.32+m*.04),.05-m*.12,-.4); mn.rotation.set(-1.9,0,sd*.6); H.add(mn); } });
+  const lt=new THREE.PointLight(0xffc040,1.8,22); H.add(lt);
+  D.path=u=>new THREE.Vector3(Math.sin(u)*12,5.4+Math.sin(u*3)*.9+Math.cos(u*2)*.3,Math.sin(u*2)*8);
+  INSG.dragon=D; }
+function insDragonTick(t,dt){ const D=INSG.dragon; if(!D) return; const R=SH_R.i1; D.u+=dt*.16; const gap=LOW?.046:.03, v=new THREE.Vector3();
+  for(let i=0;i<D.N;i++){ const u=D.u-(i+1)*gap, p=D.path(u), s=D.segs[i]; const sway=Math.sin(t*3-i*.45)*.18; p.y+=sway; s.position.copy(p); v.copy(D.path(u+.01)); v.y+=Math.sin(t*3-(i-.5)*.45)*.18; s.lookAt(v); }
+  const hp=D.path(D.u); hp.y+=Math.sin(t*3+.45)*.18; D.head.position.copy(hp); D.head.lookAt(D.path(D.u+.02)); D.jaw.rotation.x=D.fire>0?.45:.08+Math.max(0,Math.sin(t*1.3))*.12; D.wh.forEach((w,i)=>{ w.rotation.x=Math.sin(t*2+i)*.25; });
+  if(Math.random()<dt*(LOW?6:14)){ const s=D.segs[Math.floor(Math.random()*D.N)].position; part({x:R.cx+s.x,y:s.y,z:R.cz+s.z,vx:rand(-.2,.2),vy:rand(-.6,-.2),vz:rand(-.2,.2),col:pick(['#ffe07a','#ffd040','#fff4c0']),op:.9,size:.09,grow:.02,life:1.6}); }
+  D.fireT-=dt; if(D.fireT<=0){ D.fire=1.6; D.fireT=rand(10,16); try{ chime(40,'sawtooth',.05,.9); }catch(e){} }
+  if(D.fire>0){ D.fire-=dt; const f=new THREE.Vector3(0,0,1).applyQuaternion(D.head.quaternion); for(let k=0;k<(LOW?2:5);k++) part({x:R.cx+hp.x+f.x*2.2,y:hp.y-.2+f.y*2.2,z:R.cz+hp.z+f.z*2.2,vx:f.x*rand(6,9)+rand(-.6,.6),vy:f.y*rand(6,9)+rand(-.8,.2),vz:f.z*rand(6,9)+rand(-.6,.6),col:pick(['#ffd040','#ff8a1a','#fff0a0']),op:.95,size:.3,grow:.9,life:.8}); } }
 const INS_LINES={stage:['모자가 고민하고 있어요…','이 아이는… 용기가 있군!','다 같이 박수!'],potion:['시계 방향으로 세 번만 저어요','한 방울이면 충분해요','연기 색이 바뀌었어요!'],platform:['열차가 곧 떠나요!','벽을 향해 그대로 달려요!','트렁크 잊지 마세요'],
   duel:['엑스펠리아르무스!','프로테고!','결투 시작!'],library:['쉿, 금서 구역이에요','이 책이 답을 알고 있어요','책이 날아다녀요!'],owlery:['편지가 왔어요!','부엉이가 길을 알아요','답장은 내일 와요']};
 function insTick2(t,dt){ if(MAP!=='shanghai') return; const r=SHG.room;
+  if(r==='i1') insDragonTick(t,dt);
   if(r==='i1'&&INSG.actors){ const R=SH_R.i1, tbl=(x,z)=>x>R.cx-7.4&&x<R.cx+5.4&&Math.abs(z-R.cz)<3.8;
     for(const A of INSG.actors){ const p=A.P.root.position;
       if(A.wait>0){ A.wait-=dt; A.S.mode='talk'; const s=INSG.st1[A.at]; if(Math.random()<dt*.12) say(A.P,tr(pick(INS_LINES[s.k])),2.4);
